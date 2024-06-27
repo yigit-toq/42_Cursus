@@ -17,6 +17,9 @@
 # define RED "\033[0;31m"
 # define END "\033[0m"
 
+# define SUCCESS 0
+# define FAILURE 1
+
 typedef struct s_philo
 {
 	struct s_data	*data;
