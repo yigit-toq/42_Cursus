@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/28 18:03:40 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/28 20:22:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv)
 		ft_exit(&data, FAILURE, "Wrong number of arguments");
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
+	data.s_time = get_time();
 	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
 	ft_exit(&data, init_fork(&data), "Malloc not allocated.");
 	ft_exit(&data, init_philo(&data), "Malloc not allocated.");
