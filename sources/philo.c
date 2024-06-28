@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/27 18:10:06 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/28 18:03:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,21 @@
 #include <stdio.h>
 
 static int	arg_control(t_data *data, char **argv);
+static int	init_philo(t_data *data);
+static int	init_fork(t_data *data);
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	if (argc != 5 && argc != 6)
-		error_control(FAILURE, 0, "Wrong number of arguments");
-	error_control(arg_control(&data, argv + 1), 0, "Argument is not a number");
-	return (SUCCESS);
+		ft_exit(&data, FAILURE, "Wrong number of arguments");
+	else if (argc == 6 && argv[5][0] == '0')
+		return (EXIT_FAILURE);
+	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
+	ft_exit(&data, init_fork(&data), "Malloc not allocated.");
+	ft_exit(&data, init_philo(&data), "Malloc not allocated.");
+	return (EXIT_SUCCESS);
 }
 
 static int	arg_control(t_data *data, char **argv)
@@ -56,15 +62,59 @@ static int	arg_control(t_data *data, char **argv)
 	return (SUCCESS);
 }
 
-void	error_control(int error, int flag, char *message)
+static int	init_philo(t_data *data)
 {
-	(void)flag;
-	if (error)
+	int	i;
+
+	i = 0;
+	data->philo = malloc(sizeof(t_philo) * data->arguments[0]);
+	if (!data->philo)
+		return (FAILURE);
+	memset(data->philo, 0, sizeof(t_philo) * data->arguments[0]);
+	while (i < data->arguments[0])
 	{
+		memset(&data->philo[i], 0, sizeof(t_philo));
+		data->philo[i].data = data;
+		data->philo[i].id = i + 1;
+		data->philo[i].left_fork = data->fork[i];
+		data->philo[i].right_fork = data->fork[(i + 1) % data->arguments[0]];
+		i++;
+	}
+	return (SUCCESS);
+}
+
+static int	init_fork(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->fork = malloc(sizeof(pthread_mutex_t) * data->arguments[0]);
+	if (!data->fork)
+		return (FAILURE);
+	memset(data->fork, 0, sizeof(pthread_mutex_t) * data->arguments[0]);
+	while (i < data->arguments[0])
+	{
+		if (pthread_mutex_init(&data->fork[i], NULL))
+			return (FAILURE);
+		i++;
+	}
+	if (pthread_mutex_init(&data->mutex, NULL))
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+void	ft_exit(t_data *data, int error, char *message)
+{
+	if (error == FAILURE)
+	{
+		if (data->philo)
+			free(data->philo);
+		if (data->fork)
+			free(data->fork);
 		printf(RED);
 		printf("Error: %s\n", message);
 		printf(END);
-		exit(FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	return ;
 }

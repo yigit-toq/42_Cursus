@@ -6,13 +6,13 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 20:10:24 by ytop              #+#    #+#              #
-#    Updated: 2024/06/27 16:23:28 by ytop             ###   ########.fr        #
+#    Updated: 2024/06/28 13:46:57 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 DIR				=	./sources/
 
-SRCS			=	$(DIR)philo.c
+SRCS			=	$(DIR)philo.c $(DIR)philo_utils.c
 
 OBJS			=	$(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/27 18:01:34 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/28 18:04:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define RED "\033[0;31m"
 # define END "\033[0m"
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS 1
+# define FAILURE 0
 
 typedef struct s_philo
 {
@@ -29,14 +29,24 @@ typedef struct s_philo
 	int				id;
 	int				eat_count;
 	int				eat_last;
+	int				is_dead;
 }				t_philo;
 
 typedef struct s_data
 {
-	t_philo	*philo;
-	int		arguments[5];
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	*fork;
+	t_philo			*philo;
+	int				s_time;
+	int				arguments[5];
 }				t_data;
 
-void	error_control(int function, int flag, char *message);
+void		eat(void *philo);
+
+void		ft_exit(t_data *data, int error, char *message);
+
+int			print_message(t_philo *philo, char *mesagge);
+
+int			get_time(void);
 
 #endif
