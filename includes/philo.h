@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/28 18:04:48 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/01 18:03:22 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_data
 	int				arguments[5];
 }				t_data;
 
-void		eat(void *philo);
+void		eat(t_philo *philo);
 
 void		ft_exit(t_data *data, int error, char *message);
 

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:46:39 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/28 18:12:32 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/01 18:09:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,22 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void	eat(void *philo)
+void	eat(t_philo *philo)
 {
-	t_philo	*ph;
-
-	ph = (t_philo *)philo;
-	pthread_mutex_lock(&ph->left_fork);
-	print_message(ph, "has taken a fork");
-	pthread_mutex_lock(&ph->right_fork);
-	print_message(ph, "has taken a fork");
-	ph->eat_last = get_time();
-	ph->eat_count++;
-	print_message(ph, "is eating");
-	usleep(ph->data->arguments[1] * 1000);
-	pthread_mutex_unlock(&ph->left_fork);
-	pthread_mutex_unlock(&ph->right_fork);
-	print_message(ph, "is sleeping");
-	usleep(ph->data->arguments[2] * 1000);
-	print_message(ph, "is thinking");
+	pthread_mutex_lock(&philo->left_fork);
+	print_message(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->right_fork);
+	print_message(philo, "has taken a fork");
+	philo->eat_last = get_time();
+	philo->eat_count++;
+	print_message(philo, "is eating");
+	usleep(philo->data->arguments[1] * 1000);
+	pthread_mutex_unlock(&philo->left_fork);
+	pthread_mutex_unlock(&philo->right_fork);
+	print_message(philo, "is sleeping");
+	usleep(philo->data->arguments[2] * 1000);
+	print_message(philo, "is thinking");
+	return ;
 }
 
 int	print_message(t_philo *philo, char *mesagge)

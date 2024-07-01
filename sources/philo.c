@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/28 20:22:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/01 18:14:26 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static int	init_fork(t_data *data);
 
 int	main(int argc, char **argv)
 {
+	t_philo	*philo;
 	t_data	data;
+	int		i;
 
 	if (argc != 5 && argc != 6)
 		ft_exit(&data, FAILURE, "Wrong number of arguments");
@@ -31,6 +33,15 @@ int	main(int argc, char **argv)
 	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
 	ft_exit(&data, init_fork(&data), "Malloc not allocated.");
 	ft_exit(&data, init_philo(&data), "Malloc not allocated.");
+	philo = data.philo;
+	i = -1;
+	while (++i < data.arguments[0])
+		if (pthread_create(&philo[i].thread, NULL, (void *)eat, &philo[i]))
+			ft_exit(&data, FAILURE, "Thread not created.");
+	i = -1;
+	while (++i < data.arguments[0])
+		if (pthread_join(philo[i].thread, NULL))
+			ft_exit(&data, FAILURE, "Thread not joined.");
 	return (EXIT_SUCCESS);
 }
 
