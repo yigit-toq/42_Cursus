@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 14:26:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/05/24 23:00:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/07 18:01:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,23 @@ static void	put_str(t_game *game, int x, int y);
 
 void	draw_map(t_game *game)
 {
-	char	**map;
+	t_map	*map;
 	int		x;
 	int		y;
 
 	y = 0;
-	map = game->map->map;
-	while (y < game->map->h)
+	map = game->map;
+	while (y < map->h)
 	{
 		x = 0;
-		while (x < game->map->w)
+		while (x < map->w)
 		{
-			put_image(game, x, y, game->img->floor);
+			if (map->f_map[y][x])
+				put_image(game, x, y, game->img->floor[map->f_map[y][x] - 1]);
 			put_door(game, x, y);
-			if (map[y][x] == WALL)
+			if (map->map[y][x] == WALL)
 				put_image(game, x, y, game->img->wall);
-			else if (map[y][x] == COLLECT)
+			else if (map->map[y][x] == COLLECT)
 				put_image(game, x, y, game->img->collect);
 			x++;
 		}

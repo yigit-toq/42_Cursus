@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:36:07 by ytop              #+#    #+#             */
-/*   Updated: 2024/05/26 13:49:12 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/07 18:54:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	error_controller(t_game *game, char type, char *message, void *ptr)
 		return ;
 	if (type == 'F' || type == 'A')
 	{
-		if (game->dynamite && game->door && game->key)
-			image_free(game);
+		image_free(game);
 		array_free((void **)game->enemy, game->count->enemy);
+		array_free((void **)game->map->f_map, game->map->h);
 		array_free((void **)game->map->map, game->map->h);
 		mlx_destroy_window(game->mlx, game->win);
 		free(game->dynamite);
@@ -90,6 +90,8 @@ static void	image_free(t_game *game)
 	int		i;
 
 	i = 0;
+	if (!game->dynamite || !game->door || !game->key)
+		return ;
 	while (i < 9)
 	{
 		if (game->key->img[i])
@@ -108,8 +110,6 @@ static void	image_free(t_game *game)
 		image_free_utils(game, i);
 		i++;
 	}
-	if (game->img->floor)
-		mlx_destroy_image(game->mlx, game->img->floor);
 	if (game->img->wall)
 		mlx_destroy_image(game->mlx, game->img->wall);
 }
@@ -126,6 +126,8 @@ static void	image_free_utils(t_game *game, int i)
 			mlx_destroy_image(game->mlx, game->player->img_l[i]);
 		if (game->player->img_r[i])
 			mlx_destroy_image(game->mlx, game->player->img_r[i]);
+		if (game->img->floor[i])
+			mlx_destroy_image(game->mlx, game->img->floor[i]);
 		if (game->count->enemy > 0)
 		{
 			if (game->img->enemy_f[i])

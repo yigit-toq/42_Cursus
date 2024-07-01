@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:33 by ytop              #+#    #+#             */
-/*   Updated: 2024/05/24 22:58:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/07 17:40:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void	map_controller(t_game *game, t_count *count, int x, int y)
 		path[y] = ft_strdup(game->map->map[y]);
 		if (!path[y])
 		{
-			free(path);
+			array_free((void **)path, game->map->h);
 			error_controller(game, 'M', "Malloc not allocated.", 0);
 		}
 	}

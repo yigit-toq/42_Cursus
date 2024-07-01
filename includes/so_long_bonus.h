@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:13:36 by ytop              #+#    #+#             */
-/*   Updated: 2024/05/26 13:51:04 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/11 17:21:32 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@
 # define COLLECT	'C'
 # define EXIT		'E'
 
+# define FRONT		'F'
+# define BACK		'B'
+# define LEFT		'L'
+# define RIGHT		'R'
+
 # define VISITED	'V'
 
 # define ENEMY		'A'
@@ -68,8 +73,8 @@
 
 # define KEY_IMG			"./textures/1-collectable/"
 
+# define FLOOR_IMG			"./textures/0-environment/"
 # define WALL_IMG			"./textures/0-environment/wall.xpm"
-# define FLOOR_IMG			"./textures/0-environment/floor.xpm"
 
 typedef struct enemy
 {
@@ -109,6 +114,7 @@ typedef struct map
 	char	**map;
 	int		w;
 	int		h;
+	int		**f_map;
 }			t_map;
 
 typedef struct count
@@ -150,8 +156,8 @@ typedef struct img
 	void	*enemy_b[3];
 	void	*enemy_l[3];
 	void	*enemy_r[3];
+	void	*floor[3];
 	void	*collect;
-	void	*floor;
 	void	*wall;
 	void	*exit;
 	int		w;
@@ -172,13 +178,15 @@ typedef struct game
 	void		*win;
 }			t_game;
 
+void	floor_init(t_game *game, int x, int y, int i);
+
 void	enemy_init(t_game *game);
 
 void	enemy_controller(t_game *game, t_enemy **enemy);
 
 void	enemy_finder(t_enemy **enemy, t_game *game, int x, int y);
 
-void	enemy_direction(t_enemy *enemy, t_game *game, int x, int y);
+char	enemy_direction(t_game *game, t_enemy *enemy, int x, int y);
 
 void	enemy_animation(t_game *game, t_enemy *enemy);
 

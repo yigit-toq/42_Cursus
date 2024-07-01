@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:54:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/04 13:36:18 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/10 16:24:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static void	mlx_controller(t_game *game, int width, int height)
 	game->win = win;
 	image_init(game);
 	enemy_init(game);
+	floor_init(game, -1, -1, 0);
 	mlx_hook(win, 2, 0, key_controller, game);
 	mlx_hook(win, 3, 0, static_position, game);
 	mlx_hook(win, 17, 0, close_controller, game);
@@ -87,6 +88,7 @@ static void	image_init(t_game *game)
 	t_dynamite	*dynamite;
 	t_door		*door;
 	t_key		*key;
+	void		*wall;
 
 	dynamite = ft_calloc(1, sizeof(t_dynamite));
 	game->dynamite = dynamite;
@@ -98,11 +100,13 @@ static void	image_init(t_game *game)
 	game->key = key;
 	error_controller(game, 'A', "Malloc not allocated.", key);
 	add_image(game);
-	game->img->floor = new_image(game, FLOOR_IMG, 0);
-	game->img->wall = new_image(game, WALL_IMG, 0);
+	wall = ft_strdup(WALL_IMG);
+	error_controller(game, 'A', "Malloc not allocated.", wall);
+	game->img->wall = new_image(game, wall, 0);
 	game->img->collect = game->key->img[0];
 	game->img->exit = game->door->img[0];
 	game->player->img = game->player->img_f[0];
+	free(wall);
 	return ;
 }
 

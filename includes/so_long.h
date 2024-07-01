@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:13:36 by ytop              #+#    #+#             */
-/*   Updated: 2024/05/26 13:52:12 by ytop             ###   ########.fr       */
+/*   Updated: 2024/06/07 14:58:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 
 # define COLLECTABLE_IMG	"./textures/1-collectable/1.xpm"
 
+# define FLOOR_IMG			"./textures/0-environment/0.xpm"
 # define WALL_IMG			"./textures/0-environment/wall.xpm"
-# define FLOOR_IMG			"./textures/0-environment/floor.xpm"
 
 typedef struct map
 {
