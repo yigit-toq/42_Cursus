@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/01 18:14:26 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/02 19:48:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ int	main(int argc, char **argv)
 		ft_exit(&data, FAILURE, "Wrong number of arguments");
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
-	data.s_time = get_time();
 	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
 	ft_exit(&data, init_fork(&data), "Malloc not allocated.");
 	ft_exit(&data, init_philo(&data), "Malloc not allocated.");
+	data.s_time = get_time();
+	data.s_dead = 0;
 	philo = data.philo;
 	i = -1;
 	while (++i < data.arguments[0])
-		if (pthread_create(&philo[i].thread, NULL, (void *)eat, &philo[i]))
+		if (pthread_create(&philo[i].thread, NULL, (void *)routine, &philo[i]))
 			ft_exit(&data, FAILURE, "Thread not created.");
 	i = -1;
 	while (++i < data.arguments[0])
@@ -110,15 +111,28 @@ static int	init_fork(t_data *data)
 			return (FAILURE);
 		i++;
 	}
-	if (pthread_mutex_init(&data->mutex, NULL))
+	if (pthread_mutex_init(&data->print, NULL))
+		return (FAILURE);
+	if (pthread_mutex_init(&data->dead, NULL))
 		return (FAILURE);
 	return (SUCCESS);
 }
 
 void	ft_exit(t_data *data, int error, char *message)
 {
+	int	i;
+
+	i = 0;
 	if (error == FAILURE)
 	{
+		pthread_mutex_destroy(&data->print);
+		while (i < data->arguments[0])
+		{
+			if (data->fork)
+				if (pthread_mutex_destroy(&data->fork[i]))
+					ft_exit(data, FAILURE, "Mutex not destroyed.");
+			i++;
+		}
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)
