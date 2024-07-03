@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:39:10 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/03 14:44:12 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/03 18:23:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_usleep(long long time)
+void	ft_sleep(long long time)
 {
 	long long	start;
 
@@ -32,15 +32,33 @@ void	ft_usleep(long long time)
 	return ;
 }
 
-void	set_get_int(pthread_mutex_t *mutex, int *dest, int value, int type)
+void	set_int(pthread_mutex_t *mutex, int *dest, int value)
 {
 	pthread_mutex_lock(mutex);
-	if (type == SET)
-		*dest = value;
-	else
-		value = *dest;
+	*dest = value;
 	pthread_mutex_unlock(mutex);
-	if (type == GET)
-		dest = &value;
 	return ;
 }
+
+int	get_int(pthread_mutex_t *mutex, int *dest)
+{
+	int	value;
+
+	pthread_mutex_lock(mutex);
+	value = *dest;
+	pthread_mutex_unlock(mutex);
+	return (value);
+}
+
+// void	v_int(pthread_mutex_t *mutex, int *dest, int value, int type)
+// {
+// 	pthread_mutex_lock(mutex);
+// 	if (type == SET)
+// 		*dest = value;
+// 	else
+// 		value = *dest;
+// 	pthread_mutex_unlock(mutex);
+// 	if (type == GET)
+// 		dest = &value;
+// 	return ;
+// }

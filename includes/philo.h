@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/03 15:18:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/03 19:15:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # define GET		1
 # define SET		0
+
+# define TRUE		1
+# define FALSE		0
 
 # define MALLOC		"Malloc not allocated."
 
@@ -50,14 +53,13 @@ typedef struct s_data
 
 void	routine(t_philo *philo);
 
-void	ft_usleep(long long time);
+void	ft_sleep(long long time);
 
 void	ft_exit(t_data *data, int error, char *message);
 
-void	set_get_int(pthread_mutex_t *mutex, int *dest, int value, int type);
+void	set_int(pthread_mutex_t *mutex, int *dest, int value);
 
-int		print_message(t_philo *philo, char *mesagge);
+int		get_int(pthread_mutex_t *mutex, int *dest);
 
 int		get_time(void);
-
 #endif
