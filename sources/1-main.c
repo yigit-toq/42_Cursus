@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   1-main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/02 19:48:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/03 15:23:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@ int	main(int argc, char **argv)
 {
 	t_philo	*philo;
 	t_data	data;
+	char	*message;
 	int		i;
 
+	message = NULL;
+	memset(&data, 0, sizeof(t_data));
 	if (argc != 5 && argc != 6)
-		ft_exit(&data, FAILURE, "Wrong number of arguments");
+		ft_exit(&data, FAILURE, "Wrong number of arguments.");
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
 	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
-	ft_exit(&data, init_fork(&data), "Malloc not allocated.");
-	ft_exit(&data, init_philo(&data), "Malloc not allocated.");
+	ft_exit(&data, init_fork(&data), MALLOC);
+	ft_exit(&data, init_philo(&data), MALLOC);
 	data.s_time = get_time();
-	data.s_dead = 0;
 	philo = data.philo;
 	i = -1;
 	while (++i < data.arguments[0])
@@ -89,8 +91,8 @@ static int	init_philo(t_data *data)
 		memset(&data->philo[i], 0, sizeof(t_philo));
 		data->philo[i].data = data;
 		data->philo[i].id = i + 1;
-		data->philo[i].left_fork = data->fork[i];
-		data->philo[i].right_fork = data->fork[(i + 1) % data->arguments[0]];
+		data->philo[i].left_fork = &data->fork[i];
+		data->philo[i].right_fork = &data->fork[(i + 1) % data->arguments[0]];
 		i++;
 	}
 	return (SUCCESS);
@@ -111,9 +113,11 @@ static int	init_fork(t_data *data)
 			return (FAILURE);
 		i++;
 	}
-	if (pthread_mutex_init(&data->print, NULL))
+	if (pthread_mutex_init(&data->m_eat, NULL))
 		return (FAILURE);
-	if (pthread_mutex_init(&data->dead, NULL))
+	if (pthread_mutex_init(&data->m_dead, NULL))
+		return (FAILURE);
+	if (pthread_mutex_init(&data->m_print, NULL))
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -125,7 +129,7 @@ void	ft_exit(t_data *data, int error, char *message)
 	i = 0;
 	if (error == FAILURE)
 	{
-		pthread_mutex_destroy(&data->print);
+		pthread_mutex_destroy(&data->m_print);
 		while (i < data->arguments[0])
 		{
 			if (data->fork)
