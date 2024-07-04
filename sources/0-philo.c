@@ -6,33 +6,40 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:46:39 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/04 09:53:03 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 19:10:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-static int	loop(t_philo *philo);
+static int	loop(t_philo *philo, t_data *data);
 static int	print_message(t_philo *philo, char *mesagge, char *color);
 
 void	routine(t_philo *philo)
 {
-	if (!(philo->id % 2))
-		ft_sleep(10);
-	while (1)
+	if (philo->data->arguments[0] == 1)
 	{
-		loop(philo);
+		print_message(philo, "has taken a fork", YELLOW);
+		ft_sleep(philo->data->arguments[1]);
+		print_message(philo, "died", RED);
+		return ;
+	}
+	if (!(philo->id % 2))
+		ft_sleep(philo->data->arguments[1] / 4);
+	while (!get_int(&philo->data->m_dead, &philo->data->s_dead))
+	{
+		if (loop(philo, philo->data) == 0)
+			break ;
 	}
 	return ;
 }
 
-static int	loop(t_philo *philo)
+static int	loop(t_philo *philo, t_data *data)
 {
-	t_data	*data;
-
-	data = philo->data;
+	if (philo->eat_count == data->arguments[4] && data->arguments[4])
+		return (FAILURE);
 	pthread_mutex_lock(philo->left_fork);
 	print_message(philo, "has taken a fork", YELLOW);
 	pthread_mutex_lock(philo->right_fork);
@@ -57,28 +64,72 @@ static int	print_message(t_philo *philo, char *mesagge, char *color)
 
 	data = philo->data;
 	pthread_mutex_lock(&data->m_print);
+	if (get_int(&philo->data->m_dead, &philo->data->s_dead))
+	{
+		pthread_mutex_unlock(&data->m_print);
+		return (FAILURE);
+	}
+	if (philo->eat_count == data->arguments[4] && data->arguments[4])
+	{
+		pthread_mutex_unlock(&data->m_print);
+		return (FAILURE);
+	}
 	printf("%s", color);
-	printf("%-6d %d %s\n", get_time() - data->s_time, philo->id, mesagge);
+	printf("%-6lld %d %s\n", get_time() - data->s_time, philo->id, mesagge);
 	printf("%s", END);
 	pthread_mutex_unlock(&data->m_print);
-	if (get_int(&philo->data->m_dead, &philo->data->s_dead))
-		return (FAILURE);
 	return (SUCCESS);
+}
+
+int	thread_create(t_data *data)
+{
+	t_philo	*philo;
+	int		i;
+
+	philo = data->philo;
+	i = 0;
+	while (i < data->arguments[0])
+	{
+		if (pthread_create(&philo[i].thread, NULL, (void *)routine, &philo[i]))
+			error_control(data, FAILURE, "Thread not created");
+		i++;
+	}
+	death_control(philo);
+	i = 0;
+	while (i < data->arguments[0])
+	{
+		if (pthread_join(philo[i].thread, NULL))
+			error_control(data, FAILURE, "Thread not joined");
+		i++;
+	}
+	return (FAILURE);
 }
 
 int	death_control(t_philo *philo)
 {
 	t_data	*data;
+	int		i;
 
 	data = philo->data;
-	while (1)
+	i = -1;
+	while (++i < data->arguments[0])
 	{
-		if (get_time() - philo->eat_last > data->arguments[1])
+		pthread_mutex_lock(&data->m_eat);
+		if (get_time() - philo[i].eat_last >= data->arguments[1])
 		{
-			print_message(philo, "died", RED);
-			set_int(&data->m_dead, &data->s_dead, 1);
+			if (philo[i].eat_count == data->arguments[4] && data->arguments[4])
+			{
+				pthread_mutex_unlock(&data->m_eat);
+				return (FAILURE);
+			}
+			print_message(&philo[i], "died", RED);
+			set_int(&data->m_dead, &data->s_dead, TRUE);
+			pthread_mutex_unlock(&data->m_eat);
 			return (FAILURE);
 		}
+		pthread_mutex_unlock(&data->m_eat);
+		if (i == data->arguments[0] - 1)
+			i = -1;
 	}
 	return (SUCCESS);
 }

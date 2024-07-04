@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:39:10 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/04 09:18:38 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 18:47:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-int	get_time(void)
+long long	get_time(void)
 {
 	struct timeval	time;
 
@@ -24,7 +24,7 @@ int	get_time(void)
 
 int	ft_sleep(int time)
 {
-	int	start;
+	long long	start;
 
 	start = get_time();
 	while (get_time() - start < time)
@@ -49,16 +49,3 @@ int	get_int(pthread_mutex_t *mutex, int *dest)
 	pthread_mutex_unlock(mutex);
 	return (value);
 }
-
-// void	v_int(pthread_mutex_t *mutex, int *dest, int value, int type)
-// {
-// 	pthread_mutex_lock(mutex);
-// 	if (type == SET)
-// 		*dest = value;
-// 	else
-// 		value = *dest;
-// 	pthread_mutex_unlock(mutex);
-// 	if (type == GET)
-// 		dest = &value;
-// 	return ;
-// }

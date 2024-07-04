@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/04 10:00:02 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 19:17:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,19 @@ static int	init_fork(t_data *data);
 
 int	main(int argc, char **argv)
 {
-	t_philo	*philo;
 	t_data	data;
-	int		i;
 
 	memset(&data, 0, sizeof(t_data));
 	if (argc != 5 && argc != 6)
 		error_control(&data, FAILURE, "Wrong number of arguments");
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
+	data.s_time = get_time();
 	error_control(&data, arg_control(&data, argv + 1), "Argument is not valid");
 	error_control(&data, init_fork(&data), MALLOC);
 	error_control(&data, init_philo(&data), MALLOC);
-	data.s_time = get_time();
-	philo = data.philo;
-	i = -1;
-	while (++i < data.arguments[0])
-		if (pthread_create(&philo[i].thread, NULL, (void *)routine, &philo[i]))
-			error_control(&data, FAILURE, "Thread not created");
-	error_control(&data, death_control(philo), 0);
-	i = -1;
-	while (++i < data.arguments[0])
-		if (pthread_join(philo[i].thread, NULL))
-			error_control(&data, FAILURE, "Thread not joined");
+	printf("%s | %s | %s\n-------------------\n", "TIME", "ID", "MESSAGE");
+	error_control(&data, thread_create(&data), NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -90,6 +80,7 @@ static int	init_philo(t_data *data)
 		memset(&data->philo[i], 0, sizeof(t_philo));
 		data->philo[i].data = data;
 		data->philo[i].id = i + 1;
+		data->philo[i].eat_last = get_time();
 		data->philo[i].left_fork = &data->fork[i];
 		data->philo[i].right_fork = &data->fork[(i + 1) % data->arguments[0]];
 		i++;
@@ -125,16 +116,15 @@ int	error_control(t_data *data, int error, char *message)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	if (error == FAILURE)
 	{
+		pthread_mutex_destroy(&data->m_eat);
+		pthread_mutex_destroy(&data->m_dead);
 		pthread_mutex_destroy(&data->m_print);
-		while (i < data->arguments[0])
-		{
+		while (++i < data->arguments[0])
 			if (data->fork)
 				pthread_mutex_destroy(&data->fork[i]);
-			i++;
-		}
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)
