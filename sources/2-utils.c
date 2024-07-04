@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:39:10 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/03 18:23:40 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 09:18:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ int	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_sleep(long long time)
+int	ft_sleep(int time)
 {
-	long long	start;
+	int	start;
 
 	start = get_time();
 	while (get_time() - start < time)
 		usleep(100);
-	return ;
+	return (SUCCESS);
 }
 
-void	set_int(pthread_mutex_t *mutex, int *dest, int value)
+int	set_int(pthread_mutex_t *mutex, int *dest, int value)
 {
 	pthread_mutex_lock(mutex);
 	*dest = value;
 	pthread_mutex_unlock(mutex);
-	return ;
+	return (SUCCESS);
 }
 
 int	get_int(pthread_mutex_t *mutex, int *dest)

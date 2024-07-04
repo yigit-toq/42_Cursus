@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/03 19:15:01 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 09:41:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 # define PHILO_H
 # include <pthread.h>
 
-# define RED "\033[0;31m"
-# define END "\033[0m"
+# define PURPLE		"\033[0;35m"
+# define BLUE		"\033[0;34m"
+# define YELLOW		"\033[0;33m"
+# define GREEN		"\033[0;32m"
+# define RED		"\033[0;31m"
+# define END		"\033[0m"
 
 # define SUCCESS	1
 # define FAILURE	0
@@ -26,7 +30,7 @@
 # define TRUE		1
 # define FALSE		0
 
-# define MALLOC		"Malloc not allocated."
+# define MALLOC		"Malloc not allocated"
 
 typedef struct s_philo
 {
@@ -53,13 +57,15 @@ typedef struct s_data
 
 void	routine(t_philo *philo);
 
-void	ft_sleep(long long time);
+int		death_control(t_philo *philo);
 
-void	ft_exit(t_data *data, int error, char *message);
+int		error_control(t_data *data, int error, char *message);
 
-void	set_int(pthread_mutex_t *mutex, int *dest, int value);
+int		set_int(pthread_mutex_t *mutex, int *dest, int value);
 
 int		get_int(pthread_mutex_t *mutex, int *dest);
 
 int		get_time(void);
+
+int		ft_sleep(int time);
 #endif

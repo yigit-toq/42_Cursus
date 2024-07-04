@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/03 15:23:50 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/04 10:00:02 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,27 @@ int	main(int argc, char **argv)
 {
 	t_philo	*philo;
 	t_data	data;
-	char	*message;
 	int		i;
 
-	message = NULL;
 	memset(&data, 0, sizeof(t_data));
 	if (argc != 5 && argc != 6)
-		ft_exit(&data, FAILURE, "Wrong number of arguments.");
+		error_control(&data, FAILURE, "Wrong number of arguments");
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
-	ft_exit(&data, arg_control(&data, argv + 1), "Argument not number.");
-	ft_exit(&data, init_fork(&data), MALLOC);
-	ft_exit(&data, init_philo(&data), MALLOC);
+	error_control(&data, arg_control(&data, argv + 1), "Argument is not valid");
+	error_control(&data, init_fork(&data), MALLOC);
+	error_control(&data, init_philo(&data), MALLOC);
 	data.s_time = get_time();
 	philo = data.philo;
 	i = -1;
 	while (++i < data.arguments[0])
 		if (pthread_create(&philo[i].thread, NULL, (void *)routine, &philo[i]))
-			ft_exit(&data, FAILURE, "Thread not created.");
+			error_control(&data, FAILURE, "Thread not created");
+	error_control(&data, death_control(philo), 0);
 	i = -1;
 	while (++i < data.arguments[0])
 		if (pthread_join(philo[i].thread, NULL))
-			ft_exit(&data, FAILURE, "Thread not joined.");
+			error_control(&data, FAILURE, "Thread not joined");
 	return (EXIT_SUCCESS);
 }
 
@@ -122,7 +121,7 @@ static int	init_fork(t_data *data)
 	return (SUCCESS);
 }
 
-void	ft_exit(t_data *data, int error, char *message)
+int	error_control(t_data *data, int error, char *message)
 {
 	int	i;
 
@@ -133,18 +132,20 @@ void	ft_exit(t_data *data, int error, char *message)
 		while (i < data->arguments[0])
 		{
 			if (data->fork)
-				if (pthread_mutex_destroy(&data->fork[i]))
-					ft_exit(data, FAILURE, "Mutex not destroyed.");
+				pthread_mutex_destroy(&data->fork[i]);
 			i++;
 		}
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)
 			free(data->fork);
-		printf(RED);
-		printf("Error: %s\n", message);
-		printf(END);
-		exit(EXIT_FAILURE);
+		if (message)
+		{
+			printf(RED);
+			printf("Error: %s\n", message);
+			printf(END);
+			exit(EXIT_FAILURE);
+		}
 	}
-	return ;
+	return (SUCCESS);
 }
