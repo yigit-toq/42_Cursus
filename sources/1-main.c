@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/04 19:17:54 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/05 16:11:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ int	main(int argc, char **argv)
 
 	memset(&data, 0, sizeof(t_data));
 	if (argc != 5 && argc != 6)
-		error_control(&data, FAILURE, "Wrong number of arguments");
+		error_control(&data, FAILURE, NOTAGR, 0);
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
 	data.s_time = get_time();
-	error_control(&data, arg_control(&data, argv + 1), "Argument is not valid");
-	error_control(&data, init_fork(&data), MALLOC);
-	error_control(&data, init_philo(&data), MALLOC);
-	printf("%s | %s | %s\n-------------------\n", "TIME", "ID", "MESSAGE");
-	error_control(&data, thread_create(&data), NULL);
+	error_control(&data, arg_control(&data, argv + 1), NOTNBR, 0);
+	error_control(&data, init_fork(&data), MALLOC, 0);
+	error_control(&data, init_philo(&data), MALLOC, 0);
+	error_control(&data, thread_create(&data), NULL, 0);
 	return (EXIT_SUCCESS);
 }
 
@@ -104,27 +103,27 @@ static int	init_fork(t_data *data)
 		i++;
 	}
 	if (pthread_mutex_init(&data->m_eat, NULL))
-		return (FAILURE);
+		return (data->error = 0, FAILURE);
 	if (pthread_mutex_init(&data->m_dead, NULL))
-		return (FAILURE);
+		return (data->error = 1, FAILURE);
 	if (pthread_mutex_init(&data->m_print, NULL))
-		return (FAILURE);
-	return (SUCCESS);
+		return (data->error = 2, FAILURE);
+	return (data->error = 4, SUCCESS);
 }
 
-int	error_control(t_data *data, int error, char *message)
+int	error_control(t_data *data, int error, char *message, int index)
 {
-	int	i;
-
-	i = -1;
 	if (error == FAILURE)
 	{
-		pthread_mutex_destroy(&data->m_eat);
-		pthread_mutex_destroy(&data->m_dead);
-		pthread_mutex_destroy(&data->m_print);
-		while (++i < data->arguments[0])
+		if (data->error > 0)
+			pthread_mutex_destroy(&data->m_eat);
+		if (data->error > 1)
+			pthread_mutex_destroy(&data->m_dead);
+		if (data->error > 2)
+			pthread_mutex_destroy(&data->m_print);
+		while (index < data->arguments[0])
 			if (data->fork)
-				pthread_mutex_destroy(&data->fork[i]);
+				pthread_mutex_destroy(&data->fork[index++]);
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)

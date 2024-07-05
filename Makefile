@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/07 20:10:24 by ytop              #+#    #+#              #
-#    Updated: 2024/07/04 20:10:11 by ytop             ###   ########.fr        #
+#    Updated: 2024/07/05 16:01:55 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS			=	$(DIR)0-philo.c $(DIR)1-main.c $(DIR)2-utils.c
 OBJS			=	$(SRCS:.c=.o)
 
 CC				=	@cc
-CFLAGS			=	-Wall -Wextra -Werror #-fsanitize=thread
+CFLAGS			=	-Wall -Wextra -Werror #fsanitize=thread
 
 RM				=	@rm -rf
 
@@ -37,11 +37,11 @@ define	PROGRESS_BAR
 	@sleep 0.1
 endef
 
+all				:	$(NAME)
+
 %.o				:	%.c
 					$(CC) $(CFLAGS) -c $< -o $@
 					$(PROGRESS_BAR)
-
-all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
