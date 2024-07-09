@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/05 16:11:17 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/09 19:51:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ int	main(int argc, char **argv)
 
 	memset(&data, 0, sizeof(t_data));
 	if (argc != 5 && argc != 6)
-		error_control(&data, FAILURE, NOTAGR, 0);
+		error_control(&data, FAILURE, NOTAGR, -1);
 	else if (argc == 6 && argv[5][0] == '0')
 		return (EXIT_FAILURE);
 	data.s_time = get_time();
-	error_control(&data, arg_control(&data, argv + 1), NOTNBR, 0);
-	error_control(&data, init_fork(&data), MALLOC, 0);
-	error_control(&data, init_philo(&data), MALLOC, 0);
-	error_control(&data, thread_create(&data), NULL, 0);
-	return (EXIT_SUCCESS);
+	error_control(&data, arg_control(&data, argv + 1), NOTNBR, -1);
+	error_control(&data, init_fork(&data), MALLOC, -1);
+	error_control(&data, init_philo(&data), MALLOC, -1);
+	error_control(&data, thread_create(&data), NULL, -1);
+	if (data.p_count != data.arguments[0] - 1)
+		return (EXIT_FAILURE);
+	else
+		return (EXIT_SUCCESS);
 }
 
 static int	arg_control(t_data *data, char **argv)
@@ -53,13 +56,13 @@ static int	arg_control(t_data *data, char **argv)
 				return (FAILURE);
 			j++;
 		}
-		if (j > 10 || (j == 10 && argv[i][j - 1] - '0' > 7))
-			return (FAILURE);
 		while (argv[i][0])
 		{
 			data->arguments[i] = data->arguments[i] * 10 + (argv[i][0] - '0');
 			argv[i]++;
 		}
+		if (data->arguments[i] > 2147483647)
+			return (FAILURE);
 		i++;
 	}
 	return (SUCCESS);
@@ -77,8 +80,8 @@ static int	init_philo(t_data *data)
 	while (i < data->arguments[0])
 	{
 		memset(&data->philo[i], 0, sizeof(t_philo));
-		data->philo[i].data = data;
 		data->philo[i].id = i + 1;
+		data->philo[i].data = data;
 		data->philo[i].eat_last = get_time();
 		data->philo[i].left_fork = &data->fork[i];
 		data->philo[i].right_fork = &data->fork[(i + 1) % data->arguments[0]];
@@ -103,36 +106,39 @@ static int	init_fork(t_data *data)
 		i++;
 	}
 	if (pthread_mutex_init(&data->m_eat, NULL))
-		return (data->error = 0, FAILURE);
+		return (data->m_error = 0, FAILURE);
 	if (pthread_mutex_init(&data->m_dead, NULL))
-		return (data->error = 1, FAILURE);
+		return (data->m_error = 1, FAILURE);
 	if (pthread_mutex_init(&data->m_print, NULL))
-		return (data->error = 2, FAILURE);
-	return (data->error = 4, SUCCESS);
+		return (data->m_error = 2, FAILURE);
+	if (pthread_mutex_init(&data->m_ready, NULL))
+		return (data->m_error = 3, FAILURE);
+	return (data->m_error = 4, SUCCESS);
 }
 
 int	error_control(t_data *data, int error, char *message, int index)
 {
 	if (error == FAILURE)
 	{
-		if (data->error > 0)
+		if (data->m_error > 0)
 			pthread_mutex_destroy(&data->m_eat);
-		if (data->error > 1)
+		if (data->m_error > 1)
 			pthread_mutex_destroy(&data->m_dead);
-		if (data->error > 2)
+		if (data->m_error > 2)
 			pthread_mutex_destroy(&data->m_print);
-		while (index < data->arguments[0])
-			if (data->fork)
-				pthread_mutex_destroy(&data->fork[index++]);
+		if (data->m_error > 3)
+			pthread_mutex_destroy(&data->m_ready);
+		if (data->arguments[0] <= 2000)
+			while (++index < data->arguments[0])
+				if (data->fork)
+					pthread_mutex_destroy(&data->fork[index]);
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)
 			free(data->fork);
 		if (message)
 		{
-			printf(RED);
-			printf("Error: %s\n", message);
-			printf(END);
+			printf(RED "Error: %s\n" END, message);
 			exit(EXIT_FAILURE);
 		}
 	}

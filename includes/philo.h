@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/05 16:16:45 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/09 18:50:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,20 @@ typedef struct s_data
 	pthread_mutex_t	m_eat;
 	pthread_mutex_t	m_dead;
 	pthread_mutex_t	m_print;
+	pthread_mutex_t	m_ready;
 	t_philo			*philo;
+	long long		arguments[5];
 	long long		s_time;
 	int				s_dead;
-	int				error;
-	int				arguments[5];
+	int				p_count;
+	int				m_error;
 }					t_data;
 
 void		routine(t_philo *philo);
 
 int			thread_create(t_data *data);
 
-int			death_control(t_philo *philo);
+int			death_control(t_data *data);
 
 int			error_control(t_data *data, int error, char *message, int index);
 

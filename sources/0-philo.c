@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:46:39 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/05 16:07:06 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/09 19:45:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ static int	print_message(t_philo *philo, char *mesagge, char *color);
 
 void	routine(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->m_ready);
+	pthread_mutex_unlock(&philo->data->m_ready);
+	if (philo->data->p_count != philo->data->arguments[0] - 1)
+		return ;
 	if (philo->data->arguments[0] == 1)
 	{
 		print_message(philo, FORK, YELLOW);
@@ -81,30 +85,34 @@ int	thread_create(t_data *data)
 
 	philo = data->philo;
 	i = 0;
+	pthread_mutex_lock(&data->m_ready);
 	while (i < data->arguments[0])
 	{
 		if (pthread_create(&philo[i].thread, NULL, (void *)routine, &philo[i]))
-			error_control(data, FAILURE, "Thread not created", 0);
-		i++;
+			break ;
+		data->p_count = i++;
 	}
-	death_control(philo);
+	pthread_mutex_unlock(&data->m_ready);
+	death_control(data);
 	i = 0;
 	while (i < data->arguments[0])
 	{
 		if (pthread_join(philo[i].thread, NULL))
-			error_control(data, FAILURE, "Thread not joined", 0);
+			break ;
 		i++;
 	}
 	return (FAILURE);
 }
 
-int	death_control(t_philo *philo)
+int	death_control(t_data *data)
 {
-	t_data	*data;
+	t_philo	*philo;
 	int		i;
 
-	data = philo->data;
+	philo = data->philo;
 	i = 0;
+	if (data->p_count != data->arguments[0] - 1)
+		return (FAILURE);
 	while (i < data->arguments[0])
 	{
 		pthread_mutex_lock(&data->m_eat);
@@ -113,7 +121,7 @@ int	death_control(t_philo *philo)
 			if (philo[i].eat_count == data->arguments[4] && data->arguments[4])
 				return (pthread_mutex_unlock(&data->m_eat), FAILURE);
 			print_message(&philo[i], DEAD, RED);
-			set_int(&data->m_dead, &data->s_dead, TRUE);
+			set_int(&data->m_dead, &data->s_dead, 1);
 			pthread_mutex_unlock(&data->m_eat);
 			return (FAILURE);
 		}
