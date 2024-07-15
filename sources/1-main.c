@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:08:22 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/09 19:51:15 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/15 15:18:29 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,9 @@ int	error_control(t_data *data, int error, char *message, int index)
 			pthread_mutex_destroy(&data->m_print);
 		if (data->m_error > 3)
 			pthread_mutex_destroy(&data->m_ready);
-		if (data->arguments[0] <= 2000)
-			while (++index < data->arguments[0])
-				if (data->fork)
-					pthread_mutex_destroy(&data->fork[index]);
+		while (++index < data->arguments[0])
+			if (data->fork)
+				pthread_mutex_destroy(&data->fork[index]);
 		if (data->philo)
 			free(data->philo);
 		if (data->fork)

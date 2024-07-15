@@ -6,13 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:46:39 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/09 19:45:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/15 15:09:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static int	loop(t_philo *philo, t_data *data);
 static int	print_message(t_philo *philo, char *mesagge, char *color);
