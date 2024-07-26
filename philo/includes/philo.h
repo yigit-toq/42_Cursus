@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 14:36:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/09 18:50:13 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/26 18:11:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,13 @@
 # define TRUE		1
 # define FALSE		0
 
-# define MALLOC 	"Malloc not allocated."
-# define NOTNBR		"Argument is not valid."
+# define UNUSED		-1
+
+# define INT_MAX	2147483647
+
 # define NOTAGR		"Wrong number of arguments."
+# define NOTNBR		"Argument is not valid."
+# define MALLOC 	"Malloc not allocated."
 
 # define FORK		"has taken a fork"
 
@@ -64,25 +68,27 @@ typedef struct s_data
 	pthread_mutex_t	m_ready;
 	t_philo			*philo;
 	long long		arguments[5];
-	long long		s_time;
-	int				s_dead;
-	int				p_count;
 	int				m_error;
+	int				p_count;
+	int				p_dead;
 }					t_data;
 
-void		routine(t_philo *philo);
+void		*routine(t_philo *philo);
 
 int			thread_create(t_data *data);
 
 int			death_control(t_data *data);
 
-int			error_control(t_data *data, int error, char *message, int index);
+int			life_control(t_philo *philo, t_data *data);
 
-int			set_int(pthread_mutex_t *mutex, int *dest, int value);
+int			error_control(t_data *data, int error, char *message);
 
-int			get_int(pthread_mutex_t *mutex, int *dest);
+int			var_int(pthread_mutex_t *mutex, int *dest, int value, int type);
+
+int			ft_strcmp(char *s1, char *s2);
 
 int			ft_sleep(int time);
 
 long long	get_time(void);
+
 #endif
