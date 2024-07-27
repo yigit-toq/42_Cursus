@@ -21,6 +21,7 @@
 # define GREEN		"\033[0;32m"
 # define RED		"\033[0;31m"
 
+# define BOLD		"\033[1m"
 # define END		"\033[0m"
 
 # define SUCCESS	1
@@ -40,13 +41,13 @@
 # define NOTNBR		"Argument is not valid."
 # define MALLOC 	"Malloc not allocated."
 
-# define FORK		"has taken a fork"
+# define FORK	"has taken a fork\t🍴"
 
-# define SLEEP		"is sleeping"
-# define THINK		"is thinking"
-# define EAT		"is eating"
+# define SLEEP	"is sleeping\t\t😴"
+# define THINK	"is thinking\t\t💭"
+# define EAT	"is eating\t\t🍝"
 
-# define DEAD		"died"
+# define DEAD	"died\t\t\t😵"
 
 typedef struct s_philo
 {

@@ -102,9 +102,9 @@ static int	print_message(t_philo *philo, char *mesagge, char *color)
 		return (pthread_mutex_unlock(&data->m_print), FAILURE);
 	if (!ft_strcmp(mesagge, DEAD))
 		var_int(&data->m_dead, &data->p_dead, TRUE, SET);
-	printf("%s", color);
-	printf("%-6lld %d %s\n", get_time(), philo->id, mesagge);
-	printf("%s", END);
+	printf("|%s %6lld %s|", YELLOW, get_time(), END);
+	printf("%s %3d %s", BOLD, philo->id, END);
+	printf("|%s %s %s|\n", color, mesagge, END);
 	pthread_mutex_unlock(&data->m_print);
 	return (SUCCESS);
 }
