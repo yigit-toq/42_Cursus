@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:46:39 by ytop              #+#    #+#             */
-/*   Updated: 2024/07/26 18:14:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/07/29 13:48:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,15 @@ static int	loop(t_philo *philo, t_data *data)
 		return (pthread_mutex_unlock(philo->left_fork), FAILURE);
 	pthread_mutex_lock(philo->right_fork);
 	if (!print_message(philo, FORK, YELLOW))
-		return (pthread_mutex_unlock(philo->left_fork), FAILURE);
+		return (pthread_mutex_unlock(philo->left_fork),
+			pthread_mutex_unlock(philo->right_fork), FAILURE);
 	if (!print_message(philo, EAT, GREEN))
-		return (pthread_mutex_unlock(philo->left_fork), FAILURE);
+		return (pthread_mutex_unlock(philo->left_fork),
+			pthread_mutex_unlock(philo->right_fork), FAILURE);
+	pthread_mutex_lock(&data->m_eat);
 	philo->eat_last = get_time();
 	philo->eat_count++;
+	pthread_mutex_unlock(&data->m_eat);
 	ft_sleep(data->arguments[2]);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
