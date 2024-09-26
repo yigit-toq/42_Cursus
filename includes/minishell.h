@@ -6,15 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:08:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/26 18:20:03 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 01:43:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include "libft.h"
 
 # define TRUE		1
@@ -25,9 +25,6 @@
 
 # define STD_OUTPUT 1
 # define STD_INPUT  0
-
-# define SYNTAX_ERR	"syntax error near unexpected token"
-# define PROMPT		"minishell$ "
 
 # define SEMICOLON	';'
 # define REDIRECT	'>'
@@ -41,7 +38,18 @@
 
 # define RESET		"\033[0m"
 
+# define SYNTAX_ERR	"syntax error near unexpected token"
+# define PROMPT		"minishell> "
+
 extern int	g_signal;
+
+typedef enum e_token
+{
+	SEMICOLON_T = SEMICOLON,
+	REDIRECT_T = REDIRECT,
+	INPUT_T = INPUT,
+	PIPE_T = PIPE,
+}			t_token;
 
 typedef struct s_fd
 {
@@ -50,27 +58,29 @@ typedef struct s_fd
 	int		std_out;
 }			t_fd;
 
-typedef struct s_mlist
+typedef struct s_parser
 {
-	void			*data;
-	struct s_mlist	*next;
-	struct s_mlist	*prev;
-}			t_mlist;
+	char			**args;
+	struct s_parser	*next;
+}			t_parser;
 
 typedef struct s_minishell
 {
 	t_fd	fd;
-	t_mlist	*env;
-	t_mlist	*token;
+	t_list	*env;
+	t_list	*token;
 	char	*line;
 	char	*path;
 	int		*pid;
 	int		pipe_count;
 	int		exit_code;
 	int		status;
-	int		sign;
 }			t_minishell;
 
-t_mlist	*env_to_list(char *env[]);
+t_minishell	*get_minishell(void);
+
+void		handle_signals(void);
+
+void		env_to_list(char *env[]);
 
 #endif

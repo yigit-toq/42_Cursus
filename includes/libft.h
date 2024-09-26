@@ -6,25 +6,36 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 13:43:55 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 17:06:27 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 01:35:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include "./utils/get_next_line.h"
 # include "./utils/ft_printf.h"
+
+# ifndef GARBAGE_COLLECTOR
+#  define GARBAGE_COLLECTOR 1
+# endif
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
+	struct s_list	*prev;
 }					t_list;
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-t_list	*ft_lstlast(t_list *lst);
 
 t_list	*ft_lstnew(void *content);
+
+t_list	*ft_lstlast(t_list *lst);
+t_list	*ft_lstcopy(t_list *lst);
+
+void	ft_lstsort(t_list **lst, int (*cmp)(void *, void *));
+void	ft_lstswap(t_list *lst1, t_list *lst2);
 
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
@@ -34,6 +45,8 @@ void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 
 int		ft_lstsize(t_list *lst);
+
+void	del(void *content);
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -79,4 +92,14 @@ char	**ft_split(char const *s, char c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
+
+t_list	**getgarbage(void);
+
+void	*addgarbage(void *address);
+
+void	*galloc(size_t size);
+
+void	gfree(void *address);
+
+void	clear_garbage(void);
 #endif

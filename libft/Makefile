@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2024/08/08 17:57:47 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/27 01:39:27 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,11 @@ SRCS			=	$(SRCS_DIR)ft_atoi.c		$(SRCS_DIR)ft_itoa.c		$(SRCS_DIR)ft_split.c		$(SR
 BONUS			=	$(BONUS_DIR)ft_lstadd_back_bonus.c	$(BONUS_DIR)ft_lstadd_front_bonus.c	$(BONUS_DIR)ft_lstclear_bonus.c	\
 					$(BONUS_DIR)ft_lstdelone_bonus.c	$(BONUS_DIR)ft_lstiter_bonus.c										\
 					$(BONUS_DIR)ft_lstlast_bonus.c		$(BONUS_DIR)ft_lstsize_bonus.c										\
-					$(BONUS_DIR)ft_lstnew_bonus.c		$(BONUS_DIR)ft_lstmap_bonus.c										\
-					
+					$(BONUS_DIR)ft_lstcopy_bonus.c		$(BONUS_DIR)ft_lstsort_bonus.c										\
+					$(BONUS_DIR)ft_lstswap_bonus.c		$(BONUS_DIR)ft_lstmap_bonus.c										\
+					$(BONUS_DIR)ft_lstnew_bonus.c																			\
+
+GC_SRCS			=	./utils/ft_garbage/garbage_collector.c ./utils/ft_garbage/get_garbage.c
 
 GNL_SRCS		=	./utils/get_next_line/get_next_line.c
 
@@ -35,6 +38,8 @@ PRINTF_SRCS		=	./utils/ft_printf/ft_printf.c ./utils/ft_printf/ft_printf_utils.c
 
 OBJS			=	$(SRCS:.c=.o)
 BONUS_OBJS		=	$(BONUS:.c=.o)
+
+GC_OBJS			=	$(GC_SRCS:.c=.o)
 
 GNL_OBJS		=	$(GNL_SRCS:.c=.o)
 
@@ -57,12 +62,12 @@ COLOR_END		=	\033[0m
 
 all				:	$(NAME)
 
-$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
-					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
-					@printf "LIBFT		$(COLOR_GREEN)\e[1m[OK]\e[0m\n$(COLOR_END)"
+$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+					@printf "LIBFT			$(COLOR_GREEN)\e[1m[OK]\e[0m\n$(COLOR_END)"
 
 clean			:
-					$(RM) $(OBJS) $(BONUS_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+					$(RM) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
 
 fclean			:	clean
 					$(RM) $(NAME)

@@ -6,25 +6,86 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:41:40 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/26 18:18:45 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 01:59:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
+
+int	g_signal;
+
+static int	minishell_loop(t_minishell *minishell, char *env[]);
 
 static void	starting(void);
 
+t_minishell	*get_minishell(void)
+{
+	static t_minishell	minishell;
+
+	return (&minishell);
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
-	t_minishell	minishell;
+	t_minishell	*minishell;
 
 	(void)argc;
 	(void)argv;
 	starting();
-	handle_signal();
-	ft_bzero(&minishell, sizeof(t_minishell));
-	minishell.env = env_to_list(env);
+	handle_signals();
+	minishell = get_minishell();
+	minishell_loop(minishell, env);
 	return (SUCCESS);
+}
+
+static void	init_data(void);
+
+static int	minishell_routine(t_minishell *minishell);
+
+static int	minishell_loop(t_minishell *minishell, char *env[])
+{
+	int	value;
+
+	ft_bzero(minishell, sizeof(t_minishell));
+	env_to_list(env);
+	while (TRUE)
+	{
+		value = 0;
+		init_data();
+		minishell->line = readline(GREEN PROMPT RESET);
+		if (!minishell->line)
+		{
+			ft_putstr_fd("exit\n", 0);
+			rl_clear_history();
+			exit(0);
+		}
+		if (ft_strlen(minishell->line) != 0)
+		{
+			value = minishell_routine(minishell);
+			if (value == 1)
+				return (FAILURE);
+			else if (value == 2)
+				continue ;
+		}
+		if (minishell->line)
+			free(minishell->line);
+	}
+	return (SUCCESS);
+}
+
+static int	minishell_routine(t_minishell *minishell)
+{
+	add_history(minishell->line);
+	return (0);
+}
+
+static void	init_data(void)
+{
+	t_minishell	*minishell;
+
+	minishell = get_minishell();
+	minishell->pipe_count = 0;
 }
 
 static void	starting(void)

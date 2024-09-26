@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstsort_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 12:03:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/26 23:57:03 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/27 00:09:06 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/27 00:09:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *content)
+void	ft_lstsort(t_list **lst, int (*cmp)(void *, void *))
 {
-	t_list	*new;
+	t_list	*node;
+	t_list	*tmp;
+	void	*content;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	if (!new)
-		return (0);
-	new -> content = content;
-	new -> next = 0;
-	new -> prev = 0;
-	return (new);
+	node = *lst;
+	while (node)
+	{
+		tmp = node->next;
+		while (tmp)
+		{
+			if (cmp(node->content, tmp->content) > 0)
+			{
+				content = node->content;
+				node->content = tmp->content;
+				tmp->content = content;
+			}
+			tmp = tmp->next;
+		}
+		node = node->next;
+	}
 }

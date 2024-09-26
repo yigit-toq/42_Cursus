@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   garbage_collector_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
+/*   By: abakirca <abakirca@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 12:03:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/26 23:57:03 by ytop             ###   ########.fr       */
+/*   Created: 2024/07/04 16:49:30 by abakirca          #+#    #+#             */
+/*   Updated: 2024/07/08 13:45:21 by abakirca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *content)
+t_list	**getgarbage(void)
 {
-	t_list	*new;
+	static t_list	*collector;
 
-	new = (t_list *)malloc(sizeof(t_list));
-	if (!new)
-		return (0);
-	new -> content = content;
-	new -> next = 0;
-	new -> prev = 0;
-	return (new);
+	return (&collector);
 }
