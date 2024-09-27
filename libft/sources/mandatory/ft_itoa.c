@@ -6,21 +6,21 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:38:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:12:41 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:42:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_nblen(long *nb, long *tmp, int *check)
+static int	ft_nblen(long *nbr, long *tmp, int *check)
 {
 	int	len;
 
 	len = 1;
-	if (*nb < 0)
+	if (*nbr < 0)
 	{
-		*nb *= -1;
-		*tmp = *nb;
+		*tmp = *nbr;
+		*nbr *= -1;
 		*check = 1;
 		len += 1;
 	}
@@ -34,24 +34,24 @@ static int	ft_nblen(long *nb, long *tmp, int *check)
 
 char	*ft_itoa(int n)
 {
-	long	nb;
+	long	nbr;
 	long	tmp;
 	int		len;
 	int		check;
 	char	*str;
 
-	nb = (long)n;
-	tmp = nb;
+	nbr = (long)n;
+	tmp = nbr;
 	check = 0;
-	len = ft_nblen(&nb, &tmp, &check);
-	str = (char *)malloc(len + 1);
+	len = ft_nblen(&nbr, &tmp, &check);
+	str = galloc(len + 1);
 	if (!str)
 		return (0);
 	str[len] = '\0';
 	while (len--)
 	{
-		str[len] = 48 + (nb % 10);
-		nb /= 10;
+		str[len] = 48 + (nbr % 10);
+		nbr /= 10;
 	}
 	if (check == 1)
 		str[0] = '-';

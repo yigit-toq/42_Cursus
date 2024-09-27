@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:13:08 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:14:29 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:41:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	i = 0;
 	len = ft_strlen(s) + 1;
-	str = (char *)malloc(sizeof(char) * len);
+	str = galloc(sizeof(char) * len);
 	if (str == 0)
 		return (0);
 	ft_strlcpy(str, s, len);

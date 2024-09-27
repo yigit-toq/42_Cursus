@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:20:15 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:15:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:44:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*line_or_backup(char *backup, int check)
 		i++;
 	if (check)
 	{
-		str = malloc(sizeof(char) * (i + 2));
+		str = malloc((i + 2) * sizeof(char));
 		if (!str)
 			return (0);
 		j = -1;

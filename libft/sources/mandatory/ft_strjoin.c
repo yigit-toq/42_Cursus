@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:16:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:14:06 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:42:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	if (!s1)
 		return (0);
-	result = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	result = galloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (result == 0)
 		return (0);
 	while (s1[i])

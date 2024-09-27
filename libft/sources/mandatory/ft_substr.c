@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 15:07:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:14:02 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:42:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = 0;
 	if (strlen - start < (unsigned int)len)
 		len = (size_t)(strlen - start);
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = galloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (0);
 	while ((size_t)i < len)

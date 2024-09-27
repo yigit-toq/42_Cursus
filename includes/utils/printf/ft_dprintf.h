@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 12:03:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 23:43:08 by ytop             ###   ########.fr       */
+/*   Created: 2024/01/10 14:11:47 by ytop              #+#    #+#             */
+/*   Updated: 2024/01/10 14:11:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef FT_DPRINTF_H
+# define FT_DPRINTF_H
 
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new;
+int	ft_dprintf(int fd, const char *string, ...);
 
-	new = galloc(sizeof(t_list));
-	if (!new)
-		return (0);
-	new -> content = content;
-	new -> next = 0;
-	new -> prev = 0;
-	return (new);
-}
+int	ft_putchar(char character, int *lenght);
+
+int	ft_putstr(char *string, int	*lenght);
+
+int	ft_decimal(long number, int *lenght);
+
+int	ft_pointer(unsigned long pointer, int *lenght);
+int	ft_hexademical(unsigned long number, int *lenght, char c);
+
+int	get_fd(int file_des);
+#endif

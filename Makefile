@@ -6,18 +6,22 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 17:02:40 by ytop              #+#    #+#              #
-#    Updated: 2024/09/27 00:48:07 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/28 01:11:39 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
+UTIL_DIR		=	$(SRCS_DIR)utils/
+
+LEXER_DIR		=	$(SRCS_DIR)lexer/
+
+DOLLAR_DIR		=	$(SRCS_DIR)dollar/
+
 BUILTIN_DIR		=	$(SRCS_DIR)builtin/
 
-SRCS			=	$(SRCS_DIR)minishell.c	\
-					$(SRCS_DIR)signal.c		\
-					$(BUILTIN_DIR)env.c		\
+SRCS			=	$(SRCS_DIR)minishell.c $(SRCS_DIR)executor.c $(UTIL_DIR)signal.c $(UTIL_DIR)check_line.c $(LEXER_DIR)lexer.c $(DOLLAR_DIR)dollar.c $(DOLLAR_DIR)dollar_utils.c $(BUILTIN_DIR)env.c
 
 OBJS			=	$(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

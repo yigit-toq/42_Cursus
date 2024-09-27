@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:41:40 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 01:59:37 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/28 01:13:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char *argv[], char *env[])
 	return (SUCCESS);
 }
 
-static void	init_data(void);
+static void	init_data(int flag);
 
 static int	minishell_routine(t_minishell *minishell);
 
@@ -52,7 +52,7 @@ static int	minishell_loop(t_minishell *minishell, char *env[])
 	while (TRUE)
 	{
 		value = 0;
-		init_data();
+		init_data(0);
 		minishell->line = readline(GREEN PROMPT RESET);
 		if (!minishell->line)
 		{
@@ -60,16 +60,17 @@ static int	minishell_loop(t_minishell *minishell, char *env[])
 			rl_clear_history();
 			exit(0);
 		}
+		addgarbage(minishell->line);
 		if (ft_strlen(minishell->line) != 0)
 		{
 			value = minishell_routine(minishell);
-			if (value == 1)
+			if (value == FAILURE)
 				return (FAILURE);
 			else if (value == 2)
 				continue ;
 		}
 		if (minishell->line)
-			free(minishell->line);
+			gfree(minishell->line);
 	}
 	return (SUCCESS);
 }
@@ -77,15 +78,37 @@ static int	minishell_loop(t_minishell *minishell, char *env[])
 static int	minishell_routine(t_minishell *minishell)
 {
 	add_history(minishell->line);
-	return (0);
+	if (!check_line())
+	{
+		dollar(minishell);
+		lexer(minishell);
+		if (copy_arg(minishell) == FAILURE)
+			return (FAILURE);
+	}
+	return (SUCCESS);
 }
 
-static void	init_data(void)
+static void	init_data(int flag)
 {
 	t_minishell	*minishell;
+	t_value		*value;
 
 	minishell = get_minishell();
-	minishell->pipe_count = 0;
+	value = &minishell->value;
+	if (flag)
+	{
+		minishell->hrdc_cmd = NULL;
+		minishell->token = NULL;
+		minishell->line = NULL;
+		minishell->env = NULL;
+		minishell->pid = NULL;
+		value->pipe_fd = NULL;
+		value->old_pwd = NULL;
+	}
+	value->sign = 0;
+	value->pipe_count = 0;
+	value->hrdc_count = 0;
+	minishell->fd_hl.change = 0;
 }
 
 static void	starting(void)
@@ -106,8 +129,8 @@ static void	starting(void)
 	ft_printf(BLACK "\nCREATED BY:\n");
 	usleep(500000);
 	ft_printf("\t\t _________________");
-	ft_printf("\n\t\t/                 \\\n");
-	ft_printf("\t\t| ytop & abakirca |\n");
+	ft_printf("\n\t\t/\t\t  \\\n\t\t");
+	ft_printf("| ytop & abakirca |\n");
 	ft_printf("\t\t\\_________________/\n");
 	ft_printf("\n\n" RESET);
 }

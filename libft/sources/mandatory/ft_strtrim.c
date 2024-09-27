@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 15:41:29 by ytop              #+#    #+#             */
-/*   Updated: 2024/08/08 14:14:45 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/27 23:42:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		else
 			break ;
 	}
-	new = (char *)malloc(size * sizeof(char) + 1);
+	new = galloc(size * sizeof(char) + 1);
 	if (!new)
 		return (0);
 	ft_strlcpy(new, (char *)s1, size + 1);

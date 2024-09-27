@@ -6,21 +6,29 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2024/09/27 01:39:27 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/27 17:49:25 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_DIR		=	./sources/mandatory/
+SRCS_DIR			=	./sources/mandatory/
 
-BONUS_DIR		=	./sources/bonus/
+BONUS_DIR			=	./sources/bonus/
+
+PRINT_DIR			=	./utils/0-printf/
+
+GARBAGE_DIR			=	./utils/1-garbage/
+
+GET_NEXT_LINE_DIR	=	./utils/2-get_next_line/
+
+GNL_SRCS			=	$(GET_NEXT_LINE_DIR)get_next_line.c
 
 SRCS			=	$(SRCS_DIR)ft_atoi.c		$(SRCS_DIR)ft_itoa.c		$(SRCS_DIR)ft_split.c		$(SRCS_DIR)ft_bzero.c		$(SRCS_DIR)ft_calloc.c	\
 					$(SRCS_DIR)ft_memchr.c		$(SRCS_DIR)ft_memcmp.c		$(SRCS_DIR)ft_memcpy.c		$(SRCS_DIR)ft_memmove.c		$(SRCS_DIR)ft_memset.c	\
-					$(SRCS_DIR)ft_strchr.c		$(SRCS_DIR)ft_strdup.c		$(SRCS_DIR)ft_substr.c		$(SRCS_DIR)ft_strjoin.c		$(SRCS_DIR)ft_strlcat.c	\
+					$(SRCS_DIR)ft_strchr.c		$(SRCS_DIR)ft_strdup.c		$(SRCS_DIR)ft_substr.c		$(SRCS_DIR)ft_strjoin.c		$(SRCS_DIR)ft_strcmp.c	\
 					$(SRCS_DIR)ft_strlcpy.c		$(SRCS_DIR)ft_strlen.c		$(SRCS_DIR)ft_strmapi.c		$(SRCS_DIR)ft_strncmp.c		$(SRCS_DIR)ft_strnstr.c	\
 					$(SRCS_DIR)ft_strrchr.c		$(SRCS_DIR)ft_strtrim.c		$(SRCS_DIR)ft_isascii.c		$(SRCS_DIR)ft_tolower.c		$(SRCS_DIR)ft_toupper.c	\
 					$(SRCS_DIR)ft_isalnum.c		$(SRCS_DIR)ft_isalpha.c		$(SRCS_DIR)ft_striteri.c	$(SRCS_DIR)ft_isdigit.c		$(SRCS_DIR)ft_isprint.c	\
-					$(SRCS_DIR)ft_putchar_fd.c	$(SRCS_DIR)ft_putendl_fd.c	$(SRCS_DIR)ft_putnbr_fd.c	$(SRCS_DIR)ft_putstr_fd.c							\
+					$(SRCS_DIR)ft_putchar_fd.c	$(SRCS_DIR)ft_putendl_fd.c	$(SRCS_DIR)ft_putnbr_fd.c	$(SRCS_DIR)ft_putstr_fd.c	$(SRCS_DIR)ft_strlcat.c	\
 					
 
 BONUS			=	$(BONUS_DIR)ft_lstadd_back_bonus.c	$(BONUS_DIR)ft_lstadd_front_bonus.c	$(BONUS_DIR)ft_lstclear_bonus.c	\
@@ -28,13 +36,13 @@ BONUS			=	$(BONUS_DIR)ft_lstadd_back_bonus.c	$(BONUS_DIR)ft_lstadd_front_bonus.c
 					$(BONUS_DIR)ft_lstlast_bonus.c		$(BONUS_DIR)ft_lstsize_bonus.c										\
 					$(BONUS_DIR)ft_lstcopy_bonus.c		$(BONUS_DIR)ft_lstsort_bonus.c										\
 					$(BONUS_DIR)ft_lstswap_bonus.c		$(BONUS_DIR)ft_lstmap_bonus.c										\
-					$(BONUS_DIR)ft_lstnew_bonus.c																			\
+					$(BONUS_DIR)ft_lstnew_bonus.c		./utils/merge_array.c												\
 
-GC_SRCS			=	./utils/ft_garbage/garbage_collector.c ./utils/ft_garbage/get_garbage.c
+GC_SRCS			=	$(GARBAGE_DIR)garbage_collector.c	$(GARBAGE_DIR)garbage_collector_utils.c
 
-GNL_SRCS		=	./utils/get_next_line/get_next_line.c
+PRINTF_SRCS		=	$(PRINT_DIR)ft_printf/ft_printf.c	$(PRINT_DIR)ft_printf/ft_printf_utils.c
 
-PRINTF_SRCS		=	./utils/ft_printf/ft_printf.c ./utils/ft_printf/ft_printf_utils.c
+DPRINTF_SRCS	=	$(PRINT_DIR)ft_dprintf/ft_dprintf.c	$(PRINT_DIR)ft_dprintf/ft_dprintf_utils.c
 
 OBJS			=	$(SRCS:.c=.o)
 BONUS_OBJS		=	$(BONUS:.c=.o)
@@ -44,6 +52,7 @@ GC_OBJS			=	$(GC_SRCS:.c=.o)
 GNL_OBJS		=	$(GNL_SRCS:.c=.o)
 
 PRINTF_OBJS		=	$(PRINTF_SRCS:.c=.o)
+DPRINTF_OBJS	=	$(DPRINTF_SRCS:.c=.o)
 
 CC				=	@cc
 CFLAGS			=	-Wall -Wextra -Werror -I ../includes
@@ -62,12 +71,12 @@ COLOR_END		=	\033[0m
 
 all				:	$(NAME)
 
-$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
-					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
+					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
 					@printf "LIBFT			$(COLOR_GREEN)\e[1m[OK]\e[0m\n$(COLOR_END)"
 
 clean			:
-					$(RM) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS)
+					$(RM) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
 
 fclean			:	clean
 					$(RM) $(NAME)

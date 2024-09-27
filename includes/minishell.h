@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:08:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 01:43:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/28 01:12:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define FAILURE	1
 # define SUCCESS	0
+
+# define STD_ERROR	2
 
 # define STD_OUTPUT 1
 # define STD_INPUT  0
@@ -64,23 +66,63 @@ typedef struct s_parser
 	struct s_parser	*next;
 }			t_parser;
 
-typedef struct s_minishell
+typedef struct s_value
 {
-	t_fd	fd;
-	t_list	*env;
-	t_list	*token;
-	char	*line;
-	char	*path;
-	int		*pid;
+	char	*old_pwd;
+	int		*pipe_fd;
+	int		*hrdc_fd;
 	int		pipe_count;
+	int		hrdc_count;
 	int		exit_code;
 	int		status;
+	int		sign;
+}			t_value;
+
+typedef struct s_minishell
+{
+	t_list	*hrdc_cmd;
+	t_list	*token;
+	t_list	*env;
+	int		*pid;
+	char	*line;
+	char	*path;
+	t_fd	fd_hl;
+	t_value	value;
 }			t_minishell;
 
 t_minishell	*get_minishell(void);
 
+// Utils
+
+char		*ft_strjoin_char(char *s1, char c);
+
 void		handle_signals(void);
+
+// Lexer
+
+void		lexer(t_minishell *minishell);
+
+// Parser
+
+int			copy_arg(t_minishell *minishell);
+
+// Dollar
+
+void		get_ext_code(t_minishell *shell, char **result, int *i);
+
+void		dollar(t_minishell *shell);
+
+// Builtins
+
+void		get_env(t_minishell *shell, char **result, char **str, int *i);
 
 void		env_to_list(char *env[]);
 
+t_list		*search_env(t_minishell *minishell, char *key);
+
+// Check line
+
+int			check_quote(char *line, int value);
+
+int			check_line(void);
 #endif

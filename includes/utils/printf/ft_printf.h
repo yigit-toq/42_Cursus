@@ -15,11 +15,11 @@
 
 int	ft_printf(const char *string, ...);
 
+int	ft_decimal(long number, int *lenght);
+
 int	ft_putstr(char *string, int	*lenght);
 
 int	ft_putchar(char character, int *lenght);
-
-int	ft_decimal(long number, int *lenght);
 
 int	ft_pointer(unsigned long pointer, int *lenght);
 int	ft_hexademical(unsigned long number, int *lenght, char c);

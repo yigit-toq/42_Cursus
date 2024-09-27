@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_dprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 18:10:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/01/02 18:10:53 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/27 17:48:13 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/27 17:48:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/ft_printf.h"
+#include "utils/printf/ft_dprintf.h"
 #include <stdarg.h>
 
 static int	ft_format_checker(char format, va_list args, int *lenght)
@@ -34,7 +34,7 @@ static int	ft_format_checker(char format, va_list args, int *lenght)
 	return (0);
 }
 
-int	ft_printf(const char *string, ...)
+int	ft_dprintf(int fd, const char *string, ...)
 {
 	va_list	args;
 	int		index;
@@ -43,6 +43,7 @@ int	ft_printf(const char *string, ...)
 
 	index = 0;
 	lenght = 0;
+	get_fd(fd);
 	va_start(args, string);
 	while (string[index])
 	{
@@ -60,4 +61,13 @@ int	ft_printf(const char *string, ...)
 	}
 	va_end(args);
 	return (lenght);
+}
+
+int	get_fd(int file_des)
+{
+	static int	fd;
+
+	if (file_des != -1)
+		fd = file_des;
+	return (fd);
 }
