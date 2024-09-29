@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   merge_arrays.c                                     :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 15:57:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 15:57:37 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/29 18:40:41 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/29 18:40:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <stdio.h>
 #include "libft.h"
 
-char	*merge_array(char **arr)
+char	*get_pwd(void)
 {
-	char	*new;
-	int		words;
-	int		letters;
+	char	pwd[4096];
+	char	*path;
 
-	words = 0;
-	letters = 0;
-	while (arr && arr[words])
-	{
-		letters += ft_strlen(arr[words]);
-		words++;
-	}
-	new = ft_calloc(letters + 1, sizeof(char));
-	if (!new)
-		return (0);
-	words = 0;
-	while (arr && arr[words])
-	{
-		ft_strlcat(new, arr[words], letters + 1);
-		words++;
-	}
-	new[letters] = 0;
-	return (new);
+	path = getcwd(pwd, 4096);
+	if (!path)
+		return (perror("minishell: pwd: "), NULL);
+	return (ft_printf("%s\n", path), path);
 }

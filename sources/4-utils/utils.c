@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   merge_arrays.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 15:57:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 15:57:37 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/30 00:18:53 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/30 00:18:53 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
+#include <unistd.h>
 
-char	*merge_array(char **arr)
+int	err_msg(char *cmd, char *arg, char *msg)
 {
-	char	*new;
-	int		words;
-	int		letters;
-
-	words = 0;
-	letters = 0;
-	while (arr && arr[words])
-	{
-		letters += ft_strlen(arr[words]);
-		words++;
-	}
-	new = ft_calloc(letters + 1, sizeof(char));
-	if (!new)
-		return (0);
-	words = 0;
-	while (arr && arr[words])
-	{
-		ft_strlcat(new, arr[words], letters + 1);
-		words++;
-	}
-	new[letters] = 0;
-	return (new);
+	ft_putstr_fd(ERR_TITLE, STDERR_FILENO);
+	if (cmd)
+		ft_dprintf(STDERR_FILENO, "%s", cmd);
+	if (arg)
+		ft_dprintf(STDERR_FILENO, "`%s'", arg);
+	if (msg)
+		ft_dprintf(STDERR_FILENO, ": %s", msg);
+	ft_dprintf(STDERR_FILENO, "\n");
+	return (SUCCESS);
 }

@@ -24,12 +24,12 @@ void	get_ext_code(t_minishell *shell, char **result, int *i)
 	while (nbr[index])
 	{
 		tmp = *result;
-		*result = ft_strjoin_char(tmp, nbr[index++]);
+		*result = strjoin_char(tmp, nbr[index++]);
 	}
 	gfree(nbr);
 }
 
-char	*ft_strjoin_char(char *s1, char c)
+char	*strjoin_char(char *s1, char c)
 {
 	char	*result;
 	int		len;

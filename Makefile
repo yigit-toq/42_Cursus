@@ -6,22 +6,24 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 17:02:40 by ytop              #+#    #+#              #
-#    Updated: 2024/09/28 01:11:39 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/30 00:39:28 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-UTIL_DIR		=	$(SRCS_DIR)utils/
+EXECUTOR_DIR	=	$(SRCS_DIR)0-executor/
 
-LEXER_DIR		=	$(SRCS_DIR)lexer/
+COMPILER_DIR	=	$(SRCS_DIR)1-compiler/
 
-DOLLAR_DIR		=	$(SRCS_DIR)dollar/
+BUILTIN_DIR		=	$(SRCS_DIR)2-builtin/
 
-BUILTIN_DIR		=	$(SRCS_DIR)builtin/
+DOLLAR_DIR		=	$(SRCS_DIR)3-dollar/
 
-SRCS			=	$(SRCS_DIR)minishell.c $(SRCS_DIR)executor.c $(UTIL_DIR)signal.c $(UTIL_DIR)check_line.c $(LEXER_DIR)lexer.c $(DOLLAR_DIR)dollar.c $(DOLLAR_DIR)dollar_utils.c $(BUILTIN_DIR)env.c
+UTIL_DIR		=	$(SRCS_DIR)4-utils/
+
+SRCS			=	$(SRCS_DIR)minishell.c $(EXECUTOR_DIR)executor.c $(COMPILER_DIR)lexer.c $(COMPILER_DIR)parser.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c $(DOLLAR_DIR)dollar.c $(DOLLAR_DIR)dollar_utils.c $(UTIL_DIR)utils.c $(UTIL_DIR)split.c $(UTIL_DIR)signal.c $(UTIL_DIR)check_line.c
 
 OBJS			=	$(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 

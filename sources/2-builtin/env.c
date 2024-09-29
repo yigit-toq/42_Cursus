@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:27 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/28 00:15:22 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/29 17:16:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	env_to_list(char *env[])
 	t_minishell	*minishell;
 	int			i;
 
-	minishell = get_minishell();
 	i = 0;
+	minishell = get_minishell();
 	minishell->env = ft_lstnew(ft_strdup(env[i]));
 	while (env[++i])
 	{

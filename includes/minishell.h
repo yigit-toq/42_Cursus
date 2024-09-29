@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:08:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/28 01:12:54 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/30 00:23:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define RESET		"\033[0m"
 
 # define SYNTAX_ERR	"syntax error near unexpected token"
+# define ERR_TITLE	"minishell: "
 # define PROMPT		"minishell> "
 
 extern int	g_signal;
@@ -60,12 +61,6 @@ typedef struct s_fd
 	int		std_out;
 }			t_fd;
 
-typedef struct s_parser
-{
-	char			**args;
-	struct s_parser	*next;
-}			t_parser;
-
 typedef struct s_value
 {
 	char	*old_pwd;
@@ -80,23 +75,27 @@ typedef struct s_value
 
 typedef struct s_minishell
 {
-	t_list	*hrdc_cmd;
-	t_list	*token;
-	t_list	*env;
-	int		*pid;
-	char	*line;
-	char	*path;
-	t_fd	fd_hl;
-	t_value	value;
-}			t_minishell;
+	t_list		*hrdc_cmd;
+	t_list		*token;
+	t_list		*env;
+	int			*pid;
+	char		*line;
+	char		*path;
+	t_fd		fd_hl;
+	t_value		value;
+	t_parser	*parser;
+}				t_minishell;
 
 t_minishell	*get_minishell(void);
 
 // Utils
 
-char		*ft_strjoin_char(char *s1, char c);
-
 void		handle_signals(void);
+
+char		**parser_split(char *str, char delimiter);
+char		*strjoin_char(char *str, char c);
+
+int			err_msg(char *cmd, char *arg, char *msg);
 
 // Lexer
 
@@ -104,7 +103,7 @@ void		lexer(t_minishell *minishell);
 
 // Parser
 
-int			copy_arg(t_minishell *minishell);
+int			parser(t_minishell *minishell);
 
 // Dollar
 
@@ -125,4 +124,8 @@ t_list		*search_env(t_minishell *minishell, char *key);
 int			check_quote(char *line, int value);
 
 int			check_line(void);
+
+// Replace arg
+
+int			replace_arg(char *args);
 #endif

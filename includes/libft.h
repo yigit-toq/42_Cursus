@@ -6,16 +6,19 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 13:43:55 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 17:52:54 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/30 00:44:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "./utils/get_next_line/get_next_line.h"
+
 # include "./utils/printf/ft_dprintf.h"
 # include "./utils/printf/ft_printf.h"
-# include "./utils/get_next_line.h"
+
+# include "./utils/parser/parser.h"
 
 # ifndef GARBAGE_COLLECTOR
 #  define GARBAGE_COLLECTOR 1
@@ -73,17 +76,21 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_calloc(size_t count, size_t size);
 
 void	ft_putendl_fd(char *s, int fd);
-void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
+
+void	ft_putchar_fd(char c, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 void	ft_bzero(void *s, size_t n);
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
+
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s);
@@ -95,8 +102,6 @@ char	**ft_split(char const *s, char c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
-
-char	*merge_array(char **arr);
 
 // Garbage Collector
 

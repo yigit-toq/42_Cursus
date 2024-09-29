@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 12:38:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 23:42:17 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/29 01:28:08 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_itoa(int n)
 	tmp = nbr;
 	check = 0;
 	len = ft_nblen(&nbr, &tmp, &check);
-	str = galloc(len + 1);
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (0);
 	str[len] = '\0';

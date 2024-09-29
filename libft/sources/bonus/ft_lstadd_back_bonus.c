@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:13:51 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/26 23:51:44 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/29 14:08:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		*lst = new;
 		return ;
 	}
-	while (node -> next != 0)
-		node = node -> next;
-	node -> next = new;
-	new -> prev = node;
+	while (node->next)
+		node = node->next;
+	node->next = new;
+	new->prev = node;
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:41:40 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/28 01:13:24 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/29 17:44:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static int	minishell_routine(t_minishell *minishell)
 	{
 		dollar(minishell);
 		lexer(minishell);
-		if (copy_arg(minishell) == FAILURE)
+		if (parser(minishell) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);

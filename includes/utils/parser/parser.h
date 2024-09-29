@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   merge_arrays.c                                     :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 15:57:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 15:57:37 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/29 14:21:07 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/29 14:21:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef PARSER_H
+# define PARSER_H
 
-char	*merge_array(char **arr)
+typedef struct s_parser
 {
-	char	*new;
-	int		words;
-	int		letters;
+	char			**args_quote;
+	char			**args;
+	struct s_parser	*next;
+}					t_parser;
 
-	words = 0;
-	letters = 0;
-	while (arr && arr[words])
-	{
-		letters += ft_strlen(arr[words]);
-		words++;
-	}
-	new = ft_calloc(letters + 1, sizeof(char));
-	if (!new)
-		return (0);
-	words = 0;
-	while (arr && arr[words])
-	{
-		ft_strlcat(new, arr[words], letters + 1);
-		words++;
-	}
-	new[letters] = 0;
-	return (new);
-}
+t_parser	*ft_parser_new(char **args, char **args_with_quotes);
+
+void		ft_parser_addback(t_parser **lst, t_parser *new);
+#endif

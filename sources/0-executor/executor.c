@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   merge_arrays.c                                     :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 15:57:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/27 15:57:37 by ytop             ###   ########.fr       */
+/*   Created: 2024/09/30 00:32:47 by ytop              #+#    #+#             */
+/*   Updated: 2024/09/30 00:32:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*merge_array(char **arr)
+int	execute_command(t_minishell *minishell)
 {
-	char	*new;
-	int		words;
-	int		letters;
-
-	words = 0;
-	letters = 0;
-	while (arr && arr[words])
-	{
-		letters += ft_strlen(arr[words]);
-		words++;
-	}
-	new = ft_calloc(letters + 1, sizeof(char));
-	if (!new)
-		return (0);
-	words = 0;
-	while (arr && arr[words])
-	{
-		ft_strlcat(new, arr[words], letters + 1);
-		words++;
-	}
-	new[letters] = 0;
-	return (new);
+	if (minishell->pipe_count == 0)
+		return (single_command(minishell));
+	else
+		return (multiple_command(minishell));
+	return (FAILURE);
 }

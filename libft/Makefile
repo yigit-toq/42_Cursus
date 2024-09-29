@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2024/09/27 17:49:25 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/29 14:19:19 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,15 @@ SRCS_DIR			=	./sources/mandatory/
 
 BONUS_DIR			=	./sources/bonus/
 
-PRINT_DIR			=	./utils/0-printf/
+PLIST_DIR			=	./utils/0-plist/
 
-GARBAGE_DIR			=	./utils/1-garbage/
+PRINT_DIR			=	./utils/1-printf/
 
-GET_NEXT_LINE_DIR	=	./utils/2-get_next_line/
+GARBAGE_DIR			=	./utils/2-garbage/
+
+GET_NEXT_LINE_DIR	=	./utils/3-get_next_line/
+
+PLIST_SRCS			=	$(PLIST_DIR)plist.c
 
 GNL_SRCS			=	$(GET_NEXT_LINE_DIR)get_next_line.c
 
@@ -31,12 +35,12 @@ SRCS			=	$(SRCS_DIR)ft_atoi.c		$(SRCS_DIR)ft_itoa.c		$(SRCS_DIR)ft_split.c		$(SR
 					$(SRCS_DIR)ft_putchar_fd.c	$(SRCS_DIR)ft_putendl_fd.c	$(SRCS_DIR)ft_putnbr_fd.c	$(SRCS_DIR)ft_putstr_fd.c	$(SRCS_DIR)ft_strlcat.c	\
 					
 
-BONUS			=	$(BONUS_DIR)ft_lstadd_back_bonus.c	$(BONUS_DIR)ft_lstadd_front_bonus.c	$(BONUS_DIR)ft_lstclear_bonus.c	\
-					$(BONUS_DIR)ft_lstdelone_bonus.c	$(BONUS_DIR)ft_lstiter_bonus.c										\
-					$(BONUS_DIR)ft_lstlast_bonus.c		$(BONUS_DIR)ft_lstsize_bonus.c										\
-					$(BONUS_DIR)ft_lstcopy_bonus.c		$(BONUS_DIR)ft_lstsort_bonus.c										\
-					$(BONUS_DIR)ft_lstswap_bonus.c		$(BONUS_DIR)ft_lstmap_bonus.c										\
-					$(BONUS_DIR)ft_lstnew_bonus.c		./utils/merge_array.c												\
+BONUS			=	$(BONUS_DIR)ft_lstadd_back_bonus.c	$(BONUS_DIR)ft_lstadd_front_bonus.c		\
+					$(BONUS_DIR)ft_lstclear_bonus.c		$(BONUS_DIR)ft_lstdelone_bonus.c		\
+					$(BONUS_DIR)ft_lstiter_bonus.c		$(BONUS_DIR)ft_lstlast_bonus.c			\
+					$(BONUS_DIR)ft_lstsize_bonus.c		$(BONUS_DIR)ft_lstcopy_bonus.c			\
+					$(BONUS_DIR)ft_lstsort_bonus.c		$(BONUS_DIR)ft_lstswap_bonus.c			\
+					$(BONUS_DIR)ft_lstmap_bonus.c		$(BONUS_DIR)ft_lstnew_bonus.c			\
 
 GC_SRCS			=	$(GARBAGE_DIR)garbage_collector.c	$(GARBAGE_DIR)garbage_collector_utils.c
 
@@ -50,6 +54,8 @@ BONUS_OBJS		=	$(BONUS:.c=.o)
 GC_OBJS			=	$(GC_SRCS:.c=.o)
 
 GNL_OBJS		=	$(GNL_SRCS:.c=.o)
+
+PLIST_OBJS		=	$(PLIST_SRCS:.c=.o)
 
 PRINTF_OBJS		=	$(PRINTF_SRCS:.c=.o)
 DPRINTF_OBJS	=	$(DPRINTF_SRCS:.c=.o)
@@ -71,12 +77,12 @@ COLOR_END		=	\033[0m
 
 all				:	$(NAME)
 
-$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
-					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
+$(NAME)			:	$(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS) $(PLIST_OBJS)
+					@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS) $(PLIST_OBJS)
 					@printf "LIBFT			$(COLOR_GREEN)\e[1m[OK]\e[0m\n$(COLOR_END)"
 
 clean			:
-					$(RM) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS)
+					$(RM) $(OBJS) $(BONUS_OBJS) $(GC_OBJS) $(GNL_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS) $(PLIST_OBJS)
 
 fclean			:	clean
 					$(RM) $(NAME)

@@ -33,7 +33,7 @@ void	dollar(t_minishell *shell)
 		else if (quote && quote == shell->line[i])
 			quote = 0;
 		if (quote == '\'' || (!quote && shell->line[i] == '\''))
-			result = ft_strjoin_char(result, shell->line[i++]);
+			result = strjoin_char(result, shell->line[i++]);
 		else
 			replace_dollar(shell, &result, &i);
 	}
@@ -74,7 +74,7 @@ static void	replace_dollar(t_minishell *shell, char **result, int *i)
 	if (str[*i] == '$' && str[*i + 1] == '\"')
 	{
 		tmp = *result;
-		*result = ft_strjoin_char(tmp, str[(*i)++]);
+		*result = strjoin_char(tmp, str[(*i)++]);
 	}
 	else if (str[*i] == '$' && str[(*i) + 1] && str[(*i) + 1] == '?')
 		get_ext_code(shell, result, i);
@@ -83,6 +83,6 @@ static void	replace_dollar(t_minishell *shell, char **result, int *i)
 	else
 	{
 		tmp = *result;
-		*result = ft_strjoin_char(tmp, str[(*i)++]);
+		*result = strjoin_char(tmp, str[(*i)++]);
 	}
 }
