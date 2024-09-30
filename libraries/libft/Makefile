@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2024/09/29 14:19:19 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/30 13:06:47 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ PRINTF_OBJS		=	$(PRINTF_SRCS:.c=.o)
 DPRINTF_OBJS	=	$(DPRINTF_SRCS:.c=.o)
 
 CC				=	@cc
-CFLAGS			=	-Wall -Wextra -Werror -I ../includes
+CFLAGS			=	-Wall -Wextra -Werror -I ../../includes
 
 RM				=	@rm -rf
 

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:08:52 by ytop              #+#    #+#             */
-/*   Updated: 2024/09/30 00:23:33 by ytop             ###   ########.fr       */
+/*   Updated: 2024/09/30 13:21:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,15 @@ typedef struct s_minishell
 
 t_minishell	*get_minishell(void);
 
-// Utils
-
-void		handle_signals(void);
-
-char		**parser_split(char *str, char delimiter);
-char		*strjoin_char(char *str, char c);
-
-int			err_msg(char *cmd, char *arg, char *msg);
-
-// Lexer
-
-void		lexer(t_minishell *minishell);
-
-// Parser
+// Compiler
 
 int			parser(t_minishell *minishell);
 
-// Dollar
+void		lexer(t_minishell *minishell);
 
-void		get_ext_code(t_minishell *shell, char **result, int *i);
+// Executor
 
-void		dollar(t_minishell *shell);
+int			execute_command(t_minishell *minishell);
 
 // Builtins
 
@@ -118,6 +105,21 @@ void		get_env(t_minishell *shell, char **result, char **str, int *i);
 void		env_to_list(char *env[]);
 
 t_list		*search_env(t_minishell *minishell, char *key);
+
+// Dollar
+
+void		get_ext_code(t_minishell *shell, char **result, int *i);
+
+void		dollar(t_minishell *shell);
+
+// Utils
+
+void		handle_signals(void);
+
+char		**parser_split(char *str, char delimiter);
+char		*strjoin_char(char *str, char c);
+
+int			err_msg(char *cmd, char *arg, char *msg);
 
 // Check line
 

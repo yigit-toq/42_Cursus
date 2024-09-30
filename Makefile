@@ -6,24 +6,26 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 17:02:40 by ytop              #+#    #+#              #
-#    Updated: 2024/09/30 00:39:28 by ytop             ###   ########.fr        #
+#    Updated: 2024/09/30 13:17:12 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-EXECUTOR_DIR	=	$(SRCS_DIR)0-executor/
+COMPILER_DIR	=	$(SRCS_DIR)0-compiler/
 
-COMPILER_DIR	=	$(SRCS_DIR)1-compiler/
+EXECUTOR_DIR	=	$(SRCS_DIR)1-executor/
 
-BUILTIN_DIR		=	$(SRCS_DIR)2-builtin/
+REDIRECT_DIR	=	$(SRCS_DIR)2-redirect/
 
-DOLLAR_DIR		=	$(SRCS_DIR)3-dollar/
+BUILTIN_DIR		=	$(SRCS_DIR)3-builtin/
 
-UTIL_DIR		=	$(SRCS_DIR)4-utils/
+DOLLAR_DIR		=	$(SRCS_DIR)4-dollar/
 
-SRCS			=	$(SRCS_DIR)minishell.c $(EXECUTOR_DIR)executor.c $(COMPILER_DIR)lexer.c $(COMPILER_DIR)parser.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c $(DOLLAR_DIR)dollar.c $(DOLLAR_DIR)dollar_utils.c $(UTIL_DIR)utils.c $(UTIL_DIR)split.c $(UTIL_DIR)signal.c $(UTIL_DIR)check_line.c
+UTIL_DIR		=	$(SRCS_DIR)5-utils/
+
+SRCS			=	$(SRCS_DIR)minishell.c $(COMPILER_DIR)lexer.c $(COMPILER_DIR)parser.c $(EXECUTOR_DIR)executor.c $(REDIRECT_DIR)redirect.c $(BUILTIN_DIR)echo.c $(BUILTIN_DIR)env.c $(BUILTIN_DIR)exit.c $(BUILTIN_DIR)pwd.c $(BUILTIN_DIR)unset.c $(DOLLAR_DIR)dollar.c $(DOLLAR_DIR)dollar_utils.c $(UTIL_DIR)utils.c $(UTIL_DIR)split.c $(UTIL_DIR)signal.c $(UTIL_DIR)check_line.c
 
 OBJS			=	$(patsubst $(SRCS_DIR)%.c, $(OBJS_DIR)%.o, $(SRCS))
 
@@ -36,8 +38,8 @@ RM				=	@rm -rf
 
 NAME			=	minishell
 
-LIBFT_MAKE		=	@make -C ./libft
-LIBFT			=	./libft/libft.a
+LIBFT_MAKE		=	@make -C ./libraries/libft
+LIBFT			=	./libraries/libft/libft.a
 
 RDFLAGS			=	-lreadline
 

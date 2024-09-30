@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 static t_parser	*allocate_parser(int count);
-
 static int		process_tokens(t_minishell *minishell, t_parser **parser);
 
 int	parser(t_minishell *minishell)
