@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/16 17:22:48 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/16 18:23:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@ t_game	*get_game(void)
 	return (&game);
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	t_game	*game;
 
 	game = get_game();
+	if (argc != 2)
+	{
+		ft_dprintf(2, RED "Error\n" END);
+		ft_dprintf(2, YEL "Usage: %s <map.cub>\n" END, argv[0]);
+		return (EXIT_FAILURE);
+	}
+	extension_controller(argv[1]);
 	return (EXIT_SUCCESS);
 }

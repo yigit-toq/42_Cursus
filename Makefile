@@ -6,13 +6,13 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/10/16 17:42:17 by ytop             ###   ########.fr        #
+#    Updated: 2024/10/16 18:16:50 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_DIR		=	./sources/
 
-SRCS			=	$(SRCS_DIR)cub3d.c
+SRCS			=	$(SRCS_DIR)cub3d.c $(SRCS_DIR)errors.c
 
 OBJS			=	$(SRCS:.c=.o)
 

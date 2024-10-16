@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/16 17:52:33 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/16 18:22:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "./utils/libft.h"
 
-# define YELLOW		"\033[33m"
-# define GREEN		"\033[32m"
+# define YEL		"\033[33m"
+# define GRE		"\033[32m"
 # define RED		"\033[31m"
 # define END		"\033[0m"
 
@@ -61,4 +61,6 @@ typedef struct s_game
 }				t_game;
 
 t_game	*get_game(void);
+
+void	extension_controller(char *path);
 #endif
