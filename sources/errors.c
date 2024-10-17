@@ -6,11 +6,20 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 18:16:31 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/16 18:21:34 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/17 17:43:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	error_controller(char *message, void *allocate)
+{
+	if (allocate)
+		return ;
+	(void)message;
+	clear_garbage();
+	exit(EXIT_FAILURE);
+}
 
 void	extension_controller(char *path)
 {
@@ -34,12 +43,4 @@ void	extension_controller(char *path)
 	if (result)
 		error_controller("Wrong extension.", 0);
 	return ;
-}
-
-void	error_controller(char *message, void *allocate)
-{
-	if (allocate)
-		return ;
-	clear_garbage();
-	exit(EXIT_FAILURE);
 }
