@@ -6,43 +6,101 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2023/12/23 18:31:19 by ytop             ###   ########.fr        #
+#    Updated: 2024/10/17 17:09:24 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=	ft_atoi.c ft_bzero.c ft_calloc.c \
-				ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c \
-				ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
-				ft_itoa.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c \
-				ft_split.c ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c \
-				ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c \
+SRCS_DIR			=	./sources/mandatory/
 
-BONUS		=	ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c ft_lstdelone_bonus.c \
-				ft_lstiter_bonus.c ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c ft_lstmap_bonus.c \
+BONUS_DIR			=	./sources/bonus/
 
-OBJS		=	$(SRCS:.c=.o)
-BONUS_OBJS	=	$(BONUS:.c=.o)
+PLIST_DIR			=	./utils/0-plist/
 
-CC			=	cc
-RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -I.
+PRINT_DIR			=	./utils/1-printf/
 
-NAME		=	libft.a
+GARBAGE_DIR			=	./utils/2-garbage/
 
-all:			$(NAME)
+GET_NEXT_LINE_DIR	=	./utils/3-get_next_line/
 
-$(NAME):		$(OBJS) $(BONUS_OBJS)
-				ar rcs $(NAME) $(OBJS)
+PLIST_SRCS			=	$(PLIST_DIR)plist.c
 
-clean:			
-				$(RM) $(OBJS) $(BONUS_OBJS)
+GNL_SRCS			=	$(GET_NEXT_LINE_DIR)get_next_line.c
 
-fclean:			clean
-				$(RM) $(NAME)
+SRCS				=	$(SRCS_DIR)ft_atoi.c		$(SRCS_DIR)ft_itoa.c		$(SRCS_DIR)ft_split.c		$(SRCS_DIR)ft_bzero.c		$(SRCS_DIR)ft_calloc.c		\
+						$(SRCS_DIR)ft_memchr.c		$(SRCS_DIR)ft_memcmp.c		$(SRCS_DIR)ft_memcpy.c		$(SRCS_DIR)ft_memmove.c		$(SRCS_DIR)ft_memset.c		\
+						$(SRCS_DIR)ft_strchr.c		$(SRCS_DIR)ft_strdup.c		$(SRCS_DIR)ft_substr.c		$(SRCS_DIR)ft_strjoin.c		$(SRCS_DIR)ft_strcmp.c		\
+						$(SRCS_DIR)ft_strlcpy.c		$(SRCS_DIR)ft_strlen.c		$(SRCS_DIR)ft_strmapi.c		$(SRCS_DIR)ft_strncmp.c		$(SRCS_DIR)ft_strnstr.c		\
+						$(SRCS_DIR)ft_strrchr.c		$(SRCS_DIR)ft_strtrim.c		$(SRCS_DIR)ft_isascii.c		$(SRCS_DIR)ft_tolower.c		$(SRCS_DIR)ft_toupper.c		\
+						$(SRCS_DIR)ft_isalnum.c		$(SRCS_DIR)ft_isalpha.c		$(SRCS_DIR)ft_striteri.c	$(SRCS_DIR)ft_isdigit.c		$(SRCS_DIR)ft_isprint.c		\
+						$(SRCS_DIR)ft_putchar_fd.c	$(SRCS_DIR)ft_putendl_fd.c	$(SRCS_DIR)ft_putnbr_fd.c	$(SRCS_DIR)ft_putstr_fd.c	$(SRCS_DIR)ft_strlcat.c		\
 
-re:				fclean $(NAME)
+BONUS				=	$(BONUS_DIR)ft_lstmap_bonus.c							$(BONUS_DIR)ft_lstnew_bonus.c														\
+						$(BONUS_DIR)ft_lstsort_bonus.c							$(BONUS_DIR)ft_lstlast_bonus.c														\
+						$(BONUS_DIR)ft_lstsize_bonus.c							$(BONUS_DIR)ft_lstswap_bonus.c														\
+						$(BONUS_DIR)ft_lstiter_bonus.c							$(BONUS_DIR)ft_lstcopy_bonus.c														\
+						$(BONUS_DIR)ft_lstclear_bonus.c							$(BONUS_DIR)ft_lstdelone_bonus.c													\
+						$(BONUS_DIR)ft_lstadd_back_bonus.c						$(BONUS_DIR)ft_lstadd_front_bonus.c													\
 
-bonus:			$(BONUS_OBJS)
-				ar rcs $(NAME) $(BONUS_OBJS)
+GC_SRCS				=	$(GARBAGE_DIR)garbage_collector.c	$(GARBAGE_DIR)garbage_collector_utils.c
 
-.PHONY:			all clean fclean re bonus
+PRINTF_SRCS			=	$(PRINT_DIR)ft_printf/ft_printf.c	$(PRINT_DIR)ft_printf/ft_printf_utils.c
+
+DPRINTF_SRCS		=	$(PRINT_DIR)ft_dprintf/ft_dprintf.c	$(PRINT_DIR)ft_dprintf/ft_dprintf_utils.c
+
+OBJS 				=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))			\
+						$(patsubst %.c, $(OBJS_DIR)/%.o, $(GC_SRCS)) 		\
+						$(patsubst %.c, $(OBJS_DIR)/%.o, $(GNL_SRCS)) 		\
+						$(patsubst %.c, $(OBJS_DIR)/%.o, $(PLIST_SRCS)) 	\
+						$(patsubst %.c, $(OBJS_DIR)/%.o, $(PRINTF_SRCS)) 	\
+						$(patsubst %.c, $(OBJS_DIR)/%.o, $(DPRINTF_SRCS))	\
+
+BONUS_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(BONUS))
+
+RM					=	@rm -rf
+
+CC					=	@cc
+CFLAGS				=	-Wall -Wextra -Werror -I ../../includes/utils
+
+NAME				=	libft.a
+
+OBJS_DIR 			=	./objects
+
+COLOR_E				=	\033[0m
+COLOR_R				=	\033[0;31m
+COLOR_G				=	\033[0;32m
+COLOR_Y				=	\033[0;33m
+COLOR_B				=	\033[0;34m
+
+counter 			=	0
+
+all					:	$(NAME)
+
+bonus				:	$(BONUS_OBJS)
+						@ar rcs $(NAME) $(BONUS_OBJS)
+
+$(NAME)				:	$(OBJS) $(BONUS_OBJS)
+						@ar rcs $(NAME)	$(OBJS)	$(BONUS_OBJS)
+						@printf "\r%-80s\r"
+						@printf "$(COLOR_B)LIBFT			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
+
+$(OBJS_DIR)/%.o		: 	%.c
+						@mkdir -p $(dir $@)
+						$(CC) $(CFLAGS) -c $< -o $@
+						$(progress_bar)
+
+total_files			=	$(words $(SRCS) $(BONUS) $(GC_SRCS) $(GNL_SRCS) $(PLIST_SRCS) $(PRINTF_SRCS) $(DPRINTF_SRCS))
+
+progress_bar 		=	@$(eval counter=$(shell echo $$(($(counter) + 1)))) 														\
+						@percent=$$(( 100 * $(counter) / $(total_files) )); 														\
+						printf "\r$(COLOR_B)COMPILING		$(COLOR_G)\e[1m[%2d%%]\e[0m$(COLOR_Y)\t%-46s$(COLOR_E)" $$percent $<	\
+
+re					:	fclean all
+
+clean				:
+						$(RM) $(OBJS_DIR)
+						$(RM) .progress
+
+fclean				:	clean
+						$(RM) $(NAME)
+
+.PHONY				:	all bonus re clean fclean
