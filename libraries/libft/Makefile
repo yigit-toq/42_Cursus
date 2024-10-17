@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/12 15:03:48 by ytop              #+#    #+#              #
-#    Updated: 2024/10/16 17:24:16 by ytop             ###   ########.fr        #
+#    Updated: 2024/10/17 13:56:46 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,15 @@ COLOR_END			=	\033[0m
 COLOR_RED			=	\033[0;31m
 COLOR_GREEN			=	\033[0;32m
 COLOR_YELLOW		=	\033[0;33m
+COLOR_BLUE			=	\033[0;34m
+
+total_files			:=	$(words $(SRCS) $(BONUS) $(GC_SRCS) $(GNL_SRCS) $(PLIST_SRCS) $(PRINTF_SRCS) $(DPRINTF_SRCS))
+
+counter 			=	0
+
+progress_bar 		=	@$(eval counter=$(shell echo $$(( $(counter) + 1 )))) \
+						@percent=$$(( 100 * $(counter) / $(total_files) )); \
+						printf "$(COLOR_BLUE)\rCompiling:	$(COLOR_YELLOW)%-44s $(COLOR_GREEN)\e[1m[%2d%%]\e[0m$(COLOR_END)" $< $$percent
 
 all					:	$(NAME)
 
@@ -77,16 +86,19 @@ bonus				:	$(BONUS_OBJS)
 
 $(NAME)				:	$(OBJS) $(BONUS_OBJS)
 						@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
-						@printf "LIBFT			$(COLOR_GREEN)\e[1m[OK]\e[0m\n$(COLOR_END)"
+						@printf "\r%-80s\r" " "
+						@printf "$(COLOR_BLUE)LIBFT			$(COLOR_GREEN)\e[1m[ OK ]\e[0m\n$(COLOR_END)"
 
 $(OBJS_DIR)/%.o		: 	%.c
 						@mkdir -p $(dir $@)
 						$(CC) $(CFLAGS) -c $< -o $@
+						$(progress_bar)
 
 re					:	fclean all
 
 clean				:
 						$(RM) $(OBJS_DIR)
+						$(RM) .progress
 
 fclean				:	clean
 						$(RM) $(NAME)
