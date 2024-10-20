@@ -73,11 +73,12 @@ typedef struct s_map
 
 typedef struct s_game
 {
+	t_texture	texture;
+	t_player	player;
+	t_count		count;
+	t_map		*map;
 	void		*mlx;
 	void		*win;
-	t_map		*map;
-	t_count		*count;
-	t_player	player;
 }				t_game;
 
 t_game	*get_game(void);

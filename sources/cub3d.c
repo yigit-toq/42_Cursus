@@ -22,7 +22,6 @@ t_game	*get_game(void)
 		ft_bzero(&game, sizeof(t_game));
 		init = TRUE;
 		game.map = ft_calloc(1, sizeof(t_map));
-		game.count = ft_calloc(1, sizeof(t_count));
 	}
 	return (&game);
 }
