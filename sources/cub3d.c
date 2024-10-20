@@ -15,21 +15,27 @@
 t_game	*get_game(void)
 {
 	static t_game	game;
+	static int		init;
 
+	if (!init)
+	{
+		ft_bzero(&game, sizeof(t_game));
+		init = TRUE;
+		game.map = ft_calloc(1, sizeof(t_map));
+		game.count = ft_calloc(1, sizeof(t_count));
+	}
 	return (&game);
 }
 
 int	main(int argc, char *argv[])
 {
-	t_game	*game;
-
-	game = get_game();
 	if (argc != 2)
+		error_controller("Usage: ./cub3d <map.cub>", NULL);
+	else
 	{
-		ft_dprintf(2, RED "Error\n" END);
-		ft_dprintf(2, YEL "Usage: %s <map.cub>\n" END, argv[0]);
-		return (EXIT_FAILURE);
+		exten_controller(argv[1]);
+		get_game();
 	}
-	extension_controller(argv[1]);
+	file_controller(argv[1]);
 	return (EXIT_SUCCESS);
 }

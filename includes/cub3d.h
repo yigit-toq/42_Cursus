@@ -15,29 +15,40 @@
 
 # include "./utils/libft.h"
 
-# define YEL		"\033[33m"
-# define GRE		"\033[32m"
-# define RED		"\033[31m"
-# define END		"\033[0m"
+# define C_Y		"\033[33m"
+# define C_G		"\033[32m"
+# define C_R		"\033[31m"
+# define C_E		"\033[0m"
 
-# define WIN_NAME	"Cub3D"
+# define NAME		"Cub3D"
 
 # define KEY_A		0
 # define KEY_S		1
 # define KEY_D		2
 
-# define WALL		'1'
-# define FLOOR		'0'
+# define P_COUNT	1
+
+# define SUCCESS	1
+# define FAILURE	0
+
+# define TRUE		1
+# define FALSE		0
 
 # define NORTH		'N'
 # define SOUTH		'S'
 # define WEST		'W'
 # define EAST		'E'
 
-# define PLAYER_COUNT	1
+# define WALL		'1'
+# define FLOOR		'0'
 
-# define SUCCESS		1
-# define FAILURE		0
+typedef struct s_texture
+{
+	char		*north;
+	char		*south;
+	char		*west;
+	char		*east;
+}				t_texture;
 
 typedef struct s_player
 {
@@ -45,6 +56,13 @@ typedef struct s_player
 	int			y;
 	char		dir;
 }				t_player;
+
+typedef struct s_count
+{
+	int			wall;
+	int			floor;
+	int			player;
+}				t_count;
 
 typedef struct s_map
 {
@@ -57,10 +75,20 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
+	t_map		*map;
+	t_count		*count;
 	t_player	player;
 }				t_game;
 
 t_game	*get_game(void);
 
-void	extension_controller(char *path);
+// File Functions
+
+void	file_controller(char *path);
+
+// Error Functions
+
+void	exten_controller(char *path);
+
+void	error_controller(char *message, void *pointer);
 #endif

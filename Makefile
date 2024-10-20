@@ -10,15 +10,18 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_DIR		=	./sources/
-
-INC_DIR			=	./includes/
+ERROR_DIR		=	$(SRCS_DIR)1-error/
+MAP_DIR			=	$(SRCS_DIR)0-map/
 
 LIB_DIR			=	./libraries/
+INC_DIR			=	./includes/
 
-SRCS			=	$(SRCS_DIR)cub3d.c	$(SRCS_DIR)errors.c
+SRCS_DIR		=	./sources/
+OBJS_DIR		=	./objects/
 
-OBJS			=	$(SRCS:.c=.o)
+SRCS			=	$(SRCS_DIR)cub3d.c $(ERROR_DIR)error.c $(MAP_DIR)map.c
+
+M_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 RM				=	@rm -rf
 
@@ -32,17 +35,17 @@ OS 				=	$(shell uname)
 NAME			=	cub3d
 BONUS			=	cub3d_bonus
 
-LIBFT_DIR		=	$(LIB_DIR)libft/
-
-LIBFT			=	$(LIBFT_DIR)libft.a
-LIBFT_MAKE		=	make -s -C $(LIBFT_DIR)
-LIBFT_REPO		=	https://github.com/yigit-toq/42_Cursus.git
-
 MLX_DIR			=	$(LIB_DIR)minilibx/
 
 MLX_MAKE		=	make -s -C $(MLX_DIR) all > /dev/null 2>&1
 MLX_LINUX		=	https://github.com/42Paris/minilibx-linux.git
 MLX_MACOS		=	https://github.com/dannywillems/minilibx-mac-osx.git
+
+LIBFT_DIR		=	$(LIB_DIR)libft/
+
+LIBFT			=	$(LIBFT_DIR)libft.a
+LIBFT_MAKE		=	make -s -C $(LIBFT_DIR)
+LIBFT_REPO		=	https://github.com/yigit-toq/42_Cursus.git
 
 COLOR_E			=	\033[0m
 COLOR_R			=	\033[0;31m
@@ -58,53 +61,57 @@ else
 	MLX			=	$(MLX_DIR)libmlx.a
 endif
 
-all			:	$(NAME)
+$(OBJS_DIR)/%.o	: 	%.c
+					@mkdir -p $(dir $@)
+					$(CC) $(CFLAGS) -c $< -o $@
 
-bonus		:	$(BONUS)
+all				:	$(NAME)
 
-$(NAME)		:	$(MLX) $(LIBFT) $(OBJS)
-				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(MLX)
-				@printf "$(COLOR_B)CUB3D			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
+bonus			:	$(BONUS)
 
-$(BONUS)	:	$(MLX) $(LIBFT) $(BONUS_OBJS)
-				$(CC) $(CFLAGS) -o $(BONUS) $(BONUS_OBJS) $(LIBFT) $(MLX)
-				@printf "$(COLOR_B)CUB3D_BONUS		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
+$(NAME)			:	$(MLX) $(LIBFT) $(M_OBJS)
+					$(CC) $(CFLAGS) -o $(NAME)	$(M_OBJS) $(LIBFT) $(MLX)
+					@printf "$(COLOR_B)CUB3D			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
-$(LIBFT)	:
-				@if [ ! -d $(LIBFT_DIR) ]; then													\
-					echo "libft directory not found...";										\
-					git clone -b 0-libft $(LIBFT_REPO) $(LIBFT_DIR);							\
-				fi; 																			\
-				$(LIBFT_MAKE)	all
+$(BONUS)		:	$(MLX) $(LIBFT) $(B_OBJS)
+					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(MLX)
+					@printf "$(COLOR_B)CUB3D_BONUS		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
-$(MLX)		:
-				@if [ ! -d $(MLX_DIR) ]; then													\
-					echo "mlx directory not found...";											\
-					git clone $(MLX_REPO) $(MLX_DIR);											\
-				fi; 																			\
-				$(MLX_MAKE) 	all
-				@printf "$(COLOR_B)MINILIBX		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
+$(LIBFT)		:
+					@if [ ! -d $(LIBFT_DIR) ]; then													\
+						echo "libft directory not found...";										\
+						git clone -b 0-libft $(LIBFT_REPO) $(LIBFT_DIR);							\
+					fi; 																			\
+					$(LIBFT_MAKE)	all
 
-re			:	fclean all
+$(MLX)			:
+					@if [ ! -d $(MLX_DIR) ]; then													\
+						echo "mlx directory not found...";											\
+						git clone $(MLX_REPO) $(MLX_DIR);											\
+					fi; 																			\
+					$(MLX_MAKE) 	all
+					@printf "$(COLOR_B)MINILIBX		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
-clean		:
-				$(RM) $(OBJS) $(BONUS_OBJS)
-				@if [ -d $(MLX_DIR) ];		then $(MLX_MAKE)	clean;	fi
-				@if [ -d $(LIBFT_DIR) ];	then $(LIBFT_MAKE)	clean;	fi
-				@printf "$(COLOR_R)OBJECT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
+re				:	fclean all
 
-fclean		:	clean
-				$(RM) $(NAME) $(BONUS)
-				@if [ -d $(LIBFT_DIR) ];	then $(LIBFT_MAKE)	fclean;	fi
-				@printf "$(COLOR_R)EXECUT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
+clean			:
+					$(RM) $(OBJS_DIR)
+					@if [ -d $(MLX_DIR)	];		then $(MLX_MAKE)	clean;	fi
+					@if [ -d $(LIBFT_DIR) ];	then $(LIBFT_MAKE)	clean;	fi
+					@printf "$(COLOR_R)OBJECT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
 
-valgrind	:	all
-				valgrind --leak-check=full ./$(NAME) test.cub
+fclean			:	clean
+					$(RM) $(NAME) $(BONUS)
+					@if [ -d $(LIBFT_DIR) ];	then $(LIBFT_MAKE)	fclean;	fi
+					@printf "$(COLOR_R)EXECUT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
 
-norminette	:
-				@norminette $(INC_DIR) $(LIBFT_DIR) $(SRCS_DIR)
+valgrind		:	all
+					valgrind --leak-check=full ./$(NAME) test.cub
 
-clean_repo	:	fclean
-				$(RM) $(LIBFT_DIR) $(MLX_DIR)
+norminette		:
+					@norminette $(INC_DIR) $(LIBFT_DIR) $(SRCS_DIR)
 
-.PHONY		:	all bonus re clean fclean valgrind norminette clean_repo
+clean-repo		:	fclean
+					$(RM) $(LIBFT_DIR) $(MLX_DIR)
+
+.PHONY			:	all bonus re clean fclean valgrind norminette clean_repo
