@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/20 18:54:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/21 15:56:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	map_controls(void)
 	while (game->map->map[y])
 	{
 		x = 0;
+		ft_printf("%s\n", game->map->map[y]);
 		while (game->map->map[y][x])
 		{
 			object_counter(x, y);
@@ -90,45 +91,9 @@ static void	reading_file(int fd)
 	error_controller("File not found.", get_game()->map->map = file);
 }
 
-char	*line_trim(char *line);
-
-void	path_handler(void)
-{
-	char	**file;
-	char	*line;
-	int		y;
-
-	y = 0;
-	file = get_game()->map->map;
-	while (file[y])
-	{
-		line = line_trim(file[y]);
-		y++;
-	}
-	(void)line;
-}
-
 void	file_controller(char *path)
 {
 	reading_file(open_file(path));
 	path_handler();
 	map_controls();
-}
-
-char	*line_trim(char *line)
-{
-	char	*new;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (line[i] == ' ' || (line[i] > 8 && line[i] < 14))
-		i++;
-	while (line[j])
-		j++;
-	while (line[j] == ' ' || (line[j] > 8 && line[j] < 14))
-		j--;
-	new = ft_substr(line, i, (j - i) + 1);
-	return (new);
 }

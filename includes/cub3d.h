@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/16 18:22:49 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/21 15:31:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@
 
 typedef struct s_texture
 {
-	char		*north;
-	char		*south;
-	char		*west;
-	char		*east;
+	char		*direction[4];
+	int			colors[2][3];
 }				t_texture;
 
 typedef struct s_player
@@ -87,9 +85,15 @@ t_game	*get_game(void);
 
 void	file_controller(char *path);
 
+void	path_handler(void);
+
 // Error Functions
 
 void	exten_controller(char *path);
 
 void	error_controller(char *message, void *pointer);
+
+// Utils Functions
+
+char	*wspace_trim(char *line);
 #endif

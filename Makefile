@@ -6,11 +6,12 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/10/17 18:19:44 by ytop             ###   ########.fr        #
+#    Updated: 2024/10/21 15:32:01 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ERROR_DIR		=	$(SRCS_DIR)1-error/
+ERROR_DIR		=	$(SRCS_DIR)2-error/
+UTILS_DIR		=	$(SRCS_DIR)1-utils/
 MAP_DIR			=	$(SRCS_DIR)0-map/
 
 LIB_DIR			=	./libraries/
@@ -19,7 +20,7 @@ INC_DIR			=	./includes/
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS			=	$(SRCS_DIR)cub3d.c $(ERROR_DIR)error.c $(MAP_DIR)map.c
+SRCS			=	$(SRCS_DIR)cub3d.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
 
 M_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 
