@@ -25,11 +25,18 @@
 # define C_R		"\033[31m"
 # define C_E		"\033[0m"
 
+# define H_B		0x00000000
+# define H_W		0x00FFFFFF
+# define H_R		0x00FF0000
+
 # define NAME		"Cub3D"
 
-# define KEY_A		0
-# define KEY_S		1
-# define KEY_D		2
+# define ESC		65307
+# define W			119
+# define A			97
+# define S			115
+# define D			100
+# define M			109
 
 # define P_COUNT	1
 
@@ -38,6 +45,8 @@
 
 # define TRUE		1
 # define FALSE		0
+
+# define SIZE		16
 
 # define NORTH		'N'
 # define SOUTH		'S'
@@ -66,6 +75,7 @@ typedef struct s_count
 {
 	int			wall;
 	int			floor;
+	int			map_hl;
 	int			player;
 }				t_count;
 
@@ -88,11 +98,13 @@ typedef struct s_game
 
 t_game	*get_game(void);
 
+void	init_game(void);
+
 // File Functions
 
 void	path_control(void);
 
-void	file_controller(char *path);
+void	files_controller(char *path);
 
 // Error Functions
 
@@ -108,5 +120,5 @@ int		wspace_check(char c);
 
 void	*xpm_check(char *file);
 
-char	*wspace_trim(char *line);
+char	*wspace_trim(char *str);
 #endif

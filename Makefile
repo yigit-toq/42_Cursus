@@ -20,7 +20,7 @@ INC_DIR			=	./includes/
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS			=	$(SRCS_DIR)cub3d.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
+SRCS			=	$(SRCS_DIR)cub3d.c $(SRCS_DIR)init.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
 
 M_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 
@@ -28,8 +28,6 @@ RM				=	@rm -rf
 
 CC				=	@cc
 CFLAGS			=	-Wall -Wextra -Werror -I ./includes
-
-LIBRARY			=	$(MLX) -framework OpenGL -framework AppKit
 
 OS 				=	$(shell uname)
 
@@ -56,10 +54,16 @@ COLOR_B			=	\033[0;34m
 
 ifeq ($(OS), Linux)
 	MLX_REPO	=	$(MLX_LINUX)
+
 	MLX			=	$(MLX_DIR)libmlx_Linux.a
+
+	LIBRARY		=	$(MLX) -lXext -lX11 -lm
 else
 	MLX_REPO	=	$(MLX_MACOS)
+
 	MLX			=	$(MLX_DIR)libmlx.a
+
+	LIBRARY		=	$(MLX) -framework OpenGL -framework AppKit
 endif
 
 $(OBJS_DIR)/%.o	: 	%.c
@@ -97,8 +101,8 @@ re				:	fclean all
 
 clean			:
 					$(RM) $(OBJS_DIR)
-					@if [ -d $(MLX_DIR)	];		then $(MLX_MAKE)	clean;	fi
-					@if [ -d $(LIBFT_DIR) ];	then $(LIBFT_MAKE)	clean;	fi
+					@if [ -d $(LIBFT_DIR) ];		then $(LIBFT_MAKE)	clean;	fi
+					@if [ -d $(MLX_DIR)   ];		then $(MLX_MAKE)	clean;	fi
 					@printf "$(COLOR_R)OBJECT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
 
 fclean			:	clean

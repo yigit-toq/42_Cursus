@@ -58,9 +58,10 @@ static void	map_controls(void)
 			object_counter(x, y);
 			x++;
 		}
+		if (game->map->width < x)
+			game->map->width = x;
 		y++;
 	}
-	game->map->width = x;
 	game->map->height = y;
 	if (!game->count.player)
 		error_controller("There is no player.", NULL);
@@ -87,7 +88,7 @@ static void	reading_file(int fd)
 	error_controller("File not found.", get_game()->map->map = file);
 }
 
-void	file_controller(char *path)
+void	files_controller(char *path)
 {
 	reading_file(open_file(path));
 	path_control();

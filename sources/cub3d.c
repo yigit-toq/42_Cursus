@@ -30,12 +30,14 @@ t_game	*get_game(void)
 int	main(int argc, char *argv[])
 {
 	if (argc != 2)
+	{
 		error_controller("Usage: ./cub3d <map.cub>", NULL);
+	}
 	else
 	{
 		exten_controller(argv[1]);
 		get_game();
+		files_controller(argv[1]);
 	}
-	file_controller(argv[1]);
-	return (EXIT_SUCCESS);
+	return (init_game(), EXIT_SUCCESS);
 }

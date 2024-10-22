@@ -61,11 +61,11 @@ int	path_handler(char *line, char **names)
 			{
 				game->img->direction[i] = wspace_trim(line + len);
 			}
-			return (gfree(line), SUCCESS);
+			break ;
 		}
 		i++;
 	}
-	return (gfree(line), FAILURE);
+	return (wspace_trim(line)[0] != WALL);
 }
 
 void	path_control(void)
@@ -73,11 +73,8 @@ void	path_control(void)
 	static char	*names[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	char		**file;
 	char		*line;
-	int			i;
-	t_game		*game;
 
-	game = get_game();
-	file = game->map->map;
+	file = get_game()->map->map;
 	while (*file)
 	{
 		line = wspace_trim(*file);
@@ -85,14 +82,6 @@ void	path_control(void)
 			break ;
 		file++;
 	}
-	i = 0;
-	while (i < 4)
-	{
-		if (!game->img->direction[i])
-			error_controller("Texture path is not found.", NULL);
-		game->img->direction[i] = xpm_check(game->img->direction[i]);
-		i++;
-	}
-	game->map->map = file;
+	get_game()->map->map = file;
 	error_controller("Map is not found.", *file);
 }

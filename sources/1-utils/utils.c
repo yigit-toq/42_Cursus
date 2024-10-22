@@ -14,27 +14,29 @@
 
 int	wspace_check(char c)
 {
-	return (c == ' ' || (c > '\t' && c < '\r'));
+	return (c == ' ' || (c > 8 && c < 14));
 }
 
-char	*wspace_trim(char *line)
+char	*wspace_trim(char *str)
 {
-	char	*new;
-	int		i;
-	int		j;
+	int		len;
 
-	if (!line)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (wspace_check(line[i]))
-		i++;
-	while (line[j])
-		j++;
-	while (wspace_check(line[j]))
-		j--;
-	new = ft_substr(line, i, (j - i) + 1);
-	return (new);
+	len = 0;
+	if (!str)
+		return (0);
+	while (str[len])
+	{
+		len++;
+	}
+	while (wspace_check(*str))
+	{
+		str++;
+	}
+	while (wspace_check(str[len - 1]))
+	{
+		len--;
+	}
+	return (ft_substr(str, 0, len));
 }
 
 void	*xpm_check(char *path)
