@@ -6,13 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/21 15:56:00 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/22 14:56:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <fcntl.h>
-#include <unistd.h>
 
 static void	object_counter(int x, int y)
 {
@@ -25,15 +23,22 @@ static void	object_counter(int x, int y)
 	p = m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST;
 	if (p == TRUE)
 	{
-		game->player.dir = m[x];
+		game->count.player++;
 		game->player.x = x;
 		game->player.y = y;
-		game->count.player++;
+		game->player.dir = m[x];
+	}
+	else if (m[x] == WALL)
+	{
+		game->count.wall++;
 	}
 	else if (m[x] == FLOOR)
+	{
 		game->count.floor++;
-	else if (m[x] == WALL)
-		game->count.wall++;
+	}
+	if (wspace_check(m[x]) == FALSE)
+		if (ft_strchr("01NSWE", m[x]) == NULL)
+			error_controller("Invalid character in file.", NULL);
 }
 
 static void	map_controls(void)
@@ -48,7 +53,6 @@ static void	map_controls(void)
 	while (game->map->map[y])
 	{
 		x = 0;
-		ft_printf("%s\n", game->map->map[y]);
 		while (game->map->map[y][x])
 		{
 			object_counter(x, y);
@@ -56,20 +60,12 @@ static void	map_controls(void)
 		}
 		y++;
 	}
+	game->map->width = x;
+	game->map->height = y;
 	if (!game->count.player)
 		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
 		error_controller("There can be only one player.", NULL);
-}
-
-static int	open_file(char *path)
-{
-	int	fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		error_controller("Failed to open file.", NULL);
-	return (fd);
 }
 
 static void	reading_file(int fd)
@@ -94,6 +90,6 @@ static void	reading_file(int fd)
 void	file_controller(char *path)
 {
 	reading_file(open_file(path));
-	path_handler();
+	path_control();
 	map_controls();
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/21 18:13:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/22 15:06:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	set_rgb_color(int *color, char *line)
 		error_controller("Invalid color.", NULL);
 }
 
-int	path_handle(char *line, char **names)
+int	path_handler(char *line, char **names)
 {
 	t_game	*game;
 	int		len;
@@ -53,31 +53,46 @@ int	path_handle(char *line, char **names)
 		len = ft_strlen(names[i]);
 		if (!ft_strncmp(line, names[i], len))
 		{
-			if (len == 2)
-				game->texture.direction[i] = wspace_trim(line + len);
+			if (len == 1)
+			{
+				set_rgb_color(game->img->colors[i - 4], line + len);
+			}
 			else
-				set_rgb_color(game->texture.colors[i - 4], line + len);
-			return (SUCCESS);
+			{
+				game->img->direction[i] = wspace_trim(line + len);
+			}
+			return (gfree(line), SUCCESS);
 		}
 		i++;
 	}
-	return (FAILURE);
+	return (gfree(line), FAILURE);
 }
 
-void	path_handler(void)
+void	path_control(void)
 {
-	static char	*names[] = {"NO", "SO", "WE", "EA", "F", "C"};
+	static char	*names[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	char		**file;
 	char		*line;
+	int			i;
+	t_game		*game;
 
-	file = get_game()->map->map;
+	game = get_game();
+	file = game->map->map;
 	while (*file)
 	{
 		line = wspace_trim(*file);
-		if (!path_handle(line, names))
+		if (!path_handler(line, names))
 			break ;
 		file++;
-		gfree(line);
 	}
-	get_game()->map->map = file;
+	i = 0;
+	while (i < 4)
+	{
+		if (!game->img->direction[i])
+			error_controller("Texture path is not found.", NULL);
+		game->img->direction[i] = xpm_check(game->img->direction[i]);
+		i++;
+	}
+	game->map->map = file;
+	error_controller("Map is not found.", *file);
 }

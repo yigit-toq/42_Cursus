@@ -6,14 +6,19 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/21 15:31:44 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/22 15:01:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include "../libraries/minilibx/mlx.h"
+
 # include "./utils/libft.h"
+
+# include <unistd.h>
+# include <fcntl.h>
 
 # define C_Y		"\033[33m"
 # define C_G		"\033[32m"
@@ -42,11 +47,13 @@
 # define WALL		'1'
 # define FLOOR		'0'
 
-typedef struct s_texture
+typedef struct s_img
 {
-	char		*direction[4];
+	int			width;
+	int			height;
 	int			colors[2][3];
-}				t_texture;
+	void		*direction[4];
+}				t_img;
 
 typedef struct s_player
 {
@@ -71,9 +78,9 @@ typedef struct s_map
 
 typedef struct s_game
 {
-	t_texture	texture;
 	t_player	player;
 	t_count		count;
+	t_img		*img;
 	t_map		*map;
 	void		*mlx;
 	void		*win;
@@ -83,9 +90,9 @@ t_game	*get_game(void);
 
 // File Functions
 
-void	file_controller(char *path);
+void	path_control(void);
 
-void	path_handler(void);
+void	file_controller(char *path);
 
 // Error Functions
 
@@ -94,6 +101,12 @@ void	exten_controller(char *path);
 void	error_controller(char *message, void *pointer);
 
 // Utils Functions
+
+int		open_file(char *path);
+
+int		wspace_check(char c);
+
+void	*xpm_check(char *file);
 
 char	*wspace_trim(char *line);
 #endif

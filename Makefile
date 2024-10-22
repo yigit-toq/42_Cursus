@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/10/21 15:32:01 by ytop             ###   ########.fr        #
+#    Updated: 2024/10/22 14:58:42 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,11 +71,11 @@ all				:	$(NAME)
 bonus			:	$(BONUS)
 
 $(NAME)			:	$(MLX) $(LIBFT) $(M_OBJS)
-					$(CC) $(CFLAGS) -o $(NAME)	$(M_OBJS) $(LIBFT) $(MLX)
+					$(CC) $(CFLAGS) -o $(NAME)	$(M_OBJS) $(LIBFT) $(LIBRARY)
 					@printf "$(COLOR_B)CUB3D			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
 $(BONUS)		:	$(MLX) $(LIBFT) $(B_OBJS)
-					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(MLX)
+					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(LIBRARY)
 					@printf "$(COLOR_B)CUB3D_BONUS		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
 $(LIBFT)		:

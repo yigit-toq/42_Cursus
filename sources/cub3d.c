@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/16 18:23:12 by ytop             ###   ########.fr       */
+/*   Updated: 2024/10/22 14:53:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_game	*get_game(void)
 		ft_bzero(&game, sizeof(t_game));
 		init = TRUE;
 		game.map = ft_calloc(1, sizeof(t_map));
+		game.img = ft_calloc(1, sizeof(t_img));
 	}
 	return (&game);
 }
