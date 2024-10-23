@@ -18,7 +18,9 @@
 # include "./utils/libft.h"
 
 # include <unistd.h>
+# include <stdio.h>
 # include <fcntl.h>
+# include <math.h>
 
 # define C_Y		"\033[33m"
 # define C_G		"\033[32m"
@@ -37,6 +39,15 @@
 # define S			115
 # define D			100
 # define M			109
+
+# define LEFT		65361
+# define RIGHT		65363
+
+# define FRICTION	0.1
+
+# define SPEED		0.1
+
+# define MAX_SPEED	1
 
 # define P_COUNT	1
 
@@ -66,8 +77,10 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	int			x;
-	int			y;
+	double		horizontal;
+	double		vertical;
+	double		x;
+	double		y;
 	char		dir;
 }				t_player;
 
@@ -94,6 +107,7 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
+	int			move[2];
 }				t_game;
 
 t_game	*get_game(void);
