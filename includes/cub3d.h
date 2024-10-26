@@ -135,4 +135,16 @@ int		wspace_check(char c);
 void	*xpm_check(char *file);
 
 char	*wspace_trim(char *str);
+
+// Input Functions
+
+void	mini_map(void);
+
+int		exit_game(t_game *game);
+
+int		key_press_handler(int key, t_game *game);
+
+int		key_release_handler(int key, t_game *game);
+
+void	update_position(double *position, double *axis, int sign);
 #endif

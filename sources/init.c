@@ -12,22 +12,23 @@
 
 #include "cub3d.h"
 
-void	mini_map_loop(void)
+void	render_tile(int x, int y, int color)
 {
 	t_game	*game;
+	int		h;
+	int		w;
 
 	game = get_game();
-	if (game->count.map_hl == FALSE)
+	h = 0;
+	while (h < SIZE)
 	{
-		mlx_clear_window(game->mlx, game->win);
-		return ;
-	}
-	for (int y = 0; y < SIZE; y++)
-	{
-		for (int x = 0; x < SIZE; x++)
+		w = 0;
+		while (w < SIZE)
 		{
-			mlx_pixel_put(game->mlx, game->win, x + (game->player.x * SIZE), y + (game->player.y * SIZE), H_R);
+			mlx_pixel_put(game->mlx, game->win, x + w, y + h, color);
+			w++;
 		}
+		h++;
 	}
 }
 
@@ -44,51 +45,40 @@ void	mini_map(void)
 		w = 0;
 		while (w < game->map->width)
 		{
-			for (int y = 0; y < SIZE; y++)
-			{
-				for (int x = 0; x < SIZE; x++)
-				{
-					if (game->map->map[h][w] == WALL)
-						mlx_pixel_put(game->mlx, game->win, x + (w * SIZE), y + (h * SIZE), H_W);
-					if (game->map->map[h][w] == FLOOR)
-						mlx_pixel_put(game->mlx, game->win, x + (w * SIZE), y + (h * SIZE), H_B);
-				}
-			}
+			if (game->map->map[h][w] == WALL)
+				render_tile(w * SIZE, h * SIZE, H_W);
+			else
+				render_tile(w * SIZE, h * SIZE, H_B);
 			w++;
 		}
 		h++;
 	}
 }
 
+void	mini_map_loop(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (game->count.map_hl == FALSE)
+	{
+		mlx_clear_window(game->mlx, game->win);
+		return ;
+	}
+	render_tile(game->player.x * SIZE, game->player.y * SIZE, H_R);
+}
+
 int	loop_handler(t_game *game)
 {
 	(void)game;
 	mini_map_loop();
-	if (game->move[1] == FALSE)
-	{
-		if (game->player.vertical > 0)
-			game->player.vertical -= SPEED / 10;
-		if (game->player.vertical < 0)
-			game->player.vertical += SPEED / 10;
-		if (fabs(game->player.vertical) <= 0.01)
-			game->player.vertical = 0;
-		if (game->player.vertical != 0)
-		{
-			game->player.y -= SPEED * game->player.vertical;
-		}
-	}
 	if (game->move[0] == FALSE)
 	{
-		if (game->player.horizontal > 0)
-			game->player.horizontal -= SPEED / 10;
-		if (game->player.horizontal < 0)
-			game->player.horizontal += SPEED / 10;
-		if (fabs(game->player.horizontal) <= 0.01)
-			game->player.horizontal = 0;
-		if (game->player.horizontal != 0)
-		{
-			game->player.x += SPEED * game->player.horizontal;
-		}
+		update_position(&game->player.y, &game->player.vertical, -1);
+	}
+	if (game->move[1] == FALSE)
+	{
+		update_position(&game->player.x, &game->player.horizontal, 1);
 	}
 	usleep(25000);
 	return (0);
@@ -108,81 +98,6 @@ static void	init_img(void)
 		game->img->direction[i] = xpm_check(game->img->direction[i]);
 		i++;
 	}
-}
-
-int	input_system(char direction, double acceleration, double new_pos)
-{
-	t_game	*game;
-	double	*axis;
-
-	game = get_game();
-	(void)new_pos;
-	if (direction == 'N' || direction == 'S')
-	{
-		game->move[1] = TRUE;
-		axis = &game->player.vertical;
-		game->player.y -= SPEED * *axis;
-	}
-	if (direction == 'W' || direction == 'E')
-	{
-		game->move[0] = TRUE;
-		axis = &game->player.horizontal;
-		game->player.x += SPEED * *axis;
-	}
-	if (fabs(*axis) < MAX_SPEED)
-		*axis += acceleration;
-	return (0);
-}
-
-int	key_press_handler(int key, t_game *game)
-{
-	(void)game;
-	if (key == W)
-	{
-		input_system('N', +SPEED / 10, game->player.y - SPEED);
-	}
-	if (key == S)
-	{
-		input_system('S', -SPEED / 10, game->player.y + SPEED);
-	}
-	if (key == A)
-	{
-		input_system('W', -SPEED / 10, game->player.x - SPEED);
-	}
-	if (key == D)
-	{
-		input_system('E', +SPEED / 10, game->player.x + SPEED);
-	}
-	return (0);
-}
-
-int	key_release_handler(int key, t_game *game)
-{
-	if (key == W || key == S)
-	{
-		game->move[1] = FALSE;
-	}
-	if (key == A || key == D)
-	{
-		game->move[0] = FALSE;
-	}
-	if (key == M)
-	{
-		mini_map();
-		game->count.map_hl = !game->count.map_hl;
-	}
-	if (key == ESC)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		exit(EXIT_SUCCESS);
-	}
-	return (0);
-}
-
-int	exit_game(t_game *game)
-{
-	mlx_destroy_window(game->mlx, game->win);
-	exit(EXIT_SUCCESS);
 }
 
 void	init_game(void)
