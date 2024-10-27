@@ -68,10 +68,12 @@ void	mini_map_loop(void)
 	render_tile(game->player.x * SIZE, game->player.y * SIZE, H_R);
 }
 
-int	loop_handler(t_game *game)
+int	loop_handler(void)
 {
-	(void)game;
+	t_game	*game;
+
 	mini_map_loop();
+	game = get_game();
 	if (game->move[0] == FALSE)
 	{
 		update_position(&game->player.y, &game->player.vertical, -1);
@@ -81,22 +83,22 @@ int	loop_handler(t_game *game)
 		update_position(&game->player.x, &game->player.horizontal, 1);
 	}
 	usleep(25000);
-	return (0);
+	return (SUCCESS);
 }
 
 static void	init_img(void)
 {
 	t_game	*game;
-	int		i;
+	int		index;
 
 	game = get_game();
-	i = 0;
-	while (i < 4)
+	index = 0;
+	while (index < 4)
 	{
-		if (!game->img->direction[i])
+		if (!game->img->direction[index])
 			error_controller("Texture path is not found.", NULL);
-		game->img->direction[i] = xpm_check(game->img->direction[i]);
-		i++;
+		game->img->direction[index] = open_xpm(game->img->direction[index]);
+		index++;
 	}
 }
 
@@ -112,9 +114,9 @@ void	init_game(void)
 	if (!game->win)
 		error_controller("Window is not created.", NULL);
 	init_img();
-	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
-	mlx_hook(game->win, 3, 1L << 1, key_release_handler, game);
-	mlx_hook(game->win, 17, 1L << 17, exit_game, game);
+	mlx_hook(game->win, 2, 1L << 0, key_press_handler, NULL);
+	mlx_hook(game->win, 3, 1L << 1, key_release_handler, NULL);
+	mlx_hook(game->win, 17, 1L << 17, exit_game, NULL);
 	mlx_loop_hook(game->mlx, loop_handler, game);
 	mlx_loop(game->mlx);
 }

@@ -51,13 +51,13 @@
 
 # define P_COUNT	1
 
-# define SUCCESS	1
-# define FAILURE	0
+# define SUCCESS	0
+# define FAILURE	1
 
-# define TRUE		1
 # define FALSE		0
+# define TRUE		1
 
-# define SIZE		16
+# define SIZE		32
 
 # define NORTH		'N'
 # define SOUTH		'S'
@@ -132,7 +132,7 @@ int		open_file(char *path);
 
 int		wspace_check(char c);
 
-void	*xpm_check(char *file);
+void	*open_xpm(char *file);
 
 char	*wspace_trim(char *str);
 
@@ -140,11 +140,11 @@ char	*wspace_trim(char *str);
 
 void	mini_map(void);
 
-int		exit_game(t_game *game);
+int		exit_game(void);
 
-int		key_press_handler(int key, t_game *game);
+int		key_press_handler(int key);
 
-int		key_release_handler(int key, t_game *game);
+int		key_release_handler(int key);
 
-void	update_position(double *position, double *axis, int sign);
+int		update_position(double *position, double *axis, int sign);
 #endif

@@ -39,7 +39,7 @@ char	*wspace_trim(char *str)
 	return (ft_substr(str, 0, len));
 }
 
-void	*xpm_check(char *path)
+void	*open_xpm(char *path)
 {
 	t_game	*game;
 	t_img	*img;
