@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	render_tile(int x, int y, int color)
+void	render_tile(int x, int y, int size, int color)
 {
 	t_game	*game;
 	int		h;
@@ -20,10 +20,11 @@ void	render_tile(int x, int y, int color)
 
 	game = get_game();
 	h = 0;
-	while (h < SIZE)
+	w = 0;
+	while (h < size)
 	{
 		w = 0;
-		while (w < SIZE)
+		while (w < size)
 		{
 			mlx_pixel_put(game->mlx, game->win, x + w, y + h, color);
 			w++;
@@ -35,37 +36,46 @@ void	render_tile(int x, int y, int color)
 void	mini_map(void)
 {
 	t_game	*game;
-	int		h;
-	int		w;
+	int		size;
+	int		x;
+	int		y;
 
-	h = 0;
+	x = 0;
+	y = 0;
 	game = get_game();
-	while (h < game->map->height)
+	size = (WIDTH / 4) / game->map->width;
+	while (y < game->map->height)
 	{
-		w = 0;
-		while (w < game->map->width)
+		x = 0;
+		while (x < game->map->width)
 		{
-			if (game->map->map[h][w] == WALL)
-				render_tile(w * SIZE, h * SIZE, H_W);
+			if (game->map->map[y][x] == WALL)
+				render_tile(x * size, y * size, size, H_W);
 			else
-				render_tile(w * SIZE, h * SIZE, H_B);
-			w++;
+				render_tile(x * size, y * size, size, H_B);
+			x++;
 		}
-		h++;
+		y++;
 	}
+	game->map->size = size;
 }
 
 void	mini_map_loop(void)
 {
 	t_game	*game;
+	double	size;
+	double	p[2];
 
 	game = get_game();
-	if (game->count.map_hl == FALSE)
+	if (game->map->map_hl == FALSE)
 	{
 		mlx_clear_window(game->mlx, game->win);
 		return ;
 	}
-	render_tile(game->player.x * SIZE, game->player.y * SIZE, H_R);
+	size = game->map->size;
+	p[0] = game->player.position.x;
+	p[1] = game->player.position.y;
+	render_tile(p[0] * size, p[1] * size, size, H_R);
 }
 
 int	loop_handler(void)
@@ -74,31 +84,30 @@ int	loop_handler(void)
 
 	mini_map_loop();
 	game = get_game();
-	if (game->move[0] == FALSE)
+	if (game->player.move[0] == FALSE)
 	{
-		update_position(&game->player.y, &game->player.vertical, -1);
+		update_position(&game->player.position.y, &game->player.axis.y, -1);
 	}
-	if (game->move[1] == FALSE)
+	if (game->player.move[1] == FALSE)
 	{
-		update_position(&game->player.x, &game->player.horizontal, 1);
+		update_position(&game->player.position.x, &game->player.axis.x, +1);
 	}
-	usleep(25000);
-	return (SUCCESS);
+	return (usleep(25000), SUCCESS);
 }
 
 static void	init_img(void)
 {
 	t_game	*game;
-	int		index;
+	int		i;
 
 	game = get_game();
-	index = 0;
-	while (index < 4)
+	i = 0;
+	while (i < 4)
 	{
-		if (!game->img->direction[index])
+		if (!game->img->direction[i])
 			error_controller("Texture path is not found.", NULL);
-		game->img->direction[index] = open_xpm(game->img->direction[index]);
-		index++;
+		game->img->direction[i] = open_xpm(game->img->direction[i]);
+		i++;
 	}
 }
 
@@ -108,15 +117,11 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = mlx_init();
-	if (!game->mlx)
-		error_controller("Mlx is not initialized.", NULL);
-	game->win = mlx_new_window(game->mlx, 1280, 720, NAME);
-	if (!game->win)
-		error_controller("Window is not created.", NULL);
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
 	init_img();
-	mlx_hook(game->win, 2, 1L << 0, key_press_handler, NULL);
-	mlx_hook(game->win, 3, 1L << 1, key_release_handler, NULL);
-	mlx_hook(game->win, 17, 1L << 17, exit_game, NULL);
+	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, NULL);
+	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, NULL);
+	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
 	mlx_loop_hook(game->mlx, loop_handler, game);
 	mlx_loop(game->mlx);
 }

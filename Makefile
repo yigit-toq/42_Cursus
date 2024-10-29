@@ -58,12 +58,36 @@ ifeq ($(OS), Linux)
 	MLX			=	$(MLX_DIR)libmlx_Linux.a
 
 	LIBRARY		=	$(MLX) -lXext -lX11 -lm
+
+	CFLAGS		+=	-DW=119			\
+					-DA=97			\
+					-DS=115			\
+					-DD=100			\
+					-DM=109			\
+					-DLEFT=65361	\
+					-DRIGHT=65363	\
+					-DUP=65362		\
+					-DDOWN=65364	\
+					-DESC=65307		\
+					-DSPACE=32
 else
 	MLX_REPO	=	$(MLX_MACOS)
 
 	MLX			=	$(MLX_DIR)libmlx.a
 
 	LIBRARY		=	$(MLX) -framework OpenGL -framework AppKit
+
+	CFLAGS		+=	-DW=13			\
+					-DA=0			\
+					-DS=1			\
+					-DD=2			\
+					-DM=46			\
+					-DLEFT=123		\
+					-DRIGHT=124		\
+					-DUP=126		\
+					-DDOWN=125		\
+					-DESC=53		\
+					-DSPACE=49
 endif
 
 $(OBJS_DIR)/%.o	: 	%.c

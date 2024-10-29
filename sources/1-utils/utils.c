@@ -41,15 +41,15 @@ char	*wspace_trim(char *str)
 
 void	*open_xpm(char *path)
 {
-	t_game	*game;
 	t_img	*img;
 	void	*xpm;
 
-	game = get_game();
-	img = game->img;
-	xpm = mlx_xpm_file_to_image(game->mlx, path, &img->width, &img->height);
+	img = get_game()->img;
+	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->width, &img->height);
 	if (!xpm)
+	{
 		error_controller("Invalid texture file.", NULL);
+	}
 	return (xpm);
 }
 
@@ -59,6 +59,8 @@ int	open_file(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
+	{
 		error_controller("Failed to open file.", NULL);
+	}
 	return (fd);
 }

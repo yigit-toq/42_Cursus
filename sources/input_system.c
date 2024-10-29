@@ -15,9 +15,16 @@
 int	exit_game(void)
 {
 	t_game	*game;
+	int		i;
 
+	i = 0;
 	game = get_game();
 	mlx_destroy_window(game->mlx, game->win);
+	while (i < 4)
+	{
+		mlx_destroy_image(game->mlx, game->img->direction[i]);
+		i++;
+	}
 	exit(EXIT_SUCCESS);
 }
 
@@ -29,15 +36,15 @@ int	input_system(char direction, double acceleration)
 	game = get_game();
 	if (direction == 'N' || direction == 'S')
 	{
-		game->move[0] = TRUE;
-		axis = &game->player.vertical;
-		game->player.y -= SPEED * (*axis);
+		game->player.move[0] = TRUE;
+		axis = &game->player.axis.y;
+		game->player.position.y -= SPEED * (*axis);
 	}
 	if (direction == 'W' || direction == 'E')
 	{
-		game->move[1] = TRUE;
-		axis = &game->player.horizontal;
-		game->player.x += SPEED * (*axis);
+		game->player.move[1] = TRUE;
+		axis = &game->player.axis.x;
+		game->player.position.x += SPEED * (*axis);
 	}
 	if (fabs(*axis) < MAX_SPEED)
 	{
@@ -94,20 +101,19 @@ int	key_release_handler(int key)
 	game = get_game();
 	if (key == W || key == S)
 	{
-		game->move[0] = FALSE;
+		game->player.move[0] = FALSE;
 	}
 	if (key == A || key == D)
 	{
-		game->move[1] = FALSE;
+		game->player.move[1] = FALSE;
 	}
 	if (key == ESC)
 	{
-		mlx_destroy_window(game->mlx, game->win);
-		exit(EXIT_SUCCESS);
+		exit_game();
 	}
 	if (key == M)
 	{
-		game->count.map_hl = !game->count.map_hl;
+		game->map->map_hl = !game->map->map_hl;
 		mini_map();
 	}
 	return (SUCCESS);

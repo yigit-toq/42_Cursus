@@ -33,39 +33,42 @@
 
 # define NAME		"Cub3D"
 
-# define ESC		65307
-# define W			119
-# define A			97
-# define S			115
-# define D			100
-# define M			109
+# define KEY_PRESS		2
+# define KEY_RELEASE	3
 
-# define LEFT		65361
-# define RIGHT		65363
+# define DESTROY		17
 
-# define FRICTION	0.1
+# define WIDTH			1280
+# define HEIGHT			720
 
-# define SPEED		0.1
+# define MAX_SPEED		1
 
-# define MAX_SPEED	1
+# define FRICTION		0.1
+# define SPEED			0.5
 
-# define P_COUNT	1
+# define P_COUNT		1
 
-# define SUCCESS	0
-# define FAILURE	1
+# define SUCCESS		0
+# define FAILURE		1
 
-# define FALSE		0
-# define TRUE		1
+# define FALSE			0
+# define TRUE			1
 
-# define SIZE		32
+# define SIZE			32
 
-# define NORTH		'N'
-# define SOUTH		'S'
-# define WEST		'W'
-# define EAST		'E'
+# define NORTH			'N'
+# define SOUTH			'S'
+# define WEST			'W'
+# define EAST			'E'
 
-# define WALL		'1'
-# define FLOOR		'0'
+# define WALL			'1'
+# define FLOOR			'0'
+
+typedef struct s_coord
+{
+	double		x;
+	double		y;
+}				t_coord;
 
 typedef struct s_img
 {
@@ -77,10 +80,10 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	double		horizontal;
-	double		vertical;
-	double		x;
-	double		y;
+	int			move[2];
+	t_coord		axis;
+	t_coord		position;
+	t_coord		rotation;
 	char		dir;
 }				t_player;
 
@@ -88,14 +91,15 @@ typedef struct s_count
 {
 	int			wall;
 	int			floor;
-	int			map_hl;
 	int			player;
 }				t_count;
 
 typedef struct s_map
 {
+	int			map_hl;
 	int			height;
 	int			width;
+	int			size;
 	char		**map;
 }				t_map;
 
@@ -107,7 +111,6 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
-	int			move[2];
 }				t_game;
 
 t_game	*get_game(void);
