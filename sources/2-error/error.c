@@ -12,15 +12,61 @@
 
 #include "cub3d.h"
 
-void	exten_controller(char *path)
+void	load_scene(int fd)
+{
+	(void)fd;
+}
+
+void	save_scene(void)
+{
+	if (get_game()->save)
+	{
+		ft_printf("Save\n");
+	}
+}
+
+int	arg_controller(char **argv)
+{
+	t_game	*game;
+	int		load;
+	int		i;
+
+	game = get_game();
+	while (argv[i + 1])
+	{
+		while (!ft_strcmp(argv[i], "--load") || !ft_strcmp(argv[i], "-l"))
+		{
+			load = TRUE;
+			i++;
+		}
+		if (!ft_strcmp(argv[i], "--save") || !ft_strcmp(argv[i], "-s"))
+		{
+			game->save = TRUE;
+		}
+		if (load)
+		{
+			if (exten_controller(argv[i]) == 2)
+				load_scene(open_file(argv[i]));
+			else
+				error_controller("Invalid file extension.", NULL);
+		}
+		i++;
+	}
+	return (i);
+}
+
+int	exten_controller(char *path)
 {
 	char	*extension;
 
 	extension = ft_strrchr(path, '.');
 	if (!extension)
-		error_controller("Wrong format.", NULL);
-	if (ft_strcmp(extension, ".cub"))
-		error_controller("Wrong extension.", NULL);
+		return (-1);
+	if (!ft_strcmp(extension, ".cub"))
+		return (1);
+	if (!ft_strcmp(extension, ".save"))
+		return (2);
+	return (-2);
 }
 
 void	error_controller(char *message, void *pointer)

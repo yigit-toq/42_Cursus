@@ -25,6 +25,7 @@ int	exit_game(void)
 		mlx_destroy_image(game->mlx, game->img->direction[i]);
 		i++;
 	}
+	save_scene();
 	exit(EXIT_SUCCESS);
 }
 
@@ -114,7 +115,7 @@ int	key_release_handler(int key)
 	if (key == M)
 	{
 		game->map->map_hl = !game->map->map_hl;
-		mini_map();
+		minimap();
 	}
 	return (SUCCESS);
 }

@@ -38,6 +38,8 @@
 
 # define DESTROY		17
 
+# define RESIZE			25
+
 # define WIDTH			1280
 # define HEIGHT			720
 
@@ -56,6 +58,8 @@
 
 # define SIZE			32
 
+# define MAX_PATH		4
+
 # define NORTH			'N'
 # define SOUTH			'S'
 # define WEST			'W'
@@ -70,6 +74,26 @@ typedef struct s_coord
 	double		y;
 }				t_coord;
 
+typedef struct	s_wall
+{
+	int			start;
+	int			end;
+	int			height;
+}				t_wall;
+
+typedef struct s_ray
+{
+	t_coord		ray;
+	t_coord		dir;
+	t_coord		side;
+	t_coord		delta;
+	t_coord		step;
+	t_coord		plane;
+	t_wall		wall;
+	double		dist;
+	int			side_hit;
+}				t_ray;
+
 typedef struct s_img
 {
 	int			width;
@@ -81,10 +105,10 @@ typedef struct s_img
 typedef struct s_player
 {
 	int			move[2];
-	t_coord		axis;
+	char		direction;
 	t_coord		position;
 	t_coord		rotation;
-	char		dir;
+	t_coord		axis;
 }				t_player;
 
 typedef struct s_count
@@ -111,6 +135,7 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
+	int			save;
 }				t_game;
 
 t_game	*get_game(void);
@@ -125,7 +150,9 @@ void	files_controller(char *path);
 
 // Error Functions
 
-void	exten_controller(char *path);
+int		arg_controller(char **argv);
+
+int		exten_controller(char *path);
 
 void	error_controller(char *message, void *pointer);
 
@@ -141,8 +168,6 @@ char	*wspace_trim(char *str);
 
 // Input Functions
 
-void	mini_map(void);
-
 int		exit_game(void);
 
 int		key_press_handler(int key);
@@ -150,4 +175,18 @@ int		key_press_handler(int key);
 int		key_release_handler(int key);
 
 int		update_position(double *position, double *axis, int sign);
+
+// Minimap Functions
+
+void	minimap(void);
+
+void	minimap_loop(void);
+
+// Rendering Functions
+
+void	render_tile(int x, int y, int size, int color);
+
+void	load_scene(int fd);
+
+void	save_scene(void);
 #endif

@@ -12,77 +12,11 @@
 
 #include "cub3d.h"
 
-void	render_tile(int x, int y, int size, int color)
-{
-	t_game	*game;
-	int		h;
-	int		w;
-
-	game = get_game();
-	h = 0;
-	w = 0;
-	while (h < size)
-	{
-		w = 0;
-		while (w < size)
-		{
-			mlx_pixel_put(game->mlx, game->win, x + w, y + h, color);
-			w++;
-		}
-		h++;
-	}
-}
-
-void	mini_map(void)
-{
-	t_game	*game;
-	int		size;
-	int		x;
-	int		y;
-
-	x = 0;
-	y = 0;
-	game = get_game();
-	size = (WIDTH / 4) / game->map->width;
-	while (y < game->map->height)
-	{
-		x = 0;
-		while (x < game->map->width)
-		{
-			if (game->map->map[y][x] == WALL)
-				render_tile(x * size, y * size, size, H_W);
-			else
-				render_tile(x * size, y * size, size, H_B);
-			x++;
-		}
-		y++;
-	}
-	game->map->size = size;
-}
-
-void	mini_map_loop(void)
-{
-	t_game	*game;
-	double	size;
-	double	p[2];
-
-	game = get_game();
-	if (game->map->map_hl == FALSE)
-	{
-		mlx_clear_window(game->mlx, game->win);
-		return ;
-	}
-	size = game->map->size;
-	p[0] = game->player.position.x;
-	p[1] = game->player.position.y;
-	render_tile(p[0] * size, p[1] * size, size, H_R);
-}
-
-int	loop_handler(void)
+static int	render_frame(void)
 {
 	t_game	*game;
 
-	mini_map_loop();
+	minimap_loop();
 	game = get_game();
 	if (game->player.move[0] == FALSE)
 	{
@@ -102,13 +36,19 @@ static void	init_img(void)
 
 	game = get_game();
 	i = 0;
-	while (i < 4)
+	while (i < MAX_PATH)
 	{
 		if (!game->img->direction[i])
 			error_controller("Texture path is not found.", NULL);
 		game->img->direction[i] = open_xpm(game->img->direction[i]);
 		i++;
 	}
+}
+
+int	screen_resize(t_game *game)
+{
+	(void)game;
+	return (SUCCESS);
 }
 
 void	init_game(void)
@@ -122,6 +62,7 @@ void	init_game(void)
 	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, NULL);
 	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, NULL);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
-	mlx_loop_hook(game->mlx, loop_handler, game);
+	mlx_hook(game->win, 25, 1L << 18, screen_resize, game);
+	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_loop(game->mlx);
 }

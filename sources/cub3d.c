@@ -27,17 +27,19 @@ t_game	*get_game(void)
 	return (&game);
 }
 
-int	main(int argc, char *argv[])
+int	main(int argc, char **argv)
 {
-	if (argc != 2)
+	if (argc < 2)
 	{
 		error_controller("Usage: ./cub3d <map.cub>", NULL);
 	}
 	else
 	{
-		exten_controller(argv[1]);
 		get_game();
-		files_controller(argv[1]);
+		argv++;
+		argv += arg_controller(argv);
+		exten_controller(*argv);
+		files_controller(*argv);
 	}
 	return (init_game(), EXIT_SUCCESS);
 }
