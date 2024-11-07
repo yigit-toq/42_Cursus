@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/22 14:33:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/07 15:38:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,36 +21,44 @@ void	save_scene(void)
 {
 	if (get_game()->save)
 	{
-		ft_printf("Save\n");
+		ft_printf("save\n");
 	}
+}
+
+int	arg_check(char *arg)
+{
+	if (!ft_strcmp(arg, "--load") || !ft_strcmp(arg, "-l"))
+	{
+		return (1);
+	}
+	if (!ft_strcmp(arg, "--save") || !ft_strcmp(arg, "-s"))
+	{
+		return (2);
+	}
+	return (0);
 }
 
 int	arg_controller(char **argv)
 {
 	t_game	*game;
-	int		load;
 	int		i;
 
+	i = 0;
 	game = get_game();
-	while (argv[i + 1])
+	while (argv[i + 1] && arg_check(argv[i]))
 	{
-		while (!ft_strcmp(argv[i], "--load") || !ft_strcmp(argv[i], "-l"))
-		{
-			load = TRUE;
-			i++;
-		}
-		if (!ft_strcmp(argv[i], "--save") || !ft_strcmp(argv[i], "-s"))
-		{
+		if (arg_check(argv[i]) == 1)
+			game->load = TRUE;
+		else
 			game->save = TRUE;
-		}
-		if (load)
-		{
-			if (exten_controller(argv[i]) == 2)
-				load_scene(open_file(argv[i]));
-			else
-				error_controller("Invalid file extension.", NULL);
-		}
 		i++;
+	}
+	if (game->load)
+	{
+		if (exten_controller(argv[i]) == 2)
+			load_scene(open_file(argv[i]));
+		else
+			error_controller("Usage: ./cub3d <map.save>", NULL);
 	}
 	return (i);
 }
@@ -61,12 +69,15 @@ int	exten_controller(char *path)
 
 	extension = ft_strrchr(path, '.');
 	if (!extension)
-		return (-1);
-	if (!ft_strcmp(extension, ".cub"))
-		return (1);
-	if (!ft_strcmp(extension, ".save"))
-		return (2);
-	return (-2);
+		return (0);
+	else
+	{
+		if (!ft_strcmp(extension, ".cub"))
+			return (1);
+		if (!ft_strcmp(extension, ".save"))
+			return (2);	
+	}
+	return (0);
 }
 
 void	error_controller(char *message, void *pointer)

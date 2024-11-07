@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/22 15:01:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/07 15:13:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct s_game
 	void		*mlx;
 	void		*win;
 	int			save;
+	int			load;
 }				t_game;
 
 t_game	*get_game(void);
