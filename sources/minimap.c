@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/30 17:34:37 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/11 17:42:45 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	minimap(void)
 	x = 0;
 	y = 0;
 	game = get_game();
-	size = (WIDTH / 4) / game->map->width;
+	size = WIDTH / game->map->width;
 	while (y < game->map->height)
 	{
 		x = 0;

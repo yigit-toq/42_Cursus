@@ -6,11 +6,12 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/22 15:01:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/11 17:56:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <sys/time.h>
 
 int	wspace_check(char c)
 {
@@ -63,4 +64,21 @@ int	open_file(char *path)
 		error_controller("Failed to open file.", NULL);
 	}
 	return (fd);
+}
+
+
+void	delay(int milliseconds)
+{
+	long long int	current_time;
+	long long int	target_time;
+	struct timeval	start;
+	struct timeval	end;
+
+	gettimeofday(&start, NULL);
+	target_time = start.tv_sec * 1000 + start.tv_usec / 1000 + milliseconds;
+	do
+	{
+		gettimeofday(&end, NULL);
+		current_time = end.tv_sec * 1000 + end.tv_usec / 1000;
+	}	while (current_time < target_time);
 }

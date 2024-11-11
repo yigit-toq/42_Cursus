@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/07 15:13:33 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/11 17:56:16 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ int		wspace_check(char c);
 void	*open_xpm(char *file);
 
 char	*wspace_trim(char *str);
+
+void	delay(int milliseconds);
 
 // Input Functions
 

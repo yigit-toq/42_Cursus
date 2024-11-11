@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/24 00:52:41 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/11 17:59:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	render_frame(void)
 	{
 		update_position(&game->player.position.x, &game->player.axis.x, +1);
 	}
-	return (usleep(25000), SUCCESS);
+	return (delay(30), SUCCESS);
 }
 
 static void	init_img(void)
@@ -45,12 +45,6 @@ static void	init_img(void)
 	}
 }
 
-int	screen_resize(t_game *game)
-{
-	(void)game;
-	return (SUCCESS);
-}
-
 void	init_game(void)
 {
 	t_game	*game;
@@ -62,7 +56,6 @@ void	init_game(void)
 	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, NULL);
 	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, NULL);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
-	mlx_hook(game->win, 25, 1L << 18, screen_resize, game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_loop(game->mlx);
 }
