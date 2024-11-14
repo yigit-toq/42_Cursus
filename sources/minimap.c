@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/11 17:42:45 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/14 16:22:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	minimap(void)
 		while (x < game->map->width)
 		{
 			if (game->map->map[y][x] == WALL)
-				render_tile(x * size, y * size, size, H_W);
+				render_tile(x * size, y * size, size, H_W, 0);
 			else
-				render_tile(x * size, y * size, size, H_B);
+				render_tile(x * size, y * size, size, H_B, 0);
 			x++;
 		}
 		y++;
@@ -53,5 +53,5 @@ void	minimap_loop(void)
 	size = game->map->size;
 	p[0] = game->player.position.x;
 	p[1] = game->player.position.y;
-	render_tile(p[0] * size, p[1] * size, size, H_R);
+	render_tile(p[0] * size, p[1] * size, size, H_R, game->player.theta);
 }

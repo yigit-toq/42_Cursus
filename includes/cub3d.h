@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/11 17:56:16 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/14 16:22:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 
 # define NAME		"Cub3D"
 
+# define PI				3.14159265359
+
 # define KEY_PRESS		2
 # define KEY_RELEASE	3
 
@@ -47,6 +49,8 @@
 
 # define FRICTION		0.1
 # define SPEED			0.5
+
+# define ROTATE			0.1
 
 # define P_COUNT		1
 
@@ -106,8 +110,8 @@ typedef struct s_player
 {
 	int			move[2];
 	char		direction;
+	double		theta;
 	t_coord		position;
-	t_coord		rotation;
 	t_coord		axis;
 }				t_player;
 
@@ -187,7 +191,7 @@ void	minimap_loop(void);
 
 // Rendering Functions
 
-void	render_tile(int x, int y, int size, int color);
+void	render_tile(int x, int y, int size, int color, double theta);
 
 void	load_scene(int fd);
 

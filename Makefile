@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/10/22 14:58:42 by ytop             ###   ########.fr        #
+#    Updated: 2024/11/14 15:31:56 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,9 @@ ifeq ($(OS), Linux)
 					-DUP=65362		\
 					-DDOWN=65364	\
 					-DESC=65307		\
-					-DSPACE=32
+					-DSPACE=32		\
+					-DLEFT=65361	\
+					-DRIGHT=65363
 else
 	MLX_REPO	=	$(MLX_MACOS)
 
@@ -87,7 +89,9 @@ else
 					-DUP=126		\
 					-DDOWN=125		\
 					-DESC=53		\
-					-DSPACE=49
+					-DSPACE=49		\
+					-DLEFT=123		\
+					-DRIGHT=124
 endif
 
 $(OBJS_DIR)/%.o	: 	%.c

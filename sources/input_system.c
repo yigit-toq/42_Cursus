@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_system.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/26 23:31:53 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/14 16:25:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,30 @@ int	update_position(double *position, double *axis, int sign)
 	return (SUCCESS);
 }
 
+#include <stdio.h>
+
 int	key_press_handler(int key)
 {
+	t_game	*game;
+
+	game = get_game();
+	render_tile(p[0] * 32, p[1] * 32, 32, H_R, game->player.theta);
+	if (key == LEFT)
+		game->player.theta -= ROTATE;
+	if (key == RIGHT)
+		game->player.theta += ROTATE;
 	if (key == W)
-	{
 		input_system('N', +SPEED / 10);
-	}
 	if (key == S)
-	{
 		input_system('S', -SPEED / 10);
-	}
 	if (key == A)
-	{
 		input_system('W', -SPEED / 10);
-	}
 	if (key == D)
-	{
 		input_system('E', +SPEED / 10);
-	}
+	if (game->player.theta < 0)
+		game->player.theta += 2 * PI;
+	else if (game->player.theta >= 2 * PI)
+		game->player.theta -= 2 * PI;
 	return (SUCCESS);
 }
 
