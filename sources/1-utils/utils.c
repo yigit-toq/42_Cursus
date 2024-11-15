@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/11 17:56:43 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/15 14:28:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void	delay(int milliseconds)
 	struct timeval	end;
 
 	gettimeofday(&start, NULL);
+	gettimeofday(&end, NULL);
+	current_time = end.tv_sec * 1000 + end.tv_usec / 1000;
 	target_time = start.tv_sec * 1000 + start.tv_usec / 1000 + milliseconds;
-	do
+	while (current_time < target_time)
 	{
 		gettimeofday(&end, NULL);
 		current_time = end.tv_sec * 1000 + end.tv_usec / 1000;
-	}	while (current_time < target_time);
+	}
 }

@@ -6,35 +6,35 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/14 16:22:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/15 18:12:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 void	minimap(void)
 {
 	t_game	*game;
-	int		size;
-	int		x;
-	int		y;
+	t_coord	coord;
+	t_coord	size;
 
-	x = 0;
-	y = 0;
+	ft_bzero(&coord, sizeof(t_coord));
 	game = get_game();
-	size = WIDTH / game->map->width;
-	while (y < game->map->height)
+	size.x = WIDTH / game->map->width;
+	size.y = HEIGHT / game->map->height;
+	while (coord.y < game->map->height)
 	{
-		x = 0;
-		while (x < game->map->width)
+		coord.x = 0;
+		while (coord.x < game->map->width)
 		{
-			if (game->map->map[y][x] == WALL)
-				render_tile(x * size, y * size, size, H_W, 0);
+			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
+				draw_rectangle(coord, size, H_W);
 			else
-				render_tile(x * size, y * size, size, H_B, 0);
-			x++;
+				draw_rectangle(coord, size, H_B);
+			coord.x++;
 		}
-		y++;
+		coord.y++;
 	}
 	game->map->size = size;
 }
@@ -42,16 +42,11 @@ void	minimap(void)
 void	minimap_loop(void)
 {
 	t_game	*game;
-	double	size;
-	double	p[2];
 
 	game = get_game();
 	if (game->map->map_hl == FALSE)
 	{
 		return ;
 	}
-	size = game->map->size;
-	p[0] = game->player.position.x;
-	p[1] = game->player.position.y;
-	render_tile(p[0] * size, p[1] * size, size, H_R, game->player.theta);
+	draw_circle(game->player.position, game->map->size);
 }

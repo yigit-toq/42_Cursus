@@ -6,41 +6,69 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/14 16:22:07 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/15 18:14:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
-void	render_tile(int x, int y, int size, int color, double theta)
+void	draw_rectangle(t_coord coord, t_coord size, int color)
 {
 	t_game	*game;
-	int		h;
-	int		w;
+	t_coord	s_i;
 
 	game = get_game();
-	h = 0;
-	w = 0;
-	while (h < size)
+	coord.x *= size.x;
+	coord.y *= size.y;
+	ft_bzero(&s_i, sizeof(t_coord));
+	while (s_i.y < size.y)
 	{
-		w = 0;
-		while (w < size)
+		s_i.x = 0;
+		while (s_i.x < size.x)
 		{
-			mlx_pixel_put(game->mlx, game->win, x + w, y + h, color);
-			w++;
+			mlx_pixel_put(game->mlx, game->win, coord.x + s_i.x, coord.y + s_i.y, color);
+			s_i.x++;
 		}
-		h++;
+		s_i.y++;
 	}
-	int center_x = x + size / 2;
-	int center_y = y + size / 2;
+	// int center_x = x + size / 2;
+	// int center_y = y + size / 2;
 
-	// Karakterin yönünü gösteren çizgi uzunluğu
-	int line_length = size; // Çizginin uzunluğunu karakterin boyutuna göre ayarlayabilirsin
+	// int line_length = size;
 
-	// Çizginin bitiş noktasını hesapla
-	int line_x = center_x + (int)(cos(theta) * line_length);
-	int line_y = center_y + (int)(sin(theta) * line_length);
+	// int line_x = center_x + (int)(cos(theta) * line_length);
+	// int line_y = center_y + (int)(sin(theta) * line_length);
 
-	// Çizgiyi çiz (karakterin baktığı yön)
-	mlx_pixel_put(game->mlx, game->win, line_x, line_y, 0xFFFFFF);
+	// mlx_pixel_put(game->mlx, game->win, line_x, line_y, 0xFFFFFF);
+}
+
+#include <stdio.h>
+
+int	draw_circle(t_coord center, t_coord radius)
+{
+	t_game	*game;
+	double x, y;
+    double r_squared = radius.x * radius.x;
+
+	game = get_game();
+    for (y = -radius.y; y <= radius.y; y++)
+	{
+        for (x = -radius.x; x <= radius.x; x++)
+		{
+            if (x * x + y * y <= r_squared) {
+                mlx_pixel_put(game->mlx, game->win, center.x + x, center.y + y, 0xFF0000);
+            }
+        }
+    }
+	// for (double angle = 0; angle < 2 * PI; angle += 0.001)
+	// {
+    //     p_coord.x = center.x + radius.x * cos(angle);
+    //     p_coord.y = center.y + radius.y * sin(angle);
+    //     mlx_pixel_put(game->mlx, game->win, p_coord.x, p_coord.y, 0xFFFFFF);
+    // }
+	if (radius.x == radius.y)
+		return (SUCCESS);
+	else
+		return (FAILURE);
 }

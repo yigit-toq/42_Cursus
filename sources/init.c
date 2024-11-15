@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/11 17:59:03 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/15 18:13:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	render_frame(void)
 	{
 		update_position(&game->player.position.x, &game->player.axis.x, +1);
 	}
-	return (delay(30), SUCCESS);
+	return (delay(10), SUCCESS);
 }
 
 static void	init_img(void)
@@ -53,9 +53,16 @@ void	init_game(void)
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
 	init_img();
-	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, NULL);
-	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, NULL);
+	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, game);
+	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
-	mlx_loop_hook(game->mlx, render_frame, game);
+	mlx_loop_hook(game->mlx, render_frame, NULL);
+	t_coord	coord;
+	t_coord	size;
+	coord.x = 350;
+	coord.y = 350;
+	size.x = 50;
+	size.y = 50;
+	draw_circle(coord, size);
 	mlx_loop(game->mlx);
 }

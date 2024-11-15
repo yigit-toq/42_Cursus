@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/14 16:22:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/15 18:11:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_coord
 	double		y;
 }				t_coord;
 
-typedef struct	s_wall
+typedef struct s_wall
 {
 	int			start;
 	int			end;
@@ -127,7 +127,7 @@ typedef struct s_map
 	int			map_hl;
 	int			height;
 	int			width;
-	int			size;
+	t_coord		size;
 	char		**map;
 }				t_map;
 
@@ -177,9 +177,9 @@ void	delay(int milliseconds);
 
 int		exit_game(void);
 
-int		key_press_handler(int key);
+int		key_press_handler(int key, t_game *game);
 
-int		key_release_handler(int key);
+int		key_release_handler(int key, t_game *game);
 
 int		update_position(double *position, double *axis, int sign);
 
@@ -191,7 +191,9 @@ void	minimap_loop(void);
 
 // Rendering Functions
 
-void	render_tile(int x, int y, int size, int color, double theta);
+void	draw_rectangle(t_coord coord, t_coord size, int color);
+
+int		draw_circle(t_coord center, t_coord radius);
 
 void	load_scene(int fd);
 
