@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <stdio.h>
 
 void	minimap(void)
 {
@@ -21,8 +20,8 @@ void	minimap(void)
 
 	ft_bzero(&coord, sizeof(t_coord));
 	game = get_game();
-	size.x = WIDTH / game->map->width;
-	size.y = HEIGHT / game->map->height;
+	size.x = SIZE; //WIDTH / game->map->width;
+	size.y = SIZE; //HEIGHT / game->map->height;
 	while (coord.y < game->map->height)
 	{
 		coord.x = 0;
@@ -42,11 +41,14 @@ void	minimap(void)
 void	minimap_loop(void)
 {
 	t_game	*game;
+	t_coord size;
 
 	game = get_game();
 	if (game->map->map_hl == FALSE)
 	{
 		return ;
 	}
-	draw_circle(game->player.position, game->map->size);
+	size.x = SIZE / 4;
+	size.y = SIZE / 4;
+	draw_circle(game->player.position, size, H_R);
 }

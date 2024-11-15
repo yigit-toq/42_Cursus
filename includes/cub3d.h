@@ -45,10 +45,10 @@
 # define WIDTH			1280
 # define HEIGHT			720
 
-# define MAX_SPEED		1
+# define MAX_SPEED		5.0
+# define SPEED			2.5
 
 # define FRICTION		0.1
-# define SPEED			0.5
 
 # define ROTATE			0.1
 
@@ -193,7 +193,7 @@ void	minimap_loop(void);
 
 void	draw_rectangle(t_coord coord, t_coord size, int color);
 
-int		draw_circle(t_coord center, t_coord radius);
+int		draw_circle(t_coord center, t_coord radius, int color);
 
 void	load_scene(int fd);
 

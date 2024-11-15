@@ -57,12 +57,5 @@ void	init_game(void)
 	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
 	mlx_loop_hook(game->mlx, render_frame, NULL);
-	t_coord	coord;
-	t_coord	size;
-	coord.x = 350;
-	coord.y = 350;
-	size.x = 50;
-	size.y = 50;
-	draw_circle(coord, size);
 	mlx_loop(game->mlx);
 }
