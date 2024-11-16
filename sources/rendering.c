@@ -39,9 +39,11 @@ int	draw_circle(t_coord center, t_coord radius, int color)
 	t_game	*game;
 	t_coord	pos;
 	t_coord	rds;
-	t_coord rot;
+	t_coord	rot;
 
 	game = get_game();
+	radius.x /= 2;
+	radius.y /= 2;
 	rds.x = pow(radius.x, 2);
 	rds.y = pow(radius.y, 2);
 	pos.y = -radius.y;
@@ -63,10 +65,11 @@ int	draw_circle(t_coord center, t_coord radius, int color)
 		return (SUCCESS);
 	else
 		return (FAILURE);
-	// for (double angle = 0; angle < 2 * PI; angle += 0.001)
-	// {
-    //     p_coord.x = center.x + radius.x * cos(angle);
-    //     p_coord.y = center.y + radius.y * sin(angle);
-    //     mlx_pixel_put(game->mlx, game->win, p_coord.x, p_coord.y, 0xFFFFFF);
-    // }
 }
+
+// for (double angle = 0; angle < 2 * PI; angle += 0.001)
+// {
+//     p_coord.x = center.x + radius.x * cos(angle);
+//     p_coord.y = center.y + radius.y * sin(angle);
+//     mlx_pixel_put(game->mlx, game->win, p_coord.x, p_coord.y, 0xFFFFFF);
+// }

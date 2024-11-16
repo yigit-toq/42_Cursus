@@ -66,7 +66,6 @@ int	open_file(char *path)
 	return (fd);
 }
 
-
 void	delay(int milliseconds)
 {
 	long long int	current_time;

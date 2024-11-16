@@ -46,7 +46,7 @@
 # define HEIGHT			720
 
 # define MAX_SPEED		5.0
-# define SPEED			2.5
+# define SPEED			2.0
 
 # define FRICTION		0.1
 
@@ -60,7 +60,7 @@
 # define FALSE			0
 # define TRUE			1
 
-# define SIZE			32
+# define M_SIZE			32
 
 # define MAX_PATH		4
 
@@ -175,7 +175,7 @@ void	delay(int milliseconds);
 
 // Input Functions
 
-int		exit_game(void);
+int		exit_game(t_game *game);
 
 int		key_press_handler(int key, t_game *game);
 

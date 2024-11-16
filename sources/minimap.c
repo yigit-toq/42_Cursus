@@ -12,43 +12,45 @@
 
 #include "cub3d.h"
 
+//HEIGHT / game->map->height;
+//WIDTH / game->map->width;
+
 void	minimap(void)
 {
 	t_game	*game;
 	t_coord	coord;
-	t_coord	size;
 
 	ft_bzero(&coord, sizeof(t_coord));
 	game = get_game();
-	size.x = SIZE; //WIDTH / game->map->width;
-	size.y = SIZE; //HEIGHT / game->map->height;
+	game->map->size.x = M_SIZE;
+	game->map->size.y = M_SIZE;
 	while (coord.y < game->map->height)
 	{
 		coord.x = 0;
 		while (coord.x < game->map->width)
 		{
 			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
-				draw_rectangle(coord, size, H_W);
+				draw_rectangle(coord, game->map->size, H_W);
 			else
-				draw_rectangle(coord, size, H_B);
+				draw_rectangle(coord, game->map->size, H_B);
 			coord.x++;
 		}
 		coord.y++;
 	}
-	game->map->size = size;
 }
 
 void	minimap_loop(void)
 {
 	t_game	*game;
-	t_coord size;
+	t_coord	size;
 
 	game = get_game();
 	if (game->map->map_hl == FALSE)
 	{
 		return ;
 	}
-	size.x = SIZE / 4;
-	size.y = SIZE / 4;
+	minimap();
+	size.x = game->map->size.x;
+	size.y = game->map->size.y;
 	draw_circle(game->player.position, size, H_R);
 }

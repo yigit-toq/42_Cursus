@@ -75,7 +75,7 @@ int	exten_controller(char *path)
 		if (!ft_strcmp(extension, ".cub"))
 			return (1);
 		if (!ft_strcmp(extension, ".save"))
-			return (2);	
+			return (2);
 	}
 	return (0);
 }

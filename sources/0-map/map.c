@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+// Karakter pozisyonu güncellenecek.
+
 static void	object_counter(int x, int y)
 {
 	t_game	*game;
@@ -24,8 +26,8 @@ static void	object_counter(int x, int y)
 	if (p == TRUE)
 	{
 		game->count.player++;
-		game->player.position.x = (x * SIZE) + (SIZE / 2);
-		game->player.position.y = (y * SIZE) + (SIZE / 2);
+		game->player.position.x = (x * M_SIZE) + (M_SIZE / 2);
+		game->player.position.y = (y * M_SIZE) + (M_SIZE / 2);
 		game->player.direction = m[x];
 	}
 	else if (m[x] == WALL)

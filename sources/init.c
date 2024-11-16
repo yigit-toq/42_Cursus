@@ -53,9 +53,9 @@ void	init_game(void)
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
 	init_img();
+	mlx_loop_hook(game->mlx, render_frame, NULL);
 	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, game);
 	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, game);
-	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, NULL);
-	mlx_loop_hook(game->mlx, render_frame, NULL);
+	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, game);
 	mlx_loop(game->mlx);
 }
