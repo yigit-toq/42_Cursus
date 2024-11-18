@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 18:13:35 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:17:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,7 @@
 
 static int	render_frame(void)
 {
-	t_game	*game;
-
-	minimap_loop();
-	game = get_game();
-	if (game->player.move[0] == FALSE)
-	{
-		update_position(&game->player.position.y, &game->player.axis.y, -1);
-	}
-	if (game->player.move[1] == FALSE)
-	{
-		update_position(&game->player.position.x, &game->player.axis.x, +1);
-	}
-	return (delay(10), SUCCESS);
+	return (minimap_loop(), update_position(), SUCCESS);
 }
 
 static void	init_img(void)
@@ -38,9 +26,9 @@ static void	init_img(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		if (!game->img->direction[i])
+		if (!game->img->dir_syml[i])
 			error_controller("Texture path is not found.", NULL);
-		game->img->direction[i] = open_xpm(game->img->direction[i]);
+		game->img->dir_syml[i] = open_xpm(game->img->dir_syml[i]);
 		i++;
 	}
 }
@@ -54,8 +42,8 @@ void	init_game(void)
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
 	init_img();
 	mlx_loop_hook(game->mlx, render_frame, NULL);
-	mlx_hook(game->win, KEY_RELEASE, 1L << 1, key_release_handler, game);
-	mlx_hook(game->win, KEY_PRESS, 1L << 0, key_press_handler, game);
+	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
+	mlx_hook(game->win, 3, 1L << 1, key_release_handler, game);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, game);
 	mlx_loop(game->mlx);
 }

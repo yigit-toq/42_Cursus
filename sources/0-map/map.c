@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/22 14:56:38 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:01:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static void	object_counter(int x, int y)
 
 	game = get_game();
 	m = game->map->map[y];
-	p = m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST;
+	p = (m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST);
 	if (p == TRUE)
 	{
 		game->count.player++;
-		game->player.position.x = (x * M_SIZE) + (M_SIZE / 2);
-		game->player.position.y = (y * M_SIZE) + (M_SIZE / 2);
+		game->player.position.x = x;
+		game->player.position.y = y;
 		game->player.direction = m[x];
 	}
 	else if (m[x] == WALL)

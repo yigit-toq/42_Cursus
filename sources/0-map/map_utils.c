@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/22 15:06:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:18:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	path_handler(char *line, char **names)
 			}
 			else
 			{
-				game->img->direction[i] = wspace_trim(line + len);
+				game->img->dir_syml[i] = wspace_trim(line + len);
 			}
 			break ;
 		}
@@ -68,7 +68,7 @@ int	path_handler(char *line, char **names)
 	return (wspace_trim(line)[0] != WALL);
 }
 
-void	path_control(void)
+int	path_control(void)
 {
 	static char	*names[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	char		**file;
@@ -84,4 +84,5 @@ void	path_control(void)
 	}
 	get_game()->map->map = file;
 	error_controller("Map is not found.", *file);
+	return (SUCCESS);
 }

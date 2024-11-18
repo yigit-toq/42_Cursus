@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 18:12:20 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:02:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,38 +19,38 @@ void	minimap(void)
 {
 	t_game	*game;
 	t_coord	coord;
+	t_coord	posit;
 
 	ft_bzero(&coord, sizeof(t_coord));
 	game = get_game();
-	game->map->size.x = M_SIZE;
-	game->map->size.y = M_SIZE;
+	game->map->scale.x = MINIMAP;
+	game->map->scale.y = MINIMAP;
 	while (coord.y < game->map->height)
 	{
 		coord.x = 0;
 		while (coord.x < game->map->width)
 		{
 			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
-				draw_rectangle(coord, game->map->size, H_W);
+				draw_rectangle(coord, game->map->scale, H_W);
 			else
-				draw_rectangle(coord, game->map->size, H_B);
+				draw_rectangle(coord, game->map->scale, H_B);
 			coord.x++;
 		}
 		coord.y++;
 	}
+	posit.x = (game->player.position.x * game->map->scale.x) + (game->map->scale.x / 2);
+	posit.y = (game->player.position.y * game->map->scale.y) + (game->map->scale.y / 2);
+	draw_circle(posit, game->map->scale, H_R);
 }
 
 void	minimap_loop(void)
 {
 	t_game	*game;
-	t_coord	size;
 
 	game = get_game();
-	if (game->map->map_hl == FALSE)
+	if (game->map->is_map == FALSE)
 	{
 		return ;
 	}
 	minimap();
-	size.x = game->map->size.x;
-	size.y = game->map->size.y;
-	draw_circle(game->player.position, size, H_R);
 }

@@ -6,12 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 18:14:55 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 17:05:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <stdio.h>
 
 void	draw_rectangle(t_coord coord, t_coord size, int color)
 {

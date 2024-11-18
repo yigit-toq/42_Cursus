@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/11/14 15:31:56 by ytop             ###   ########.fr        #
+#    Updated: 2024/11/18 14:15:10 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,7 +113,7 @@ $(BONUS)		:	$(MLX) $(LIBFT) $(B_OBJS)
 $(LIBFT)		:
 					@if [ ! -d $(LIBFT_DIR) ]; then													\
 						echo "libft directory not found...";										\
-						git clone -b 0-libft $(LIBFT_REPO) $(LIBFT_DIR);							\
+						git clone -b 00-libft $(LIBFT_REPO) $(LIBFT_DIR);							\
 					fi; 																			\
 					$(LIBFT_MAKE)	all
 

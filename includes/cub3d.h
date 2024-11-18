@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 18:11:58 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:19:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,45 +22,35 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define C_Y		"\033[33m"
-# define C_G		"\033[32m"
-# define C_R		"\033[31m"
-# define C_E		"\033[0m"
+# define C_E			"\033[0m"
+# define C_R			"\033[31m"
+# define C_G			"\033[32m"
+# define C_Y			"\033[33m"
 
-# define H_B		0x00000000
-# define H_W		0x00FFFFFF
-# define H_R		0x00FF0000
+# define H_B			0x00000000
+# define H_W			0x00FFFFFF
+# define H_R			0x00FF0000
 
-# define NAME		"Cub3D"
+# define PI				3.14159265
 
-# define PI				3.14159265359
+# define NAME			"Cub3D"
 
-# define KEY_PRESS		2
-# define KEY_RELEASE	3
+# define WIDTH			2560
+# define HEIGHT			1440
 
-# define DESTROY		17
+# define MAX_SPEED		0.5
 
-# define RESIZE			25
-
-# define WIDTH			1280
-# define HEIGHT			720
-
-# define MAX_SPEED		5.0
-# define SPEED			2.0
-
-# define FRICTION		0.1
-
+# define SPEED			0.1
 # define ROTATE			0.1
+# define FRICTION		0.1
 
 # define P_COUNT		1
 
+# define TRUE			1
+# define FALSE			0
+
 # define SUCCESS		0
 # define FAILURE		1
-
-# define FALSE			0
-# define TRUE			1
-
-# define M_SIZE			32
 
 # define MAX_PATH		4
 
@@ -72,6 +62,9 @@
 # define WALL			'1'
 # define FLOOR			'0'
 
+# define DESTROY		17
+# define MINIMAP		32
+
 typedef struct s_coord
 {
 	double		x;
@@ -80,39 +73,38 @@ typedef struct s_coord
 
 typedef struct s_wall
 {
-	int			start;
 	int			end;
+	int			start;
 	int			height;
 }				t_wall;
 
 typedef struct s_ray
 {
+	double		dist;
+	t_wall		wall;
 	t_coord		ray;
 	t_coord		dir;
 	t_coord		side;
-	t_coord		delta;
 	t_coord		step;
+	t_coord		delta;
 	t_coord		plane;
-	t_wall		wall;
-	double		dist;
-	int			side_hit;
 }				t_ray;
 
 typedef struct s_img
 {
-	int			width;
-	int			height;
+	int			w_s;
+	int			h_s;
 	int			colors[2][3];
-	void		*direction[4];
+	void		*dir_syml[4];
 }				t_img;
 
 typedef struct s_player
 {
-	int			move[2];
 	char		direction;
+	double		move[2];
 	double		theta;
-	t_coord		position;
 	t_coord		axis;
+	t_coord		position;
 }				t_player;
 
 typedef struct s_count
@@ -124,11 +116,11 @@ typedef struct s_count
 
 typedef struct s_map
 {
-	int			map_hl;
+	char		**map;
+	int			is_map;
 	int			height;
 	int			width;
-	t_coord		size;
-	char		**map;
+	t_coord		scale;
 }				t_map;
 
 typedef struct s_game
@@ -139,63 +131,52 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
-	int			save;
-	int			load;
 }				t_game;
+
+//int			save;
+//int			load;
 
 t_game	*get_game(void);
 
 void	init_game(void);
 
-// File Functions
+void	minimap_loop(void);
 
-void	path_control(void);
+// Error Controller
+
+void	exten_controller(char *path);
 
 void	files_controller(char *path);
 
-// Error Functions
-
-int		arg_controller(char **argv);
-
-int		exten_controller(char *path);
-
 void	error_controller(char *message, void *pointer);
 
-// Utils Functions
+// Utils Controller
+
+int		path_control(void);
 
 int		open_file(char *path);
 
-int		wspace_check(char c);
+void	*open_xpm(char *path);
 
-void	*open_xpm(char *file);
-
-char	*wspace_trim(char *str);
-
-void	delay(int milliseconds);
-
-// Input Functions
+// Input Controller
 
 int		exit_game(t_game *game);
+
+int		update_position(void);
 
 int		key_press_handler(int key, t_game *game);
 
 int		key_release_handler(int key, t_game *game);
 
-int		update_position(double *position, double *axis, int sign);
-
-// Minimap Functions
-
-void	minimap(void);
-
-void	minimap_loop(void);
-
-// Rendering Functions
-
-void	draw_rectangle(t_coord coord, t_coord size, int color);
+// Render Controller
 
 int		draw_circle(t_coord center, t_coord radius, int color);
 
-void	load_scene(int fd);
+void	draw_rectangle(t_coord coord, t_coord size, int color);
 
-void	save_scene(void);
+// Other Controller
+
+int		wspace_check(char c);
+
+char	*wspace_trim(char *str);
 #endif

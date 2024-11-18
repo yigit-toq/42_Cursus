@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 14:28:35 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:16:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	*open_xpm(char *path)
 	void	*xpm;
 
 	img = get_game()->img;
-	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->width, &img->height);
+	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->w_s, &img->h_s);
 	if (!xpm)
 	{
 		error_controller("Invalid texture file.", NULL);

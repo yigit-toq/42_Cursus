@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 14:23:22 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 18:15:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,34 @@
 // 	return (SUCCESS);
 // }
 
-int	input_system(double forward, double strafe, double acceleration)
+static int	update_axis(double *position, double *axis, int sign);
+
+static int	input_systm(double forward, double strafe);
+
+int	update_position(void)
 {
 	t_game	*game;
-	t_coord	forw;
-	t_coord	side;
+	int		dr[2];
 
 	game = get_game();
-	(void)acceleration;
-	side.x = -sin(game->player.theta);
-	side.y = +cos(game->player.theta);
-	forw.x = +cos(game->player.theta);
-	forw.y = +sin(game->player.theta);
-	game->player.position.x += +strafe * SPEED * side.x;
-	game->player.position.y += +strafe * SPEED * side.y;
-	game->player.position.x += forward * SPEED * forw.x;
-	game->player.position.y += forward * SPEED * forw.y;
+	if (game->player.move[0] == FALSE)
+	{
+		update_axis(&game->player.position.y, &game->player.axis.y, -1);
+	}
+	if (game->player.move[1] == FALSE)
+	{
+		update_axis(&game->player.position.x, &game->player.axis.x, +1);
+	}
+	dr[0] = game->player.move[0];
+	dr[1] = game->player.move[1];
+	if (dr[0] || dr[1])
+	{
+		input_systm(dr[0], dr[1]);
+	}
 	return (SUCCESS);
 }
 
-int	update_position(double *position, double *axis, int sign)
+static int	update_axis(double *position, double *axis, int sign)
 {
 	if (*axis != 0)
 	{
@@ -104,6 +112,24 @@ int	update_position(double *position, double *axis, int sign)
 	return (SUCCESS);
 }
 
+static int	input_systm(double forward, double strafe)
+{
+	t_game	*game;
+	t_coord	forw;
+	t_coord	side;
+
+	game = get_game();
+	side.x = -sin(game->player.theta);
+	side.y = +cos(game->player.theta);
+	forw.x = +cos(game->player.theta);
+	forw.y = +sin(game->player.theta);
+	game->player.position.x += +strafe * SPEED * side.x;
+	game->player.position.y += +strafe * SPEED * side.y;
+	game->player.position.x += forward * SPEED * forw.x;
+	game->player.position.y += forward * SPEED * forw.y;
+	return (SUCCESS);
+}
+
 int	key_press_handler(int key, t_game *game)
 {
 	if (key == RIGHT)
@@ -111,13 +137,13 @@ int	key_press_handler(int key, t_game *game)
 	if (key == LEFT)
 		game->player.theta -= ROTATE;
 	if (key == W)
-		input_system(+1, 0, +SPEED / 10);
+		game->player.move[0] = +1;
 	if (key == S)
-		input_system(-1, 0, -SPEED / 10);
+		game->player.move[0] = -1;
 	if (key == D)
-		input_system(0, +1, +SPEED / 10);
+		game->player.move[1] = +1;
 	if (key == A)
-		input_system(0, -1, -SPEED / 10);
+		game->player.move[1] = -1;
 	if (game->player.theta < 0)
 	{
 		game->player.theta += 2 * PI;
@@ -146,7 +172,7 @@ int	key_release_handler(int key, t_game *game)
 	}
 	if (key == M)
 	{
-		game->map->map_hl = !game->map->map_hl;
+		game->map->is_map = !game->map->is_map;
 	}
 	return (SUCCESS);
 }
@@ -156,13 +182,13 @@ int	exit_game(t_game *game)
 	int		i;
 
 	i = 0;
-	game = get_game();
 	mlx_destroy_window(game->mlx, game->win);
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->direction[i]);
+		mlx_destroy_image(game->mlx, game->img->dir_syml[i]);
 		i++;
 	}
-	save_scene();
 	exit(EXIT_SUCCESS);
 }
+
+// save_scene();

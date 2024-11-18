@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/15 18:05:58 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/18 17:20:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_game	*get_game(void)
 
 int	main(int argc, char **argv)
 {
-	if (argc < 2)
+	if (argc != 2)
 	{
 		error_controller("Usage: ./cub3d <map.cub>", NULL);
 	}
@@ -37,9 +37,10 @@ int	main(int argc, char **argv)
 	{
 		get_game();
 		argv++;
-		argv += arg_controller(argv);
 		exten_controller(*argv);
 		files_controller(*argv);
 	}
 	return (init_game(), EXIT_SUCCESS);
 }
+
+//argv += arg_controller(argv);
