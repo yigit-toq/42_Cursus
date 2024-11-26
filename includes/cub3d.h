@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 18:19:24 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/26 16:49:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,16 @@ typedef struct s_img
 	void		*dir_syml[4];
 }				t_img;
 
+typedef struct s_data
+{
+	t_coord		size;
+	void		*img;
+	char		*addr;
+	int			bit_pp;
+	int			length;
+	int			endian;
+}				t_data;
+
 typedef struct s_player
 {
 	char		direction;
@@ -172,7 +182,9 @@ int		key_release_handler(int key, t_game *game);
 
 int		draw_circle(t_coord center, t_coord radius, int color);
 
-void	draw_rectangle(t_coord coord, t_coord size, int color);
+void	draw_rectangle(t_coord center, t_coord size, int color);
+
+void	draw_line(t_coord pos, double theta, double range, int color);
 
 // Other Controller
 

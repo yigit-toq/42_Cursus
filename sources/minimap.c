@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:52 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/26 16:51:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	minimap(void)
 	posit.x = (game->player.position.x * game->map->scale.x) + (game->map->scale.x / 2);
 	posit.y = (game->player.position.y * game->map->scale.y) + (game->map->scale.y / 2);
 	draw_circle(posit, game->map->scale, H_R);
+	draw_line(posit, game->player.theta, 100, H_W);
 }
 
 void	minimap_loop(void)

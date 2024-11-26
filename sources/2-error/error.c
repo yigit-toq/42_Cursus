@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 17:21:11 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/26 16:23:28 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exten_controller(char *path)
 {
 	char	*extension;
+
 	extension = ft_strrchr(path, '.');
 	if (!extension)
 		error_controller("Wrong format.", NULL);

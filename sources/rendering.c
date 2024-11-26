@@ -6,30 +6,56 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 17:05:13 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/26 16:39:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_rectangle(t_coord coord, t_coord size, int color)
+void	draw_line(t_coord pos, double theta, double range, int color)
 {
 	t_game	*game;
-	t_coord	s_i;
+	double	steps;
+	int		index;
+	t_coord	coord;
+	t_coord	end;
 
 	game = get_game();
-	coord.x *= size.x;
-	coord.y *= size.y;
-	ft_bzero(&s_i, sizeof(t_coord));
-	while (s_i.y < size.y)
+	index = 0;
+	end.x = pos.x + range * cos(theta);
+	end.y = pos.y + range * sin(theta);
+	coord.x = end.x - pos.x;
+	coord.y = end.y - pos.y;
+	steps = fmax(fabs(coord.x), fabs(coord.y));
+	coord.x = coord.x / steps;
+	coord.y = coord.y / steps;
+	while (index <= (int)steps)
 	{
-		s_i.x = 0;
-		while (s_i.x < size.x)
+		mlx_pixel_put(game->mlx, game->win, (int)pos.x, (int)pos.y, color);
+		pos.x += coord.x;
+		pos.y += coord.y;
+		index++;
+	}
+}
+
+void	draw_rectangle(t_coord center, t_coord size, int color)
+{
+	t_game	*game;
+	t_coord	pos;
+
+	game = get_game();
+	center.x *= size.x;
+	center.y *= size.y;
+	ft_bzero(&pos, sizeof(t_coord));
+	while (pos.y < size.y)
+	{
+		pos.x = 0;
+		while (pos.x < size.x)
 		{
-			mlx_pixel_put(game->mlx, game->win, coord.x + s_i.x, coord.y + s_i.y, color);
-			s_i.x++;
+			mlx_pixel_put(game->mlx, game->win, center.x + pos.x, center.y + pos.y, color);
+			pos.x++;
 		}
-		s_i.y++;
+		pos.y++;
 	}
 }
 
@@ -37,8 +63,8 @@ int	draw_circle(t_coord center, t_coord radius, int color)
 {
 	t_game	*game;
 	t_coord	pos;
-	t_coord	rds;
 	t_coord	rot;
+	t_coord	rds;
 
 	game = get_game();
 	radius.x /= 2;
