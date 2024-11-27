@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/26 16:34:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 13:36:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@
 
 static int	update_axis(double *position, double *axis, int sign);
 
-static int	input_systm(double forward, double strafe);
+static int	input_systm(double h_move, double v_move);
 
 int	update_position(void)
 {
@@ -112,7 +112,7 @@ static int	update_axis(double *position, double *axis, int sign)
 	return (SUCCESS);
 }
 
-static int	input_systm(double forward, double strafe)
+static int	input_systm(double h_move, double v_move)
 {
 	t_game	*game;
 	t_coord	forw;
@@ -123,10 +123,10 @@ static int	input_systm(double forward, double strafe)
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
-	game->player.position.x += +strafe * SPEED * side.x;
-	game->player.position.y += +strafe * SPEED * side.y;
-	game->player.position.x += forward * SPEED * forw.x;
-	game->player.position.y += forward * SPEED * forw.y;
+	game->player.position.x += v_move * SPEED * side.x;
+	game->player.position.y += v_move * SPEED * side.y;
+	game->player.position.x += h_move * SPEED * forw.x;
+	game->player.position.y += h_move * SPEED * forw.y;
 	return (SUCCESS);
 }
 

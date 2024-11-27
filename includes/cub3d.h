@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/26 16:49:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 18:03:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@
 
 # define NAME			"Cub3D"
 
+# define FOV			60
+
 # define WIDTH			2560
 # define HEIGHT			1440
 
-# define MAX_SPEED		0.5
+# define MAX_SPEED		1.0
 
-# define SPEED			0.1
+# define SPEED			0.2
 # define ROTATE			0.1
 # define FRICTION		0.1
 
@@ -63,6 +65,7 @@
 # define FLOOR			'0'
 
 # define DESTROY		17
+
 # define MINIMAP		32
 
 typedef struct s_coord
@@ -82,7 +85,7 @@ typedef struct s_ray
 {
 	double		dist;
 	t_wall		wall;
-	t_coord		ray;
+	t_coord		pos;
 	t_coord		dir;
 	t_coord		side;
 	t_coord		step;
@@ -104,16 +107,18 @@ typedef struct s_data
 	void		*img;
 	char		*addr;
 	int			bit_pp;
-	int			length;
 	int			endian;
+	int			length;
 }				t_data;
 
 typedef struct s_player
 {
 	char		direction;
 	double		move[2];
+	double		speed;
 	double		theta;
 	t_coord		axis;
+	t_coord		plane;
 	t_coord		position;
 }				t_player;
 
@@ -130,7 +135,7 @@ typedef struct s_map
 	int			is_map;
 	int			height;
 	int			width;
-	t_coord		scale;
+	t_coord		size;
 }				t_map;
 
 typedef struct s_game
@@ -191,4 +196,11 @@ void	draw_line(t_coord pos, double theta, double range, int color);
 int		wspace_check(char c);
 
 char	*wspace_trim(char *str);
+
+// Raycasting Controller
+
+int		raycast(void);
+
+void	draw_ray(t_coord pos, double theta, int color);
+
 #endif

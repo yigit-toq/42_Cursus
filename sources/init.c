@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/26 16:36:56 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 16:29:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 static int	render_frame(void)
 {
-	return (minimap_loop(), update_position(), SUCCESS);
+	t_game	*game;
+
+	game = get_game();
+	update_position();
+	if (game->player.move[0] || game->player.move[1])
+		raycast();
+	return (minimap_loop(), SUCCESS);
 }
 
 static void	init_img(void)

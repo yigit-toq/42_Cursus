@@ -6,13 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 18:01:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 13:27:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// Karakter pozisyonu güncellenecek.
 
 static void	object_counter(int x, int y)
 {
@@ -65,7 +63,7 @@ static void	map_controls(void)
 		y++;
 	}
 	game->map->height = y;
-	if (!game->count.player)
+	if (game->count.player == FALSE)
 		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
 		error_controller("There can be only one player.", NULL);

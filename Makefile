@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/11/18 14:15:10 by ytop             ###   ########.fr        #
+#    Updated: 2024/11/27 15:39:03 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ INC_DIR			=	./includes/
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS			=	$(SRCS_DIR)cub3d.c $(SRCS_DIR)init.c $(SRCS_DIR)input_system.c $(SRCS_DIR)minimap.c $(SRCS_DIR)rendering.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
+SRCS			=	$(SRCS_DIR)cub3d.c $(SRCS_DIR)init.c $(SRCS_DIR)raycasting.c $(SRCS_DIR)input_system.c $(SRCS_DIR)minimap.c $(SRCS_DIR)rendering.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
 
 M_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 

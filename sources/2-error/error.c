@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/26 16:23:28 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 13:32:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	error_controller(char *message, void *pointer)
 // {
 // 	t_game	*game;
 // 	int		i;
-
+//
 // 	i = 0;
 // 	game = get_game();
 // 	while (argv[i + 1] && arg_check(argv[i]))
@@ -85,7 +85,7 @@ void	error_controller(char *message, void *pointer)
 // int	exten_controller(char *path)
 // {
 // 	char	*extension;
-
+//
 // 	extension = ft_strrchr(path, '.');
 // 	if (!extension)
 // 		return (0);

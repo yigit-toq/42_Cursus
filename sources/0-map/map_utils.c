@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 18:18:24 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 13:20:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,5 @@ int	path_control(void)
 		file++;
 	}
 	get_game()->map->map = file;
-	error_controller("Map is not found.", *file);
-	return (SUCCESS);
+	return (error_controller("Map is not found.", *file), SUCCESS);
 }

@@ -6,26 +6,44 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/26 16:39:55 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 17:00:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	draw_ray(t_coord pos, double theta, int color)
+{
+	t_game	*game;
+	t_coord	coord;
+
+	game = get_game();
+	coord.x = cos(theta);
+	coord.y = sin(theta);
+	while (TRUE)
+	{
+		mlx_pixel_put(game->mlx, game->win, (int)pos.x, (int)pos.y, color);
+		pos.x += coord.x;
+		pos.y += coord.y;
+		if (pos.x < 0 || pos.x >= WIDTH || pos.y < 0 || pos.y >= HEIGHT)
+			break;
+	}
+}
+
 void	draw_line(t_coord pos, double theta, double range, int color)
 {
 	t_game	*game;
+	t_coord	coord;
+	t_coord	limit;
 	double	steps;
 	int		index;
-	t_coord	coord;
-	t_coord	end;
 
 	game = get_game();
 	index = 0;
-	end.x = pos.x + range * cos(theta);
-	end.y = pos.y + range * sin(theta);
-	coord.x = end.x - pos.x;
-	coord.y = end.y - pos.y;
+	limit.x = pos.x + range * cos(theta);
+	limit.y = pos.y + range * sin(theta);
+	coord.x = limit.x - pos.x;
+	coord.y = limit.y - pos.y;
 	steps = fmax(fabs(coord.x), fabs(coord.y));
 	coord.x = coord.x / steps;
 	coord.y = coord.y / steps;

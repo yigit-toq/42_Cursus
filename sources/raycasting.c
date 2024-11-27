@@ -3,11 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/10/29 10:13:20 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 17:08:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	raycast(void)
+{
+	t_game	*game;
+
+	return (game = get_game(), SUCCESS);
+}

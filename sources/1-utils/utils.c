@@ -6,12 +6,51 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/18 18:16:39 by ytop             ###   ########.fr       */
+/*   Updated: 2024/11/27 13:29:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <sys/time.h>
+
+void	delay(int ms)
+{
+	struct timeval	time[2];
+	long long int	c_time;
+	long long int	t_time;
+
+	gettimeofday(&time[0], NULL);
+	gettimeofday(&time[1], NULL);	
+	t_time = time[0].tv_sec * 1000 + time[0].tv_usec / 1000 + ms;
+	c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
+	while (c_time < t_time)
+	{
+		gettimeofday(&time[1], NULL);
+		c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
+	}
+}
+
+void	*open_xpm(char *path)
+{
+	t_img	*img;
+	void	*xpm;
+
+	img = get_game()->img;
+	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->w_s, &img->h_s);
+	return (error_controller("Invalid texture file.", xpm), xpm);
+}
+
+int	open_file(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		error_controller("Failed to open file.", NULL);
+	}
+	return (fd);
+}
 
 int	wspace_check(char c)
 {
@@ -38,48 +77,4 @@ char	*wspace_trim(char *str)
 		len--;
 	}
 	return (ft_substr(str, 0, len));
-}
-
-void	*open_xpm(char *path)
-{
-	t_img	*img;
-	void	*xpm;
-
-	img = get_game()->img;
-	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->w_s, &img->h_s);
-	if (!xpm)
-	{
-		error_controller("Invalid texture file.", NULL);
-	}
-	return (xpm);
-}
-
-int	open_file(char *path)
-{
-	int	fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		error_controller("Failed to open file.", NULL);
-	}
-	return (fd);
-}
-
-void	delay(int milliseconds)
-{
-	long long int	current_time;
-	long long int	target_time;
-	struct timeval	start;
-	struct timeval	end;
-
-	gettimeofday(&start, NULL);
-	gettimeofday(&end, NULL);
-	current_time = end.tv_sec * 1000 + end.tv_usec / 1000;
-	target_time = start.tv_sec * 1000 + start.tv_usec / 1000 + milliseconds;
-	while (current_time < target_time)
-	{
-		gettimeofday(&end, NULL);
-		current_time = end.tv_sec * 1000 + end.tv_usec / 1000;
-	}
 }
