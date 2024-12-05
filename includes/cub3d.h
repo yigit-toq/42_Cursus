@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/27 18:03:01 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/05 14:57:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 
 # define FOV			60
 
-# define WIDTH			2560
-# define HEIGHT			1440
+# define WIDTH			1920
+# define HEIGHT			1080
 
 # define MAX_SPEED		1.0
 
@@ -46,13 +46,15 @@
 # define ROTATE			0.1
 # define FRICTION		0.1
 
+# define DESTROY		17
+
 # define P_COUNT		1
 
 # define TRUE			1
 # define FALSE			0
 
-# define SUCCESS		0
 # define FAILURE		1
+# define SUCCESS		0
 
 # define MAX_PATH		4
 
@@ -64,9 +66,7 @@
 # define WALL			'1'
 # define FLOOR			'0'
 
-# define DESTROY		17
-
-# define MINIMAP		32
+# define TILE			32
 
 typedef struct s_coord
 {
