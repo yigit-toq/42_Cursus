@@ -6,12 +6,17 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/27 13:29:33 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/05 16:39:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <sys/time.h>
+
+double	grid_to_center(double grid, double scale, double pivot)
+{
+	return (grid * scale + (scale / 2) + pivot);
+}
 
 void	delay(int ms)
 {

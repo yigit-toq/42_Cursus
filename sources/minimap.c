@@ -6,32 +6,35 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 15:28:30 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/05 16:54:16 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//HEIGHT / game->map->height;
-//WIDTH / game->map->width;
+void	draw_point(t_game *game, t_coord pos, t_coord angle, int color)
+{
+	t_size	dir;
 
-void draw_asc(t_game *game, int x0, int y0, int x1, int y1, int color) {
-    int dx = abs(x1 - x0);
-    int dy = abs(y1 - y0);
-    int sx = (x0 < x1) ? 1 : -1;
-    int sy = (y0 < y1) ? 1 : -1;
-    int err = dx - dy;
+	dir.x = abs((int)angle.x - (int)pos.x);
+	dir.y = abs((int)angle.y - (int)pos.y);
+	int sx = (pos.x < angle.x) ? 1 : -1;
+	int sy = (pos.y < angle.y) ? 1 : -1;
+	int err = dir.x - dir.y;
 
-    while (x0 != x1 || y0 != y1) {
-        mlx_pixel_put(game->mlx, game->win, x0, y0, color);
+	while (pos.x != angle.x || pos.y != angle.y)
+	{
+        mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
         int e2 = 2 * err;
-        if (e2 > -dy) {
-            err -= dy;
-            x0 += sx;
+        if (e2 > -dir.y)
+		{
+            err -= dir.y;
+            pos.x += sx;
         }
-        if (e2 < dx) {
-            err += dx;
-            y0 += sy;
+        if (e2 < dir.x)
+		{
+            err += dir.x;
+            pos.y += sy;
         }
     }
 }
@@ -67,11 +70,11 @@ void	draw_rays_in_pov(t_coord pos, double theta)
 			ray.x += dir.x;
 			ray.y += dir.y;
 
-			int map_x = (int)(ray.x / TILE / 4);
-            int map_y = (int)(ray.y / TILE / 4);
+			int map_x = (int)(ray.x / game->map->scale.x);
+            int map_y = (int)(ray.y / game->map->scale.y);
 			if (game->map->map[map_x][map_y] == WALL)
 			{
-				draw_asc(game, pos.x, pos.y, ray.x, ray.y, H_R);
+				draw_point(game, pos, ray, H_R);
 				break ;
 			}
 		}
@@ -84,7 +87,7 @@ void	draw_player(void)
 	t_game	*game;
 
 	game = get_game();
-	draw_circle(game->player.plane, game->map->size, H_R);
+	draw_circle(game->player.plane, game->map->scale, H_R);
 
 	draw_rays_in_pov(game->player.plane, game->player.theta);
 }
@@ -94,21 +97,17 @@ void	minimap(void)
 	t_game	*game;
 	t_coord	coord;
 
-	ft_bzero(&coord, sizeof(t_coord));
 	game = get_game();
-	game->map->size.x = TILE * 2;
-	game->map->size.y = TILE * 2;
-	game->player.plane.x = (game->player.position.x * game->map->size.x) + (game->map->size.x / 2);
-	game->player.plane.y = (game->player.position.y * game->map->size.y) + (game->map->size.y / 2);
-	while (coord.y < game->map->height)
+	coord.y = game->map->pivot.y;
+	while (coord.y < game->map->size.y + game->map->pivot.y)
 	{
-		coord.x = 0;
-		while (coord.x < game->map->width)
+		coord.x = game->map->pivot.x;
+		while (coord.x < game->map->size.x)
 		{
 			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
-				draw_rectangle(coord, game->map->size, H_W);
+				draw_rectangle(coord, game->map->scale, H_W);
 			else
-				draw_rectangle(coord, game->map->size, H_B);
+				draw_rectangle(coord, game->map->scale, H_B);
 			coord.x++;
 		}
 		coord.y++;

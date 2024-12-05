@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/27 13:27:40 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/05 16:43:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ static void	map_controls(void)
 			object_counter(x, y);
 			x++;
 		}
-		if (game->map->width < x)
-			game->map->width = x;
+		if (game->map->size.x < x)
+			game->map->size.x = x;
 		y++;
 	}
-	game->map->height = y;
+	game->map->size.y = y;
 	if (game->count.player == FALSE)
 		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
@@ -90,7 +90,14 @@ static void	reading_file(int fd)
 
 void	files_controller(char *path)
 {
+	t_game	*game;
+
 	reading_file(open_file(path));
 	path_control();
 	map_controls();
+	game = get_game();
+	game->map->scale.x = (WIDTH / game->map->size.x) / 2;
+	game->map->scale.y = (HEIGHT / game->map->size.y) / 2;
+	game->map->pivot.x = 0;
+	game->map->pivot.y = 0;
 }

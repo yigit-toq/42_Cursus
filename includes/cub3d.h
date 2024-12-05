@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 14:57:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/05 16:52:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@
 
 # define FOV			60
 
-# define WIDTH			1920
-# define HEIGHT			1080
+# define WIDTH			1000
+# define HEIGHT			600
 
 # define MAX_SPEED		1.0
 
-# define SPEED			0.2
+# define SPEED			0.1
 # define ROTATE			0.1
 # define FRICTION		0.1
 
@@ -73,6 +73,13 @@ typedef struct s_coord
 	double		x;
 	double		y;
 }				t_coord;
+
+typedef struct s_size
+{
+	int			x;
+	int			y;
+}				t_size;
+
 
 typedef struct s_wall
 {
@@ -133,8 +140,8 @@ typedef struct s_map
 {
 	char		**map;
 	int			is_map;
-	int			height;
-	int			width;
+	t_coord		pivot;
+	t_coord		scale;
 	t_coord		size;
 }				t_map;
 
@@ -172,6 +179,8 @@ int		path_control(void);
 int		open_file(char *path);
 
 void	*open_xpm(char *path);
+
+double	grid_to_center(double grid, double scale, double pivot);
 
 // Input Controller
 
