@@ -32,9 +32,9 @@ static void	init_img(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		if (!game->img->dir_syml[i])
+		if (!game->img->dir_symbl[i].img)
 			error_controller("Texture path is not found.", NULL);
-		game->img->dir_syml[i] = open_xpm(game->img->dir_syml[i]);
+		game->img->dir_symbl[i] = open_xpm(game->img->dir_symbl[i].img);
 		i++;
 	}
 }
@@ -47,6 +47,8 @@ void	init_game(void)
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
 	init_img();
+	game->img->hex[0] = rgb_to_hex(game->img->colors[0][0], game->img->colors[0][1], game->img->colors[0][2]);
+	game->img->hex[1] = rgb_to_hex(game->img->colors[1][0], game->img->colors[1][1], game->img->colors[1][2]);
 	mlx_loop_hook(game->mlx, render_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_release_handler, game);

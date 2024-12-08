@@ -12,31 +12,39 @@
 
 #include "cub3d.h"
 
-void	draw_point(t_game *game, t_coord pos, t_coord angle, int color)
+void	draw_hit(t_game *game, t_size start, t_size curr, int color)
 {
+	t_size	step;
 	t_size	dir;
+	int		err;
+	int		e2;
 
-	dir.x = abs((int)angle.x - (int)pos.x);
-	dir.y = abs((int)angle.y - (int)pos.y);
-	int sx = (pos.x < angle.x) ? 1 : -1;
-	int sy = (pos.y < angle.y) ? 1 : -1;
-	int err = dir.x - dir.y;
-
-	while (pos.x != angle.x || pos.y != angle.y)
+	dir.x = abs(curr.x - start.x);
+	dir.y = abs(curr.y - start.y);
+	if (start.x < curr.x)
+		step.x = +1;
+	else
+		step.x = -1;
+	if (start.y < curr.y)
+		step.y = +1;
+	else
+		step.y = -1;
+	err = dir.x - dir.y;
+	while (start.x != curr.x || start.y != curr.y)
 	{
-        mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
-        int e2 = 2 * err;
-        if (e2 > -dir.y)
+		mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
+		e2 = 2 * err;
+		if (e2 < dir.x)
 		{
-            err -= dir.y;
-            pos.x += sx;
-        }
-        if (e2 < dir.x)
+			err += dir.x;
+			start.y += step.y;
+		}
+		if (e2 > -dir.y)
 		{
-            err += dir.x;
-            pos.y += sy;
-        }
-    }
+			err -= dir.y;
+			start.x += step.x;
+		}
+	}
 }
 
 void	draw_rays_in_pov(t_coord pos, double theta)
@@ -46,35 +54,29 @@ void	draw_rays_in_pov(t_coord pos, double theta)
 	double	limit;
 	t_coord	ray;
 	t_coord	dir;
+	t_size	map;
 
-	(void)dir;
 	game = get_game();
 	angle = theta * (180 / PI) - (FOV / 2);
-    limit = theta * (180 / PI) + (FOV / 2);
+	limit = theta * (180 / PI) + (FOV / 2);
 	while (angle <= limit)
 	{
 		ray.x = pos.x;
 		ray.y = pos.y;
-
 		double ray_angle = fmod(angle, 360);
 		if (ray_angle < 0)
 			ray_angle += 360.0;
-
 		dir.x = cos(ray_angle * (PI / 180));
 		dir.y = sin(ray_angle * (PI / 180));
-
-		// draw_ray(pos, ray_angle * (PI / 180) , H_R);
-
 		while (TRUE)
 		{
 			ray.x += dir.x;
 			ray.y += dir.y;
-
-			int map_x = (int)(ray.x / game->map->scale.x);
-            int map_y = (int)(ray.y / game->map->scale.y);
-			if (game->map->map[map_x][map_y] == WALL)
+			map.x = (int)(ray.x / game->map->scale.x);
+            map.y = (int)(ray.y / game->map->scale.y);
+			if (game->map->map[map.y][map.x] == WALL)
 			{
-				draw_point(game, pos, ray, H_R);
+				draw_hit(game, (t_size){pos.x, pos.y}, (t_size){ray.x, ray.y}, H_G);
 				break ;
 			}
 		}
@@ -102,12 +104,12 @@ void	minimap(void)
 	while (coord.y < game->map->size.y + game->map->pivot.y)
 	{
 		coord.x = game->map->pivot.x;
-		while (coord.x < game->map->size.x)
+		while (coord.x < game->map->size.x + game->map->pivot.x)
 		{
 			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
 				draw_rectangle(coord, game->map->scale, H_W);
 			else
-				draw_rectangle(coord, game->map->scale, H_B);
+				draw_rectangle(coord, game->map->scale, H_Y);
 			coord.x++;
 		}
 		coord.y++;

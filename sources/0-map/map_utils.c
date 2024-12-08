@@ -53,13 +53,13 @@ int	path_handler(char *line, char **names)
 		len = ft_strlen(names[i]);
 		if (!ft_strncmp(line, names[i], len))
 		{
-			if (len == 1)
+			if (len != 1)
 			{
-				set_rgb_color(game->img->colors[i - 4], line + len);
+				game->img->dir_symbl[i].img = wspace_trim(line + len);
 			}
 			else
 			{
-				game->img->dir_syml[i] = wspace_trim(line + len);
+				set_rgb_color(game->img->colors[i - 4], line + len);
 			}
 			break ;
 		}

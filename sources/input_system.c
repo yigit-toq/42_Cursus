@@ -117,17 +117,21 @@ static int	input_systm(double h_move, double v_move)
 	t_game	*game;
 	t_coord	forw;
 	t_coord	side;
+	t_coord	pos;
 
 	game = get_game();
+	pos = game->player.position;
 	side.x = -sin(game->player.theta);
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
-	game->player.position.x += v_move * SPEED * side.x;
-	game->player.position.y += v_move * SPEED * side.y;
-	game->player.position.x += h_move * SPEED * forw.x;
-	game->player.position.y += h_move * SPEED * forw.y;
-	return (SUCCESS);
+	pos.x += v_move * SPEED * side.x;
+	pos.y += v_move * SPEED * side.y;
+	pos.x += h_move * SPEED * forw.x;
+	pos.y += h_move * SPEED * forw.y;
+	if (game->map->map[(int)pos.y][(int)pos.x] == WALL)
+		return (FAILURE);
+	return (game->player.position = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)
@@ -173,6 +177,7 @@ int	key_release_handler(int key, t_game *game)
 	if (key == M)
 	{
 		game->map->is_map = !game->map->is_map;
+		raycast();
 	}
 	return (SUCCESS);
 }
@@ -185,7 +190,7 @@ int	exit_game(t_game *game)
 	mlx_destroy_window(game->mlx, game->win);
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir_syml[i]);
+		mlx_destroy_image(game->mlx, game->img->dir_symbl[i].img);
 		i++;
 	}
 	exit(EXIT_SUCCESS);

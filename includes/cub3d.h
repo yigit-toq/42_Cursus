@@ -29,7 +29,9 @@
 
 # define H_B			0x00000000
 # define H_W			0x00FFFFFF
+# define H_Y			0x00FFFF00
 # define H_R			0x00FF0000
+# define H_G			0x0000FF00
 
 # define PI				3.14159265
 
@@ -42,7 +44,7 @@
 
 # define MAX_SPEED		1.0
 
-# define SPEED			0.1
+# define SPEED			0.05
 # define ROTATE			0.1
 # define FRICTION		0.1
 
@@ -80,7 +82,6 @@ typedef struct s_size
 	int			y;
 }				t_size;
 
-
 typedef struct s_wall
 {
 	int			end;
@@ -100,14 +101,6 @@ typedef struct s_ray
 	t_coord		plane;
 }				t_ray;
 
-typedef struct s_img
-{
-	int			w_s;
-	int			h_s;
-	int			colors[2][3];
-	void		*dir_syml[4];
-}				t_img;
-
 typedef struct s_data
 {
 	t_coord		size;
@@ -117,6 +110,15 @@ typedef struct s_data
 	int			endian;
 	int			length;
 }				t_data;
+
+typedef struct s_img
+{
+	int			w_s;
+	int			h_s;
+	int			hex[2];
+	int			colors[2][3];
+	t_data		dir_symbl[4];
+}				t_img;
 
 typedef struct s_player
 {
@@ -142,7 +144,7 @@ typedef struct s_map
 	int			is_map;
 	t_coord		pivot;
 	t_coord		scale;
-	t_coord		size;
+	t_size		size;
 }				t_map;
 
 typedef struct s_game
@@ -174,11 +176,13 @@ void	error_controller(char *message, void *pointer);
 
 // Utils Controller
 
+int		rgb_to_hex(int red, int green, int blue);
+
 int		path_control(void);
 
 int		open_file(char *path);
 
-void	*open_xpm(char *path);
+t_data	open_xpm(char *path);
 
 double	grid_to_center(double grid, double scale, double pivot);
 

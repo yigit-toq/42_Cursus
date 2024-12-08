@@ -18,6 +18,11 @@ double	grid_to_center(double grid, double scale, double pivot)
 	return (grid * scale + (scale / 2) + pivot);
 }
 
+int rgb_to_hex(int red, int green, int blue)
+{
+	return ((red << 16) | (green << 8) | blue);
+}
+
 void	delay(int ms)
 {
 	struct timeval	time[2];
@@ -35,14 +40,20 @@ void	delay(int ms)
 	}
 }
 
-void	*open_xpm(char *path)
+t_data	open_xpm(char *path)
 {
+	t_game	*game;
 	t_img	*img;
-	void	*xpm;
+	t_data	data;
 
-	img = get_game()->img;
-	xpm = mlx_xpm_file_to_image(get_game()->mlx, path, &img->w_s, &img->h_s);
-	return (error_controller("Invalid texture file.", xpm), xpm);
+	game = get_game();
+	img = game->img;
+	ft_memset(&data, 0, sizeof(t_data));
+	data.img = mlx_xpm_file_to_image(game->mlx, path, &img->w_s, &img->h_s);
+	error_controller("Invalid texture file.", data.img);
+	data.addr = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
+	error_controller("Invalid texture data.", data.addr);
+	return (data);
 }
 
 int	open_file(char *path)
