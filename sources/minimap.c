@@ -16,8 +16,8 @@ void	draw_hit(t_game *game, t_size start, t_size curr, int color)
 {
 	t_size	step;
 	t_size	dir;
-	int		err;
-	int		e2;
+	int		ero;
+	int		ert;
 
 	dir.x = abs(curr.x - start.x);
 	dir.y = abs(curr.y - start.y);
@@ -29,84 +29,60 @@ void	draw_hit(t_game *game, t_size start, t_size curr, int color)
 		step.y = +1;
 	else
 		step.y = -1;
-	err = dir.x - dir.y;
+	ero = dir.x - dir.y;
 	while (start.x != curr.x || start.y != curr.y)
 	{
 		mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
-		e2 = 2 * err;
-		if (e2 < dir.x)
+		ert = 2 * ero;
+		if (ert < dir.x)
 		{
-			err += dir.x;
+			ero += dir.x;
 			start.y += step.y;
 		}
-		if (e2 > -dir.y)
+		if (ert > -dir.y)
 		{
-			err -= dir.y;
+			ero -= dir.y;
 			start.x += step.x;
 		}
-	}
-}
-
-void	draw_rays_in_pov(t_coord pos, double theta)
-{
-	t_game	*game;
-	double	angle;
-	double	limit;
-	t_coord	ray;
-	t_coord	dir;
-	t_size	map;
-
-	game = get_game();
-	angle = theta * (180 / PI) - (FOV / 2);
-	limit = theta * (180 / PI) + (FOV / 2);
-	while (angle <= limit)
-	{
-		ray.x = pos.x;
-		ray.y = pos.y;
-		double ray_angle = fmod(angle, 360);
-		if (ray_angle < 0)
-			ray_angle += 360.0;
-		dir.x = cos(ray_angle * (PI / 180));
-		dir.y = sin(ray_angle * (PI / 180));
-		while (TRUE)
-		{
-			ray.x += dir.x;
-			ray.y += dir.y;
-			map.x = (int)(ray.x / game->map->scale.x);
-            map.y = (int)(ray.y / game->map->scale.y);
-			if (game->map->map[map.y][map.x] == WALL)
-			{
-				draw_hit(game, (t_size){pos.x, pos.y}, (t_size){ray.x, ray.y}, H_G);
-				break ;
-			}
-		}
-		angle += 1;
 	}
 }
 
 void	draw_player(void)
 {
 	t_game	*game;
+	int		index;
 
 	game = get_game();
 	draw_circle(game->player.plane, game->map->scale, H_R);
 
-	draw_rays_in_pov(game->player.plane, game->player.theta);
+	index = 0;
+	while (index < FOV / HIT)
+	{
+		draw_hit(game, (t_size){game->player.plane.x, game->player.plane.y}, (t_size){game->rays[index].pos.x, game->rays[index].pos.y}, H_G);
+		index++;
+	}
 }
 
 void	minimap(void)
 {
 	t_game	*game;
 	t_coord	coord;
+	t_coord	limit;
+	int		value;
 
 	game = get_game();
+	limit.x = game->map->size.x + game->map->pivot.x;
+	limit.y = game->map->size.y + game->map->pivot.y;
 	coord.y = game->map->pivot.y;
-	while (coord.y < game->map->size.y + game->map->pivot.y)
+	while (coord.y < limit.y)
 	{
 		coord.x = game->map->pivot.x;
-		while (coord.x < game->map->size.x + game->map->pivot.x)
+		while (coord.x < limit.x)
 		{
-			if (game->map->map[(int)coord.y][(int)coord.x] == WALL)
+			value = game->map->map
+				[(int)(coord.y - game->map->pivot.y)]
+				[(int)(coord.x - game->map->pivot.x)];
+			if (value == WALL)
 				draw_rectangle(coord, game->map->scale, H_W);
 			else
 				draw_rectangle(coord, game->map->scale, H_Y);

@@ -70,6 +70,8 @@
 
 # define TILE			32
 
+# define HIT			1
+
 typedef struct s_coord
 {
 	double		x;
@@ -155,6 +157,7 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
+	t_ray		rays[FOV / HIT];
 }				t_game;
 
 //int			save;
