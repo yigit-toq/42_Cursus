@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 16:18:17 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:54:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = mlx_init();
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, NAME);
+	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, NAME);
 	init_img();
 	game->img->hex[0] = rgb_to_hex(game->img->colors[0][0], game->img->colors[0][1], game->img->colors[0][2]);
 	game->img->hex[1] = rgb_to_hex(game->img->colors[1][0], game->img->colors[1][1], game->img->colors[1][2]);

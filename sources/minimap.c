@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 16:54:16 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:53:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,53 @@ void	draw_hit(t_game *game, t_size start, t_size curr, int color)
 	}
 }
 
-void	draw_player(void)
+static void	rays_in_pov(t_coord pos, double theta)
 {
 	t_game	*game;
+	double	angle;
+	double	limit;
+	t_size	map;
 	int		index;
 
 	game = get_game();
-	draw_circle(game->player.plane, game->map->scale, H_R);
-
+	ft_memset(game->rays, 0, sizeof(t_ray) * (FOV / HIT));
 	index = 0;
-	while (index < FOV / HIT)
+	angle = theta * (180 / PI) - (FOV / 2);
+	limit = theta * (180 / PI) + (FOV / 2);
+	while (angle <= limit)
 	{
-		draw_hit(game, (t_size){game->player.plane.x, game->player.plane.y}, (t_size){game->rays[index].pos.x, game->rays[index].pos.y}, H_G);
+		game->rays[index].pos.x = pos.x;
+		game->rays[index].pos.y = pos.y;
+		double ray_angle = fmod(angle, 360);
+		if (ray_angle < 0)
+			ray_angle = 360;
+		game->rays[index].dir.x = cos(ray_angle * (PI / 180));
+		game->rays[index].dir.y = sin(ray_angle * (PI / 180));
+		while (TRUE)
+		{
+			game->rays[index].pos.x += game->rays[index].dir.x;
+			game->rays[index].pos.y += game->rays[index].dir.y;
+			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, game->map->pivot.x);
+            map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, game->map->pivot.y);
+			if (game->map->map[map.y][map.x] == WALL)
+			{
+				draw_hit(game, (t_size){game->player.plane.x, game->player.plane.y}, (t_size){game->rays[index].pos.x, game->rays[index].pos.y}, H_G);
+				break ;
+			}
+		}
+		angle += HIT;
 		index++;
 	}
+}
+
+void	draw_player(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	draw_circle(game->player.plane, game->map->scale, H_R);
+	
+	rays_in_pov(game->player.plane, game->player.theta);
 }
 
 void	minimap(void)
@@ -77,11 +110,11 @@ void	minimap(void)
 	while (coord.y < limit.y)
 	{
 		coord.x = game->map->pivot.x;
-		while (coord.x < limit.x)
+		while (coord.x <= limit.x)
 		{
 			value = game->map->map
-				[(int)(coord.y - game->map->pivot.y)]
-				[(int)(coord.x - game->map->pivot.x)];
+					[(int)(coord.y - game->map->pivot.y)]
+					[(int)(coord.x - game->map->pivot.x)];
 			if (value == WALL)
 				draw_rectangle(coord, game->map->scale, H_W);
 			else

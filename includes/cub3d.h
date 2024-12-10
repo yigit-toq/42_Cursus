@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 16:52:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:58:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "../libraries/minilibx/mlx.h"
 
 # include "./utils/libft.h"
+
+# include <sys/time.h>
 
 # include <unistd.h>
 # include <stdio.h>
@@ -39,8 +41,8 @@
 
 # define FOV			60
 
-# define WIDTH			1000
-# define HEIGHT			600
+# define WIN_W			1000
+# define WIN_H			600
 
 # define MAX_SPEED		1.0
 
@@ -111,15 +113,17 @@ typedef struct s_data
 	int			bit_pp;
 	int			endian;
 	int			length;
+	int			w_s;
+	int			h_s;
 }				t_data;
 
 typedef struct s_img
 {
-	int			w_s;
-	int			h_s;
 	int			hex[2];
 	int			colors[2][3];
 	t_data		dir_symbl[4];
+	t_data		minimap;
+	t_data		frame;
 }				t_img;
 
 typedef struct s_player
@@ -187,7 +191,13 @@ int		open_file(char *path);
 
 t_data	open_xpm(char *path);
 
-double	grid_to_center(double grid, double scale, double pivot);
+double	grid_to_center(double pos, double scale, double pivot);
+
+double	center_to_grid(double pos, double scale, double pivot);
+
+void	put_pixel_to_image(t_data img, int x, int y, unsigned int color);
+
+unsigned int	get_pixel_color(t_data img, int x, int y);
 
 // Input Controller
 

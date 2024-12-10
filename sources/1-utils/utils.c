@@ -6,16 +6,41 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 16:39:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:45:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <sys/time.h>
 
-double	grid_to_center(double grid, double scale, double pivot)
+unsigned int	get_pixel_color(t_data img, int x, int y)
 {
-	return (grid * scale + (scale / 2) + pivot);
+	char	*pixel_address;
+
+	if (x < 0 || y < 0 || x >= img.w_s || y >= img.h_s)
+		return (0);
+	pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+	return (*(unsigned int *)pixel_address);
+}
+
+void	put_pixel_to_image(t_data img, int x, int y, unsigned int color)
+{
+	char	*pixel_address;
+
+	if (x >= 0 && y >= 0 && x < img.w_s && y < img.h_s)
+	{
+		pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+		*(unsigned int *)pixel_address = color;
+	}
+}
+
+double	grid_to_center(double pos, double scale, double pivot)
+{
+	return (pos * scale + (scale / 2) + (pivot * scale));
+}
+
+double	center_to_grid(double pos, double scale, double pivot)
+{
+	return ((pos - (pivot * scale)) / scale);
 }
 
 int rgb_to_hex(int red, int green, int blue)
@@ -43,13 +68,11 @@ void	delay(int ms)
 t_data	open_xpm(char *path)
 {
 	t_game	*game;
-	t_img	*img;
 	t_data	data;
 
 	game = get_game();
-	img = game->img;
 	ft_memset(&data, 0, sizeof(t_data));
-	data.img = mlx_xpm_file_to_image(game->mlx, path, &img->w_s, &img->h_s);
+	data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
 	error_controller("Invalid texture file.", data.img);
 	data.addr = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
 	error_controller("Invalid texture data.", data.addr);

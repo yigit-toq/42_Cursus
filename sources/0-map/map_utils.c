@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/27 13:20:07 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 15:43:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	path_handler(char *line, char **names)
 		len = ft_strlen(names[i]);
 		if (!ft_strncmp(line, names[i], len))
 		{
-			if (len != 1)
+			if (len == 1)
 			{
-				game->img->dir_symbl[i].img = wspace_trim(line + len);
+				set_rgb_color(game->img->colors[i - 4], line + len);
 			}
 			else
 			{
-				set_rgb_color(game->img->colors[i - 4], line + len);
+				game->img->dir_symbl[i].img = wspace_trim(line + len);
 			}
 			break ;
 		}

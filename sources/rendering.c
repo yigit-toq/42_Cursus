@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/11/27 17:00:59 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/10 17:59:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	draw_ray(t_coord pos, double theta, int color)
 		mlx_pixel_put(game->mlx, game->win, (int)pos.x, (int)pos.y, color);
 		pos.x += coord.x;
 		pos.y += coord.y;
-		if (pos.x < 0 || pos.x >= WIDTH || pos.y < 0 || pos.y >= HEIGHT)
+		if (pos.x < 0 || pos.x >= WIN_W || pos.y < 0 || pos.y >= WIN_H)
 			break;
 	}
 }
