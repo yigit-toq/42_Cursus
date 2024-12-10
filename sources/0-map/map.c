@@ -98,6 +98,6 @@ void	files_controller(char *path)
 	game = get_game();
 	game->map->scale.x = (WIN_W / game->map->size.x);
 	game->map->scale.y = (WIN_H / game->map->size.y);
-	game->map->pivot.x = 0;
-	game->map->pivot.y = (WIN_H - (game->map->scale.y * game->map->size.y)) / game->map->scale.y;
+
+	// game->map->pivot.y = (WIN_H - (game->map->scale.y * game->map->size.y)) / game->map->scale.y;
 }

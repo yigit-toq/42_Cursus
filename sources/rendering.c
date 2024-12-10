@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	draw_ray(t_coord pos, double theta, int color)
+void	draw_rays(t_data data, t_coord pos, double theta, int color)
 {
 	t_game	*game;
 	t_coord	coord;
@@ -22,7 +22,10 @@ void	draw_ray(t_coord pos, double theta, int color)
 	coord.y = sin(theta);
 	while (TRUE)
 	{
-		mlx_pixel_put(game->mlx, game->win, (int)pos.x, (int)pos.y, color);
+		if (data.addr)
+			put_pixel_to_image(data, pos.x, pos.y, color);
+		else
+			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
 		pos.x += coord.x;
 		pos.y += coord.y;
 		if (pos.x < 0 || pos.x >= WIN_W || pos.y < 0 || pos.y >= WIN_H)
@@ -30,7 +33,7 @@ void	draw_ray(t_coord pos, double theta, int color)
 	}
 }
 
-void	draw_line(t_coord pos, double theta, double range, int color)
+void	draw_line(t_data data, t_coord pos, double theta, double range, int color)
 {
 	t_game	*game;
 	t_coord	coord;
@@ -49,17 +52,21 @@ void	draw_line(t_coord pos, double theta, double range, int color)
 	coord.y = coord.y / steps;
 	while (index <= (int)steps)
 	{
-		mlx_pixel_put(game->mlx, game->win, (int)pos.x, (int)pos.y, color);
+		if (data.addr)
+			put_pixel_to_image(data, pos.x, pos.y, color);
+		else
+			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
 		pos.x += coord.x;
 		pos.y += coord.y;
 		index++;
 	}
 }
 
-void	draw_rectangle(t_coord center, t_coord size, int color)
+void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
 {
 	t_game	*game;
 	t_coord	pos;
+	t_coord	put;
 
 	game = get_game();
 	center.x *= size.x;
@@ -70,23 +77,31 @@ void	draw_rectangle(t_coord center, t_coord size, int color)
 		pos.x = 0;
 		while (pos.x < size.x)
 		{
-			mlx_pixel_put(game->mlx, game->win, center.x + pos.x, center.y + pos.y, color);
+			put.x = center.x + pos.x;
+			put.y = center.y + pos.y;
+			if (data.addr)
+				put_pixel_to_image(data, put.x, put.y, color);
+			else
+				mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
 			pos.x++;
 		}
 		pos.y++;
 	}
 }
 
-int	draw_circle(t_coord center, t_coord radius, int color)
+int	draw_circle(t_data data, t_coord center, t_coord radius, int color)
 {
 	t_game	*game;
 	t_coord	pos;
 	t_coord	rot;
 	t_coord	rds;
+	t_coord	put;
 
 	game = get_game();
 	radius.x /= 2;
 	radius.y /= 2;
+	(void)rds;
+	(void)rot;
 	rds.x = pow(radius.x, 2);
 	rds.y = pow(radius.y, 2);
 	pos.y = -radius.y;
@@ -96,14 +111,21 @@ int	draw_circle(t_coord center, t_coord radius, int color)
 		while (pos.x <= radius.x)
 		{
 			if ((pow(pos.x, 2) / rds.x) + (pow(pos.y, 2) / rds.y) <= 1)
-				mlx_pixel_put(game->mlx, game->win, center.x + pos.x, center.y + pos.y, color);
+			{
+				put.x = center.x + pos.x;
+				put.y = center.y + pos.y;
+				if (data.addr)
+					put_pixel_to_image(data, put.x, put.y, color);
+				else
+					mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
+			}
 			pos.x++;
 		}
 		pos.y++;
 	}
-	rot.x = center.x + (cos(game->player.theta) * radius.x);
-	rot.y = center.y + (sin(game->player.theta) * radius.y);
-	mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
+	// rot.x = center.x + (cos(game->player.theta) * radius.x);
+	// rot.y = center.y + (sin(game->player.theta) * radius.y);
+	// mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
 	if (radius.x == radius.y)
 		return (SUCCESS);
 	else

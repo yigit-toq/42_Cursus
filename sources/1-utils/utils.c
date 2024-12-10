@@ -12,6 +12,15 @@
 
 #include "cub3d.h"
 
+t_size	typecast_size(t_coord coord)
+{
+	t_size	size;
+
+	size.x = (int)coord.x;
+	size.y = (int)coord.y;
+	return (size);
+}
+
 unsigned int	get_pixel_color(t_data img, int x, int y)
 {
 	char	*pixel_address;
@@ -65,14 +74,17 @@ void	delay(int ms)
 	}
 }
 
-t_data	open_xpm(char *path)
+t_data	add_image(char *path, int create, int w, int h)
 {
 	t_game	*game;
 	t_data	data;
 
 	game = get_game();
 	ft_memset(&data, 0, sizeof(t_data));
-	data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
+	if (create)
+		data.img = mlx_new_image(game->mlx, w, h);
+	else
+		data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
 	error_controller("Invalid texture file.", data.img);
 	data.addr = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
 	error_controller("Invalid texture data.", data.addr);

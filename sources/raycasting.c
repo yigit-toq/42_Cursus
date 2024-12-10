@@ -56,8 +56,10 @@ int	raycast(void)
 	t_game	*game;
 
 	game = get_game();
-	game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, game->map->pivot.x);
-	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, game->map->pivot.y);
+	// game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, game->map->pivot.x);
+	// game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, game->map->pivot.y);
+	game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, 0);
+	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, 0);
 
 	// rays_in_pov(game->player.plane, game->player.theta);
 	return (SUCCESS);

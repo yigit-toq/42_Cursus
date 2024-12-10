@@ -46,7 +46,7 @@
 
 # define MAX_SPEED		1.0
 
-# define SPEED			0.05
+# define SPEED			0.1
 # define ROTATE			0.1
 # define FRICTION		0.1
 
@@ -148,7 +148,6 @@ typedef struct s_map
 {
 	char		**map;
 	int			is_map;
-	t_coord		pivot;
 	t_coord		scale;
 	t_size		size;
 }				t_map;
@@ -189,7 +188,9 @@ int		path_control(void);
 
 int		open_file(char *path);
 
-t_data	open_xpm(char *path);
+t_size	typecast_size(t_coord coord);
+
+t_data	add_image(char *path, int create, int w, int h);
 
 double	grid_to_center(double pos, double scale, double pivot);
 
@@ -211,11 +212,13 @@ int		key_release_handler(int key, t_game *game);
 
 // Render Controller
 
-int		draw_circle(t_coord center, t_coord radius, int color);
+int		draw_circle(t_data data, t_coord center, t_coord radius, int color);
 
-void	draw_rectangle(t_coord center, t_coord size, int color);
+void	draw_rectangle(t_data data, t_coord center, t_coord size, int color);
 
-void	draw_line(t_coord pos, double theta, double range, int color);
+void	draw_line(t_data data, t_coord pos, double theta, double range, int color);
+
+void	draw_rays(t_data data, t_coord pos, double theta, int color);
 
 // Other Controller
 
@@ -226,7 +229,5 @@ char	*wspace_trim(char *str);
 // Raycasting Controller
 
 int		raycast(void);
-
-void	draw_ray(t_coord pos, double theta, int color);
 
 #endif

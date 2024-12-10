@@ -12,13 +12,15 @@
 
 #include "cub3d.h"
 
-void	draw_hit(t_game *game, t_size start, t_size curr, int color)
+void	draw_hit(t_data image, t_size start, t_size curr, int color)
 {
+	t_game	*game;
 	t_size	step;
 	t_size	dir;
-	int		ero;
-	int		ert;
+	int		er1;
+	int		er2;
 
+	game = get_game();
 	dir.x = abs(curr.x - start.x);
 	dir.y = abs(curr.y - start.y);
 	if (start.x < curr.x)
@@ -29,19 +31,22 @@ void	draw_hit(t_game *game, t_size start, t_size curr, int color)
 		step.y = +1;
 	else
 		step.y = -1;
-	ero = dir.x - dir.y;
+	er1 = dir.x - dir.y;
 	while (start.x != curr.x || start.y != curr.y)
 	{
-		mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
-		ert = 2 * ero;
-		if (ert < dir.x)
+		if (image.addr)
+			put_pixel_to_image(image, start.x, start.y, color);
+		else
+			mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
+		er2 = 2 * er1;
+		if (er2 < +dir.x)
 		{
-			ero += dir.x;
+			er1 += dir.x;
 			start.y += step.y;
 		}
-		if (ert > -dir.y)
+		if (er2 > -dir.y)
 		{
-			ero -= dir.y;
+			er1 -= dir.y;
 			start.x += step.x;
 		}
 	}
@@ -73,11 +78,13 @@ static void	rays_in_pov(t_coord pos, double theta)
 		{
 			game->rays[index].pos.x += game->rays[index].dir.x;
 			game->rays[index].pos.y += game->rays[index].dir.y;
-			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, game->map->pivot.x);
-            map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, game->map->pivot.y);
+			// map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, game->map->pivot.x);
+            // map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, game->map->pivot.y);
+			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, 0);
+            map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, 0);
 			if (game->map->map[map.y][map.x] == WALL)
 			{
-				draw_hit(game, (t_size){game->player.plane.x, game->player.plane.y}, (t_size){game->rays[index].pos.x, game->rays[index].pos.y}, H_G);
+				draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size(game->rays[index].pos), H_G);
 				break ;
 			}
 		}
@@ -91,7 +98,7 @@ void	draw_player(void)
 	t_game	*game;
 
 	game = get_game();
-	draw_circle(game->player.plane, game->map->scale, H_R);
+	draw_circle(game->img->minimap, game->player.plane, game->map->scale, H_R);
 	
 	rays_in_pov(game->player.plane, game->player.theta);
 }
@@ -104,21 +111,25 @@ void	minimap(void)
 	int		value;
 
 	game = get_game();
-	limit.x = game->map->size.x + game->map->pivot.x;
-	limit.y = game->map->size.y + game->map->pivot.y;
-	coord.y = game->map->pivot.y;
+	// limit.x = game->map->size.x + game->map->pivot.x;
+	// limit.y = game->map->size.y + game->map->pivot.y;
+	limit.x = game->map->size.x;
+	limit.y = game->map->size.y;
+	coord.y = 0;
 	while (coord.y < limit.y)
 	{
-		coord.x = game->map->pivot.x;
+		coord.x = 0;
 		while (coord.x <= limit.x)
 		{
 			value = game->map->map
-					[(int)(coord.y - game->map->pivot.y)]
-					[(int)(coord.x - game->map->pivot.x)];
+					[(int)coord.y]
+					[(int)coord.x];
+					// [(int)(coord.y - game->map->pivot.y)]
+					// [(int)(coord.x - game->map->pivot.x)]
 			if (value == WALL)
-				draw_rectangle(coord, game->map->scale, H_W);
+				draw_rectangle(game->img->minimap, coord, game->map->scale, H_W);
 			else
-				draw_rectangle(coord, game->map->scale, H_Y);
+				draw_rectangle(game->img->minimap ,coord, game->map->scale, H_Y);
 			coord.x++;
 		}
 		coord.y++;

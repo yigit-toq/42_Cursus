@@ -34,9 +34,10 @@ static void	init_img(void)
 	{
 		if (!game->img->dir_symbl[i].img)
 			error_controller("Texture path is not found.", NULL);
-		game->img->dir_symbl[i] = open_xpm(game->img->dir_symbl[i].img);
+		game->img->dir_symbl[i] = add_image(game->img->dir_symbl[i].img, FALSE, 0, 0);
 		i++;
 	}
+	// game->img->minimap = add_image(NULL, TRUE, WIN_W, WIN_H);
 }
 
 void	init_game(void)
