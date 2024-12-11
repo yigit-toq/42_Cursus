@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/10 17:53:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 18:14:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	draw_hit(t_data image, t_size start, t_size curr, int color)
 	while (start.x != curr.x || start.y != curr.y)
 	{
 		if (image.addr)
-			put_pixel_to_image(image, start.x, start.y, color);
+			mlx_image_put(image, start.x, start.y, color);
 		else
 			mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
 		er2 = 2 * er1;
@@ -55,9 +55,9 @@ void	draw_hit(t_data image, t_size start, t_size curr, int color)
 static void	rays_in_pov(t_coord pos, double theta)
 {
 	t_game	*game;
+	t_size	map;
 	double	angle;
 	double	limit;
-	t_size	map;
 	int		index;
 
 	game = get_game();
@@ -78,8 +78,6 @@ static void	rays_in_pov(t_coord pos, double theta)
 		{
 			game->rays[index].pos.x += game->rays[index].dir.x;
 			game->rays[index].pos.y += game->rays[index].dir.y;
-			// map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, game->map->pivot.x);
-            // map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, game->map->pivot.y);
 			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, 0);
             map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, 0);
 			if (game->map->map[map.y][map.x] == WALL)
@@ -99,7 +97,7 @@ void	draw_player(void)
 
 	game = get_game();
 	draw_circle(game->img->minimap, game->player.plane, game->map->scale, H_R);
-	
+
 	rays_in_pov(game->player.plane, game->player.theta);
 }
 
@@ -107,19 +105,16 @@ void	minimap(void)
 {
 	t_game	*game;
 	t_coord	coord;
-	t_coord	limit;
 	int		value;
 
 	game = get_game();
 	// limit.x = game->map->size.x + game->map->pivot.x;
 	// limit.y = game->map->size.y + game->map->pivot.y;
-	limit.x = game->map->size.x;
-	limit.y = game->map->size.y;
 	coord.y = 0;
-	while (coord.y < limit.y)
+	while (coord.y < game->map->size.y)
 	{
 		coord.x = 0;
-		while (coord.x <= limit.x)
+		while (coord.x < game->map->size.x)
 		{
 			value = game->map->map
 					[(int)coord.y]

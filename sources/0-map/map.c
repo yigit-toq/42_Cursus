@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/10 16:59:57 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 18:11:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	map_controls(void)
 			x++;
 		}
 		if (game->map->size.x < x)
-			game->map->size.x = x - 1;
+			game->map->size.x = x;
 		y++;
 	}
 	game->map->size.y = y;
@@ -96,8 +96,8 @@ void	files_controller(char *path)
 	path_control();
 	map_controls();
 	game = get_game();
-	game->map->scale.x = (WIN_W / game->map->size.x);
-	game->map->scale.y = (WIN_H / game->map->size.y);
+	game->map->scale.x = (double)WIN_W / game->map->size.x / 2;
+	game->map->scale.y = (double)WIN_H / game->map->size.y / 2;
 
-	// game->map->pivot.y = (WIN_H - (game->map->scale.y * game->map->size.y)) / game->map->scale.y;
+	game->player.speed = SPEED * ((game->map->scale.x + game->map->scale.y) / 2) / 100;
 }

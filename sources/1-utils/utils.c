@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/10 17:45:41 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 18:12:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,13 @@ unsigned int	get_pixel_color(t_data img, int x, int y)
 	return (*(unsigned int *)pixel_address);
 }
 
-void	put_pixel_to_image(t_data img, int x, int y, unsigned int color)
+void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 {
-	char	*pixel_address;
-
-	if (x >= 0 && y >= 0 && x < img.w_s && y < img.h_s)
-	{
-		pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
-		*(unsigned int *)pixel_address = color;
-	}
+    if (y >= 0 && y < img.h_s && x >= 0 && x < img.w_s)
+    {
+        char *pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+        *(unsigned int *)pixel_address = color;
+    }
 }
 
 double	grid_to_center(double pos, double scale, double pivot)
@@ -88,6 +86,8 @@ t_data	add_image(char *path, int create, int w, int h)
 	error_controller("Invalid texture file.", data.img);
 	data.addr = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
 	error_controller("Invalid texture data.", data.addr);
+	data.w_s = w;
+	data.h_s = h;
 	return (data);
 }
 

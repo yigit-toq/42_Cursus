@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/10 17:58:37 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 18:13:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@
 
 # define P_COUNT		1
 
+# define HIT			1
+
 # define TRUE			1
 # define FALSE			0
 
@@ -69,10 +71,6 @@
 
 # define WALL			'1'
 # define FLOOR			'0'
-
-# define TILE			32
-
-# define HIT			1
 
 typedef struct s_coord
 {
@@ -166,68 +164,67 @@ typedef struct s_game
 //int			save;
 //int			load;
 
-t_game	*get_game(void);
+t_game			*get_game(void);
 
-void	init_game(void);
+void			init_game(void);
 
-void	minimap_loop(void);
+void			minimap_loop(void);
 
 // Error Controller
 
-void	exten_controller(char *path);
+void			exten_controller(char *path);
 
-void	files_controller(char *path);
+void			files_controller(char *path);
 
-void	error_controller(char *message, void *pointer);
+void			error_controller(char *message, void *pointer);
 
 // Utils Controller
 
-int		rgb_to_hex(int red, int green, int blue);
+int				rgb_to_hex(int red, int green, int blue);
 
-int		path_control(void);
+int				path_control(void);
 
-int		open_file(char *path);
+int				open_file(char *path);
 
-t_size	typecast_size(t_coord coord);
+t_size			typecast_size(t_coord coord);
 
-t_data	add_image(char *path, int create, int w, int h);
+t_data			add_image(char *path, int create, int w, int h);
 
-double	grid_to_center(double pos, double scale, double pivot);
+double			grid_to_center(double pos, double scale, double pivot);
 
-double	center_to_grid(double pos, double scale, double pivot);
+double			center_to_grid(double pos, double scale, double pivot);
 
-void	put_pixel_to_image(t_data img, int x, int y, unsigned int color);
+void			mlx_image_put(t_data img, int x, int y, unsigned int color);
 
 unsigned int	get_pixel_color(t_data img, int x, int y);
 
 // Input Controller
 
-int		exit_game(t_game *game);
+int				exit_game(t_game *game);
 
-int		update_position(void);
+int				update_position(void);
 
-int		key_press_handler(int key, t_game *game);
+int				key_press_handler(int key, t_game *game);
 
-int		key_release_handler(int key, t_game *game);
+int				key_release_handler(int key, t_game *game);
 
 // Render Controller
 
-int		draw_circle(t_data data, t_coord center, t_coord radius, int color);
+int				draw_circle(t_data data, t_coord center, t_coord radius, int color);
 
-void	draw_rectangle(t_data data, t_coord center, t_coord size, int color);
+void			draw_rectangle(t_data data, t_coord center, t_coord size, int color);
 
-void	draw_line(t_data data, t_coord pos, double theta, double range, int color);
+void			draw_line(t_data data, t_coord pos, double theta, double range, int color);
 
-void	draw_rays(t_data data, t_coord pos, double theta, int color);
+void			draw_rays(t_data data, t_coord pos, double theta, int color);
 
 // Other Controller
 
-int		wspace_check(char c);
+int				wspace_check(char c);
 
-char	*wspace_trim(char *str);
+char			*wspace_trim(char *str);
 
 // Raycasting Controller
 
-int		raycast(void);
-
+int				raycast(void);
 #endif

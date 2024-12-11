@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/10 17:59:04 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 18:13:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	draw_rays(t_data data, t_coord pos, double theta, int color)
 	while (TRUE)
 	{
 		if (data.addr)
-			put_pixel_to_image(data, pos.x, pos.y, color);
+			mlx_image_put(data, pos.x, pos.y, color);
 		else
 			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
 		pos.x += coord.x;
@@ -53,7 +53,7 @@ void	draw_line(t_data data, t_coord pos, double theta, double range, int color)
 	while (index <= (int)steps)
 	{
 		if (data.addr)
-			put_pixel_to_image(data, pos.x, pos.y, color);
+			mlx_image_put(data, pos.x, pos.y, color);
 		else
 			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
 		pos.x += coord.x;
@@ -80,7 +80,7 @@ void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
 			put.x = center.x + pos.x;
 			put.y = center.y + pos.y;
 			if (data.addr)
-				put_pixel_to_image(data, put.x, put.y, color);
+				mlx_image_put(data, put.x, put.y, color);	
 			else
 				mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
 			pos.x++;
@@ -115,7 +115,7 @@ int	draw_circle(t_data data, t_coord center, t_coord radius, int color)
 				put.x = center.x + pos.x;
 				put.y = center.y + pos.y;
 				if (data.addr)
-					put_pixel_to_image(data, put.x, put.y, color);
+					mlx_image_put(data, put.x, put.y, color);
 				else
 					mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
 			}

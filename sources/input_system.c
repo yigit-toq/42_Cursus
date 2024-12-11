@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/05 16:43:51 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/11 17:49:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,21 @@ int	update_position(void)
 
 static int	update_axis(double *position, double *axis, int sign)
 {
+	t_game	*game;
+
+	game = get_game();
 	if (*axis != 0)
 	{
 		if (*axis > 0)
-			*axis -= SPEED / 10;
+			*axis -= game->player.speed / 10;
 		else
-			*axis += SPEED / 10;
+			*axis += game->player.speed / 10;
 	}
 	if (fabs(*axis) <= 0.01)
 	{
 		*axis = 0;
 	}
-	*position += (*axis) * sign * SPEED;
+	*position += (*axis) * sign * game->player.speed;
 	return (SUCCESS);
 }
 
@@ -125,10 +128,10 @@ static int	input_systm(double h_move, double v_move)
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
-	pos.x += v_move * SPEED * side.x;
-	pos.y += v_move * SPEED * side.y;
-	pos.x += h_move * SPEED * forw.x;
-	pos.y += h_move * SPEED * forw.y;
+	pos.x += v_move * game->player.speed * side.x;
+	pos.y += v_move * game->player.speed * side.y;
+	pos.x += h_move * game->player.speed * forw.x;
+	pos.y += h_move * game->player.speed * forw.y;
 	if (game->map->map[(int)pos.y][(int)pos.x] == WALL)
 		return (FAILURE);
 	return (game->player.position = pos, SUCCESS);
