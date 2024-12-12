@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:13:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/12 16:06:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	draw_rays(t_data data, t_coord pos, double theta, int color)
 		pos.x += coord.x;
 		pos.y += coord.y;
 		if (pos.x < 0 || pos.x >= WIN_W || pos.y < 0 || pos.y >= WIN_H)
-			break;
+			break ;
 	}
 }
 
@@ -80,7 +80,7 @@ void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
 			put.x = center.x + pos.x;
 			put.y = center.y + pos.y;
 			if (data.addr)
-				mlx_image_put(data, put.x, put.y, color);	
+				mlx_image_put(data, put.x, put.y, color);
 			else
 				mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
 			pos.x++;
@@ -123,14 +123,15 @@ int	draw_circle(t_data data, t_coord center, t_coord radius, int color)
 		}
 		pos.y++;
 	}
-	// rot.x = center.x + (cos(game->player.theta) * radius.x);
-	// rot.y = center.y + (sin(game->player.theta) * radius.y);
-	// mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
 	if (radius.x == radius.y)
 		return (SUCCESS);
 	else
 		return (FAILURE);
 }
+
+// rot.x = center.x + (cos(game->player.theta) * radius.x);
+// rot.y = center.y + (sin(game->player.theta) * radius.y);
+// mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
 
 // for (double angle = 0; angle < 2 * PI; angle += 0.001)
 // {

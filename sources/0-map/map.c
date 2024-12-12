@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:11:00 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/12 16:06:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ void	files_controller(char *path)
 	game = get_game();
 	game->map->scale.x = (double)WIN_W / game->map->size.x / 2;
 	game->map->scale.y = (double)WIN_H / game->map->size.y / 2;
-
 	game->player.speed = SPEED * ((game->map->scale.x + game->map->scale.y) / 2) / 100;
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:12:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/12 16:08:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ unsigned int	get_pixel_color(t_data img, int x, int y)
 
 void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 {
-    if (y >= 0 && y < img.h_s && x >= 0 && x < img.w_s)
-    {
-        char *pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
-        *(unsigned int *)pixel_address = color;
-    }
+	char	*pixel_address;
+
+	if (y >= 0 && y < img.h_s && x >= 0 && x < img.w_s)
+	{
+		pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+		*(unsigned int *)pixel_address = color;
+	}
 }
 
 double	grid_to_center(double pos, double scale, double pivot)
@@ -50,7 +52,7 @@ double	center_to_grid(double pos, double scale, double pivot)
 	return ((pos - (pivot * scale)) / scale);
 }
 
-int rgb_to_hex(int red, int green, int blue)
+int	rgb_to_hex(int red, int green, int blue)
 {
 	return ((red << 16) | (green << 8) | blue);
 }
@@ -62,7 +64,7 @@ void	delay(int ms)
 	long long int	t_time;
 
 	gettimeofday(&time[0], NULL);
-	gettimeofday(&time[1], NULL);	
+	gettimeofday(&time[1], NULL);
 	t_time = time[0].tv_sec * 1000 + time[0].tv_usec / 1000 + ms;
 	c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
 	while (c_time < t_time)

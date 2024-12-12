@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:10:22 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/12 15:52:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ static int	render_frame(void)
 
 	game = get_game();
 	update_position();
-	if (game->player.move[0] || game->player.move[1])
-		raycast();
 	minimap_loop();
+	raycast();
 	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, 300);
 	return (SUCCESS);
 }

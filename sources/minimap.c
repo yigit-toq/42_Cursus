@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:14:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/12 15:57:02 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,53 +52,19 @@ void	draw_hit(t_data image, t_size start, t_size curr, int color)
 	}
 }
 
-static void	rays_in_pov(t_coord pos, double theta)
-{
-	t_game	*game;
-	t_size	map;
-	double	angle;
-	double	limit;
-	int		index;
-
-	game = get_game();
-	ft_memset(game->rays, 0, sizeof(t_ray) * (FOV / HIT));
-	index = 0;
-	angle = theta * (180 / PI) - (FOV / 2);
-	limit = theta * (180 / PI) + (FOV / 2);
-	while (angle <= limit)
-	{
-		game->rays[index].pos.x = pos.x;
-		game->rays[index].pos.y = pos.y;
-		double ray_angle = fmod(angle, 360);
-		if (ray_angle < 0)
-			ray_angle = 360;
-		game->rays[index].dir.x = cos(ray_angle * (PI / 180));
-		game->rays[index].dir.y = sin(ray_angle * (PI / 180));
-		while (TRUE)
-		{
-			game->rays[index].pos.x += game->rays[index].dir.x;
-			game->rays[index].pos.y += game->rays[index].dir.y;
-			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, 0);
-            map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, 0);
-			if (game->map->map[map.y][map.x] == WALL)
-			{
-				draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size(game->rays[index].pos), H_G);
-				break ;
-			}
-		}
-		angle += HIT;
-		index++;
-	}
-}
-
 void	draw_player(void)
 {
 	t_game	*game;
+	int		index;
 
 	game = get_game();
 	draw_circle(game->img->minimap, game->player.plane, game->map->scale, H_R);
-
-	rays_in_pov(game->player.plane, game->player.theta);
+	index = 0;
+	while (index < FOV / HIT)
+	{
+		draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size(game->rays[index].pos), H_G);
+		index++;
+	}
 }
 
 void	minimap(void)
@@ -108,23 +74,17 @@ void	minimap(void)
 	int		value;
 
 	game = get_game();
-	// limit.x = game->map->size.x + game->map->pivot.x;
-	// limit.y = game->map->size.y + game->map->pivot.y;
 	coord.y = 0;
 	while (coord.y < game->map->size.y)
 	{
 		coord.x = 0;
 		while (coord.x < game->map->size.x)
 		{
-			value = game->map->map
-					[(int)coord.y]
-					[(int)coord.x];
-					// [(int)(coord.y - game->map->pivot.y)]
-					// [(int)(coord.x - game->map->pivot.x)]
+			value = game->map->map[(int)coord.y][(int)coord.x];
 			if (value == WALL)
 				draw_rectangle(game->img->minimap, coord, game->map->scale, H_W);
 			else
-				draw_rectangle(game->img->minimap ,coord, game->map->scale, H_Y);
+				draw_rectangle(game->img->minimap, coord, game->map->scale, H_Y);
 			coord.x++;
 		}
 		coord.y++;
