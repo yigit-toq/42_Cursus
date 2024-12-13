@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/12 16:05:16 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/13 19:03:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static void	rays_in_pov(t_game *game, t_coord pos, double theta)
 	index = 0;
 	angle = theta * (180 / PI) - (FOV / 2);
 	limit = theta * (180 / PI) + (FOV / 2);
-	ft_memset(game->rays, 0, sizeof(t_ray) * (FOV / HIT));
-	while (angle <= limit)
+	ft_memset(game->rays, 0, sizeof(t_ray) * (FOV / INCREMENT));
+	while (angle < limit)
 	{
 		game->rays[index].pos.x = pos.x;
 		game->rays[index].pos.y = pos.y;
@@ -42,8 +42,9 @@ static void	rays_in_pov(t_game *game, t_coord pos, double theta)
 			if (game->map->map[map.y][map.x] == WALL)
 				break ;
 		}
-		angle += HIT;
-		index++;
+		angle += INCREMENT;
+		if (index++ == (int)(FOV / INCREMENT))
+			break ;
 	}
 }
 

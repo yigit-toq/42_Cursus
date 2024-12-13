@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 18:13:50 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/13 19:03:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@
 
 # define NAME			"Cub3D"
 
-# define FOV			60
+# define FOV			60.0
+# define INCREMENT		60.0
 
 # define WIN_W			1000
 # define WIN_H			600
@@ -53,8 +54,6 @@
 # define DESTROY		17
 
 # define P_COUNT		1
-
-# define HIT			1
 
 # define TRUE			1
 # define FALSE			0
@@ -158,7 +157,7 @@ typedef struct s_game
 	t_map		*map;
 	void		*mlx;
 	void		*win;
-	t_ray		rays[FOV / HIT];
+	t_ray		*rays;
 }				t_game;
 
 //int			save;

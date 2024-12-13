@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/12 15:57:02 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/13 19:00:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	draw_player(void)
 	game = get_game();
 	draw_circle(game->img->minimap, game->player.plane, game->map->scale, H_R);
 	index = 0;
-	while (index < FOV / HIT)
+	while (index < (int)(FOV / INCREMENT))
 	{
 		draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size(game->rays[index].pos), H_G);
 		index++;

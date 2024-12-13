@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/12 15:52:24 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/13 18:10:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	render_frame(void)
 	update_position();
 	minimap_loop();
 	raycast();
-	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, 300);
+	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, 0);
 	return (SUCCESS);
 }
 

@@ -6,11 +6,39 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/12 16:06:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/13 18:07:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+// static int	flood_fill(int x, int y)
+// {
+// 	char	**map;
+
+// 	map = get_game()->map->map;
+// 	if (y < 0 || x < 0 || !map[y] || !map[y][x])
+// 		return (SUCCESS);
+// 	else if (map[y][x] == WALL || map[y][x] == 'M')
+// 	{
+// 		return (SUCCESS);
+// 	}
+// 	else if (map[y][x] == SPACE)
+// 	{
+// 		map[y][x] = 'M';
+// 	}
+// 	else
+// 		return (FAILURE);
+// 	if (flood_fill(x - 1, y))
+// 		return (FAILURE);
+// 	if (flood_fill(x, y - 1))
+// 		return (FAILURE);
+// 	if (flood_fill(x + 1, y))
+// 		return (FAILURE);
+// 	if (flood_fill(x, y + 1))
+// 		return (FAILURE);
+// 	return (SUCCESS);
+// }
 
 static void	object_counter(int x, int y)
 {
@@ -40,6 +68,9 @@ static void	object_counter(int x, int y)
 		if (ft_strchr("01NSWE", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
+
+// if (flood_fill(x, y))
+	// 	error_controller("Map is not closed.", NULL);
 
 static void	map_controls(void)
 {
@@ -96,7 +127,7 @@ void	files_controller(char *path)
 	path_control();
 	map_controls();
 	game = get_game();
-	game->map->scale.x = (double)WIN_W / game->map->size.x / 2;
-	game->map->scale.y = (double)WIN_H / game->map->size.y / 2;
+	game->map->scale.x = (double)WIN_W / game->map->size.x;
+	game->map->scale.y = (double)WIN_H / game->map->size.y;
 	game->player.speed = SPEED * ((game->map->scale.x + game->map->scale.y) / 2) / 100;
 }
