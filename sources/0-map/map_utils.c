@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/13 16:38:28 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 14:15:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	path_handler(char *line, char **names)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->colors[i - 4], line + len);
+				set_rgb_color(game->img->rgb_color[i - 4], line + len);
 			}
 			else
 			{

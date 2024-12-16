@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/13 18:07:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 17:20:19 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // static int	flood_fill(int x, int y)
 // {
 // 	char	**map;
-
+//
 // 	map = get_game()->map->map;
 // 	if (y < 0 || x < 0 || !map[y] || !map[y][x])
 // 		return (SUCCESS);
@@ -72,7 +72,7 @@ static void	object_counter(int x, int y)
 // if (flood_fill(x, y))
 	// 	error_controller("Map is not closed.", NULL);
 
-static void	map_controls(void)
+static void	maps_control(void)
 {
 	t_game	*game;
 	int		x;
@@ -94,7 +94,7 @@ static void	map_controls(void)
 		y++;
 	}
 	game->map->size.y = y;
-	if (game->count.player == FALSE)
+	if (game->count.player < P_COUNT)
 		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
 		error_controller("There can be only one player.", NULL);
@@ -125,9 +125,18 @@ void	files_controller(char *path)
 
 	reading_file(open_file(path));
 	path_control();
-	map_controls();
+	maps_control();
 	game = get_game();
-	game->map->scale.x = (double)WIN_W / game->map->size.x;
-	game->map->scale.y = (double)WIN_H / game->map->size.y;
+	game->map->scale.x = (double)WIN_W / game->map->size.x / 4;
+	game->map->scale.y = (double)WIN_H / game->map->size.y / 4;
+
 	game->player.speed = SPEED * ((game->map->scale.x + game->map->scale.y) / 2) / 100;
+	if (game->player.direction == EAST)
+		game->player.theta = deg_to_rad(0);
+	else if (game->player.direction == SOUTH)
+		game->player.theta = deg_to_rad(90);
+	else if (game->player.direction == WEST)
+		game->player.theta = deg_to_rad(180);
+	else if (game->player.direction == NORTH)
+		game->player.theta = deg_to_rad(270);
 }

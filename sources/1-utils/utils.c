@@ -6,13 +6,24 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/13 18:44:24 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 15:17:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <sys/time.h>
 
-t_size	typecast_size(t_coord coord)
+double	deg_to_rad(double degree)
+{
+	return (degree * (PI / 180));
+}
+
+double	rad_to_deg(double radian)
+{
+	return (radian * (180 / PI));
+}
+
+t_size	typecast_size(t_vect coord)
 {
 	t_size	size;
 
@@ -27,7 +38,7 @@ unsigned int	get_pixel_color(t_data img, int x, int y)
 
 	if (x < 0 || y < 0 || x >= img.w_s || y >= img.h_s)
 		return (0);
-	pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+	pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
 	return (*(unsigned int *)pixel_address);
 }
 
@@ -37,7 +48,7 @@ void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 
 	if (y >= 0 && y < img.h_s && x >= 0 && x < img.w_s)
 	{
-		pixel_address = img.addr + (y * img.length) + (x * (img.bit_pp / 8));
+		pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
 		*(unsigned int *)pixel_address = color;
 	}
 }
@@ -74,23 +85,21 @@ void	delay(int ms)
 	}
 }
 
-t_data	add_image(char *path, int create, int w, int h)
+t_data	add_image(char *path, t_size size)
 {
 	t_game	*game;
 	t_data	data;
 
 	game = get_game();
 	ft_memset(&data, 0, sizeof(t_data));
-	if (create)
-		data.img = mlx_new_image(game->mlx, w, h);
-	else
+	if (path)
 		data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
+	else
+		data.img = mlx_new_image(game->mlx, size.x, size.y);
 	error_controller("Invalid texture file.", data.img);
-	data.addr = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
-	error_controller("Invalid texture data.", data.addr);
-	data.w_s = w;
-	data.h_s = h;
-	return (data);
+	data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
+	error_controller("Invalid texture data.", data.add);
+	return (data.w_s = size.x, data.h_s = size.y, data);
 }
 
 int	open_file(char *path)

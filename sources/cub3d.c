@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/13 18:53:09 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 13:00:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	main(int argc, char **argv)
 		argv++;
 		exten_controller(*argv);
 		files_controller(*argv);
-		get_game()->rays = ft_calloc((int)(FOV / INCREMENT), sizeof(t_ray));
 	}
 	return (init_game(), EXIT_SUCCESS);
 }

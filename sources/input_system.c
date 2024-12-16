@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/11 17:49:44 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 14:39:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,9 @@ static int	update_axis(double *position, double *axis, int sign)
 static int	input_systm(double h_move, double v_move)
 {
 	t_game	*game;
-	t_coord	forw;
-	t_coord	side;
-	t_coord	pos;
+	t_vect	forw;
+	t_vect	side;
+	t_vect	pos;
 
 	game = get_game();
 	pos = game->player.position;
@@ -198,5 +198,3 @@ int	exit_game(t_game *game)
 	}
 	exit(EXIT_SUCCESS);
 }
-
-// save_scene();

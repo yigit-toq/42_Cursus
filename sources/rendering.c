@@ -6,23 +6,63 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/12 16:06:18 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/16 14:47:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_rays(t_data data, t_coord pos, double theta, int color)
+void	draw_hit(t_data image, t_size start, t_size curr, int color)
 {
 	t_game	*game;
-	t_coord	coord;
+	t_size	step;
+	t_size	dir;
+	int		er1;
+	int		er2;
+
+	game = get_game();
+	dir.x = abs(curr.x - start.x);
+	dir.y = abs(curr.y - start.y);
+	if (start.x < curr.x)
+		step.x = +1;
+	else
+		step.x = -1;
+	if (start.y < curr.y)
+		step.y = +1;
+	else
+		step.y = -1;
+	er1 = dir.x - dir.y;
+	while (start.x != curr.x || start.y != curr.y)
+	{
+		if (image.add)
+			mlx_image_put(image, start.x, start.y, color);
+		else
+			mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
+		er2 = 2 * er1;
+		if (er2 < +dir.x)
+		{
+			er1 += dir.x;
+			start.y += step.y;
+		}
+		if (er2 > -dir.y)
+		{
+			er1 -= dir.y;
+			start.x += step.x;
+		}
+	}
+}
+
+void	draw_rays(t_data data, t_vect pos, double theta, int color)
+{
+	t_game	*game;
+	t_vect	coord;
 
 	game = get_game();
 	coord.x = cos(theta);
 	coord.y = sin(theta);
 	while (TRUE)
 	{
-		if (data.addr)
+		if (data.add)
 			mlx_image_put(data, pos.x, pos.y, color);
 		else
 			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
@@ -33,11 +73,11 @@ void	draw_rays(t_data data, t_coord pos, double theta, int color)
 	}
 }
 
-void	draw_line(t_data data, t_coord pos, double theta, double range, int color)
+void	draw_line(t_data data, t_vect pos, double theta, double range, int color)
 {
 	t_game	*game;
-	t_coord	coord;
-	t_coord	limit;
+	t_vect	coord;
+	t_vect	limit;
 	double	steps;
 	int		index;
 
@@ -52,7 +92,7 @@ void	draw_line(t_data data, t_coord pos, double theta, double range, int color)
 	coord.y = coord.y / steps;
 	while (index <= (int)steps)
 	{
-		if (data.addr)
+		if (data.add)
 			mlx_image_put(data, pos.x, pos.y, color);
 		else
 			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
@@ -62,16 +102,16 @@ void	draw_line(t_data data, t_coord pos, double theta, double range, int color)
 	}
 }
 
-void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
+void	draw_rectangle(t_data data, t_vect center, t_vect size, int color)
 {
 	t_game	*game;
-	t_coord	pos;
-	t_coord	put;
+	t_vect	pos;
+	t_vect	put;
 
 	game = get_game();
 	center.x *= size.x;
 	center.y *= size.y;
-	ft_bzero(&pos, sizeof(t_coord));
+	ft_bzero(&pos, sizeof(t_vect));
 	while (pos.y < size.y)
 	{
 		pos.x = 0;
@@ -79,7 +119,7 @@ void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
 		{
 			put.x = center.x + pos.x;
 			put.y = center.y + pos.y;
-			if (data.addr)
+			if (data.add)
 				mlx_image_put(data, put.x, put.y, color);
 			else
 				mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
@@ -89,13 +129,13 @@ void	draw_rectangle(t_data data, t_coord center, t_coord size, int color)
 	}
 }
 
-int	draw_circle(t_data data, t_coord center, t_coord radius, int color)
+int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
 {
 	t_game	*game;
-	t_coord	pos;
-	t_coord	rot;
-	t_coord	rds;
-	t_coord	put;
+	t_vect	pos;
+	t_vect	rot;
+	t_vect	rds;
+	t_vect	put;
 
 	game = get_game();
 	radius.x /= 2;
@@ -114,7 +154,7 @@ int	draw_circle(t_data data, t_coord center, t_coord radius, int color)
 			{
 				put.x = center.x + pos.x;
 				put.y = center.y + pos.y;
-				if (data.addr)
+				if (data.add)
 					mlx_image_put(data, put.x, put.y, color);
 				else
 					mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
