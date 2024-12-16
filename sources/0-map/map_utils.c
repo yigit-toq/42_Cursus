@@ -24,7 +24,7 @@ static void	set_rgb_color(int *color, char *line)
 	while (rgb[i])
 	{
 		j = 0;
-		trim = wspace_trim(rgb[i]);
+		trim = wtspace_trim(rgb[i]);
 		while (trim[j])
 		{
 			if (!ft_isdigit(trim[j]))
@@ -59,13 +59,13 @@ int	path_handler(char *line, char **names)
 			}
 			else
 			{
-				game->img->dir_symbl[i].img = wspace_trim(line + len);
+				game->img->dir_symbl[i].img = wtspace_trim(line + len);
 			}
 			break ;
 		}
 		i++;
 	}
-	return (wspace_trim(line)[0] != WALL);
+	return (wtspace_trim(line)[0] != WALL);
 }
 
 int	path_control(void)
@@ -77,7 +77,7 @@ int	path_control(void)
 	file = get_game()->map->map;
 	while (*file)
 	{
-		line = wspace_trim(*file);
+		line = wtspace_trim(*file);
 		if (!path_handler(line, names))
 			break ;
 		file++;

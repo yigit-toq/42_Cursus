@@ -20,7 +20,7 @@ void	draw_player(void)
 	draw_circle(game->img->minimap, game->player.plane, game->map->scale, H_R);
 	for (int i = 0; i < WIN_W; i++)
 	{
-		draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size(game->rays[i].pos), H_R);
+		draw_hit(game->img->minimap, typecast_size(game->player.plane), typecast_size((t_vect){game->rays[i].pos.x * game->map->scale.x, game->rays[i].pos.y * game->map->scale.y}), H_R);
 	}
 }
 
@@ -61,4 +61,5 @@ void	minimap_loop(void)
 		return ;
 	}
 	minimap();
+	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, WIN_H - (game->map->size.y * game->map->scale.y));
 }

@@ -41,8 +41,8 @@
 # define WIN_W			1000
 # define WIN_H			600
 
-# define SPEED			0.1
-# define ROTATE			0.1
+# define SPEED			0.80
+# define ROTATE			0.02
 
 # define DESTROY		17
 
@@ -186,13 +186,15 @@ double			grid_to_center(double pos, double scale, double pivot);
 
 double			center_to_grid(double pos, double scale, double pivot);
 
-char			*wspace_trim(char *str);
+char			*wtspace_trim(char *str);
 
 int				wspace_check(char c);
 
 int				path_control(void);
 
 int				open_file(char *path);
+
+void			delay(int ms);
 
 // Input Controller
 

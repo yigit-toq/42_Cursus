@@ -12,89 +12,55 @@
 
 #include "cub3d.h"
 
-// static void	rays_in_pov(t_game *game, t_vect pos, double theta)
-// {
-// 	int		index;
-// 	double	angle;
-// 	double	limit;
-// 	double	ray_a;
-// 	t_size	map;
-
-// 	index = 0;
-// 	angle = rad_to_deg(theta) - (FOV / 2);
-// 	limit = rad_to_deg(theta) + (FOV / 2);
-// 	ft_memset(game->rays, 0, sizeof(t_ray) * (FOV / INC));
-// 	while (angle < limit)
-// 	{
-// 		game->rays[index].pos.x = pos.x;
-// 		game->rays[index].pos.y = pos.y;
-// 		ray_a = fmod(angle, 360);
-// 		if (ray_a < 0)
-// 			ray_a = 360;
-// 		game->rays[index].dir.x = cos(deg_to_rad(ray_a));
-// 		game->rays[index].dir.y = sin(deg_to_rad(ray_a));
-// 		while (TRUE)
-// 		{
-// 			game->rays[index].pos.x += game->rays[index].dir.x;
-// 			game->rays[index].pos.y += game->rays[index].dir.y;
-// 			map.x = center_to_grid(game->rays[index].pos.x, game->map->scale.x, 0);
-// 			map.y = center_to_grid(game->rays[index].pos.y, game->map->scale.y, 0);
-// 			if (game->map->map[map.y][map.x] == WALL)
-// 				break ;
-// 		}
-// 		angle += INC;
-// 		if (index++ == (int)(FOV / INC))
-// 			break ;
-// 	}
-// }
-
-static void	rays_in_pov(t_game *game, t_vect pos, double theta)
+static void	rays_in_pov(t_ray *ray, t_vect pos, double angle)
 {
-	t_ray	*rays;
-	double	angle;
-	double	limit;
-	int		index;
+	t_game	*game;
 	t_size	map;
 
-	rays = game->rays;
-	(void)limit;
-	index = 0;
-	angle = rad_to_deg(theta) - (FOV / 2);
-	limit = rad_to_deg(theta) + (FOV / 2);
-	ft_memset(rays, 0, sizeof(t_ray) * WIN_W);
-	while (index < WIN_W)
+	game = get_game();
+	ray->pos.x = pos.x;
+	ray->pos.y = pos.y;
+	ray->dir.x = cos(deg_to_rad(angle)) / SEV;
+	ray->dir.y = sin(deg_to_rad(angle)) / SEV;
+	while (TRUE)
 	{
-		rays[index].pos.x = pos.x;
-		rays[index].pos.y = pos.y;
-		rays[index].dir.x = cos(deg_to_rad(angle)) / SEV;
-		rays[index].dir.y = sin(deg_to_rad(angle)) / SEV;
-		while (TRUE)
-		{
-			rays[index].pos.x += rays[index].dir.x;
-			rays[index].pos.y += rays[index].dir.y;
-			map.x = center_to_grid(rays[index].pos.x, game->map->scale.x, 0);
-			map.y = center_to_grid(rays[index].pos.y, game->map->scale.y, 0);
-			// map.x = rays[index].pos.x;
-			// map.y = rays[index].pos.y;
-			if (game->map->map[map.y][map.x] == WALL)
-				break ;
-		}
-		rays[index].dist = sqrt(pow(rays[index].pos.x - pos.x, 2) + pow(rays[index].pos.y - pos.y, 2));
-		rays[index].wall.height = WIN_H / rays[index].dist;
-		rays[index].wall.s_pos = (WIN_H / 2) - (rays[index].wall.height / 2);
-		rays[index].wall.e_pos = (WIN_H / 2) + (rays[index].wall.height / 2);
-		angle += INC;
-		index++;
+		ray->pos.x += ray->dir.x;
+		ray->pos.y += ray->dir.y;
+		map.x = center_to_grid(ray->pos.x, game->map->scale.x, 0);
+		map.y = center_to_grid(ray->pos.y, game->map->scale.y, 0);
+		// map.x = ray->pos.x;
+		// map.y = ray->pos.y;
+		if (game->map->map[map.y][map.x] == WALL)
+			break ;
 	}
+	ray->dist = sqrt(pow(ray->pos.x - pos.x, 2) + pow(ray->pos.y - pos.y, 2));
+	ray->wall.height = WIN_H / ray->dist;
+	ray->wall.s_pos = (WIN_H / 2) - (ray->wall.height / 2);
+	ray->wall.e_pos = (WIN_H / 2) + (ray->wall.height / 2);
 }
 
 int	raycast(void)
 {
 	t_game	*game;
+	t_ray	*rays;
+	int		index;
+	double	angle;
 
 	game = get_game();
+	rays = game->rays;
 	game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, 0);
 	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, 0);
-	rays_in_pov(game, game->player.plane, game->player.theta);
+	index = 0;
+	angle = rad_to_deg(game->player.theta) - (FOV / 2);
+	ft_memset(rays, 0, WIN_W * sizeof(t_ray));
+	while (index < WIN_W)
+	{
+		rays_in_pov(&rays[index], game->player.plane, angle);
+		draw_hit(game->img->frame, (t_size){index, 0}, (t_size){index, (WIN_H / 2) - rays[index].wall.height}, game->img->hex_color[1]);
+		draw_hit(game->img->frame, (t_size){index, (WIN_H / 2) + rays[index].wall.height}, (t_size){index, WIN_H}, game->img->hex_color[0]);
+		draw_hit(game->img->frame, (t_size){index, (WIN_H / 2) - rays[index].wall.height}, (t_size){index, (WIN_H / 2) + rays[index].wall.height}, H_B);
+		angle += INC;
+		index++;
+	}
 	return (SUCCESS);
 }

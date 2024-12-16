@@ -18,10 +18,9 @@ static int	render_frame(void)
 
 	game = get_game();
 	update_position();
-	minimap_loop();
 	raycast();
 	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
-	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, WIN_H - (game->map->size.y * game->map->scale.y));
+	minimap_loop();
 	return (SUCCESS);
 }
 

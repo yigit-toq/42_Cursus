@@ -119,7 +119,7 @@ int	wspace_check(char c)
 	return (c == ' ' || (c > 8 && c < 14));
 }
 
-char	*wspace_trim(char *str)
+char	*wtspace_trim(char *str)
 {
 	int		len;
 
