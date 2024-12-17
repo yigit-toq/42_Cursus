@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 17:40:48 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/17 18:14:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@
 
 # define NAME			"Cub3D"
 
-# define WIN_W			1000
-# define WIN_H			600
+# define WIN_W			500
+# define WIN_H			300
 
-# define SPEED			0.80
-# define ROTATE			0.02
+# define SPEED			0.40
+# define ROTATE			0.08
 
 # define DESTROY		17
 
@@ -67,7 +67,7 @@
 # define FOV			60.00
 # define SEV			64.00
 
-# define INC			(double)(FOV / WIN_W)
+# define W_INC			4
 
 typedef struct s_size
 {
@@ -94,10 +94,7 @@ typedef struct s_ray
 	t_wall		wall;
 	t_vect		pos;
 	t_vect		dir;
-	t_vect		side;
-	t_vect		step;
-	t_vect		delta;
-	t_vect		plane;
+	char		hit;
 }				t_ray;
 
 typedef struct s_data
@@ -124,7 +121,7 @@ typedef struct s_img
 typedef struct s_player
 {
 	char		direction;
-	double		move[2];
+	int			move[2];
 	double		speed;
 	double		theta;
 	t_vect		axis;
@@ -174,7 +171,9 @@ void			error_controller(char *message, void *pointer);
 
 int				rgb_to_hex(int red, int green, int blue);
 
-t_size			typecast_size(t_vect coord);
+t_size			tc_size(t_vect vect);
+
+t_vect			tc_vect(t_size size);
 
 t_data			add_image(char *path, t_size size);
 

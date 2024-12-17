@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 13:51:12 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/17 15:26:22 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 #  define D		2
 #  define W		13
 #  define M		46
-#  define ESC		53
+#  define ESC	53
 #  define LEFT	123
 #  define RIGHT	124
 #  define SPACE	49

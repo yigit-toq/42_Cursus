@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 14:39:04 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/17 17:18:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ static int	input_systm(double h_move, double v_move)
 	t_vect	forw;
 	t_vect	side;
 	t_vect	pos;
+	double	move_length;
 
 	game = get_game();
 	pos = game->player.position;
@@ -128,13 +129,20 @@ static int	input_systm(double h_move, double v_move)
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
+	move_length = sqrt(h_move * h_move + v_move * v_move);
+	if (move_length > 1)
+	{
+		h_move /= move_length;
+		v_move /= move_length;
+	}
 	pos.x += v_move * game->player.speed * side.x;
 	pos.y += v_move * game->player.speed * side.y;
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
-	if (game->map->map[(int)pos.y][(int)pos.x] == WALL)
+	if (game->map->map[(int)grid_to_center(pos.y, 1, 0)][(int)grid_to_center(pos.x, 1, 0)] == WALL)
 		return (FAILURE);
-	return (game->player.position = pos, SUCCESS);
+	else
+		return (game->player.position = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)
@@ -180,7 +188,6 @@ int	key_release_handler(int key, t_game *game)
 	if (key == M)
 	{
 		game->map->is_map = !game->map->is_map;
-		raycast();
 	}
 	return (SUCCESS);
 }

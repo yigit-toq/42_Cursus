@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 15:17:57 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/17 18:12:53 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,22 @@ double	rad_to_deg(double radian)
 	return (radian * (180 / PI));
 }
 
-t_size	typecast_size(t_vect coord)
+t_size	tc_size(t_vect vect)
 {
 	t_size	size;
 
-	size.x = (int)coord.x;
-	size.y = (int)coord.y;
+	size.x = (int)vect.x;
+	size.y = (int)vect.y;
 	return (size);
+}
+
+t_vect	tc_vect(t_size size)
+{
+	t_vect	coord;
+
+	coord.x = (double)size.x;
+	coord.y = (double)size.y;
+	return (coord);
 }
 
 unsigned int	get_pixel_color(t_data img, int x, int y)
@@ -93,13 +102,18 @@ t_data	add_image(char *path, t_size size)
 	game = get_game();
 	ft_memset(&data, 0, sizeof(t_data));
 	if (path)
+	{
 		data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
+	}
 	else
+	{
 		data.img = mlx_new_image(game->mlx, size.x, size.y);
+		data.w_s = size.x, data.h_s = size.y;
+	}
 	error_controller("Invalid texture file.", data.img);
 	data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
 	error_controller("Invalid texture data.", data.add);
-	return (data.w_s = size.x, data.h_s = size.y, data);
+	return (data);
 }
 
 int	open_file(char *path)
