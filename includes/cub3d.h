@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 18:14:03 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/18 17:41:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@
 
 # define NAME			"Cub3D"
 
-# define WIN_W			500
-# define WIN_H			300
+# define WIN_W			800
+# define WIN_H			450
 
-# define SPEED			0.40
+# define SPEED			0.10
 # define ROTATE			0.08
 
 # define DESTROY		17

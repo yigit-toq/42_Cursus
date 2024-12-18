@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 15:49:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/18 18:19:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	minimap(void)
 
 			if (value == FLOOR || value == game->player.direction)
 				draw_rectangle(game->img->minimap, tc_vect(index), game->map->scale, 0xD1DDDE);
+
+			if (value != FLOOR && value != WALL && value != SPACE && value != game->player.direction)
+				break ;
+
 			index.x++;
 		}
 		index.y++;

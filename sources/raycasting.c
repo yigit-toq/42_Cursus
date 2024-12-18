@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 18:13:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/18 15:47:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	render_frame(t_ray *ray, int index)
 	e_pos.y = (WIN_H / 2) - ray->wall.height;
 	
 	draw_hit(game->img->frame, s_pos, e_pos, game->img->hex_color[1]);
-	
+
 	s_pos.y = (WIN_H / 2) + ray->wall.height;
 	e_pos.y = (WIN_H);
 	
