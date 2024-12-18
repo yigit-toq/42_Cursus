@@ -39,14 +39,14 @@ void	minimap(void)
 		{
 			value = game->map->map[index.y][index.x];
 
+			if (value == 0)
+				break ;
+
 			if (value == WALL)
 				draw_rectangle(game->img->minimap, tc_vect(index), game->map->scale, H_W);
 
 			if (value == FLOOR || value == game->player.direction)
 				draw_rectangle(game->img->minimap, tc_vect(index), game->map->scale, 0xD1DDDE);
-
-			if (value != FLOOR && value != WALL && value != SPACE && value != game->player.direction)
-				break ;
 
 			index.x++;
 		}

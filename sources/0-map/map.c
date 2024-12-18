@@ -127,8 +127,8 @@ void	files_controller(char *path)
 	path_control();
 	maps_control();
 	game = get_game();
-	game->map->scale.x = 6; //(double)WIN_W / game->map->size.x / 4;
-	game->map->scale.y = 6;//(double)WIN_H / game->map->size.y / 4;
+	game->map->scale.x = 1; //(double)WIN_W / game->map->size.x / 4;
+	game->map->scale.y = 1; //(double)WIN_H / game->map->size.y / 4;
 
 	game->player.speed = SPEED; //* ((game->map->scale.x + game->map->scale.y) / 2) / 100;
 

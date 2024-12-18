@@ -67,8 +67,6 @@
 # define FOV			60.00
 # define SEV			64.00
 
-# define W_INC			4
-
 typedef struct s_size
 {
 	int			x;

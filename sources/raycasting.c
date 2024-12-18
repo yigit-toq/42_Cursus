@@ -12,32 +12,38 @@
 
 #include "cub3d.h"
 
-// static void	draw_texture(t_data img, int index, double height, double position)
-// {
-// 	double		inc;
-// 	double		y;
+static void	draw_tex(int x, double height, double position, t_data img)
+{
+	double		inc;
+	double		y_i;
+	int			i;
 
-// 	inc = height / img.h_s;
-// 	y = WIN_H / 2 - height / 2;
-// 	while (y < WIN_H / 2 + height / 2)
-// 	{
-// 		mlx_image_put(img, index, y, get_pixel_color(img, position, y));
-// 		y += inc;
-// 	}
-// }
+	i = 0;
+	y_i = (WIN_H / 2) - height;
+	inc = (height * 2) / img.h_s;
+	while (i < img.h_s)
+	{
+		mlx_image_put(get_game()->img->frame, x, y_i, get_pixel_color(img, position, i));
+		y_i += inc;
+		i++;
+	}
+}
 
 static void	render_frame(t_ray *ray, int index)
 {
 	t_game	*game;
 	t_size	s_pos;
 	t_size	e_pos;
+	double	img_x;
 
 	game = get_game();
 	s_pos.x = index;
 	e_pos.x = index;
 	s_pos.y = 0;
 	e_pos.y = (WIN_H / 2) - ray->wall.height;
-	
+
+	img_x = floor((int)(game->img->dir_symbl[0].w_s * (ray->pos.x + ray->pos.y)) % game->img->dir_symbl[0].w_s);
+
 	draw_hit(game->img->frame, s_pos, e_pos, game->img->hex_color[1]);
 
 	s_pos.y = (WIN_H / 2) + ray->wall.height;
@@ -48,9 +54,9 @@ static void	render_frame(t_ray *ray, int index)
 	s_pos.y = (WIN_H / 2) - ray->wall.height;
 	e_pos.y = (WIN_H / 2) + ray->wall.height;
 
-	// draw_texture(game->img->dir_symbl[0], index, ray->wall.height, ray->wall.tex_x);
+	draw_tex(index, ray->wall.height, img_x, game->img->dir_symbl[0]);
 
-	draw_hit(game->img->frame, s_pos, e_pos, 0x007b13);
+	// draw_hit(game->img->frame, s_pos, e_pos, 0x007b14);
 }
 
 static void	rays_in_pov(t_ray *ray, t_vect pos, double angle)
@@ -75,16 +81,10 @@ static void	rays_in_pov(t_ray *ray, t_vect pos, double angle)
 			break ;
 	}
 	ray->dist = sqrt(pow(ray->pos.x - pos.x, 2) + pow(ray->pos.y - pos.y, 2));
-	ray->dist = (ray->dist * cos(deg_to_rad(angle) - game->player.theta)) / W_INC;
 
-	ray->wall.height = WIN_H / ray->dist;
+	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
 
-	// ray->wall.height = floor((WIN_H / 2) / ray->dist);
-
-	// ray->wall.tex_x = floor((int)(game->img->dir_symbl[0].w_s * (ray->pos.x + ray->pos.y)) % game->img->dir_symbl[0].w_s);
-
-	ray->wall.s_pos = (WIN_H / 2) - (ray->wall.height / 2);
-	ray->wall.e_pos = (WIN_H / 2) + (ray->wall.height / 2);
+	ray->wall.height = floor((WIN_H / 2) / ray->dist);
 }
 
 int	raycast(void)
@@ -100,7 +100,6 @@ int	raycast(void)
 	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, 0);
 	index = 0;
 	angle = rad_to_deg(game->player.theta) - (FOV / 2);
-	ft_memset(rays, 0, WIN_W * sizeof(t_ray));
 	while (index < WIN_W)
 	{
 		rays_in_pov(&rays[index], game->player.plane, angle);
@@ -110,3 +109,4 @@ int	raycast(void)
 	}
 	return (SUCCESS);
 }
+// ft_memset(rays, 0, WIN_W * sizeof(t_ray));
