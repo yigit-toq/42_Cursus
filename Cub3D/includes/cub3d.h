@@ -112,9 +112,11 @@ typedef struct s_img
 	int			rgb_color[2][3];
 	int			hex_color[2];
 	t_data		dir_symbl[4];
+	t_data		gun_frame[75];
 	t_data		minimap;
 	t_data		frame;
-	t_data		vandal;
+	t_data		cross;
+	t_data		*vandal;
 }				t_img;
 
 typedef struct s_player

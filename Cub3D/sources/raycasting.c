@@ -12,20 +12,20 @@
 
 #include "cub3d.h"
 
-static void	draw_tex(int x, double height, double position, t_data img)
+static void	draw_tex(double x_p, double x_c, double height, t_data img)
 {
 	double		inc;
-	double		y_i;
-	int			i;
+	double		y_p;
+	double		y_c;
 
-	i = 0;
-	y_i = (WIN_H / 2) - height;
+	y_c = 0;
+	y_p = (WIN_H /  2) - height;
 	inc = (height * 2) / img.h_s;
-	while (i < img.h_s)
+	while (y_c < img.h_s)
 	{
-		mlx_image_put(get_game()->img->frame, x, y_i, get_pixel_color(img, position, i));
-		y_i += inc;
-		i++;
+		mlx_image_put(get_game()->img->frame, x_p, y_p, get_pixel_color(img, x_c, y_c));
+		y_p += inc;
+		y_c++;
 	}
 }
 
@@ -39,6 +39,7 @@ static void	render_frame(t_ray *ray, int index)
 	game = get_game();
 	s_pos.x = index;
 	e_pos.x = index;
+
 	s_pos.y = 0;
 	e_pos.y = (WIN_H / 2) - ray->wall.height;
 
@@ -54,18 +55,35 @@ static void	render_frame(t_ray *ray, int index)
 	s_pos.y = (WIN_H / 2) - ray->wall.height;
 	e_pos.y = (WIN_H / 2) + ray->wall.height;
 
-	draw_tex(index, ray->wall.height, img_x, game->img->dir_symbl[0]);
+	draw_tex(index, img_x, ray->wall.height, game->img->dir_symbl[0]);
 
 	// draw_hit(game->img->frame, s_pos, e_pos, 0x007b14);
 
-	for (int i = 0; i < 720; i++)
+	for (int y = 0; y < 720; y++)
 	{
-		if (get_pixel_color(game->img->vandal, index, i) != 0xFF000000)
-			mlx_image_put(game->img->frame, index, i, get_pixel_color(game->img->vandal, index, i));
+		unsigned int color = get_pixel_color(*game->img->vandal, index, y);
+
+		unsigned char green = (color >> 8) & 255;
+		unsigned char blue = (color >> 0) & 255;
+
+		int	cross_x = (WIN_W / 2) - 32;
+		int	cross_y = (WIN_H / 2) - 32;
+
+		if ((index > cross_x && index < cross_x + 64) && (y > cross_y && y < cross_y + 64))
+		{
+			unsigned int color = get_pixel_color(game->img->cross, index - cross_x, y - cross_y);
+
+			if (color == 0)
+				mlx_image_put(game->img->frame, index, y, color);
+		}
+		if (green < 200 && blue < 200)
+		{
+			mlx_image_put(game->img->frame, index, y, color);
+		}
 	}
 }
 
-static void	rays_in_pov(t_ray *ray, t_vect pos, double angle)
+static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
 {
 	t_game	*game;
 	t_size	map;
@@ -95,20 +113,36 @@ static void	rays_in_pov(t_ray *ray, t_vect pos, double angle)
 
 int	raycast(void)
 {
-	t_game	*game;
-	t_ray	*rays;
-	int		index;
-	double	angle;
+	t_game				*game;
+	t_ray				*rays;
+	int					index;
+	double				angle;
+	static int			frame;
+	static unsigned int	delay;
 
 	game = get_game();
 	rays = game->rays;
+	if (delay % 3 == 0)
+	{
+		game->img->vandal = &game->img->gun_frame[frame];
+		frame++;
+	}
+	if (frame == 74)
+	{
+		frame = 0;
+		delay = 0;
+	}
+	else
+	{
+		delay++;
+	}
 	game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, 0);
 	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, 0);
 	index = 0;
 	angle = rad_to_deg(game->player.theta) - (FOV / 2);
 	while (index < WIN_W)
 	{
-		rays_in_pov(&rays[index], game->player.plane, angle);
+		rays_in_povs(&rays[index], game->player.plane, angle);
 		render_frame(&rays[index], index);
 		angle += FOV / WIN_W;
 		index++;
