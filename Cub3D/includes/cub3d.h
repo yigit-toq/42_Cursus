@@ -143,6 +143,7 @@ typedef struct s_map
 	char		**map;
 	t_vect		scale;
 	t_size		size;
+	t_size		mini;
 }				t_map;
 
 typedef struct s_game

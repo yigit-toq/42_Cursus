@@ -18,10 +18,8 @@ static int	render_frame(void)
 
 	game = get_game();
 	update_position();
-	raycast();
 	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
-	minimap_loop();
-	return (SUCCESS);
+	return (raycast(), minimap_loop(), SUCCESS);
 }
 
 static void	init_img(void)
@@ -44,13 +42,13 @@ static void	init_img(void)
 		i++;
 	}
 	img->frame = add_image(NULL, size);
-	size.x = map->scale.x * map->size.x;
-	size.y = map->scale.y * map->size.y;
+	size.x = map->scale.x * map->size.x * map->mini.x;
+	size.y = map->scale.y * map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
 	img->hex_color[0] = rgb_to_hex(img->rgb_color[0][0], img->rgb_color[0][1], img->rgb_color[0][2]);
 	img->hex_color[1] = rgb_to_hex(img->rgb_color[1][0], img->rgb_color[1][1], img->rgb_color[1][2]);
 
-	img->cross = add_image("../Frame/output64.xpm", (t_size){0, 0});
+	img->cross = add_image("../Frame/crosshair.xpm", (t_size){0, 0});
 
 	img->gun_frame[0] = add_image("../Frame/Reaver/xpm/output_001.xpm", (t_size){0, 0});
 	img->gun_frame[1] = add_image("../Frame/Reaver/xpm/output_002.xpm", (t_size){0, 0});

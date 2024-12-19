@@ -130,6 +130,9 @@ void	files_controller(char *path)
 	game->map->scale.x = 1; //(double)WIN_W / game->map->size.x / 4;
 	game->map->scale.y = 1; //(double)WIN_H / game->map->size.y / 4;
 
+	game->map->mini.x = 4;
+	game->map->mini.y = 4;
+
 	game->player.speed = SPEED; //* ((game->map->scale.x + game->map->scale.y) / 2) / 100;
 
 	if (game->player.direction == EAST)
