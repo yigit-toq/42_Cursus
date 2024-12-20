@@ -10,19 +10,31 @@
 #                                                                              #
 # **************************************************************************** #
 
-ERROR_DIR		=	$(SRCS_DIR)2-error/
-UTILS_DIR		=	$(SRCS_DIR)1-utils/
-MAP_DIR			=	$(SRCS_DIR)0-map/
+M_ERROR_DIR		=	$(M_SRCS_DIR)2-error/
+B_ERROR_DIR		=	$(B_SRCS_DIR)2-error/
+
+M_UTILS_DIR		=	$(M_SRCS_DIR)1-utils/
+B_UTILS_DIR		=	$(B_SRCS_DIR)1-utils/
+
+M_MAP_DIR		=	$(M_SRCS_DIR)0-map/
+B_MAP_DIR		=	$(B_SRCS_DIR)0-map/
 
 LIB_DIR			=	./libraries/
 INC_DIR			=	./includes/
 
-SRCS_DIR		=	./sources/
-OBJS_DIR		=	./objects/
+PROJECTS		=	./projects/
 
-SRCS			=	$(SRCS_DIR)cub3d.c $(SRCS_DIR)init.c $(SRCS_DIR)raycasting.c $(SRCS_DIR)input_system.c $(SRCS_DIR)minimap.c $(SRCS_DIR)rendering.c $(MAP_DIR)map.c $(MAP_DIR)map_utils.c $(UTILS_DIR)utils.c $(ERROR_DIR)error.c
+M_SRCS_DIR		=	$(PROJECTS)mandatory/
+M_OBJS_DIR		=	objects_m/
 
-M_OBJS			=	$(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
+B_SRCS_DIR		=	$(PROJECTS)bonus/
+B_OBJS_DIR		=	objects_b/
+
+M_SRCS			=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_SRCS_DIR)raycasting.c $(M_SRCS_DIR)input_system.c $(M_SRCS_DIR)minimap.c $(M_SRCS_DIR)rendering.c $(M_MAP_DIR)map.c $(M_MAP_DIR)map_utils.c $(M_UTILS_DIR)utils.c $(M_ERROR_DIR)error.c
+B_SRCS			=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_SRCS_DIR)raycasting.c $(B_SRCS_DIR)input_system.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)rendering.c $(B_MAP_DIR)map.c $(B_MAP_DIR)map_utils.c $(B_UTILS_DIR)utils.c $(B_ERROR_DIR)error.c
+
+M_OBJS			=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
+B_OBJS			=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
 
 RM				=	@rm -rf
 
@@ -66,7 +78,11 @@ else
 	LIBRARY		=	$(MLX) -framework OpenGL AppKit
 endif
 
-$(OBJS_DIR)/%.o	: 	%.c
+$(M_OBJS_DIR)/%.o	: 	%.c
+					@mkdir -p $(dir $@)
+					$(CC) $(CFLAGS) -c $< -o $@
+
+$(B_OBJS_DIR)/%.o	: 	%.c
 					@mkdir -p $(dir $@)
 					$(CC) $(CFLAGS) -c $< -o $@
 
@@ -100,7 +116,7 @@ $(MLX)			:
 re				:	fclean all
 
 clean			:
-					$(RM) $(OBJS_DIR)
+					$(RM) $(M_OBJS_DIR) $(B_OBJS_DIR)
 					@if [ -d $(LIBFT_DIR) ];		then $(LIBFT_MAKE)	clean;	fi
 					@if [ -d $(MLX_DIR)   ];		then $(MLX_MAKE)	clean;	fi
 					@printf "$(COLOR_R)OBJECT FILES		\e[1m[ RM ]\e[0m\n$(COLOR_E)"
@@ -114,7 +130,7 @@ valgrind		:	all
 					valgrind --leak-check=full ./$(NAME) test.cub
 
 norminette		:
-					@norminette $(INC_DIR) $(LIBFT_DIR) $(SRCS_DIR)
+					@norminette $(INC_DIR) $(LIBFT_DIR) $(M_SRCS_DIR) $(B_SRCS_DIR)
 
 clean-repo		:	fclean
 					$(RM) $(LIBFT_DIR) $(MLX_DIR)
