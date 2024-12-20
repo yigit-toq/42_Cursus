@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   zip.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 13:12:06 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/20 13:12:06 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/20 18:26:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-#include "zip.h"
+#include <string.h>
+#include <zlib.h>
 
 #define MAX_FRAME   75
 
@@ -22,31 +23,41 @@ typedef struct s_zip
 	char	*data;
 }			t_zip;
 
-static void	init_zip(char *path)
+void	init_zip(void *mlx)
 {
-	char	*zip_path = "./Frame/Reaver/vandal_xpm.zip";
-	zip_t	*zip;
-	int		err;
-	int		f_count;
-	t_zip	frame[MAX_FRAME];
+	const char	*zip_path = "../Frame/Reaver/vandal_xpm.zip";
+	const char	*temp_dir = "temp_frames";
+	char		command[256];
 
-	f_count = 0;
-	zip = zip_open(zip_path, ZIP_RDONLY, &err);
-	error_controller("Failed to open zip file", zip);
+	snprintf(command, sizeof(command), "mkdir -p %s && unzip -o %s -d %s", temp_dir, zip_path, temp_dir);
+	if (system(command))
+		error_controller("Failed to extract zip file.", NULL);
 
-	zip_int64_t num_entries = zip_get_num_entries(zip, 0);
-	for (zip_int64_t i = 0; i < num_entries; i++)
+    snprintf(command, sizeof(command), "ls %s", temp_dir);
+
+    FILE *fp = popen(command, "r");
+    if (!fp)
+		error_controller("Failed to list files in directory.", NULL);
+
+    char filename[256];
+    while (fgets(filename, sizeof(filename), fp))
 	{
-		const char *name = zip_get_name(zip, i, 0);
-		if (ft_strnstr(name, path, ft_strlen(path)))
-		{
-			frame[f_count].path = ft_strdup(name);
-			frame[f_count].size = zip_get_file_size(zip, i, 0);
-			frame[f_count].data = ft_calloc(frame[f_count].size + 1, sizeof(char));
-			zip_file_t *file = zip_fopen_index(zip, i, 0);
-			zip_fread(file, frame[f_count].data, frame[f_count].size);
-			zip_fclose(file);
-			f_count++;
-		}
-	}
+        filename[strcspn(filename, "\n")] = '\0';
+
+        char	filepath[512];
+        snprintf(filepath, sizeof(filepath), "%s/%s", temp_dir, filename);
+
+        // XPM dosyasını yükle
+        void *image = mlx_xpm_file_to_image(mlx, filepath, NULL, NULL);
+        if (image == NULL) {
+            fprintf(stderr, "Failed to load XPM image: %s\n", filepath);
+        } else {
+            printf("Successfully loaded: %s\n", filepath);
+        }
+    }
+    pclose(fp);
+
+    // Geçici dosyaları temizle
+    snprintf(command, sizeof(command), "rm -rf %s", temp_dir);
+    system(command);
 }
