@@ -133,7 +133,7 @@ void	files_controller(char *path)
 	game->map->mini.x = 4;
 	game->map->mini.y = 4;
 
-	game->player.speed = SPEED; //* ((game->map->scale.x + game->map->scale.y) / 2) / 100;
+	game->player.speed = SPEED;
 
 	if (game->player.direction == EAST)
 		game->player.theta = deg_to_rad(00);

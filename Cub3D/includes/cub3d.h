@@ -16,8 +16,7 @@
 # include "../libraries/minilibx/mlx.h"
 
 # include "./utils/libft.h"
-
-# include "./macro.h"
+# include "./utils/macro.h"
 
 # include <unistd.h>
 # include <stdio.h>

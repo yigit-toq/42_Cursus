@@ -19,7 +19,7 @@ static void	draw_tex(double x_p, double x_c, double height, t_data img)
 	double		y_c;
 
 	y_c = 0;
-	y_p = (WIN_H /  2) - height;
+	y_p = (WIN_H  / 2) - height;
 	inc = (height * 2) / img.h_s;
 	while (y_c < img.h_s)
 	{
@@ -99,8 +99,6 @@ static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
 		ray->pos.y += ray->dir.y;
 		map.x = center_to_grid(ray->pos.x, game->map->scale.x, 0);
 		map.y = center_to_grid(ray->pos.y, game->map->scale.y, 0);
-		// map.x = ray->pos.x;
-		// map.y = ray->pos.y;
 		if (game->map->map[map.y][map.x] == WALL)
 			break ;
 	}

@@ -12,6 +12,8 @@
 
 #include "cub3d_bonus.h"
 
+# define H_G	0xD1DDDE
+
 void	draw_player(t_size scale)
 {
 	t_game	*game;
@@ -57,7 +59,7 @@ void	minimap(void)
 				draw_rectangle(game->img->minimap, tc_vect(index), tc_vect(scale), H_W);
 
 			if (value == FLOOR || value == game->player.direction)
-				draw_rectangle(game->img->minimap, tc_vect(index), tc_vect(scale), 0xD1DDDE);
+				draw_rectangle(game->img->minimap, tc_vect(index), tc_vect(scale), H_G);
 
 			index.x++;
 		}

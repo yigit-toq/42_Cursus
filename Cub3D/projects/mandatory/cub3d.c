@@ -42,5 +42,3 @@ int	main(int argc, char **argv)
 	}
 	return (init_game(), EXIT_SUCCESS);
 }
-
-//argv += arg_controller(argv);

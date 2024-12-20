@@ -168,14 +168,3 @@ int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
 	else
 		return (FAILURE);
 }
-
-// rot.x = center.x + (cos(game->player.theta) * radius.x);
-// rot.y = center.y + (sin(game->player.theta) * radius.y);
-// mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
-
-// for (double angle = 0; angle < 2 * PI; angle += 0.001)
-// {
-//     p_coord.x = center.x + radius.x * cos(angle);
-//     p_coord.y = center.y + radius.y * sin(angle);
-//     mlx_pixel_put(game->mlx, game->win, p_coord.x, p_coord.y, 0xFFFFFF);
-// }
