@@ -189,6 +189,12 @@ int	key_release_handler(int key, t_game *game)
 	{
 		game->map->is_map = !game->map->is_map;
 	}
+	if (key == Y)
+	{
+		game->player.anim = &game->img->weapon[1];
+		game->img->weapon[0].play = FALSE;
+		game->img->weapon[1].play = TRUE;
+	}
 	return (SUCCESS);
 }
 

@@ -127,19 +127,15 @@ void	files_controller(char *path)
 	path_control();
 	maps_control();
 	game = get_game();
-	game->map->scale.x = 1; //(double)WIN_W / game->map->size.x / 4;
-	game->map->scale.y = 1; //(double)WIN_H / game->map->size.y / 4;
-
 	game->map->mini.x = 4;
 	game->map->mini.y = 4;
-
+	game->map->scale.x = 1;
+	game->map->scale.y = 1;
 	game->player.speed = SPEED;
-
 	if (game->player.direction == EAST)
 		game->player.theta = deg_to_rad(00);
 	if (game->player.direction == SOUTH)
 		game->player.theta = deg_to_rad(90);
-
 	if (game->player.direction == WEST)
 		game->player.theta = deg_to_rad(180);
 	if (game->player.direction == NORTH)

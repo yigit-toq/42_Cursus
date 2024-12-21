@@ -18,7 +18,7 @@ void	exten_controller(char *path)
 
 	extension = ft_strrchr(path, '.');
 	if (!extension)
-		error_controller("Wrong format. :D", NULL);
+		error_controller("Wrong format  :D", NULL);
 	if (ft_strcmp(extension, ".cub"))
 		error_controller("Wrong extension.", NULL);
 }

@@ -108,7 +108,8 @@ t_data	add_image(char *path, t_size size)
 	else
 	{
 		data.img = mlx_new_image(game->mlx, size.x, size.y);
-		data.w_s = size.x, data.h_s = size.y;
+		data.w_s = size.x;
+		data.h_s = size.y;
 	}
 	error_controller("Invalid texture file.", data.img);
 	data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);

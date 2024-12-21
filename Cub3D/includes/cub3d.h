@@ -23,48 +23,9 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define C_E			"\033[0m"
-# define C_R			"\033[31m"
-# define C_G			"\033[32m"
-# define C_Y			"\033[33m"
+# define MAX_PATH	4
 
-# define H_B			0x00000000
-# define H_W			0x00FFFFFF
-# define H_Y			0x00FFFF00
-# define H_R			0x00FF0000
-
-# define PI				3.14159265
-
-# define NAME			"Cub3D"
-
-# define WIN_W			1280
-# define WIN_H			720
-
-# define SPEED			0.10
-# define ROTATE			0.08
-
-# define DESTROY		17
-
-# define P_COUNT		1
-
-# define TRUE			1
-# define FALSE			0
-
-# define FAILURE		1
-# define SUCCESS		0
-
-# define MAX_PATH		4
-
-# define NORTH			'N'
-# define SOUTH			'S'
-# define WEST			'W'
-# define EAST			'E'
-
-# define WALL			'1'
-# define FLOOR			'0'
-
-# define FOV			60.00
-# define SEV			64.00
+# define WIN_NAME	"Cub3D Mandatory"
 
 typedef struct s_size
 {

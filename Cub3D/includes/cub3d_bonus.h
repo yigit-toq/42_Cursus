@@ -23,48 +23,11 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define C_E			"\033[0m"
-# define C_R			"\033[31m"
-# define C_G			"\033[32m"
-# define C_Y			"\033[33m"
+# define MAX_PATH	4
 
-# define H_B			0x00000000
-# define H_W			0x00FFFFFF
-# define H_Y			0x00FFFF00
-# define H_R			0x00FF0000
+# define WIN_NAME	"Cub3D Bonus"
 
-# define PI				3.14159265
-
-# define NAME			"Cub3D"
-
-# define WIN_W			1280
-# define WIN_H			720
-
-# define SPEED			0.10
-# define ROTATE			0.08
-
-# define DESTROY		17
-
-# define P_COUNT		1
-
-# define TRUE			1
-# define FALSE			0
-
-# define FAILURE		1
-# define SUCCESS		0
-
-# define MAX_PATH		4
-
-# define NORTH			'N'
-# define SOUTH			'S'
-# define WEST			'W'
-# define EAST			'E'
-
-# define WALL			'1'
-# define FLOOR			'0'
-
-# define FOV			60.00
-# define SEV			64.00
+# define GUN_PATH	"./assets/textures/character/frame"
 
 typedef struct s_size
 {
@@ -106,16 +69,28 @@ typedef struct s_data
 	int			h_s;
 }				t_data;
 
+typedef struct s_anim
+{
+	t_data		*frames;
+	t_data		*frame;
+	char		*path;
+	int			total;
+	int			index;
+	int			delay;
+	int			play;
+	int			loop;
+	int			counter;
+}				t_anim;
+
 typedef struct s_img
 {
 	int			rgb_color[2][3];
 	int			hex_color[2];
 	t_data		dir_symbl[4];
-	t_data		gun_frame[75];
 	t_data		minimap;
 	t_data		frame;
 	t_data		cross;
-	t_data		*vandal;
+	t_anim		weapon[2];
 }				t_img;
 
 typedef struct s_player
@@ -124,6 +99,7 @@ typedef struct s_player
 	int			move[2];
 	double		speed;
 	double		theta;
+	t_anim		*anim;
 	t_vect		axis;
 	t_vect		plane;
 	t_vect		position;
@@ -227,4 +203,10 @@ void			minimap_loop(void);
 double			deg_to_rad(double degree);
 
 double			rad_to_deg(double radian);
+
+void			init_frame(t_data *frame, char *path, int *range);
+
+void			init_animation(t_anim *anim, int *range, int delay, char *path);
+
+void			update_animation(t_anim	*anim);
 #endif

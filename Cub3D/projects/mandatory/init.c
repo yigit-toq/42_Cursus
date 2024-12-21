@@ -57,7 +57,7 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = mlx_init();
-	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, NAME);
+	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
 	init_img();
 	mlx_loop_hook(game->mlx, render_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);

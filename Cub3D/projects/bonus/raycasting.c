@@ -57,11 +57,9 @@ static void	render_frame(t_ray *ray, int index)
 
 	draw_tex(index, img_x, ray->wall.height, game->img->dir_symbl[0]);
 
-	// draw_hit(game->img->frame, s_pos, e_pos, 0x007b14);
-
-	for (int y = 0; y < 720; y++)
+	for (int y = 0; y < WIN_H; y++)
 	{
-		unsigned int color = get_pixel_color(*game->img->vandal, index, y);
+		unsigned int color = get_pixel_color(*game->player.anim->frame, index, y);
 
 		unsigned char green = (color >> 8) & 255;
 		unsigned char blue = (color >> 0) & 255;
@@ -115,25 +113,9 @@ int	raycast(void)
 	t_ray				*rays;
 	int					index;
 	double				angle;
-	static int			frame;
-	static unsigned int	delay;
 
 	game = get_game();
 	rays = game->rays;
-	if (delay % 3 == 0)
-	{
-		game->img->vandal = &game->img->gun_frame[frame];
-		frame++;
-	}
-	if (frame == 74)
-	{
-		frame = 0;
-		delay = 0;
-	}
-	else
-	{
-		delay++;
-	}
 	game->player.plane.x = grid_to_center(game->player.position.x, game->map->scale.x, 0);
 	game->player.plane.y = grid_to_center(game->player.position.y, game->map->scale.y, 0);
 	index = 0;

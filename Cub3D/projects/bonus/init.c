@@ -12,6 +12,14 @@
 
 #include "cub3d_bonus.h"
 
+void	animation_controller(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	update_animation(game->player.anim);
+}
+
 static int	render_frame(void)
 {
 	t_game	*game;
@@ -19,7 +27,7 @@ static int	render_frame(void)
 	game = get_game();
 	update_position();
 	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
-	return (raycast(), minimap_loop(), SUCCESS);
+	return (raycast(), minimap_loop(), animation_controller(), SUCCESS);
 }
 
 static void	init_img(void)
@@ -49,6 +57,14 @@ static void	init_img(void)
 	img->hex_color[1] = rgb_to_hex(img->rgb_color[1][0], img->rgb_color[1][1], img->rgb_color[1][2]);
 
 	img->cross = add_image("../Frame/crosshair.xpm", (t_size){0, 0});
+
+	init_animation(&img->weapon[0], (int[2]){55, 75}, 3, GUN_PATH); // Idle
+	init_animation(&img->weapon[1], (int[2]){10, 55}, 3, GUN_PATH); // Inspect
+
+	img->weapon[0].play = TRUE;
+	img->weapon[0].loop = TRUE;
+
+	get_game()->player.anim = &img->weapon[0];
 }
 
 void	init_game(void)
@@ -57,7 +73,7 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = mlx_init();
-	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, NAME);
+	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
 	init_img();
 	mlx_loop_hook(game->mlx, render_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
