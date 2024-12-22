@@ -132,12 +132,17 @@ void	files_controller(char *path)
 	game->map->scale.x = 1;
 	game->map->scale.y = 1;
 	game->player.speed = SPEED;
+
 	if (game->player.direction == EAST)
 		game->player.theta = deg_to_rad(00);
 	if (game->player.direction == SOUTH)
 		game->player.theta = deg_to_rad(90);
+
 	if (game->player.direction == WEST)
 		game->player.theta = deg_to_rad(180);
 	if (game->player.direction == NORTH)
 		game->player.theta = deg_to_rad(270);
+
+	game->map->pivot.x = 0;
+	game->map->pivot.y = WIN_H - (game->map->size.y * game->map->mini.y);
 }

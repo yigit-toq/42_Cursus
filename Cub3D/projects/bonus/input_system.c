@@ -121,7 +121,7 @@ static int	input_systm(double h_move, double v_move)
 	t_vect	forw;
 	t_vect	side;
 	t_vect	pos;
-	double	move_length;
+	double	avg;
 
 	game = get_game();
 	pos = game->player.position;
@@ -129,11 +129,11 @@ static int	input_systm(double h_move, double v_move)
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
-	move_length = sqrt(h_move * h_move + v_move * v_move);
-	if (move_length > 1)
+	avg = sqrt(h_move * h_move + v_move * v_move);
+	if (avg > 1)
 	{
-		h_move /= move_length;
-		v_move /= move_length;
+		h_move /= avg;
+		v_move /= avg;
 	}
 	pos.x += v_move * game->player.speed * side.x;
 	pos.y += v_move * game->player.speed * side.y;

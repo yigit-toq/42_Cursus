@@ -43,7 +43,7 @@ static void	render_frame(t_ray *ray, int index)
 	s_pos.y = 0;
 	e_pos.y = (WIN_H / 2) - ray->wall.height;
 
-	img_x = floor((int)(game->img->dir_symbl[0].w_s * (ray->pos.x + ray->pos.y)) % game->img->dir_symbl[0].w_s);
+	img_x = floor((int)(game->img->dir_symbl[0].w_s * (ray->src.x + ray->src.y)) % game->img->dir_symbl[0].w_s);
 
 	draw_hit(game->img->bgframe, s_pos, e_pos, game->img->hex_color[1]);
 
@@ -56,20 +56,6 @@ static void	render_frame(t_ray *ray, int index)
 	e_pos.y = (WIN_H / 2) + ray->wall.height;
 
 	draw_tex(index, img_x, ray->wall.height, game->img->dir_symbl[0]);
-
-	for (int y = 0; y < 720; y++)
-	{
-		int	cross_x = (WIN_W / 2) - 32;
-		int	cross_y = (WIN_H / 2) - 32;
-
-		if ((index > cross_x && index < cross_x + 64) && (y > cross_y && y < cross_y + 64))
-		{
-			unsigned int color = get_pixel_color(game->img->cross, index - cross_x, y - cross_y);
-
-			if (color == 0)
-				mlx_image_put(game->img->bgframe, index, y, color);
-		}
-	}
 }
 
 static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
@@ -78,22 +64,20 @@ static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
 	t_size	map;
 
 	game = get_game();
-	ray->pos.x = pos.x;
-	ray->pos.y = pos.y;
+	ray->src.x = pos.x;
+	ray->src.y = pos.y;
 	ray->dir.x = cos(deg_to_rad(angle)) / SEV;
 	ray->dir.y = sin(deg_to_rad(angle)) / SEV;
 	while (TRUE)
 	{
-		ray->pos.x += ray->dir.x;
-		ray->pos.y += ray->dir.y;
-		map.x = center_to_grid(ray->pos.x, game->map->scale.x, 0);
-		map.y = center_to_grid(ray->pos.y, game->map->scale.y, 0);
-		// map.x = ray->pos.x;
-		// map.y = ray->pos.y;
+		ray->src.x += ray->dir.x;
+		ray->src.y += ray->dir.y;
+		map.x = center_to_grid(ray->src.x, game->map->scale.x, 0);
+		map.y = center_to_grid(ray->src.y, game->map->scale.y, 0);
 		if (game->map->map[map.y][map.x] == WALL)
 			break ;
 	}
-	ray->dist = sqrt(pow(ray->pos.x - pos.x, 2) + pow(ray->pos.y - pos.y, 2));
+	ray->dist = sqrt(pow(ray->src.x - pos.x, 2) + pow(ray->src.y - pos.y, 2));
 
 	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
 

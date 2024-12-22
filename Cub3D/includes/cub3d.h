@@ -23,9 +23,9 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define MAX_PATH	4
+# define MAX_PATH		4
 
-# define WIN_NAME	"Cub3D Mandatory"
+# define WIN_NAME		"Cub3D Mandatory"
 
 typedef struct s_size
 {
@@ -50,7 +50,7 @@ typedef struct s_ray
 {
 	double		dist;
 	t_wall		wall;
-	t_vect		pos;
+	t_vect		src;
 	t_vect		dir;
 	char		hit;
 }				t_ray;

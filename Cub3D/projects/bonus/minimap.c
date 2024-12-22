@@ -28,10 +28,11 @@ void	draw_player(t_size scale)
 
 	for (int i = 0; i < WIN_W; i++)
 	{
-		index.x = floor((game->rays[i].pos.x / game->map->scale.x) * scale.x);
-		index.y = floor((game->rays[i].pos.y / game->map->scale.y) * scale.y);
-		draw_hit(game->img->minimap, tc_size(plane), index, 0xFF3E00);
+		index.x = floor((game->rays[i].plane.x / game->map->scale.x) * scale.x);
+		index.y = floor((game->rays[i].plane.y / game->map->scale.y) * scale.y);
+		// draw_hit(game->img->minimap, tc_size(plane), index, 0xFF3E00);
 	}
+	(void)index;
 }
 
 void	minimap(void)
@@ -70,20 +71,17 @@ void	minimap(void)
 
 void	minimap_loop(void)
 {
-	t_vect	pivot;
 	t_game	*game;
 	t_map	*map;
 	void	*img;
 
 	game = get_game();
 	map = game->map;
-	img = game->img->minimap.img;
 	if (map->is_map == FALSE)
 	{
 		return ;
 	}
 	minimap();
-	pivot.y = WIN_H - (map->size.y * map->mini.y);
-	pivot.x = 0;
-	mlx_put_image_to_window(game->mlx, game->win, img, pivot.x, pivot.y);
+	img = game->img->minimap.img;
+	mlx_put_image_to_window(game->mlx, game->win, img, map->pivot.x, map->pivot.y);
 }

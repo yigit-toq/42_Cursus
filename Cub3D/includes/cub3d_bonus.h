@@ -23,13 +23,13 @@
 # include <fcntl.h>
 # include <math.h>
 
-# define MAX_PATH	4
+# define MAX_PATH		4
 
-# define WIN_NAME	"Cub3D Bonus"
+# define WIN_NAME		"Cub3D Bonus"
 
-# define GUN_PATH	"./assets/textures/character/frame"
+# define GUN_PATH		"./assets/textures/character/frame"
 
-# define CROSS_PATH	"./assets/textures/crosshair.xpm"
+# define CROSS_PATH		"./assets/textures/crosshair.xpm"
 
 typedef struct s_size
 {
@@ -48,6 +48,7 @@ typedef struct s_wall
 	double		s_pos;
 	double		e_pos;
 	double		height;
+	double		hit_pos;
 }				t_wall;
 
 typedef struct s_ray
@@ -55,11 +56,12 @@ typedef struct s_ray
 	char		*hit;
 	double		dist;
 	t_wall		wall;
-	t_vect		pos;
+	t_vect		src;
 	t_vect		dir;
 	t_vect		step;
 	t_vect		side;
 	t_vect		delta;
+	t_vect		plane;
 }				t_ray;
 
 typedef struct s_data
@@ -122,6 +124,7 @@ typedef struct s_map
 	int			is_map;
 	char		**map;
 	t_vect		scale;
+	t_vect		pivot;
 	t_size		size;
 	t_size		mini;
 }				t_map;

@@ -26,8 +26,8 @@ void	draw_player(t_size scale)
 
 	for (int i = 0; i < WIN_W; i++)
 	{
-		index.x = game->rays[i].pos.x * scale.x;
-		index.y = game->rays[i].pos.y * scale.y;
+		index.x = game->rays[i].src.x * scale.x;
+		index.y = game->rays[i].src.y * scale.y;
 		draw_hit(game->img->minimap, tc_size(plane), index, 0xFF3E00);
 	}
 }

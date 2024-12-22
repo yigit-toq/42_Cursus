@@ -47,8 +47,6 @@ static void	init_img(void)
 	img->minimap = add_image(NULL, size);
 	img->hex_color[0] = rgb_to_hex(img->rgb_color[0][0], img->rgb_color[0][1], img->rgb_color[0][2]);
 	img->hex_color[1] = rgb_to_hex(img->rgb_color[1][0], img->rgb_color[1][1], img->rgb_color[1][2]);
-
-	img->cross = add_image("../Frame/crosshair.xpm", (t_size){0, 0});
 }
 
 void	init_game(void)
