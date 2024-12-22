@@ -62,14 +62,9 @@ void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 	}
 }
 
-double	grid_to_center(double pos, double scale, double pivot)
+double	grid_to_center(double pos, double scale)
 {
-	return (pos * scale + (scale / 2) + (pivot * scale));
-}
-
-double	center_to_grid(double pos, double scale, double pivot)
-{
-	return ((pos - (pivot * scale)) / scale);
+	return (pos * scale + (scale / 2));
 }
 
 int	rgb_to_hex(int red, int green, int blue)

@@ -29,6 +29,8 @@
 
 # define GUN_PATH	"./assets/textures/character/frame"
 
+# define CROSS_PATH	"./assets/textures/crosshair.xpm"
+
 typedef struct s_size
 {
 	int			x;
@@ -50,11 +52,14 @@ typedef struct s_wall
 
 typedef struct s_ray
 {
+	char		*hit;
 	double		dist;
 	t_wall		wall;
 	t_vect		pos;
 	t_vect		dir;
-	char		hit;
+	t_vect		step;
+	t_vect		side;
+	t_vect		delta;
 }				t_ray;
 
 typedef struct s_data
@@ -88,7 +93,7 @@ typedef struct s_img
 	int			hex_color[2];
 	t_data		dir_symbl[4];
 	t_data		minimap;
-	t_data		frame;
+	t_data		bgframe;
 	t_data		cross;
 	t_anim		weapon[2];
 }				t_img;
@@ -158,9 +163,7 @@ void			mlx_image_put(t_data img, int x, int y, unsigned int color);
 
 unsigned int	get_pixel_color(t_data img, int x, int y);
 
-double			grid_to_center(double pos, double scale, double pivot);
-
-double			center_to_grid(double pos, double scale, double pivot);
+double			grid_to_center(double pos, double scale);
 
 char			*wtspace_trim(char *str);
 

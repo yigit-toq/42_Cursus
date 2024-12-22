@@ -26,7 +26,7 @@ static int	render_frame(void)
 
 	game = get_game();
 	update_position();
-	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	return (raycast(), minimap_loop(), animation_controller(), SUCCESS);
 }
 
@@ -49,21 +49,17 @@ static void	init_img(void)
 		img->dir_symbl[i] = add_image(img->dir_symbl[i].img, (t_size){0, 0});
 		i++;
 	}
-	img->frame = add_image(NULL, size);
-	size.x = map->scale.x * map->size.x * map->mini.x;
-	size.y = map->scale.y * map->size.y * map->mini.y;
+	img->bgframe = add_image(NULL, size);
+	size.x = map->size.x * map->mini.x;
+	size.y = map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
 	img->hex_color[0] = rgb_to_hex(img->rgb_color[0][0], img->rgb_color[0][1], img->rgb_color[0][2]);
 	img->hex_color[1] = rgb_to_hex(img->rgb_color[1][0], img->rgb_color[1][1], img->rgb_color[1][2]);
-
-	img->cross = add_image("../Frame/crosshair.xpm", (t_size){0, 0});
-
-	init_animation(&img->weapon[0], (int[2]){55, 75}, 3, GUN_PATH); // Idle
-	init_animation(&img->weapon[1], (int[2]){10, 55}, 3, GUN_PATH); // Inspect
-
+	img->cross = add_image(CROSS_PATH, (t_size){0, 0});
+	init_animation(&img->weapon[0], (int[2]){55, 75}, 3, GUN_PATH);
+	init_animation(&img->weapon[1], (int[2]){10, 55}, 3, GUN_PATH);
 	img->weapon[0].play = TRUE;
 	img->weapon[0].loop = TRUE;
-
 	get_game()->player.anim = &img->weapon[0];
 }
 

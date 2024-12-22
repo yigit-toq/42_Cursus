@@ -23,7 +23,7 @@ static void	draw_tex(double x_p, double x_c, double height, t_data img)
 	inc = (height * 2) / img.h_s;
 	while (y_c < img.h_s)
 	{
-		mlx_image_put(get_game()->img->frame, x_p, y_p, get_pixel_color(img, x_c, y_c));
+		mlx_image_put(get_game()->img->bgframe, x_p, y_p, get_pixel_color(img, x_c, y_c));
 		y_p += inc;
 		y_c++;
 	}
@@ -45,12 +45,12 @@ static void	render_frame(t_ray *ray, int index)
 
 	img_x = floor((int)(game->img->dir_symbl[0].w_s * (ray->pos.x + ray->pos.y)) % game->img->dir_symbl[0].w_s);
 
-	draw_hit(game->img->frame, s_pos, e_pos, game->img->hex_color[1]);
+	draw_hit(game->img->bgframe, s_pos, e_pos, game->img->hex_color[1]);
 
 	s_pos.y = (WIN_H / 2) + ray->wall.height;
 	e_pos.y = (WIN_H);
 	
-	draw_hit(game->img->frame, s_pos, e_pos, game->img->hex_color[0]);
+	draw_hit(game->img->bgframe, s_pos, e_pos, game->img->hex_color[0]);
 	
 	s_pos.y = (WIN_H / 2) - ray->wall.height;
 	e_pos.y = (WIN_H / 2) + ray->wall.height;
@@ -67,7 +67,7 @@ static void	render_frame(t_ray *ray, int index)
 			unsigned int color = get_pixel_color(game->img->cross, index - cross_x, y - cross_y);
 
 			if (color == 0)
-				mlx_image_put(game->img->frame, index, y, color);
+				mlx_image_put(game->img->bgframe, index, y, color);
 		}
 	}
 }

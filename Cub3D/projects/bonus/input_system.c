@@ -139,7 +139,7 @@ static int	input_systm(double h_move, double v_move)
 	pos.y += v_move * game->player.speed * side.y;
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
-	if (game->map->map[(int)grid_to_center(pos.y, 1, 0)][(int)grid_to_center(pos.x, 1, 0)] == WALL)
+	if (game->map->map[(int)grid_to_center(pos.y, 1)][(int)grid_to_center(pos.x, 1)] == WALL)
 		return (FAILURE);
 	else
 		return (game->player.position = pos, SUCCESS);
@@ -192,22 +192,39 @@ int	key_release_handler(int key, t_game *game)
 	if (key == Y)
 	{
 		game->player.anim = &game->img->weapon[1];
-		game->img->weapon[0].play = FALSE;
 		game->img->weapon[1].play = TRUE;
 	}
 	return (SUCCESS);
 }
 
-int	exit_game(t_game *game)
+void	free_game(void)
 {
+	t_game	*game;
 	int		i;
 
+	game = get_game();
 	i = 0;
-	mlx_destroy_window(game->mlx, game->win);
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir_symbl[i].img);
+		mlx_destroy_image(game->mlx, game->img->dir_symbl[i++].img);
 		i++;
 	}
+	i = 0;
+	while (i < game->img->weapon[1].total)
+	{
+		mlx_destroy_image(game->mlx, game->img->weapon[1].frames[i].img);
+		if (i < game->img->weapon[0].total)
+		mlx_destroy_image(game->mlx, game->img->weapon[0].frames[i].img);
+		i++;
+	}
+	mlx_destroy_image(game->mlx, game->img->bgframe.img);
+	mlx_destroy_image(game->mlx, game->img->minimap.img);
+	mlx_destroy_image(game->mlx, game->img->cross.img);
+}
+
+int	exit_game(t_game *game)
+{
+	mlx_destroy_window(game->mlx, game->win);
+	free_game();
 	exit(EXIT_SUCCESS);
 }

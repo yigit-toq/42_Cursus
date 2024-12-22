@@ -73,7 +73,7 @@ typedef struct s_img
 	int			hex_color[2];
 	t_data		dir_symbl[4];
 	t_data		minimap;
-	t_data		frame;
+	t_data		bgframe;
 	t_data		cross;
 }				t_img;
 

@@ -21,15 +21,15 @@ void	draw_player(t_size scale)
 	t_size	index;
 
 	game = get_game();
-	plane.x = game->player.plane.x * scale.x;
-	plane.y = game->player.plane.y * scale.y;
+	plane.x = grid_to_center(game->player.position.x, scale.x);
+	plane.y = grid_to_center(game->player.position.y, scale.y);
 
 	draw_circle(game->img->minimap, plane, tc_vect(scale), 0x030180);
 
 	for (int i = 0; i < WIN_W; i++)
 	{
-		index.x = game->rays[i].pos.x * scale.x;
-		index.y = game->rays[i].pos.y * scale.y;
+		index.x = floor((game->rays[i].pos.x / game->map->scale.x) * scale.x);
+		index.y = floor((game->rays[i].pos.y / game->map->scale.y) * scale.y);
 		draw_hit(game->img->minimap, tc_size(plane), index, 0xFF3E00);
 	}
 }
@@ -43,8 +43,8 @@ void	minimap(void)
 
 	game = get_game();
 	ft_bzero(&index, sizeof(t_size));
-	scale.x = game->map->scale.x * game->map->mini.x;
-	scale.y = game->map->scale.y * game->map->mini.y;
+	scale.x = game->map->mini.x;
+	scale.y = game->map->mini.y;
 	while (index.y < game->map->size.y)
 	{
 		index.x = 0;
@@ -70,12 +70,20 @@ void	minimap(void)
 
 void	minimap_loop(void)
 {
+	t_vect	pivot;
 	t_game	*game;
+	t_map	*map;
+	void	*img;
+
 	game = get_game();
-	if (game->map->is_map == FALSE)
+	map = game->map;
+	img = game->img->minimap.img;
+	if (map->is_map == FALSE)
 	{
 		return ;
 	}
 	minimap();
-	mlx_put_image_to_window(game->mlx, game->win, game->img->minimap.img, 0, WIN_H - (game->map->size.y * game->map->scale.y * game->map->mini.y));
+	pivot.y = WIN_H - (map->size.y * map->mini.y);
+	pivot.x = 0;
+	mlx_put_image_to_window(game->mlx, game->win, img, pivot.x, pivot.y);
 }

@@ -18,7 +18,7 @@ static int	render_frame(void)
 
 	game = get_game();
 	update_position();
-	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	return (raycast(), minimap_loop(), SUCCESS);
 }
 
@@ -41,7 +41,7 @@ static void	init_img(void)
 		img->dir_symbl[i] = add_image(img->dir_symbl[i].img, (t_size){0, 0});
 		i++;
 	}
-	img->frame = add_image(NULL, size);
+	img->bgframe = add_image(NULL, size);
 	size.x = map->scale.x * map->size.x * map->mini.x;
 	size.y = map->scale.y * map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
