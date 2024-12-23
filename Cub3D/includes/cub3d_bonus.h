@@ -45,6 +45,7 @@ typedef struct s_vect
 
 typedef struct s_wall
 {
+	int			dir;
 	double		contact;
 	double		height;
 	double		s_pos;

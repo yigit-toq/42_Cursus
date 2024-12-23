@@ -98,7 +98,7 @@ static void draw_tex(int x_p, int y_p, double img_x, int start, double height, t
 
 	game = get_game();
     double tex_y = ((y_p - start) * img.h_s) / (height * 2);
-    if (tex_y >= img.h_s)
+    if (tex_y > img.h_s - 1)
         tex_y = img.h_s - 1;
     mlx_image_put(game->img->bgframe, x_p, y_p, get_pixel_color(img, img_x, tex_y));
 }
@@ -168,11 +168,19 @@ static void calculate_ray_hit(t_ray *ray, double angle)
 	if (side == 0)
 	{
 		ray->dist = (ray->plane.x - ray->src.x + (1 - ray->step.x) / 2) / ray->dir.x;
+		if (ray->dir.x > 0)
+			ray->wall.dir = 3;
+		else
+			ray->wall.dir = 2;
 		ray->wall.contact = ray->src.y + ray->dist * ray->dir.y;
 	}
 	else
 	{
 		ray->dist = (ray->plane.y - ray->src.y + (1 - ray->step.y) / 2) / ray->dir.y;
+		if (ray->dir.y > 0)
+			ray->wall.dir = 1;
+		else
+			ray->wall.dir = 0;
 		ray->wall.contact = ray->src.x + ray->dist * ray->dir.x;
 	}
 	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
@@ -238,7 +246,7 @@ static void	render_frame(t_ray *ray, int x)
 				}
 				else
 				{
-					draw_tex(x, y, img_x, ray->wall.s_pos, ray->wall.height, game->img->dir_symbl[0]);
+					draw_tex(x, y, img_x, ray->wall.s_pos, ray->wall.height, game->img->dir_symbl[ray->wall.dir]);
 				}
 			}
 		}

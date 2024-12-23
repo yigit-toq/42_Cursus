@@ -90,7 +90,7 @@ static void	maps_control(void)
 			x++;
 		}
 		if (game->map->size.x < x)
-			game->map->size.x = x;
+			game->map->size.x = x - 1;
 		y++;
 	}
 	game->map->size.y = y;
