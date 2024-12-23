@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/20 12:29:56 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 14:57:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ typedef struct s_vect
 
 typedef struct s_wall
 {
+	double		contact;
+	double		height;
 	double		s_pos;
 	double		e_pos;
-	double		height;
-	double		hit_pos;
 }				t_wall;
 
 typedef struct s_ray

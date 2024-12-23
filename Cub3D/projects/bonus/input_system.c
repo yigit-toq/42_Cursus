@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/18 17:52:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 15:06:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,10 @@ int	key_press_handler(int key, t_game *game)
 		if (game->player.theta >= 2 * PI)
 			game->player.theta -= 2 * PI;
 	}
+	if (key == SHIFT)
+	{
+		game->player.speed = SPEED * 2;
+	}
 	return (SUCCESS);
 }
 
@@ -192,7 +196,12 @@ int	key_release_handler(int key, t_game *game)
 	if (key == Y)
 	{
 		game->player.anim = &game->img->weapon[1];
+		game->img->weapon[0].play = FALSE;
 		game->img->weapon[1].play = TRUE;
+	}
+	if (key == SHIFT)
+	{
+		game->player.speed = SPEED;
 	}
 	return (SUCCESS);
 }

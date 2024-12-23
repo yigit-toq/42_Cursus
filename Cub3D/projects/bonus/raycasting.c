@@ -6,22 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/18 15:47:38 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 14:58:32 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-
-static void draw_tex(int x_p, int y_p, double img_x, int start, double height, t_data img)
-{
-	t_game	*game;
-
-	game = get_game();
-    double tex_y = ((y_p - start) * img.h_s) / height;
-    if (tex_y >= img.h_s)
-        tex_y = img.h_s - 1;
-    mlx_image_put(game->img->bgframe, x_p, y_p, get_pixel_color(img, img_x, tex_y));
-}
 
 // static void	fix_hit(t_size *s_pos, t_size *e_pos, int s_y, int e_y)
 // {
@@ -103,6 +92,17 @@ static void draw_tex(int x_p, int y_p, double img_x, int start, double height, t
 // 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
 // }
 
+static void draw_tex(int x_p, int y_p, double img_x, int start, double height, t_data img)
+{
+	t_game	*game;
+
+	game = get_game();
+    double tex_y = ((y_p - start) * img.h_s) / (height * 2);
+    if (tex_y >= img.h_s)
+        tex_y = img.h_s - 1;
+    mlx_image_put(game->img->bgframe, x_p, y_p, get_pixel_color(img, img_x, tex_y));
+}
+
 static void	init_ray(t_ray *ray, double angle)
 {
 	t_game	*game;
@@ -168,16 +168,16 @@ static void calculate_ray_hit(t_ray *ray, double angle)
 	if (side == 0)
 	{
 		ray->dist = (ray->plane.x - ray->src.x + (1 - ray->step.x) / 2) / ray->dir.x;
-		ray->wall.hit_pos = ray->src.y + ray->dist * ray->dir.y;
+		ray->wall.contact = ray->src.y + ray->dist * ray->dir.y;
 	}
 	else
 	{
 		ray->dist = (ray->plane.y - ray->src.y + (1 - ray->step.y) / 2) / ray->dir.y;
-		ray->wall.hit_pos = ray->src.x + ray->dist * ray->dir.x;
+		ray->wall.contact = ray->src.x + ray->dist * ray->dir.x;
 	}
 	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
 
-	ray->wall.hit_pos -= floor(ray->wall.hit_pos);
+	ray->wall.contact -= floor(ray->wall.contact);
 }
 
 static void	calculate_wal_hgt(t_ray *ray)
@@ -221,7 +221,7 @@ static void	render_frame(t_ray *ray, int x)
 
 	y = 0;
 	game = get_game();
-	double img_x = floor((int)(game->img->dir_symbl[0].w_s * ray->wall.hit_pos));
+	double img_x = floor((int)(game->img->dir_symbl[0].w_s * ray->wall.contact));
 	while (y < WIN_H)
 	{
 		if (!render_object(x, y))

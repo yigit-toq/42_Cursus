@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 15:26:22 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 15:05:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #  define ESC		65307
 #  define LEFT		65361
 #  define RIGHT		65363
+#  define SHIFT		65505
 #  define SPACE		32
 # else
 #  define A			0
@@ -34,6 +35,7 @@
 #  define ESC		53
 #  define LEFT		123
 #  define RIGHT		124
+#  define SHIFT		257
 #  define SPACE		49
 # endif
 

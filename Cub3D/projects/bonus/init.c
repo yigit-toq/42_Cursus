@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 16:20:08 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 14:16:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ void	animation_controller(void)
 	t_game	*game;
 
 	game = get_game();
+	if (game->img->weapon[1].play == FALSE)
+	{
+		game->player.anim = &game->img->weapon[0];
+		game->img->weapon[0].play = TRUE;
+	}
 	update_animation(game->player.anim);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/21 17:30:09 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/23 14:08:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 // 	char	t_path[100];
 // 	char	*fstr;
 // 	int		temp;
-// 	int		size = 100;
-
+// 	int		size;
+//
+// 	size = 100;
 // 	temp = range[0];
 // 	while (range[0] < range[1])
 // 	{
