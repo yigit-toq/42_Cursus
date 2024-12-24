@@ -20,11 +20,11 @@ static void	*free_backup(char **backup, int create)
 	if (!*backup)
 		return (0);
 	if (!create)
-		return (free(*backup), *backup = NULL);
+		return (gfree(*backup), *backup = NULL);
 	else
 	{
 		line = ft_strdup(*backup);
-		return (free(*backup), *backup = NULL, line);
+		return (gfree(*backup), *backup = NULL, line);
 	}
 	return (0);
 }
@@ -64,7 +64,7 @@ static char	*line_or_backup(char *backup, int check)
 		i++;
 	if (check)
 	{
-		str = malloc((i + 2) * sizeof(char));
+		str = ft_calloc((i + 2), sizeof(char));
 		if (!str)
 			return (0);
 		j = -1;
