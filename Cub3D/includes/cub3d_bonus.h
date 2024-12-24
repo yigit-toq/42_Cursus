@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/23 14:57:40 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/24 20:12:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "./utils/libft.h"
 # include "./utils/macro.h"
 
+# include <pthread.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -216,4 +217,6 @@ void			init_frame(t_data *frame, char *path, int *range);
 void			init_animation(t_anim *anim, int *range, int delay, char *path);
 
 void			update_animation(t_anim	*anim);
+
+int				play_sound(char *file_path);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/23 15:05:21 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/24 20:06:34 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 # define MACRO_H
 
 # if defined(__linux__)
-#  define A			97
-#  define S			115
-#  define D			100
-#  define W			119
-#  define Y			121
-#  define M			109
-#  define ESC		65307
-#  define LEFT		65361
-#  define RIGHT		65363
-#  define SHIFT		65505
-#  define SPACE		32
+#  define A_KEY		97
+#  define S_KEY		115
+#  define D_KEY		100
+#  define W_KEY		119
+#  define Y_KEY		121
+#  define M_KEY		109
+#  define ESC_KEY	65307
+#  define LEFT_KEY	65361
+#  define RIGHT_KEY	65363
+#  define SHIFT_KEY	65505
+#  define SPACE_KEY	32
 # else
-#  define A			0
-#  define S			1
-#  define D			2
-#  define W			13
-#  define Y			16
-#  define M			46
-#  define ESC		53
-#  define LEFT		123
-#  define RIGHT		124
-#  define SHIFT		257
-#  define SPACE		49
+#  define A_KEY		0
+#  define S_KEY		1
+#  define D_KEY		2
+#  define W_KEY		13
+#  define Y_KEY		16
+#  define M_KEY		46
+#  define ESC_KEY	53
+#  define LEFT_KEY	123
+#  define RIGHT_KEY	124
+#  define SHIFT_KEY	257
+#  define SPACE_KEY	49
 # endif
 
 # define C_E		"\033[0m"

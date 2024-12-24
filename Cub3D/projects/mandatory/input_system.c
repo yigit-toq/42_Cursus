@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/18 17:52:47 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/24 20:05:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,17 +147,17 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (key == RIGHT)
+	if (key == RIGHT_KEY)
 		game->player.theta += ROTATE;
-	if (key == LEFT)
+	if (key == LEFT_KEY)
 		game->player.theta -= ROTATE;
-	if (key == W)
+	if (key == W_KEY)
 		game->player.move[0] = +1;
-	if (key == S)
+	if (key == S_KEY)
 		game->player.move[0] = -1;
-	if (key == D)
+	if (key == D_KEY)
 		game->player.move[1] = +1;
-	if (key == A)
+	if (key == A_KEY)
 		game->player.move[1] = -1;
 	if (game->player.theta < 0)
 	{
@@ -173,19 +173,19 @@ int	key_press_handler(int key, t_game *game)
 
 int	key_release_handler(int key, t_game *game)
 {
-	if (key == W || key == S)
+	if (key == W_KEY || key == S_KEY)
 	{
 		game->player.move[0] = FALSE;
 	}
-	if (key == A || key == D)
+	if (key == A_KEY || key == D_KEY)
 	{
 		game->player.move[1] = FALSE;
 	}
-	if (key == ESC)
+	if (key == ESC_KEY)
 	{
 		exit_game(game);
 	}
-	if (key == M)
+	if (key == M_KEY)
 	{
 		game->map->is_map = !game->map->is_map;
 	}

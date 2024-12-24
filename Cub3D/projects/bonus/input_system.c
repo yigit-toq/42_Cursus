@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/23 15:06:50 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/24 20:44:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,17 +147,17 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (key == RIGHT)
+	if (key == RIGHT_KEY)
 		game->player.theta += ROTATE;
-	if (key == LEFT)
+	if (key == LEFT_KEY)
 		game->player.theta -= ROTATE;
-	if (key == W)
+	if (key == W_KEY)
 		game->player.move[0] = +1;
-	if (key == S)
+	if (key == S_KEY)
 		game->player.move[0] = -1;
-	if (key == D)
+	if (key == D_KEY)
 		game->player.move[1] = +1;
-	if (key == A)
+	if (key == A_KEY)
 		game->player.move[1] = -1;
 	if (game->player.theta < 0)
 	{
@@ -168,7 +168,7 @@ int	key_press_handler(int key, t_game *game)
 		if (game->player.theta >= 2 * PI)
 			game->player.theta -= 2 * PI;
 	}
-	if (key == SHIFT)
+	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED * 2;
 	}
@@ -177,29 +177,29 @@ int	key_press_handler(int key, t_game *game)
 
 int	key_release_handler(int key, t_game *game)
 {
-	if (key == W || key == S)
+	if (key == W_KEY || key == S_KEY)
 	{
 		game->player.move[0] = FALSE;
 	}
-	if (key == A || key == D)
+	if (key == A_KEY || key == D_KEY)
 	{
 		game->player.move[1] = FALSE;
 	}
-	if (key == ESC)
+	if (key == ESC_KEY)
 	{
 		exit_game(game);
 	}
-	if (key == M)
+	if (key == M_KEY)
 	{
 		game->map->is_map = !game->map->is_map;
 	}
-	if (key == Y)
+	if (key == Y_KEY)
 	{
 		game->player.anim = &game->img->weapon[1];
 		game->img->weapon[0].play = FALSE;
 		game->img->weapon[1].play = TRUE;
 	}
-	if (key == SHIFT)
+	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED;
 	}
@@ -233,7 +233,8 @@ void	free_game(void)
 
 int	exit_game(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
 	free_game();
+	clear_garbage();
+	mlx_destroy_window(game->mlx, game->win);
 	exit(EXIT_SUCCESS);
 }

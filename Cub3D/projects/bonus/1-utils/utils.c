@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 18:12:53 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/24 20:39:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,22 +131,25 @@ int	wspace_check(char c)
 
 char	*wtspace_trim(char *str)
 {
+	char	*start;
 	int		len;
 
-	len = 0;
+	start = str;
 	if (!str)
-		return (0);
-	while (str[len])
+		return (NULL);
+	len = ft_strlen(str);
+	while (wspace_check(*start) && *start)
 	{
-		len++;
+		start++;
+		len--;
 	}
-	while (wspace_check(*str))
-	{
-		str++;
-	}
-	while (wspace_check(str[len - 1]))
+	while (len > 0 && wspace_check(start[len - 1]))
 	{
 		len--;
 	}
-	return (ft_substr(str, 0, len));
+	if (len <= 0)
+	{
+		return (ft_substr(start, 0, 0));
+	}
+	return (ft_substr(start, 0, len));
 }

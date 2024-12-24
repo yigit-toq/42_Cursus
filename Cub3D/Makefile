@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/12/24 16:56:25 by ytop             ###   ########.fr        #
+#    Updated: 2024/12/24 20:00:11 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ B_SRCS_DIR		=	$(PROJECTS)bonus/
 B_OBJS_DIR		=	objects_b/
 
 M_SRCS			=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_SRCS_DIR)raycasting.c $(M_SRCS_DIR)input_system.c $(M_SRCS_DIR)minimap.c $(M_SRCS_DIR)rendering.c $(M_MAP_DIR)map.c $(M_MAP_DIR)map_utils.c $(M_UTILS_DIR)utils.c $(M_ERROR_DIR)error.c
-B_SRCS			=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_SRCS_DIR)raycasting.c $(B_SRCS_DIR)input_system.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)rendering.c $(B_MAP_DIR)map.c $(B_MAP_DIR)map_utils.c $(B_UTILS_DIR)utils.c $(B_ERROR_DIR)error.c $(B_SRCS_DIR)animation.c ./assets/sounds/sound.c
+B_SRCS			=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_SRCS_DIR)raycasting.c $(B_SRCS_DIR)input_system.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)rendering.c $(B_MAP_DIR)map.c $(B_MAP_DIR)map_utils.c $(B_UTILS_DIR)utils.c $(B_ERROR_DIR)error.c $(B_SRCS_DIR)animation.c $(B_SRCS_DIR)audio.c
 
 M_OBJS			=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
 B_OBJS			=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
