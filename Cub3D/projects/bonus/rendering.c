@@ -133,15 +133,12 @@ int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
 {
 	t_game	*game;
 	t_vect	pos;
-	t_vect	rot;
 	t_vect	rds;
 	t_vect	put;
 
 	game = get_game();
 	radius.x /= 2;
 	radius.y /= 2;
-	(void)rds;
-	(void)rot;
 	rds.x = pow(radius.x, 2);
 	rds.y = pow(radius.y, 2);
 	pos.y = -radius.y;

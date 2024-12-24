@@ -11,13 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-#include <SDL2/SDL.h>
-
-typedef struct s_audio
-{
-	Uint8	*audio_pos;
-	Uint32	audio_len;
-}			t_audio;
+#include "./utils/audio.h"
 
 static void	audio_callback(void *userdata, Uint8 *stream, Uint32 len)
 {

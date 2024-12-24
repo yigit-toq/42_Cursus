@@ -41,7 +41,7 @@ t_vect	tc_vect(t_size size)
 	return (coord);
 }
 
-unsigned int	get_pixel_color(t_data img, int x, int y)
+unsigned int	pixel_color(t_data img, int x, int y)
 {
 	char	*pixel_address;
 
@@ -62,7 +62,7 @@ void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 	}
 }
 
-double	grid_to_center(double pos, double scale)
+double	grid_to_c(double pos, double scale)
 {
 	return (pos * scale + (scale / 2));
 }

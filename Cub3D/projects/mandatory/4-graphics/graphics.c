@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rendering.c                                        :+:      :+:    :+:   */
+/*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 14:30:37 by ytop             ###   ########.fr       */
+/*   Created: 2024/12/25 00:43:59 by ytop              #+#    #+#             */
+/*   Updated: 2024/12/25 00:43:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	draw_hit(t_data image, t_size start, t_size curr, int color)
 	}
 }
 
-void	draw_rays(t_data data, t_vect pos, double theta, int color)
+void	draw_ray(t_data data, t_vect pos, double theta, int color)
 {
 	t_game	*game;
 	t_vect	coord;
@@ -73,7 +73,7 @@ void	draw_rays(t_data data, t_vect pos, double theta, int color)
 	}
 }
 
-void	draw_line(t_data data, t_vect pos, double theta, double range, int color)
+void	draw_line(t_data data, t_vect pos, t_vect vect, int color)
 {
 	t_game	*game;
 	t_vect	coord;
@@ -83,8 +83,8 @@ void	draw_line(t_data data, t_vect pos, double theta, double range, int color)
 
 	game = get_game();
 	index = 0;
-	limit.x = pos.x + range * cos(theta);
-	limit.y = pos.y + range * sin(theta);
+	limit.x = pos.x + vect.x * cos(vect.y);
+	limit.y = pos.y + vect.x * sin(vect.y);
 	coord.x = limit.x - pos.x;
 	coord.y = limit.y - pos.y;
 	steps = fmax(fabs(coord.x), fabs(coord.y));
@@ -133,15 +133,12 @@ int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
 {
 	t_game	*game;
 	t_vect	pos;
-	t_vect	rot;
 	t_vect	rds;
 	t_vect	put;
 
 	game = get_game();
 	radius.x /= 2;
 	radius.y /= 2;
-	(void)rds;
-	(void)rot;
 	rds.x = pow(radius.x, 2);
 	rds.y = pow(radius.y, 2);
 	pos.y = -radius.y;

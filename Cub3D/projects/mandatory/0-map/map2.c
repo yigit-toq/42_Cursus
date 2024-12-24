@@ -27,7 +27,7 @@ static void	set_rgb_color(int *color, char *line)
 		trim = wtspace_trim(rgb[i]);
 		while (trim[j])
 		{
-			if (!ft_isdigit(trim[j]))
+			if (ft_isdigit(trim[j]) == FALSE)
 				break ;
 			j++;
 		}
@@ -40,7 +40,7 @@ static void	set_rgb_color(int *color, char *line)
 		error_controller("Invalid color.", NULL);
 }
 
-int	path_handler(char *line, char **names)
+static int	path_read(char *line, char **names)
 {
 	t_game	*game;
 	int		len;
@@ -55,11 +55,11 @@ int	path_handler(char *line, char **names)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->rgb_color[i - 4], line + len);
+				set_rgb_color(game->img->rgb[i - 4], line + len);
 			}
 			else
 			{
-				game->img->dir_symbl[i].img = wtspace_trim(line + len);
+				game->img->dir[i].img = wtspace_trim(line + len);
 			}
 			break ;
 		}
@@ -78,7 +78,7 @@ int	path_control(void)
 	while (*file)
 	{
 		line = wtspace_trim(*file);
-		if (!path_handler(line, names))
+		if (path_read(line, names) == FALSE)
 			break ;
 		file++;
 	}

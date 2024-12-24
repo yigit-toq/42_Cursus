@@ -12,13 +12,15 @@
 
 #include "cub3d.h"
 
+#include <mlx.h>
+
 void	exten_controller(char *path)
 {
 	char	*extension;
 
 	extension = ft_strrchr(path, '.');
 	if (!extension)
-		error_controller("Wrong format. :D", NULL);
+		error_controller("Wrong format  :D", NULL);
 	if (ft_strcmp(extension, ".cub"))
 		error_controller("Wrong extension.", NULL);
 }
@@ -29,4 +31,27 @@ void	error_controller(char *message, void *pointer)
 		return ;
 	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
 	exit(EXIT_FAILURE);
+}
+
+void	free_game(void)
+{
+	t_game	*game;
+	int		i;
+
+	game = get_game();
+	i = 0;
+	while (i < MAX_PATH)
+	{
+		mlx_destroy_image(game->mlx, game->img->dir[i++].img);
+		i++;
+	}
+	clear_garbage();
+	mlx_destroy_image(game->mlx, game->img->bgframe.img);
+}
+
+int	exit_game(t_game *game)
+{
+	mlx_destroy_window(game->mlx, game->win);
+	free_game();
+	exit(EXIT_SUCCESS);
 }

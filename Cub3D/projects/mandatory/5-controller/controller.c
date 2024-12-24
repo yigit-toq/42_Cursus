@@ -12,7 +12,9 @@
 
 #include "cub3d.h"
 
-// int	input_system(int f, int s, double acceleration)
+#include <math.h>
+
+// int	input_systm(int f, int s, double acceleration)
 // {
 // 	t_game	*game;
 // 	t_coord	*axis;
@@ -20,7 +22,7 @@
 // 	t_coord	side;
 // 	t_coord line;
 // 	int		dir;
-
+//
 // 	game = get_game();
 // 	side.x = -sin(game->player.theta);
 //     side.y = +cos(game->player.theta);
@@ -80,11 +82,11 @@ int	update_position(void)
 	game = get_game();
 	if (game->player.move[0] == FALSE)
 	{
-		update_axis(&game->player.position.y, &game->player.axis.y, -1);
+		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
 	}
 	if (game->player.move[1] == FALSE)
 	{
-		update_axis(&game->player.position.x, &game->player.axis.x, +1);
+		update_axis(&game->player.pos.x, &game->player.axis.x, +1);
 	}
 	dr[0] = game->player.move[0];
 	dr[1] = game->player.move[1];
@@ -121,28 +123,27 @@ static int	input_systm(double h_move, double v_move)
 	t_vect	forw;
 	t_vect	side;
 	t_vect	pos;
-	double	move_length;
+	double	avg;
 
 	game = get_game();
-	pos = game->player.position;
+	pos = game->player.pos;
 	side.x = -sin(game->player.theta);
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
 	forw.y = +sin(game->player.theta);
-	move_length = sqrt(h_move * h_move + v_move * v_move);
-	if (move_length > 1)
+	avg = sqrt(h_move * h_move + v_move * v_move);
+	if (avg > 1)
 	{
-		h_move /= move_length;
-		v_move /= move_length;
+		h_move /= avg;
+		v_move /= avg;
 	}
 	pos.x += v_move * game->player.speed * side.x;
 	pos.y += v_move * game->player.speed * side.y;
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
-	if (game->map->map[(int)grid_to_center(pos.y, 1, 0)][(int)grid_to_center(pos.x, 1, 0)] == WALL)
+	if (game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)] == WALL)
 		return (FAILURE);
-	else
-		return (game->player.position = pos, SUCCESS);
+	return (game->player.pos = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)
@@ -185,23 +186,5 @@ int	key_release_handler(int key, t_game *game)
 	{
 		exit_game(game);
 	}
-	if (key == M_KEY)
-	{
-		game->map->is_map = !game->map->is_map;
-	}
 	return (SUCCESS);
-}
-
-int	exit_game(t_game *game)
-{
-	int		i;
-
-	i = 0;
-	mlx_destroy_window(game->mlx, game->win);
-	while (i < MAX_PATH)
-	{
-		mlx_destroy_image(game->mlx, game->img->dir_symbl[i].img);
-		i++;
-	}
-	exit(EXIT_SUCCESS);
 }

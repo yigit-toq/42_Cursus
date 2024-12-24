@@ -52,8 +52,8 @@ static void	object_counter(int x, int y)
 	if (p == TRUE)
 	{
 		game->count.player++;
-		game->player.position.x = x;
-		game->player.position.y = y;
+		game->player.pos.x = x;
+		game->player.pos.y = y;
 		game->player.direction = m[x];
 	}
 	else if (m[x] == WALL)

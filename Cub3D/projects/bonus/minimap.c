@@ -12,8 +12,6 @@
 
 #include "cub3d_bonus.h"
 
-# define H_G	0xD1DDDE
-
 void	draw_player(t_size scale)
 {
 	t_game	*game;
@@ -21,8 +19,8 @@ void	draw_player(t_size scale)
 	t_size	index;
 
 	game = get_game();
-	plane.x = grid_to_center(game->player.position.x, scale.x);
-	plane.y = grid_to_center(game->player.position.y, scale.y);
+	plane.x = grid_to_center(game->player.pos.x, scale.x);
+	plane.y = grid_to_center(game->player.pos.y, scale.y);
 
 	draw_circle(game->img->minimap, plane, tc_vect(scale), 0x030180);
 

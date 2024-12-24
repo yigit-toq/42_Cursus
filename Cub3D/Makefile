@@ -10,59 +10,68 @@
 #                                                                              #
 # **************************************************************************** #
 
-M_ERROR_DIR		=	$(M_SRCS_DIR)2-error/
-B_ERROR_DIR		=	$(B_SRCS_DIR)2-error/
+M_CONTROLLER_DIR	=	$(M_SRCS_DIR)5-controller/
+B_CONTROLLER_DIR	=	$(B_SRCS_DIR)5-controller/
 
-M_UTILS_DIR		=	$(M_SRCS_DIR)1-utils/
-B_UTILS_DIR		=	$(B_SRCS_DIR)1-utils/
+M_GRAPHICS_DIR		=	$(M_SRCS_DIR)4-graphics/
+B_GRAPHICS_DIR		=	$(B_SRCS_DIR)4-graphics/
 
-M_MAP_DIR		=	$(M_SRCS_DIR)0-map/
-B_MAP_DIR		=	$(B_SRCS_DIR)0-map/
+M_RAYCAST_DIR		=	$(M_SRCS_DIR)3-raycast/
+B_RAYCAST_DIR		=	$(B_SRCS_DIR)3-raycast/
 
-LIB_DIR			=	./libraries/
-INC_DIR			=	./includes/
+M_ERROR_DIR			=	$(M_SRCS_DIR)2-error/
+B_ERROR_DIR			=	$(B_SRCS_DIR)2-error/
 
-PROJECTS		=	./projects/
+M_UTILS_DIR			=	$(M_SRCS_DIR)1-utils/
+B_UTILS_DIR			=	$(B_SRCS_DIR)1-utils/
 
-M_SRCS_DIR		=	$(PROJECTS)mandatory/
-M_OBJS_DIR		=	objects_m/
+M_MAP_DIR			=	$(M_SRCS_DIR)0-map/
+B_MAP_DIR			=	$(B_SRCS_DIR)0-map/
 
-B_SRCS_DIR		=	$(PROJECTS)bonus/
-B_OBJS_DIR		=	objects_b/
+LIB_DIR				=	./libraries/
+INC_DIR				=	./includes/
 
-M_SRCS			=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_SRCS_DIR)raycasting.c $(M_SRCS_DIR)input_system.c $(M_SRCS_DIR)minimap.c $(M_SRCS_DIR)rendering.c $(M_MAP_DIR)map.c $(M_MAP_DIR)map_utils.c $(M_UTILS_DIR)utils.c $(M_ERROR_DIR)error.c
-B_SRCS			=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_SRCS_DIR)raycasting.c $(B_SRCS_DIR)input_system.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)rendering.c $(B_MAP_DIR)map.c $(B_MAP_DIR)map_utils.c $(B_UTILS_DIR)utils.c $(B_ERROR_DIR)error.c $(B_SRCS_DIR)animation.c $(B_SRCS_DIR)audio.c
+PROJECTS			=	./projects/
 
-M_OBJS			=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
-B_OBJS			=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
+M_SRCS_DIR			=	$(PROJECTS)mandatory/
+M_OBJS_DIR			=	objects_m/
 
-RM				=	@rm -rf
+B_SRCS_DIR			=	$(PROJECTS)bonus/
+B_OBJS_DIR			=	objects_b/
 
-CC				=	@cc
-CFLAGS			=	-Wall -Wextra -Werror -I ./includes -g
+M_SRCS				=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_RAYCAST_DIR)raycasting1.c $(M_RAYCAST_DIR)raycasting2.c $(M_CONTROLLER_DIR)controller.c $(M_MAP_DIR)map1.c $(M_MAP_DIR)map2.c $(M_UTILS_DIR)utils1.c $(M_UTILS_DIR)utils2.c $(M_UTILS_DIR)utils3.c $(M_ERROR_DIR)error.c
+B_SRCS				=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_RAYCAST_DIR)raycasting1.c $(B_RAYCAST_DIR)raycasting2.c $(B_CONTROLLER_DIR)controller.c $(B_MAP_DIR)map1.c $(B_MAP_DIR)map2.c $(B_UTILS_DIR)utils1.c $(B_UTILS_DIR)utils2.c $(B_UTILS_DIR)utils3.c $(B_ERROR_DIR)error.c $(B_SRCS_DIR)animation.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)audio.c
 
-OS 				=	$(shell uname)
+M_OBJS				=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
+B_OBJS				=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
 
-NAME			=	cub3d
-BONUS			=	cub3d_bonus
+RM					=	@rm -rf
 
-MLX_DIR			=	$(LIB_DIR)minilibx/
+CC					=	@cc
+CFLAGS				=	-Wall -Wextra -Werror -I ./includes -g
 
-MLX_MAKE		=	make -s -C $(MLX_DIR) all > /dev/null 2>&1
-MLX_LINUX		=	https://github.com/42Paris/minilibx-linux.git
-MLX_MACOS		=	https://github.com/dannywillems/minilibx-mac-osx.git
+OS 					=	$(shell uname)
 
-LIBFT_DIR		=	$(LIB_DIR)libft/
+NAME				=	cub3d
+BONUS				=	cub3d_bonus
 
-LIBFT			=	$(LIBFT_DIR)libft.a
-LIBFT_MAKE		=	make -s -C $(LIBFT_DIR)
-LIBFT_REPO		=	https://github.com/yigit-toq/42_Cursus.git
+MLX_DIR				=	$(LIB_DIR)minilibx/
 
-COLOR_E			=	\033[0m
-COLOR_R			=	\033[0;31m
-COLOR_G			=	\033[0;32m
-COLOR_Y			=	\033[0;33m
-COLOR_B			=	\033[0;34m
+MLX_MAKE			=	make -s -C $(MLX_DIR) all > /dev/null 2>&1
+MLX_LINUX			=	https://github.com/42Paris/minilibx-linux.git
+MLX_MACOS			=	https://github.com/dannywillems/minilibx-mac-osx.git
+
+LIBFT_DIR			=	$(LIB_DIR)libft/
+
+LIBFT				=	$(LIBFT_DIR)libft.a
+LIBFT_MAKE			=	make -s -C $(LIBFT_DIR)
+LIBFT_REPO			=	https://github.com/yigit-toq/42_Cursus.git
+
+COLOR_E				=	\033[0m
+COLOR_R				=	\033[0;31m
+COLOR_G				=	\033[0;32m
+COLOR_Y				=	\033[0;33m
+COLOR_B				=	\033[0;34m
 
 ifeq ($(OS), Linux)
 	MLX_REPO	=	$(MLX_LINUX)
@@ -95,7 +104,7 @@ $(NAME)			:	$(MLX) $(LIBFT) $(M_OBJS)
 					@printf "$(COLOR_B)CUB3D			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
 $(BONUS)		:	$(MLX) $(LIBFT) $(B_OBJS)
-					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(LIBRARY) -lSDL2
+					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(LIBRARY) -lSDL2 -pthread
 					@printf "$(COLOR_B)CUB3D_BONUS		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
 $(LIBFT)		:

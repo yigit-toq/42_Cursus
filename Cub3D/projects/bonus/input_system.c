@@ -20,7 +20,7 @@
 // 	t_coord	side;
 // 	t_coord line;
 // 	int		dir;
-
+//
 // 	game = get_game();
 // 	side.x = -sin(game->player.theta);
 //     side.y = +cos(game->player.theta);
@@ -80,11 +80,11 @@ int	update_position(void)
 	game = get_game();
 	if (game->player.move[0] == FALSE)
 	{
-		update_axis(&game->player.position.y, &game->player.axis.y, -1);
+		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
 	}
 	if (game->player.move[1] == FALSE)
 	{
-		update_axis(&game->player.position.x, &game->player.axis.x, +1);
+		update_axis(&game->player.pos.x, &game->player.axis.x, +1);
 	}
 	dr[0] = game->player.move[0];
 	dr[1] = game->player.move[1];
@@ -124,7 +124,7 @@ static int	input_systm(double h_move, double v_move)
 	double	avg;
 
 	game = get_game();
-	pos = game->player.position;
+	pos = game->player.pos;
 	side.x = -sin(game->player.theta);
 	side.y = +cos(game->player.theta);
 	forw.x = +cos(game->player.theta);
@@ -142,7 +142,7 @@ static int	input_systm(double h_move, double v_move)
 	if (game->map->map[(int)grid_to_center(pos.y, 1)][(int)grid_to_center(pos.x, 1)] == WALL)
 		return (FAILURE);
 	else
-		return (game->player.position = pos, SUCCESS);
+		return (game->player.pos = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)
@@ -215,7 +215,7 @@ void	free_game(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir_symbl[i++].img);
+		mlx_destroy_image(game->mlx, game->img->dir[i++].img);
 		i++;
 	}
 	i = 0;

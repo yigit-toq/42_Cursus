@@ -48,9 +48,9 @@
 # define H_W		0x00FFFFFF
 # define H_Y		0x00FFFF00
 # define H_R		0x00FF0000
+# define H_G		0x00D1DDDE
 
 # define PI			3.14159265
-
 
 # define WIN_W		1280
 # define WIN_H		720
@@ -78,5 +78,4 @@
 
 # define FOV		60.00
 # define SEV		64.00
-
 #endif

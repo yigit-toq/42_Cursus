@@ -13,68 +13,21 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../libraries/minilibx/mlx.h"
-
-# include "./utils/libft.h"
+# include "./utils/struct.h"
 # include "./utils/macro.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <fcntl.h>
-# include <math.h>
+# include "./utils/libft.h"
 
-# define MAX_PATH		4
+# define WIN_NAME	"Cub3D"
 
-# define WIN_NAME		"Cub3D Mandatory"
-
-typedef struct s_size
-{
-	int			x;
-	int			y;
-}				t_size;
-
-typedef struct s_vect
-{
-	double		x;
-	double		y;
-}				t_vect;
-
-typedef struct s_wall
-{
-	double		s_pos;
-	double		e_pos;
-	double		height;
-}				t_wall;
-
-typedef struct s_ray
-{
-	double		dist;
-	t_wall		wall;
-	t_vect		src;
-	t_vect		dir;
-	char		hit;
-}				t_ray;
-
-typedef struct s_data
-{
-	t_vect		size;
-	void		*img;
-	char		*add;
-	int			bit_pp;
-	int			endian;
-	int			length;
-	int			w_s;
-	int			h_s;
-}				t_data;
+# define MAX_PATH	4
 
 typedef struct s_img
 {
-	int			rgb_color[2][3];
-	int			hex_color[2];
-	t_data		dir_symbl[4];
-	t_data		minimap;
 	t_data		bgframe;
-	t_data		cross;
+	int			rgb[2][3];
+	int			hex[2];
+	t_data		dir[4];
 }				t_img;
 
 typedef struct s_player
@@ -83,9 +36,9 @@ typedef struct s_player
 	int			move[2];
 	double		speed;
 	double		theta;
-	t_vect		axis;
 	t_vect		plane;
-	t_vect		position;
+	t_vect		axis;
+	t_vect		pos;
 }				t_player;
 
 typedef struct s_count
@@ -97,11 +50,9 @@ typedef struct s_count
 
 typedef struct s_map
 {
-	int			is_map;
-	char		**map;
-	t_vect		scale;
 	t_size		size;
-	t_size		mini;
+	t_vect		scale;
+	char		**map;
 }				t_map;
 
 typedef struct s_game
@@ -117,73 +68,65 @@ typedef struct s_game
 
 t_game			*get_game(void);
 
-void			init_game(void);
-
-// Error Controller
+/*------------------------------------------------------------*/
 
 void			exten_controller(char *path);
 
-void			files_controller(char *path);
-
 void			error_controller(char *message, void *pointer);
 
-// Utils Controller
+/*------------------------------------------------------------*/
 
-int				rgb_to_hex(int red, int green, int blue);
+void			init_game(void);
 
-t_size			tc_size(t_vect vect);
-
-t_vect			tc_vect(t_size size);
-
-t_data			add_image(char *path, t_size size);
-
-void			mlx_image_put(t_data img, int x, int y, unsigned int color);
-
-unsigned int	get_pixel_color(t_data img, int x, int y);
-
-double			grid_to_center(double pos, double scale, double pivot);
-
-double			center_to_grid(double pos, double scale, double pivot);
-
-char			*wtspace_trim(char *str);
-
-int				wspace_check(char c);
+/*------------------------------------------------------------*/
 
 int				path_control(void);
 
-int				open_file(char *path);
+/*------------------------------------------------------------*/
 
-void			delay(int ms);
+void			files_controller(char *path);
 
-// Input Controller
+/*------------------------------------------------------------*/
 
 int				update_position(void);
 
 int				exit_game(t_game *game);
 
 int				key_press_handler(int key, t_game *game);
-
 int				key_release_handler(int key, t_game *game);
 
-// Render Controller
-
-void			draw_rectangle(t_data data, t_vect center, t_vect size, int color);
-
-int				draw_circle(t_data data, t_vect center, t_vect radius, int color);
-
-void			draw_rays(t_data data, t_vect pos, double theta, int color);
-
-void			draw_line(t_data data, t_vect pos, double theta, double range, int color);
-
-void			draw_hit(t_data image, t_size start, t_size curr, int color);
-
-// Raycasting Controller
+/*------------------------------------------------------------*/
 
 int				raycast(void);
 
-void			minimap_loop(void);
+/*------------------------------------------------------------*/
+
+t_data			add_image(char *path, t_size size);
+
+int				open_file(char *path);
+
+int				wspace_check(char c);
+
+char			*wtspace_trim(char *str);
+
+/*------------------------------------------------------------*/
+
+double			grid_to_ct(double pos, double scale);
 
 double			deg_to_rad(double degree);
-
 double			rad_to_deg(double radian);
+
+/*------------------------------------------------------------*/
+
+void			mlx_image_put(t_data img, int x, int y, unsigned int color);
+
+unsigned int	pixel_color(t_data img, int x, int y);
+
+unsigned int	rgb_to_hexa(int r, int g, int b);
+
+/*------------------------------------------------------------*/
+
+void			render_frame(t_ray *ray, int x);
+
+/*------------------------------------------------------------*/
 #endif

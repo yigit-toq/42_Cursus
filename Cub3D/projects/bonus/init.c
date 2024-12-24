@@ -49,17 +49,17 @@ static void	init_img(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		if (!img->dir_symbl[i].img)
+		if (!img->dir[i].img)
 			error_controller("Texture path is not found.", NULL);
-		img->dir_symbl[i] = add_image(img->dir_symbl[i].img, (t_size){0, 0});
+		img->dir[i] = add_image(img->dir[i].img, (t_size){0, 0});
 		i++;
 	}
 	img->bgframe = add_image(NULL, size);
 	size.x = map->size.x * map->mini.x;
 	size.y = map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
-	img->hex_color[0] = rgb_to_hex(img->rgb_color[0][0], img->rgb_color[0][1], img->rgb_color[0][2]);
-	img->hex_color[1] = rgb_to_hex(img->rgb_color[1][0], img->rgb_color[1][1], img->rgb_color[1][2]);
+	img->hex[0] = rgb_to_hex(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
+	img->hex[1] = rgb_to_hex(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
 	img->cross = add_image(CROSS_PATH, (t_size){0, 0});
 	init_animation(&img->weapon[0], (int[2]){55, 75}, 3, GUN_PATH);
 	init_animation(&img->weapon[1], (int[2]){10, 55}, 3, GUN_PATH);
@@ -72,7 +72,6 @@ void	*thread_func()
 {
 	while (TRUE)
 		play_sound("./assets/sounds/background.wav");
-
 	return (NULL);
 }
 

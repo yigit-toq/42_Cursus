@@ -11,77 +11,16 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+#include <mlx.h>
+#include <fcntl.h>
 #include <sys/time.h>
-
-double	deg_to_rad(double degree)
-{
-	return (degree * (PI / 180));
-}
-
-double	rad_to_deg(double radian)
-{
-	return (radian * (180 / PI));
-}
-
-t_size	tc_size(t_vect vect)
-{
-	t_size	size;
-
-	size.x = (int)vect.x;
-	size.y = (int)vect.y;
-	return (size);
-}
-
-t_vect	tc_vect(t_size size)
-{
-	t_vect	coord;
-
-	coord.x = (double)size.x;
-	coord.y = (double)size.y;
-	return (coord);
-}
-
-unsigned int	get_pixel_color(t_data img, int x, int y)
-{
-	char	*pixel_address;
-
-	if (x < 0 || y < 0 || x >= img.w_s || y >= img.h_s)
-		return (0);
-	pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
-	return (*(unsigned int *)pixel_address);
-}
-
-void	mlx_image_put(t_data img, int x, int y, unsigned int color)
-{
-	char	*pixel_address;
-
-	if (y >= 0 && y < img.h_s && x >= 0 && x < img.w_s)
-	{
-		pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
-		*(unsigned int *)pixel_address = color;
-	}
-}
-
-double	grid_to_center(double pos, double scale, double pivot)
-{
-	return (pos * scale + (scale / 2) + (pivot * scale));
-}
-
-double	center_to_grid(double pos, double scale, double pivot)
-{
-	return ((pos - (pivot * scale)) / scale);
-}
-
-int	rgb_to_hex(int red, int green, int blue)
-{
-	return ((red << 16) | (green << 8) | blue);
-}
 
 void	delay(int ms)
 {
 	struct timeval	time[2];
-	long long int	c_time;
 	long long int	t_time;
+	long long int	c_time;
 
 	gettimeofday(&time[0], NULL);
 	gettimeofday(&time[1], NULL);
@@ -136,22 +75,30 @@ int	wspace_check(char c)
 
 char	*wtspace_trim(char *str)
 {
+	char	*start;
 	int		len;
 
-	len = 0;
+	start = str;
 	if (!str)
-		return (0);
-	while (str[len])
+		return (NULL);
+	len = ft_strlen(str);
+	while (wspace_check(*start) && *start)
 	{
-		len++;
+		start++;
+		len--;
 	}
-	while (wspace_check(*str))
-	{
-		str++;
-	}
-	while (wspace_check(str[len - 1]))
+	while (len > 0 && wspace_check(start[len - 1]))
 	{
 		len--;
 	}
-	return (ft_substr(str, 0, len));
+	if (len <= 0)
+	{
+		return (ft_substr(start, 0, 0));
+	}
+	else
+	{
+		return (ft_substr(start, 0, len));
+	}
 }
+
+//Bakılacak

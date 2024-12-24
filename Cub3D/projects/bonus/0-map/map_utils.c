@@ -55,11 +55,11 @@ int	path_handler(char *line, char **names)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->rgb_color[i - 4], line + len);
+				set_rgb_color(game->img->rgb[i - 4], line + len);
 			}
 			else
 			{
-				game->img->dir_symbl[i].img = wtspace_trim(line + len);
+				game->img->dir[i].img = wtspace_trim(line + len);
 			}
 			break ;
 		}

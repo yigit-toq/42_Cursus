@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+#include <unistd.h>
+
 // static int	flood_fill(int x, int y)
 // {
 // 	char	**map;
@@ -48,12 +50,12 @@ static void	object_counter(int x, int y)
 
 	game = get_game();
 	m = game->map->map[y];
-	p = (m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST);
+	p = m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST;
 	if (p == TRUE)
 	{
 		game->count.player++;
-		game->player.position.x = x;
-		game->player.position.y = y;
+		game->player.pos.x = x;
+		game->player.pos.y = y;
 		game->player.direction = m[x];
 	}
 	else if (m[x] == WALL)
@@ -90,7 +92,7 @@ static void	maps_control(void)
 			x++;
 		}
 		if (game->map->size.x < x)
-			game->map->size.x = x;
+			game->map->size.x = x - 1;
 		y++;
 	}
 	game->map->size.y = y;
@@ -127,14 +129,9 @@ void	files_controller(char *path)
 	path_control();
 	maps_control();
 	game = get_game();
-	game->map->scale.x = 1; //(double)WIN_W / game->map->size.x / 4;
-	game->map->scale.y = 1; //(double)WIN_H / game->map->size.y / 4;
-
-	game->map->mini.x = 4;
-	game->map->mini.y = 4;
-
+	game->map->scale.x = 1;
+	game->map->scale.y = 1;
 	game->player.speed = SPEED;
-
 	if (game->player.direction == EAST)
 		game->player.theta = deg_to_rad(00);
 	if (game->player.direction == SOUTH)
