@@ -12,6 +12,9 @@
 
 #include "cub3d.h"
 
+#include <mlx.h>
+#include <math.h>
+
 void	draw_hit(t_data image, t_size start, t_size curr, int color)
 {
 	t_game	*game;

@@ -55,8 +55,8 @@
 # define WIN_W		1280
 # define WIN_H		720
 
-# define SPEED		0.060
-# define ROTATE		0.030
+# define SPEED		0.050
+# define ROTATE		0.050
 
 # define DESTROY	17
 

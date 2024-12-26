@@ -82,6 +82,7 @@ int				update_position(void);
 int				exit_game(t_game *game);
 
 int				key_press_handler(int key, t_game *game);
+
 int				key_release_handler(int key, t_game *game);
 
 /*----------------------COLOR CONTROLLER----------------------*/

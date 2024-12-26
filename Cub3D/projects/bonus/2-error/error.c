@@ -12,6 +12,8 @@
 
 #include "cub3d_bonus.h"
 
+#include <mlx.h>
+
 void	exten_controller(char *path)
 {
 	char	*extension;
@@ -27,8 +29,44 @@ void	error_controller(char *message, void *pointer)
 {
 	if (pointer)
 		return ;
+	clear_garbage();
+	ft_dprintf(2, C_G"----------------------------\n");
 	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
+	ft_dprintf(2, C_G"----------------------------\n");
 	exit(EXIT_FAILURE);
+}
+
+void	free_game(void)
+{
+	t_game	*game;
+	int		i;
+
+	game = get_game();
+	i = 0;
+	while (i < MAX_PATH)
+	{
+		mlx_destroy_image(game->mlx, game->img->dir[i].img);
+		i++;
+	}
+	i = 0;
+	while (i < game->img->weapon[1].total)
+	{
+		mlx_destroy_image(game->mlx, game->img->weapon[1].frames[i].img);
+		if (i < game->img->weapon[0].total)
+		mlx_destroy_image(game->mlx, game->img->weapon[0].frames[i].img);
+		i++;
+	}
+	mlx_destroy_image(game->mlx, game->img->bgframe.img);
+	mlx_destroy_image(game->mlx, game->img->minimap.img);
+	mlx_destroy_image(game->mlx, game->img->cross.img);
+	clear_garbage();
+}
+
+int	exit_game(t_game *game)
+{
+	mlx_destroy_window(game->mlx, game->win);
+	free_game();
+	exit(EXIT_SUCCESS);
 }
 
 // int	arg_check(char *arg)

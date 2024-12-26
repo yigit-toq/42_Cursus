@@ -12,15 +12,17 @@
 
 #include "cub3d_bonus.h"
 
-void	draw_player(t_size scale)
+#include <mlx.h>
+
+static void	draw_player(t_size scale)
 {
 	t_game	*game;
 	t_vect	plane;
 	t_size	index;
 
 	game = get_game();
-	plane.x = grid_to_center(game->player.pos.x, scale.x);
-	plane.y = grid_to_center(game->player.pos.y, scale.y);
+	plane.x = grid_to_ct(game->player.pos.x, scale.x);
+	plane.y = grid_to_ct(game->player.pos.y, scale.y);
 
 	draw_circle(game->img->minimap, plane, tc_vect(scale), 0x030180);
 
@@ -33,7 +35,7 @@ void	draw_player(t_size scale)
 	(void)index;
 }
 
-void	minimap(void)
+static void	draw_minimap(void)
 {
 	t_game	*game;
 	t_size	index;
@@ -67,7 +69,7 @@ void	minimap(void)
 	draw_player(scale);
 }
 
-void	minimap_loop(void)
+void	minimap(void)
 {
 	t_game	*game;
 	t_map	*map;
@@ -79,7 +81,7 @@ void	minimap_loop(void)
 	{
 		return ;
 	}
-	minimap();
+	draw_minimap();
 	img = game->img->minimap.img;
 	mlx_put_image_to_window(game->mlx, game->win, img, map->pivot.x, map->pivot.y);
 }

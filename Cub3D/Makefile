@@ -25,8 +25,8 @@ B_ERROR_DIR			=	$(B_SRCS_DIR)2-error/
 M_UTILS_DIR			=	$(M_SRCS_DIR)1-utils/
 B_UTILS_DIR			=	$(B_SRCS_DIR)1-utils/
 
-M_MAP_DIR			=	$(M_SRCS_DIR)0-map/
-B_MAP_DIR			=	$(B_SRCS_DIR)0-map/
+M_FILE_DIR			=	$(M_SRCS_DIR)0-file/
+B_FILE_DIR			=	$(B_SRCS_DIR)0-file/
 
 LIB_DIR				=	./libraries/
 INC_DIR				=	./includes/
@@ -39,8 +39,8 @@ M_OBJS_DIR			=	objects_m/
 B_SRCS_DIR			=	$(PROJECTS)bonus/
 B_OBJS_DIR			=	objects_b/
 
-M_SRCS				=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_RAYCAST_DIR)raycasting1.c $(M_RAYCAST_DIR)raycasting2.c $(M_CONTROLLER_DIR)controller.c $(M_MAP_DIR)map1.c $(M_MAP_DIR)map2.c $(M_UTILS_DIR)utils1.c $(M_UTILS_DIR)utils2.c $(M_UTILS_DIR)utils3.c $(M_ERROR_DIR)error.c
-B_SRCS				=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_RAYCAST_DIR)raycasting1.c $(B_RAYCAST_DIR)raycasting2.c $(B_CONTROLLER_DIR)controller.c $(B_MAP_DIR)map1.c $(B_MAP_DIR)map2.c $(B_UTILS_DIR)utils1.c $(B_UTILS_DIR)utils2.c $(B_UTILS_DIR)utils3.c $(B_ERROR_DIR)error.c $(B_SRCS_DIR)animation.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)audio.c
+M_SRCS				=	$(M_SRCS_DIR)cub3d.c $(M_SRCS_DIR)init.c $(M_RAYCAST_DIR)raycasting1.c $(M_RAYCAST_DIR)raycasting2.c $(M_CONTROLLER_DIR)controller.c $(M_FILE_DIR)file1.c $(M_FILE_DIR)file2.c $(M_UTILS_DIR)utils1.c $(M_UTILS_DIR)utils2.c $(M_UTILS_DIR)utils3.c $(M_ERROR_DIR)error.c $(M_GRAPHICS_DIR)graphics.c
+B_SRCS				=	$(B_SRCS_DIR)cub3d.c $(B_SRCS_DIR)init.c $(B_RAYCAST_DIR)raycasting1.c $(B_RAYCAST_DIR)raycasting2.c $(B_CONTROLLER_DIR)controller.c $(B_FILE_DIR)file1.c $(B_FILE_DIR)file2.c $(B_UTILS_DIR)utils1.c $(B_UTILS_DIR)utils2.c $(B_UTILS_DIR)utils3.c $(B_ERROR_DIR)error.c $(M_GRAPHICS_DIR)graphics.c $(B_SRCS_DIR)animation.c $(B_SRCS_DIR)minimap.c $(B_SRCS_DIR)audio.c
 
 M_OBJS				=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
 B_OBJS				=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
