@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map1.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/18 18:20:00 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 16:48:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	object_counter(int x, int y)
 
 	game = get_game();
 	m = game->map->map[y];
-	p = m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST;
+	p = (m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST);
 	if (p == TRUE)
 	{
 		game->count.player++;
@@ -136,7 +136,6 @@ void	files_controller(char *path)
 		game->player.theta = deg_to_rad(00);
 	if (game->player.direction == SOUTH)
 		game->player.theta = deg_to_rad(90);
-
 	if (game->player.direction == WEST)
 		game->player.theta = deg_to_rad(180);
 	if (game->player.direction == NORTH)

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 14:00:33 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 17:32:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	error_controller(char *message, void *pointer)
 {
 	if (pointer)
 		return ;
+	clear_garbage();
+	ft_dprintf(2, C_G"----------------------------\n");
 	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
+	ft_dprintf(2, C_G"----------------------------\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -42,11 +45,11 @@ void	free_game(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir[i++].img);
+		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;
 	}
+	mlx_destroy_image(game->mlx, game->img->frame.img);
 	clear_garbage();
-	mlx_destroy_image(game->mlx, game->img->bgframe.img);
 }
 
 int	exit_game(t_game *game)

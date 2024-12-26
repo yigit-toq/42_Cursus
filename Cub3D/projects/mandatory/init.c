@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 16:20:08 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 17:32:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	loop_frame(void)
 
 	game = get_game();
 	update_position();
-	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->img->frame.img, 0, 0);
 	return (raycast(), SUCCESS);
 }
 
@@ -41,7 +41,7 @@ static void	init_img(void)
 		img->dir[i] = add_image(img->dir[i].img, (t_size){0, 0});
 		i++;
 	}
-	img->bgframe = add_image(NULL, size);
+	img->frame = add_image(NULL, size);
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 	img->hex[1] = rgb_to_hexa(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
 }

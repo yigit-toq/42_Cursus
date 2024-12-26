@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/24 20:06:34 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 20:46:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@
 # define WIN_W		1280
 # define WIN_H		720
 
-# define SPEED		0.05
-# define ROTATE		0.05
+# define SPEED		0.060
+# define ROTATE		0.030
 
 # define DESTROY	17
 

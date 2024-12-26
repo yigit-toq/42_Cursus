@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/24 20:44:58 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 17:09:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void	free_game(void)
 	i = 0;
 	while (i < MAX_PATH)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir[i++].img);
+		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;
 	}
 	i = 0;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_system.c                                     :+:      :+:    :+:   */
+/*   controller.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/24 20:05:21 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/26 19:20:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,23 @@ int	update_position(void)
 	int		dr[2];
 
 	game = get_game();
+	if (game->player.rotate[0])
+	{
+		game->player.theta += ROTATE;	
+	}
+	if (game->player.rotate[1])
+	{
+		game->player.theta -= ROTATE;
+	}
+	if (game->player.theta < 0)
+	{
+		game->player.theta += 2 * PI;
+	}
+	else
+	{
+		if (game->player.theta >= 2 * PI)
+			game->player.theta -= 2 * PI;
+	}
 	if (game->player.move[0] == FALSE)
 	{
 		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
@@ -149,9 +166,9 @@ static int	input_systm(double h_move, double v_move)
 int	key_press_handler(int key, t_game *game)
 {
 	if (key == RIGHT_KEY)
-		game->player.theta += ROTATE;
+		game->player.rotate[0] = TRUE;
 	if (key == LEFT_KEY)
-		game->player.theta -= ROTATE;
+		game->player.rotate[1] = TRUE;
 	if (key == W_KEY)
 		game->player.move[0] = +1;
 	if (key == S_KEY)
@@ -160,15 +177,6 @@ int	key_press_handler(int key, t_game *game)
 		game->player.move[1] = +1;
 	if (key == A_KEY)
 		game->player.move[1] = -1;
-	if (game->player.theta < 0)
-	{
-		game->player.theta += 2 * PI;
-	}
-	else
-	{
-		if (game->player.theta >= 2 * PI)
-			game->player.theta -= 2 * PI;
-	}
 	return (SUCCESS);
 }
 
@@ -181,6 +189,14 @@ int	key_release_handler(int key, t_game *game)
 	if (key == A_KEY || key == D_KEY)
 	{
 		game->player.move[1] = FALSE;
+	}
+	if (key == RIGHT_KEY)
+	{
+		game->player.rotate[0] = FALSE;	
+	}
+	if (key == LEFT_KEY)
+	{
+		game->player.rotate[1] = FALSE;	
 	}
 	if (key == ESC_KEY)
 	{

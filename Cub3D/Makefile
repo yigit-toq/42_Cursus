@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/12/24 20:00:11 by ytop             ###   ########.fr        #
+#    Updated: 2024/12/26 17:12:22 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ B_OBJS				=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
 RM					=	@rm -rf
 
 CC					=	@cc
-CFLAGS				=	-Wall -Wextra -Werror -I ./includes -g
+CFLAGS				=	-Wall -Wextra -Werror -I ./includes -I $(MLX_DIR) -g
 
 OS 					=	$(shell uname)
 
