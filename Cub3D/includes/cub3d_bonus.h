@@ -47,9 +47,24 @@ typedef struct s_anim
 	int			counter;
 }				t_anim;
 
+typedef struct s_slot
+{
+	int		index;
+	t_anim	*anim;
+}			t_slot;
+
+typedef struct s_gun
+{
+	int		ammo;
+	int		total;
+	int		range;
+	int		reload;
+	int		attack;
+	int		damage;
+}			t_gun;
+
 typedef struct s_img
 {
-	int			weapon[2];
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
@@ -59,7 +74,6 @@ typedef struct s_img
 	t_anim		knife[2];
 	t_anim		vandal[2];
 	t_anim		qskill[2];
-	t_anim		rskill[2];
 }				t_img;
 
 typedef struct s_player
@@ -69,7 +83,6 @@ typedef struct s_player
 	int			move[2];
 	double		speed;
 	double		theta;
-	t_anim		*anim;
 	t_vect		plane;
 	t_vect		axis;
 	t_vect		pos;

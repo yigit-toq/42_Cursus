@@ -13,7 +13,6 @@
 #include "cub3d_bonus.h"
 
 #include <mlx.h>
-#include <pthread.h>
 
 void	swap_animation(t_anim *c_anim, t_anim *n_anim)
 {
@@ -81,13 +80,6 @@ static void	init_img(void)
 	img->vandal[0].play = TRUE;
 	img->vandal[0].loop = TRUE;
 	get_game()->player.anim = &img->vandal[0];
-}
-
-void	*audio_control()
-{
-	while (TRUE)
-		play_sound("./assets/sounds/background.wav");
-	return (NULL);
 }
 
 void	init_game(void)

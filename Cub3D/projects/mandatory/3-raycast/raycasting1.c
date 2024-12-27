@@ -109,8 +109,6 @@ static void	calculate_ray_hit(t_ray *ray)
 static void	calculate_wal_hgt(t_ray *ray)
 {
 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
-	if (ray->wall.height > WIN_H / 2)
-		ray->wall.height = WIN_H / 2;
 	ray->wall.s_pos = (WIN_H / 2) - ray->wall.height;
 	ray->wall.e_pos = (WIN_H / 2) + ray->wall.height;
 }
