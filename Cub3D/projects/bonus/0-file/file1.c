@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 13:55:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 16:34:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	object_counter(int x, int y)
 	{
 		game->count.floor++;
 	}
-	if (wspace_check(m[x]) == FALSE)
+	if (wtspace_check(m[x]) == FALSE)
 		if (ft_strchr("01NSWE", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }

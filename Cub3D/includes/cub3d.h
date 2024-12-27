@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:27:37 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 16:26:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_data			add_image(char *path, t_size size);
 
 int				open_file(char *path);
 
-int				wspace_check(char c);
+int				wtspace_check(char c);
 
 char			*wtspace_trim(char *str);
 

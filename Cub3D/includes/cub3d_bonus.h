@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:34:54 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 17:41:19 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@
 
 # define CRS_PATH	"./assets/textures/crosshair.xpm"
 
-# define GUN_PATH	"./assets/textures/weapons/vandal/frame"
+# define KNF_IDLE_PATH	"./assets/textures/weapons/knife/idle/frame"
+# define KNF_SKIN_PATH	"./assets/textures/weapons/knife/skin/frame"
+
+# define GUN_IDLE_PATH	"./assets/textures/weapons/vandal/idle/frame"
+# define GUN_SKIN_PATH	"./assets/textures/weapons/vandal/skin/frame"
+
+# define QSK_IDLE_PATH	"./assets/textures/character/reyna/q/idle/frame"
+# define QSK_PUSH_PATH	"./assets/textures/character/reyna/q/push/frame"
 
 typedef struct s_anim
 {
@@ -42,13 +49,17 @@ typedef struct s_anim
 
 typedef struct s_img
 {
+	int			weapon[2];
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
 	t_data		bgframe;
 	t_data		minimap;
 	t_data		cross;
-	t_anim		weapon[2];
+	t_anim		knife[2];
+	t_anim		vandal[2];
+	t_anim		qskill[2];
+	t_anim		rskill[2];
 }				t_img;
 
 typedef struct s_player
@@ -144,9 +155,23 @@ t_data			add_image(char *path, t_size size);
 
 int				open_file(char *path);
 
-int				wspace_check(char c);
+int				wtspace_check(char c);
 
 char			*wtspace_trim(char *str);
+
+/*----------------------ANIM  CONTROLLER----------------------*/
+
+void			init_frame(t_data *frame, char *path, int *range);
+
+void			init_animation(t_anim *anim, int *range, int delay, char *path);
+
+void			update_animation(t_anim	*anim);
+
+/*----------------------DRAW  CONTROLLER----------------------*/
+
+int				draw_circle(t_data data, t_vect center, t_vect radius, int color);
+
+void			draw_rectangle(t_data data, t_vect center, t_vect size, int color);
 
 /*------------------------------------------------------------*/
 
@@ -156,21 +181,7 @@ void			render_frame(t_ray *ray, int x);
 
 int				raycast(void);
 
-/*------------------------------------------------------------*/
-
-void			init_frame(t_data *frame, char *path, int *range);
-
-void			init_animation(t_anim *anim, int *range, int delay, char *path);
-
-void			update_animation(t_anim	*anim);
-
-/*------------------------------------------------------------*/
-
 void			minimap(void);
 
 /*------------------------------------------------------------*/
-
-int				draw_circle(t_data data, t_vect center, t_vect radius, int color);
-
-void			draw_rectangle(t_data data, t_vect center, t_vect size, int color);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:00:45 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 16:55:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void	free_game(void)
 		i++;
 	}
 	i = 0;
-	while (i < game->img->weapon[1].total)
+	while (i < game->img->vandal[1].total)
 	{
-		mlx_destroy_image(game->mlx, game->img->weapon[1].frames[i].img);
-		if (i < game->img->weapon[0].total)
-		mlx_destroy_image(game->mlx, game->img->weapon[0].frames[i].img);
+		mlx_destroy_image(game->mlx, game->img->vandal[1].frames[i].img);
+		if (i < game->img->vandal[0].total)
+		mlx_destroy_image(game->mlx, game->img->vandal[0].frames[i].img);
 		i++;
 	}
 	mlx_destroy_image(game->mlx, game->img->bgframe.img);

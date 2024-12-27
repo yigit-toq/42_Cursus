@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:28:07 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 16:39:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	open_file(char *path)
 	return (fd);
 }
 
-int	wspace_check(char c)
+int	wtspace_check(char c)
 {
 	return (c == ' ' || (c > 8 && c < 14));
 }
@@ -82,12 +82,12 @@ char	*wtspace_trim(char *str)
 	if (!str)
 		return (NULL);
 	len = ft_strlen(str);
-	while (wspace_check(*start) && *start)
+	while (wtspace_check(*start) && *start)
 	{
 		start++;
 		len--;
 	}
-	while (len > 0 && wspace_check(start[len - 1]))
+	while (len > 0 && wtspace_check(start[len - 1]))
 	{
 		len--;
 	}
