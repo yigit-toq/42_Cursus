@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/24 20:12:48 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:34:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ typedef struct s_img
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
-	t_data		minimap;
 	t_data		bgframe;
+	t_data		minimap;
 	t_data		cross;
 	t_anim		weapon[2];
 }				t_img;
@@ -59,9 +59,9 @@ typedef struct s_player
 	double		speed;
 	double		theta;
 	t_anim		*anim;
-	t_vect		pos;
-	t_vect		axis;
 	t_vect		plane;
+	t_vect		axis;
+	t_vect		pos;
 }				t_player;
 
 typedef struct s_count
@@ -94,17 +94,17 @@ typedef struct s_game
 
 t_game			*get_game(void);
 
+int				exit_game(t_game *game);
+
 /*----------------------ERROR CONTROLLER----------------------*/
 
-void			error_controller(char *message, void *pointer);
-
 void			exten_controller(char *path);
+
+void			error_controller(char *message, void *pointer);
 
 /*----------------------INPUT CONTROLLER----------------------*/
 
 int				update_position(void);
-
-int				exit_game(t_game *game);
 
 int				key_press_handler(int key, t_game *game);
 
@@ -112,17 +112,17 @@ int				key_release_handler(int key, t_game *game);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
-void			mlx_image_put(t_data img, int x, int y, unsigned int color);
+unsigned int	rgb_to_hexa(int r, int g, int b);
 
 unsigned int	pixel_color(t_data img, int x, int y);
 
-unsigned int	rgb_to_hexa(int r, int g, int b);
+void			mlx_image_put(t_data img, int x, int y, unsigned int color);
 
 /*----------------------FILE  CONTROLLER----------------------*/
 
-void			files_controller(char *path);
-
 int				path_control(void);
+
+void			files_controller(char *path);
 
 /*----------------------INIT  CONTROLLER----------------------*/
 
@@ -130,13 +130,13 @@ void			init_game(void);
 
 /*----------------------MATH  CONTROLLER----------------------*/
 
-double			grid_to_ct(double pos, double scale);
+t_size			tc_size(t_vect vect);
+t_vect			tc_vect(t_size size);
 
 double			deg_to_rad(double degree);
 double			rad_to_deg(double radian);
 
-t_size			tc_size(t_vect vect);
-t_vect			tc_vect(t_size size);
+double			grid_to_ct(double pos, double scale);
 
 /*----------------------UTIL  CONTROLLER----------------------*/
 

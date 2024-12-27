@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_system.c                                     :+:      :+:    :+:   */
+/*   controller.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:09:00 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:16:32 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <math.h>
 
-// int	input_system(int f, int s, double acceleration)
+// int	input_systm(int f, int s, double acceleration)
 // {
 // 	t_game	*game;
 // 	t_coord	*axis;
@@ -160,8 +160,7 @@ static int	input_systm(double h_move, double v_move)
 	pos.y += h_move * game->player.speed * forw.y;
 	if (game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)] == WALL)
 		return (FAILURE);
-	else
-		return (game->player.pos = pos, SUCCESS);
+	return (game->player.pos = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:38 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 19:16:01 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:27:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,17 @@ typedef struct s_game
 
 t_game			*get_game(void);
 
+int				exit_game(t_game *game);
+
 /*----------------------ERROR CONTROLLER----------------------*/
 
-void			error_controller(char *message, void *pointer);
-
 void			exten_controller(char *path);
+
+void			error_controller(char *message, void *pointer);
 
 /*----------------------INPUT CONTROLLER----------------------*/
 
 int				update_position(void);
-
-int				exit_game(t_game *game);
 
 int				key_press_handler(int key, t_game *game);
 
@@ -87,17 +87,17 @@ int				key_release_handler(int key, t_game *game);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
-void			mlx_image_put(t_data img, int x, int y, unsigned int color);
+unsigned int	rgb_to_hexa(int r, int g, int b);
 
 unsigned int	pixel_color(t_data img, int x, int y);
 
-unsigned int	rgb_to_hexa(int r, int g, int b);
+void			mlx_image_put(t_data img, int x, int y, unsigned int color);
 
 /*----------------------FILE  CONTROLLER----------------------*/
 
-void			files_controller(char *path);
-
 int				path_control(void);
+
+void			files_controller(char *path);
 
 /*----------------------INIT  CONTROLLER----------------------*/
 
@@ -105,10 +105,10 @@ void			init_game(void);
 
 /*----------------------MATH  CONTROLLER----------------------*/
 
-double			grid_to_ct(double pos, double scale);
-
 double			deg_to_rad(double degree);
 double			rad_to_deg(double radian);
+
+double			grid_to_ct(double pos, double scale);
 
 /*----------------------UTIL  CONTROLLER----------------------*/
 

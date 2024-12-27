@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rendering.c                                        :+:      :+:    :+:   */
+/*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/17 14:30:37 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:13:02 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+#include <mlx.h>
+#include <math.h>
 
 void	draw_hit(t_data image, t_size start, t_size curr, int color)
 {
@@ -52,7 +55,7 @@ void	draw_hit(t_data image, t_size start, t_size curr, int color)
 	}
 }
 
-void	draw_rays(t_data data, t_vect pos, double theta, int color)
+void	draw_ray(t_data data, t_vect pos, double theta, int color)
 {
 	t_game	*game;
 	t_vect	coord;
@@ -73,7 +76,7 @@ void	draw_rays(t_data data, t_vect pos, double theta, int color)
 	}
 }
 
-void	draw_line(t_data data, t_vect pos, double theta, double range, int color)
+void	draw_line(t_data data, t_vect pos, t_vect vect, int color)
 {
 	t_game	*game;
 	t_vect	coord;
@@ -83,8 +86,8 @@ void	draw_line(t_data data, t_vect pos, double theta, double range, int color)
 
 	game = get_game();
 	index = 0;
-	limit.x = pos.x + range * cos(theta);
-	limit.y = pos.y + range * sin(theta);
+	limit.x = pos.x + vect.x * cos(vect.y);
+	limit.y = pos.y + vect.x * sin(vect.y);
 	coord.x = limit.x - pos.x;
 	coord.y = limit.y - pos.y;
 	steps = fmax(fabs(coord.x), fabs(coord.y));

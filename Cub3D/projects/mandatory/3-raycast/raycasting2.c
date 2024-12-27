@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:32:31 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:04:16 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	render_frame(t_ray *ray, int x)
 		{
 			mlx_image_put(img->frame, x, y, img->hex[1]);
 		}
-		else if (y > ray->wall.e_pos - 1)
+		else if (y > ray->wall.e_pos)
 		{
 			mlx_image_put(img->frame, x, y, img->hex[0]);
 		}

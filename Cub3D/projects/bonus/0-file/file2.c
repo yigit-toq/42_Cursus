@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   file2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/16 14:15:50 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 13:56:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	set_rgb_color(int *color, char *line)
 		trim = wtspace_trim(rgb[i]);
 		while (trim[j])
 		{
-			if (!ft_isdigit(trim[j]))
+			if (ft_isdigit(trim[j]) == FALSE)
 				break ;
 			j++;
 		}
@@ -40,7 +40,7 @@ static void	set_rgb_color(int *color, char *line)
 		error_controller("Invalid color.", NULL);
 }
 
-int	path_handler(char *line, char **names)
+static int	path_read(char *line, char **names)
 {
 	t_game	*game;
 	int		len;
@@ -78,7 +78,7 @@ int	path_control(void)
 	while (*file)
 	{
 		line = wtspace_trim(*file);
-		if (!path_handler(line, names))
+		if (path_read(line, names) == FALSE)
 			break ;
 		file++;
 	}

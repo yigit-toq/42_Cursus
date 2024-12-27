@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 00:24:35 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:03:29 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	render_frame(t_ray *ray, int x)
 			{
 				mlx_image_put(img->bgframe, x, y, img->hex[1]);
 			}
-			else if (y > ray->wall.e_pos - 1)
+			else if (y > ray->wall.e_pos)
 			{
 				mlx_image_put(img->bgframe, x, y, img->hex[0]);
 			}

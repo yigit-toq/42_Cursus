@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:32:51 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/27 14:28:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,3 @@ char	*wtspace_trim(char *str)
 		return (ft_substr(start, 0, len));
 	}
 }
-
-//Bakılacak
