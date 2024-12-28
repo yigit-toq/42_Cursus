@@ -76,6 +76,9 @@ void	swap_animation(t_anim *c_anim, t_anim *n_anim)
 
 void	update_animation(t_anim	*anim)
 {
+	t_game	*game;
+
+	game = get_game();
 	if (!anim->play)
 		return ;
 	if (++anim->counter == anim->delay)
@@ -84,6 +87,10 @@ void	update_animation(t_anim	*anim)
         anim->index = (anim->index + 1) % anim->total;
         anim->frame = anim->frames + anim->index;
 		if (!anim->index && !anim->loop)
+		{
 			anim->play = FALSE;
+			if (anim == game->player.slot->take || anim == game->player.slot->skin)
+				swap_animation(anim, game->player.slot->idle);
+		}
     }
 }

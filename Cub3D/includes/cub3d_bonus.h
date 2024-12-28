@@ -78,6 +78,7 @@ typedef struct s_img
 	t_anim		knife[4];
 	t_anim		vandal[4];
 	t_anim		qskill[4];
+	t_anim		*next_anim;
 }				t_img;
 
 typedef struct s_player

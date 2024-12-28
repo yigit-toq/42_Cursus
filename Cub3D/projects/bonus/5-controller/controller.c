@@ -215,23 +215,27 @@ int	key_release_handler(int key, t_game *game)
 		if (!game->player.slot->skin)
 			return (FAILURE);
 		game->player.slot->curr->play = FALSE;
-		swap_animation(game->player.slot->curr, game->player.slot->skin);
+		game->img->next_anim = game->player.slot->skin;
 	}
 	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED;
 	}
-	if (key == ONE_KEY)
+	if (key == ONE_KEY || key == TWO_KEY || key == Q_KEY)
 	{
-		game->player.slot = &game->player.slots[0];
-	}
-	if (key == TWO_KEY)
-	{
-		game->player.slot = &game->player.slots[1];
-	}
-	if (key == Q_KEY)
-	{
-		game->player.slot = &game->player.slots[2];
+		if (key == ONE_KEY)
+			game->player.slot = &game->player.slots[0];
+		if (key == TWO_KEY)
+		{
+			game->player.slot = &game->player.slots[1];
+			game->player.slot->curr->play = FALSE;
+		game->img->next_anim = game->player.slot->idle;
+			return(SUCCESS);
+		}
+		if (key == Q_KEY)
+			game->player.slot = &game->player.slots[2];
+		game->player.slot->curr->play = FALSE;
+		game->img->next_anim = game->player.slot->take;
 	}
 	return (SUCCESS);
 }
