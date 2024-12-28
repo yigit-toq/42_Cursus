@@ -14,62 +14,15 @@
 
 #include <mlx.h>
 
-void	animation(void)
-{
-	t_game	*game;
-
-	game = get_game();
-	swap_animation(game->player.slot->curr, game->img->next_anim);
-	update_animation(game->player.slot->curr);
-}
-
 static int	next_frame(void)
 {
 	t_game	*game;
 
 	game = get_game();
 	update_position();
+	swap_animation(game->player.slot->curr, game->img->next_anim);
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
-	return (raycast(), minimap(), animation(), SUCCESS);
-}
-
-void	add_slot(t_slot *slot, int index, int curr, t_anim *anim, int *check)
-{
-	slot->index = index;
-	if (check[0])
-		slot->take = &anim[0];
-	if (check[1])
-		slot->idle = &anim[1];
-	if (check[2])
-		slot->skin = &anim[2];
-	if (check[3])
-		slot->fire = &anim[3];
-	if (check[curr])
-		slot->curr = &anim[curr];
-	slot->curr->loop = TRUE;
-}
-
-void	init_slot(void)
-{
-	t_game	*game;
-
-	game = get_game();
-	init_animation(&game->img->knife[0],  (int[2]){0, 15}, 2, KNF_TAKE_PATH);
-	init_animation(&game->img->knife[1],  (int[2]){0, 10}, 2, KNF_IDLE_PATH);
-
-	init_animation(&game->img->vandal[1], (int[2]){0, 20}, 2, GUN_IDLE_PATH);
-	init_animation(&game->img->vandal[2], (int[2]){0, 45}, 2, GUN_SKIN_PATH);
-
-	init_animation(&game->img->qskill[0], (int[2]){1, 10}, 2, QSK_TAKE_PATH);
-	init_animation(&game->img->qskill[1], (int[2]){0, 35}, 2, QSK_IDLE_PATH);
-	init_animation(&game->img->qskill[3], (int[2]){0, 05}, 2, QSK_PUSH_PATH);
-
-	add_slot(&game->player.slots[0], 0, 1, game->img->knife,  (int[4]){1, 1, 0, 0});
-	add_slot(&game->player.slots[1], 1, 1, game->img->vandal, (int[4]){0, 1, 1, 0});
-	add_slot(&game->player.slots[2], 2, 1, game->img->qskill, (int[4]){1, 1, 0, 1});
-
-	game->player.slot = &game->player.slots[0];
-	game->player.slot->curr->play = TRUE;
+	return (raycast(), minimap(), SUCCESS);
 }
 
 static void	init_img(void)

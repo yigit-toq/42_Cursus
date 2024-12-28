@@ -25,15 +25,16 @@
 
 # define CRS_PATH	"./assets/textures/crosshair.xpm"
 
-# define KNF_IDLE_PATH	"./assets/textures/weapons/knife/idle/frame"
-# define KNF_TAKE_PATH	"./assets/textures/weapons/knife/take/frame"
+# define KNF_TAKE	"./assets/textures/weapons/knife/take/frame"
+# define KNF_IDLE	"./assets/textures/weapons/knife/idle/frame"
 
-# define GUN_IDLE_PATH	"./assets/textures/weapons/vandal/idle/frame"
-# define GUN_SKIN_PATH	"./assets/textures/weapons/vandal/skin/frame"
+# define GUN_TAKE	"./assets/textures/weapons/vandal/take/frame"
+# define GUN_IDLE	"./assets/textures/weapons/vandal/idle/frame"
+# define GUN_SKIN	"./assets/textures/weapons/vandal/skin/frame"
 
-# define QSK_TAKE_PATH	"./assets/textures/character/reyna/q/take/frame"
-# define QSK_IDLE_PATH	"./assets/textures/character/reyna/q/idle/frame"
-# define QSK_PUSH_PATH	"./assets/textures/character/reyna/q/push/frame"
+# define QSK_TAKE	"./assets/textures/character/reyna/q/take/frame"
+# define QSK_IDLE	"./assets/textures/character/reyna/q/idle/frame"
+# define QSK_PUSH	"./assets/textures/character/reyna/q/push/frame"
 
 typedef struct s_anim
 {
@@ -175,29 +176,31 @@ t_data			add_image(char *path, t_size size);
 
 int				open_file(char *path);
 
+/*------------------------------------------------------------*/
+
 int				wtspace_check(char c);
 
 char			*wtspace_trim(char *str);
 
 /*----------------------ANIM  CONTROLLER----------------------*/
 
-void			init_frame(t_data *frame, char *path, int *range);
+void			input_animation(int key);
 
-void			swap_animation(t_anim *c_anim, t_anim *n_anim);
+void			swap_animation(t_anim *anim, t_anim *new);
 
 void			init_animation(t_anim *anim, int *range, int delay, char *path);
 
-void			update_animation(t_anim	*anim);
-
 /*----------------------DRAW  CONTROLLER----------------------*/
 
-int				draw_circ(t_data data, t_vect center, t_vect radius, int color);
-
 void			draw_rect(t_data data, t_vect center, t_vect size, int color);
+
+int				draw_circ(t_data data, t_vect center, t_vect radius, int color);
 
 /*------------------------------------------------------------*/
 
 void			render_frame(t_ray *ray, int x);
+
+int				image_filter(int index, int color, char filter, int limit);
 
 /*------------------------------------------------------------*/
 
@@ -207,7 +210,7 @@ void			minimap(void);
 
 /*------------------------------------------------------------*/
 
-int				image_filter(int index, int color, char filter, int limit);
+void			init_slot(void);
 
 /*------------------------------------------------------------*/
 #endif

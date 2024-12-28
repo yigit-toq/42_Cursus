@@ -187,20 +187,16 @@ int	key_press_handler(int key, t_game *game)
 int	key_release_handler(int key, t_game *game)
 {
 	if (key == W_KEY || key == S_KEY)
-	{
 		game->player.move[0] = FALSE;
-	}
 	if (key == A_KEY || key == D_KEY)
-	{
 		game->player.move[1] = FALSE;
-	}
 	if (key == RIGHT_KEY)
 	{
-		game->player.rotate[0] = FALSE;	
+		game->player.rotate[0] = FALSE;
 	}
 	if (key == LEFT_KEY)
 	{
-		game->player.rotate[1] = FALSE;	
+		game->player.rotate[1] = FALSE;
 	}
 	if (key == ESC_KEY)
 	{
@@ -210,32 +206,9 @@ int	key_release_handler(int key, t_game *game)
 	{
 		game->map->is_map = !game->map->is_map;
 	}
-	if (key == Y_KEY)
-	{
-		if (!game->player.slot->skin)
-			return (FAILURE);
-		game->player.slot->curr->play = FALSE;
-		game->img->next_anim = game->player.slot->skin;
-	}
 	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED;
 	}
-	if (key == ONE_KEY || key == TWO_KEY || key == Q_KEY)
-	{
-		if (key == ONE_KEY)
-			game->player.slot = &game->player.slots[0];
-		if (key == TWO_KEY)
-		{
-			game->player.slot = &game->player.slots[1];
-			game->player.slot->curr->play = FALSE;
-		game->img->next_anim = game->player.slot->idle;
-			return(SUCCESS);
-		}
-		if (key == Q_KEY)
-			game->player.slot = &game->player.slots[2];
-		game->player.slot->curr->play = FALSE;
-		game->img->next_anim = game->player.slot->take;
-	}
-	return (SUCCESS);
+	return (input_animation(key), SUCCESS);
 }

@@ -45,7 +45,7 @@ M_SRCS				=	$(M_SRCS_DIR)cub3d.c	$(M_FILE_DIR)file1.c	$(M_UTILS_DIR)utils1.c	$(M
 
 B_SRCS				=	$(B_SRCS_DIR)cub3d.c	$(B_FILE_DIR)file1.c	$(B_UTILS_DIR)utils1.c	$(B_ERROR_DIR)error.c	$(B_RAYCAST_DIR)raycasting1.c	$(B_GRAPHICS_DIR)graphics.c	$(B_CONTROLLER_DIR)controller.c	\
 						$(B_SRCS_DIR)init.c		$(B_FILE_DIR)file2.c	$(B_UTILS_DIR)utils2.c							$(B_RAYCAST_DIR)raycasting2.c	$(B_GRAPHICS_DIR)minimap.c	$(B_CONTROLLER_DIR)animation.c	\
-																		$(B_UTILS_DIR)utils3.c																														\
+																		$(B_UTILS_DIR)utils3.c																						$(B_CONTROLLER_DIR)slot.c		\
 																		$(B_UTILS_DIR)audio.c																														\
 
 M_OBJS				=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
