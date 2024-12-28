@@ -30,9 +30,10 @@ static int	render_object(int x, int y)
 {
 	t_game			*game = get_game();
 	unsigned int	color;
-
-	color = pixel_color(*game->player.anim->frame, x, y);
-	if (((color >> 0) & 255) < 130)
+	color = pixel_color(*game->player.slot->curr->frame, x, y);
+	if (image_filter(0, color, 'g', 200)
+	 || image_filter(1, color, 'b', 130)
+	 || image_filter(2, color, 'g', 160))
 	{
 		mlx_image_put(game->img->bgframe, x, y, color);
 		return (TRUE);

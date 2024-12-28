@@ -54,11 +54,24 @@ void	init_animation(t_anim *anim, int *range, int delay, char *path)
 	total = range[1] - range[0];
 	ft_bzero(anim, sizeof(t_anim));
 	anim->frames = ft_calloc(total, sizeof(t_data));
-	anim->path = path;
     anim->total = total;
     anim->delay = delay;
 	anim->frame = anim->frames;
 	init_frame(anim->frames, path, (int[2]){range[0], range[1]});
+}
+
+void	swap_animation(t_anim *c_anim, t_anim *n_anim)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (c_anim->play == FALSE)
+	{
+		game->player.slot->curr = n_anim;
+		n_anim->play = TRUE;
+		c_anim->counter = 0;
+		c_anim->index = 0;
+	}
 }
 
 void	update_animation(t_anim	*anim)
@@ -71,6 +84,6 @@ void	update_animation(t_anim	*anim)
         anim->index = (anim->index + 1) % anim->total;
         anim->frame = anim->frames + anim->index;
 		if (!anim->index && !anim->loop)
-			anim->play = 0;
+			anim->play = FALSE;
     }
 }

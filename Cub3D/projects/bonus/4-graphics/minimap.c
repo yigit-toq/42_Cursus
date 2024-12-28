@@ -24,7 +24,7 @@ static void	draw_player(t_size scale)
 	plane.x = grid_to_ct(game->player.pos.x, scale.x);
 	plane.y = grid_to_ct(game->player.pos.y, scale.y);
 
-	draw_circle(game->img->minimap, plane, tc_vect(scale), 0x030180);
+	draw_circ(game->img->minimap, plane, tc_vect(scale), 0x030180);
 
 	for (int i = 0; i < WIN_W; i++)
 	{
@@ -57,10 +57,10 @@ static void	draw_minimap(void)
 				break ;
 
 			if (value == WALL)
-				draw_rectangle(game->img->minimap, tc_vect(index), tc_vect(scale), H_W);
+				draw_rect(game->img->minimap, tc_vect(index), tc_vect(scale), H_W);
 
 			if (value == FLOOR || value == game->player.direction)
-				draw_rectangle(game->img->minimap, tc_vect(index), tc_vect(scale), H_G);
+				draw_rect(game->img->minimap, tc_vect(index), tc_vect(scale), H_G);
 
 			index.x++;
 		}

@@ -26,11 +26,12 @@
 # define CRS_PATH	"./assets/textures/crosshair.xpm"
 
 # define KNF_IDLE_PATH	"./assets/textures/weapons/knife/idle/frame"
-# define KNF_SKIN_PATH	"./assets/textures/weapons/knife/skin/frame"
+# define KNF_TAKE_PATH	"./assets/textures/weapons/knife/take/frame"
 
 # define GUN_IDLE_PATH	"./assets/textures/weapons/vandal/idle/frame"
 # define GUN_SKIN_PATH	"./assets/textures/weapons/vandal/skin/frame"
 
+# define QSK_TAKE_PATH	"./assets/textures/character/reyna/q/take/frame"
 # define QSK_IDLE_PATH	"./assets/textures/character/reyna/q/idle/frame"
 # define QSK_PUSH_PATH	"./assets/textures/character/reyna/q/push/frame"
 
@@ -38,7 +39,6 @@ typedef struct s_anim
 {
 	t_data		*frames;
 	t_data		*frame;
-	char		*path;
 	int			total;
 	int			index;
 	int			delay;
@@ -50,7 +50,11 @@ typedef struct s_anim
 typedef struct s_slot
 {
 	int		index;
-	t_anim	*anim;
+	t_anim	*curr;
+	t_anim	*take;
+	t_anim	*idle;
+	t_anim	*skin;
+	t_anim	*fire;
 }			t_slot;
 
 typedef struct s_gun
@@ -71,9 +75,9 @@ typedef struct s_img
 	t_data		bgframe;
 	t_data		minimap;
 	t_data		cross;
-	t_anim		knife[2];
-	t_anim		vandal[2];
-	t_anim		qskill[2];
+	t_anim		knife[4];
+	t_anim		vandal[4];
+	t_anim		qskill[4];
 }				t_img;
 
 typedef struct s_player
@@ -83,9 +87,11 @@ typedef struct s_player
 	int			move[2];
 	double		speed;
 	double		theta;
-	t_vect		plane;
-	t_vect		axis;
 	t_vect		pos;
+	t_vect		axis;
+	t_vect		plane;
+	t_slot		*slot;
+	t_slot		slots[3];
 }				t_player;
 
 typedef struct s_count
@@ -176,15 +182,17 @@ char			*wtspace_trim(char *str);
 
 void			init_frame(t_data *frame, char *path, int *range);
 
+void			swap_animation(t_anim *c_anim, t_anim *n_anim);
+
 void			init_animation(t_anim *anim, int *range, int delay, char *path);
 
 void			update_animation(t_anim	*anim);
 
 /*----------------------DRAW  CONTROLLER----------------------*/
 
-int				draw_circle(t_data data, t_vect center, t_vect radius, int color);
+int				draw_circ(t_data data, t_vect center, t_vect radius, int color);
 
-void			draw_rectangle(t_data data, t_vect center, t_vect size, int color);
+void			draw_rect(t_data data, t_vect center, t_vect size, int color);
 
 /*------------------------------------------------------------*/
 
@@ -195,6 +203,10 @@ void			render_frame(t_ray *ray, int x);
 int				raycast(void);
 
 void			minimap(void);
+
+/*------------------------------------------------------------*/
+
+int				image_filter(int index, int color, char filter, int limit);
 
 /*------------------------------------------------------------*/
 #endif

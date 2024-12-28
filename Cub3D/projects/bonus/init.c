@@ -14,24 +14,12 @@
 
 #include <mlx.h>
 
-void	swap_animation(t_anim *c_anim, t_anim *n_anim)
-{
-	t_game	*game;
-
-	game = get_game();
-	if (c_anim->play == FALSE)
-	{
-		game->player.anim = n_anim;
-		n_anim->play = TRUE;
-	}
-}
-
 void	animation(void)
 {
 	t_game	*game;
 
 	game = get_game();
-	update_animation(game->player.anim);
+	update_animation(game->player.slot->curr);
 }
 
 static int	next_frame(void)
@@ -42,6 +30,46 @@ static int	next_frame(void)
 	update_position();
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	return (raycast(), minimap(), animation(), SUCCESS);
+}
+
+void	add_slot(t_slot *slot, int index, int curr, t_anim *anim, int *check)
+{
+	slot->index = index;
+	if (check[0])
+		slot->take = &anim[0];
+	if (check[1])
+		slot->idle = &anim[1];
+	if (check[2])
+		slot->skin = &anim[2];
+	if (check[3])
+		slot->fire = &anim[3];
+	if (check[curr])
+		slot->curr = &anim[curr];
+	slot->curr->loop = TRUE;
+}
+
+void	init_slot(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	init_animation(&game->img->knife[0], (int[2]){0, 15}, 2, KNF_TAKE_PATH);
+	init_animation(&game->img->knife[1], (int[2]){0, 10}, 2, KNF_IDLE_PATH);
+
+	init_animation(&game->img->vandal[1], (int[2]){0, 20}, 2, GUN_IDLE_PATH);
+	init_animation(&game->img->vandal[2], (int[2]){0, 45}, 2, GUN_SKIN_PATH);
+
+	init_animation(&game->img->qskill[0], (int[2]){0, 10}, 2, QSK_TAKE_PATH);
+	init_animation(&game->img->qskill[1], (int[2]){0, 35}, 2, QSK_IDLE_PATH);
+	init_animation(&game->img->qskill[3], (int[2]){0, 05}, 2, QSK_PUSH_PATH);
+
+	add_slot(&game->player.slots[0], 0, 1, game->img->knife, (int[4]){1, 1, 0, 0});
+	add_slot(&game->player.slots[1], 1, 1, game->img->vandal, (int[4]){0, 1, 1, 0});
+	add_slot(&game->player.slots[2], 2, 1, game->img->qskill, (int[4]){1, 1, 0, 1});
+
+	game->player.slot = &game->player.slots[0];
+
+	game->player.slot->curr->play = TRUE;
 }
 
 static void	init_img(void)
@@ -70,16 +98,7 @@ static void	init_img(void)
 	img->minimap = add_image(NULL, size);
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 	img->hex[1] = rgb_to_hexa(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
-	init_animation(&img->vandal[0], (int[2]){0, 20}, 3, GUN_IDLE_PATH);
-	init_animation(&img->vandal[1], (int[2]){0, 45}, 3, GUN_SKIN_PATH);
-	init_animation(&img->qskill[0], (int[2]){0, 45}, 3, QSK_IDLE_PATH);
-	init_animation(&img->qskill[1], (int[2]){0, 05}, 3, QSK_PUSH_PATH);
-
-	init_animation(&img->knife[0], (int[2]){0, 10}, 3, KNF_IDLE_PATH);
-	init_animation(&img->knife[1], (int[2]){0, 15}, 3, KNF_SKIN_PATH);
-	img->vandal[0].play = TRUE;
-	img->vandal[0].loop = TRUE;
-	get_game()->player.anim = &img->vandal[0];
+	init_slot();
 }
 
 void	init_game(void)

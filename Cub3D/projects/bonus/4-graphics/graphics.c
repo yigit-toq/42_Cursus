@@ -105,7 +105,7 @@ void	draw_line(t_data data, t_vect pos, t_vect vect, int color)
 	}
 }
 
-void	draw_rectangle(t_data data, t_vect center, t_vect size, int color)
+void	draw_rect(t_data data, t_vect center, t_vect size, int color)
 {
 	t_game	*game;
 	t_vect	pos;
@@ -132,7 +132,7 @@ void	draw_rectangle(t_data data, t_vect center, t_vect size, int color)
 	}
 }
 
-int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
+int	draw_circ(t_data data, t_vect center, t_vect radius, int color)
 {
 	t_game	*game;
 	t_vect	pos;

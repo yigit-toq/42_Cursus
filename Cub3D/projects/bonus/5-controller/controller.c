@@ -212,9 +212,10 @@ int	key_release_handler(int key, t_game *game)
 	}
 	if (key == Y_KEY)
 	{
-		game->player.anim = &game->img->vandal[1];
-		game->img->vandal[0].play = FALSE;
-		game->img->vandal[1].play = TRUE;
+		if (!game->player.slot->skin)
+			return (FAILURE);
+		game->player.slot->curr->play = FALSE;
+		swap_animation(game->player.slot->curr, game->player.slot->skin);
 	}
 	if (key == SHIFT_KEY)
 	{
@@ -222,9 +223,15 @@ int	key_release_handler(int key, t_game *game)
 	}
 	if (key == ONE_KEY)
 	{
+		game->player.slot = &game->player.slots[0];
 	}
 	if (key == TWO_KEY)
 	{
+		game->player.slot = &game->player.slots[1];
+	}
+	if (key == Q_KEY)
+	{
+		game->player.slot = &game->player.slots[2];
 	}
 	return (SUCCESS);
 }

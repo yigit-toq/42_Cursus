@@ -37,9 +37,9 @@ typedef struct s_player
 	int			move[2];
 	double		speed;
 	double		theta;
-	t_vect		plane;
-	t_vect		axis;
 	t_vect		pos;
+	t_vect		axis;
+	t_vect		plane;
 }				t_player;
 
 typedef struct s_count

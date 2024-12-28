@@ -37,3 +37,16 @@ void	mlx_image_put(t_data img, int x, int y, unsigned int color)
 		*(unsigned int *)pixel_address = color;
 	}
 }
+
+int	image_filter(int index, int color, char filter, int limit)
+{
+	t_game	*game;
+	int		value;
+
+	game = get_game();
+	if (filter == 'g')
+		value = (color >> 8) & 255;
+	if (filter == 'b')
+		value = (color >> 0) & 255;
+	return (value < limit && game->player.slot->index == index);
+}
