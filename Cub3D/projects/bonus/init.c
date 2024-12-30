@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 17:51:16 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 13:41:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	init_img(void)
 	t_size	size;
 	int		i;
 
-	img	= get_game()->img;
+	img = get_game()->img;
 	map = get_game()->map;
 	size.x = WIN_W;
 	size.y = WIN_H;

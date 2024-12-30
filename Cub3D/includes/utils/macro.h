@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 17:04:23 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 12:58:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #  define D_KEY			100
 #  define W_KEY			119
 #  define Q_KEY			113
+#  define R_KEY			114
 #  define Y_KEY			121
 #  define M_KEY			109
 #  define ESC_KEY		65307
@@ -34,6 +35,7 @@
 #  define D_KEY			2
 #  define W_KEY			13
 #  define Q_KEY			12
+#  define R_KEY			15
 #  define Y_KEY			16
 #  define M_KEY			46
 #  define ESC_KEY		53

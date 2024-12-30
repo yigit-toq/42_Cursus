@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 17:19:20 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 14:25:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static void	update_animation(t_anim	*anim)
 	if (!anim->play)
 		return ;
 	if (++anim->counter == anim->delay)
-    {
-        anim->counter = 0;
-        anim->index = (anim->index + 1) % anim->total;
-        anim->frame = anim->frames + anim->index;
+	{
+		anim->counter = 0;
+		anim->index = (anim->index + 1) % anim->total;
+		anim->frame = anim->frames + anim->index;
 		if (!anim->index && !anim->loop)
 		{
 			anim->play = FALSE;
@@ -69,10 +69,10 @@ static void	update_animation(t_anim	*anim)
 			if (anim == game->player.slot->fire)
 			{
 				game->player.slot = &game->player.slots[1];
-				swap_animation(anim, game->player.slot->idle);
+				swap_animation(anim, game->player.slot->take);
 			}
 		}
-    }
+	}
 }
 
 void	input_animation(int key)
@@ -106,6 +106,14 @@ void	input_animation(int key)
 		game->player.slot->curr->play = FALSE;
 		game->img->next_anim = game->player.slot->take;
 	}
+	if (key == R_KEY)
+	{
+		game->player.slot->curr->play = FALSE;
+		game->player.slot = &game->player.slots[3];
+		game->img->next_anim = game->player.slot->fire;
+
+		game->player.slot->curr->index = 0;
+	}
 }
 
 void	swap_animation(t_anim *anim, t_anim *new)
@@ -130,8 +138,8 @@ void	init_animation(t_anim *anim, int *range, int delay, char *path)
 	total = range[1] - range[0];
 	ft_bzero(anim, sizeof(t_anim));
 	anim->frames = ft_calloc(total, sizeof(t_data));
-    anim->total = total;
-    anim->delay = delay;
+	anim->total = total;
+	anim->delay = delay;
 	anim->frame = anim->frames;
 	init_frame(anim->frames, path, (int[2]){range[0], range[1]});
 }

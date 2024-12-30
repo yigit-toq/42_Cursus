@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 17:51:42 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 14:01:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	update_position(void)
 	game = get_game();
 	if (game->player.rotate[0])
 	{
-		game->player.theta += ROTATE;	
+		game->player.theta += ROTATE;
 	}
 	if (game->player.rotate[1])
 	{

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 17:41:19 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 13:38:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,20 @@
 
 # define MAX_PATH	4
 
-# define CRS_PATH	"./assets/textures/crosshair.xpm"
+# define CRS_PATH	"./assets/textures/gun/crosshair.xpm"
 
-# define KNF_TAKE	"./assets/textures/weapons/knife/take/frame"
-# define KNF_IDLE	"./assets/textures/weapons/knife/idle/frame"
+# define KNF_TAKE	"./assets/textures/gun/knife/take/frame"
+# define KNF_IDLE	"./assets/textures/gun/knife/idle/frame"
 
-# define GUN_TAKE	"./assets/textures/weapons/vandal/take/frame"
-# define GUN_IDLE	"./assets/textures/weapons/vandal/idle/frame"
-# define GUN_SKIN	"./assets/textures/weapons/vandal/skin/frame"
+# define GUN_TAKE	"./assets/textures/gun/vandal/take/frame"
+# define GUN_IDLE	"./assets/textures/gun/vandal/idle/frame"
+# define GUN_SKIN	"./assets/textures/gun/vandal/skin/frame"
 
-# define QSK_TAKE	"./assets/textures/character/reyna/q/take/frame"
-# define QSK_IDLE	"./assets/textures/character/reyna/q/idle/frame"
-# define QSK_PUSH	"./assets/textures/character/reyna/q/push/frame"
+# define QSK_TAKE	"./assets/textures/char/reyna/q/take/frame"
+# define QSK_IDLE	"./assets/textures/char/reyna/q/idle/frame"
+# define QSK_FIRE	"./assets/textures/char/reyna/q/fire/frame"
+
+# define RSK_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
 typedef struct s_anim
 {
@@ -70,16 +72,17 @@ typedef struct s_gun
 
 typedef struct s_img
 {
+	t_anim		*next_anim;
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
-	t_data		bgframe;
-	t_data		minimap;
 	t_data		cross;
+	t_data		minimap;
+	t_data		bgframe;
 	t_anim		knife[4];
 	t_anim		vandal[4];
 	t_anim		qskill[4];
-	t_anim		*next_anim;
+	t_anim		rskill[4];
 }				t_img;
 
 typedef struct s_player
@@ -93,7 +96,7 @@ typedef struct s_player
 	t_vect		axis;
 	t_vect		plane;
 	t_slot		*slot;
-	t_slot		slots[3];
+	t_slot		slots[4];
 }				t_player;
 
 typedef struct s_count

@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/12/27 13:51:08 by ytop             ###   ########.fr        #
+#    Updated: 2024/12/30 12:53:24 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,7 +111,7 @@ $(NAME)			:	$(MLX) $(LIBFT) $(M_OBJS)
 
 $(BONUS)		:	$(MLX) $(LIBFT) $(B_OBJS)
 					$(CC) $(CFLAGS) -o $(BONUS)	$(B_OBJS) $(LIBFT) $(LIBRARY) -lSDL2 -pthread
-					@printf "$(COLOR_B)CUB3D_BONUS		$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
+					@printf "$(COLOR_B)CUB3D			$(COLOR_G)\e[1m[ OK ]\e[0m\n$(COLOR_E)"
 
 $(LIBFT)		:
 					@if [ ! -d $(LIBFT_DIR) ]; then													\
