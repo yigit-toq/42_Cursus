@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 20:35:40 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 13:58:32 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 14:44:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_slot(void)
 	init_animation(&game->img->qskill[0], (int[2]){0, 07}, 2, QSK_TAKE);
 	init_animation(&game->img->qskill[1], (int[2]){0, 35}, 2, QSK_IDLE);
 	init_animation(&game->img->qskill[3], (int[2]){0, 05}, 2, QSK_FIRE);
-	init_animation(&game->img->rskill[3], (int[2]){0, 10}, 2, RSK_FIRE);
+	init_animation(&game->img->rskill[3], (int[2]){2, 10}, 2, RSK_FIRE);
 	add_slot(&game->player.slots[0], 1, game->img->knife, (int[4]){1, 1, 0, 0});
 	add_slot(&game->player.slots[1], 1, game->img->vandal, (int[4]){1, 1, 1, 0});
 	add_slot(&game->player.slots[2], 1, game->img->qskill, (int[4]){1, 1, 0, 1});

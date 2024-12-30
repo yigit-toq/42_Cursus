@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 13:38:04 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 15:13:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 
 # define WIN_NAME	"Cub3D"
 
-# define MAX_PATH	4
-
-# define CRS_PATH	"./assets/textures/gun/crosshair.xpm"
+# define DIR_SIZE	4
 
 # define KNF_TAKE	"./assets/textures/gun/knife/take/frame"
 # define KNF_IDLE	"./assets/textures/gun/knife/idle/frame"
@@ -73,10 +71,12 @@ typedef struct s_gun
 typedef struct s_img
 {
 	t_anim		*next_anim;
+	char		*paths[6];
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
-	t_data		cross;
+	t_data		crossh;
+	t_data		ground;
 	t_data		minimap;
 	t_data		bgframe;
 	t_anim		knife[4];

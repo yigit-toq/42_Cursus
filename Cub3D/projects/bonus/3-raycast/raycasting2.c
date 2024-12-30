@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 13:46:07 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 15:20:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ static int	render_object(int x, int y)
 	int		color;
 
 	color = pixel_color(*game->player.slot->curr->frame, x, y);
-	if (image_filter(0, color, 'g', 200)
-		|| image_filter(1, color, 'b', 130)
+	if (image_filter(0, color, 'g', 200) || image_filter(1, color, 'b', 130)
 		|| image_filter(2, color, 'g', 160)
 		|| image_filter(3, color, 'g', 160))
 	{
@@ -45,7 +44,7 @@ static int	render_object(int x, int y)
 	cross.y = (WIN_H / 2) - 32;
 	if ((x > cross.x && x < cross.x + 64) && (y > cross.y && y < cross.y + 64))
 	{
-		color = pixel_color(game->img->cross, x - cross.x, y - cross.y);
+		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
 		if (color == 0x000000)
 		{
 			mlx_image_put(game->img->bgframe, x, y, color);

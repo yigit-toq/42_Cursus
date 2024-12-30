@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:29:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 14:23:14 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 15:12:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ static int	path_read(char *line, char **names)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->rgb[i - 5], line + len);
+				set_rgb_color(game->img->rgb[i - 6], line + len);
 			}
 			else
 			{
-				game->img->dir[i].img = wtspace_trim(line + len);
+				game->img->paths[i] = wtspace_trim(line + len);
 			}
 			break ;
 		}
@@ -70,7 +70,7 @@ static int	path_read(char *line, char **names)
 
 int	path_control(void)
 {
-	static char	*names[] = {"NO", "SO", "WE", "EA", "GR", "F", "C", NULL};
+	static char	*names[] = {"NO", "SO", "WE", "EA", "CR", "GR", "F", "C", NULL};
 	char		**file;
 	char		*line;
 

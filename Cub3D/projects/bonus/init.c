@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 13:41:36 by ytop             ###   ########.fr       */
+/*   Updated: 2024/12/30 15:14:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	img->cross = add_image(CRS_PATH, (t_size){0, 0});
-	while (i < MAX_PATH)
+	while (i < DIR_SIZE)
 	{
-		if (!img->dir[i].img)
+		if (!img->paths[i])
 			error_controller("Texture path is not found.", NULL);
-		img->dir[i] = add_image(img->dir[i].img, (t_size){0, 0});
+		img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
+	img->crossh = add_image(img->paths[4], (t_size){0, 0});
+	img->ground = add_image(img->paths[5], (t_size){0, 0});
 	img->bgframe = add_image(NULL, size);
 	size.x = map->size.x * map->mini.x;
 	size.y = map->size.y * map->mini.y;
