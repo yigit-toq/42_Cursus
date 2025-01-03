@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phonebook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:18:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 22:18:45 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/03 16:13:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,16 @@ int	main(void)
 void	Phonebook::Add()
 {
 	std::string	input;
+	int			i;
 
-	for (int i = 0; i < 5; i++)
+	i = 0;
+	while (i < 5)
 	{
-		while (i < 5)
-		{
-			std::cout << "Enter " << this->contact[this->index].GetNames(i) << ":	";
-			if (ft_read_line(input))
-			{
-				continue ;
-			}
-			this->contact[this->index].SetValue(i, input);
-			i++;
-		}
+		std::cout << "Enter " << this->contact[this->index].GetNames(i) << ":	";
+		if (ft_read_line(input) || input[0] == ' ' || input.find('\t', 0) != std::string::npos)
+			continue ;
+		this->contact[this->index].SetValue(i, input);
+		i++;
 	}
 	count = (count < 8) ? count + 1 : 8;
 	index = (index < 7) ? index + 1 : 0;
