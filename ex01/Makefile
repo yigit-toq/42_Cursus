@@ -15,7 +15,7 @@ NAME			=	ex01
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)phonebook.cpp $(SRCS_DIR)utils.cpp
+SRCS 			=	$(SRCS_DIR)Phonebook.cpp $(SRCS_DIR)utils.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

@@ -15,7 +15,7 @@ NAME			=	ex00
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)megaphone.cpp
+SRCS 			=	$(SRCS_DIR)Megaphone.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
