@@ -18,8 +18,8 @@
 class Fixed
 {
 	private:
-		static const int	fracbits = 8;
-		int					number;
+		static const int	fracBits = 8;
+		int					value;
 
 	public:
 		Fixed ();
