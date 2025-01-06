@@ -6,17 +6,17 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:16:47 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:10:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/06 14:25:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ClapTrap.hpp"
+#include "FragTrap.hpp"
 
 int	main()
 {
-	ClapTrap	Bob("Bob");
-	ClapTrap	Jim("Jim");
-	ClapTrap	Joe("Joe");
+	FragTrap	Bob("Bob");
+	FragTrap	Jim("Jim");
+	FragTrap	Joe("Joe");
 
 	Bob.attack("Jim");
 	Jim.takeDamage(10);

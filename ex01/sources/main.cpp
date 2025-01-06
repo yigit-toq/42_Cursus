@@ -6,17 +6,17 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:16:47 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:10:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/06 14:28:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
 int	main()
 {
-	ClapTrap	Bob("Bob");
-	ClapTrap	Jim("Jim");
-	ClapTrap	Joe("Joe");
+	ScavTrap	Bob("Bob");
+	ScavTrap	Jim("Jim");
+	ScavTrap	Joe("Joe");
 
 	Bob.attack("Jim");
 	Jim.takeDamage(10);

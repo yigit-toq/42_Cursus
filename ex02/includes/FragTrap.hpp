@@ -1,30 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   FragTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/02 14:16:47 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:10:25 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/06 14:13:32 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/06 14:19:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef FRAGTRAP_HPP
+#define FRAGTRAP_HPP
+
 #include "ClapTrap.hpp"
 
-int	main()
+#include <iostream>
+
+class FragTrap : public ClapTrap
 {
-	ClapTrap	Bob("Bob");
-	ClapTrap	Jim("Jim");
-	ClapTrap	Joe("Joe");
+	private:
 
-	Bob.attack("Jim");
-	Jim.takeDamage(10);
-	Jim.beRepaired(5);
+	public:
+		FragTrap ();
 
-	Joe.attack("Bob");
-	Bob.takeDamage(10);
-	Bob.beRepaired(5);
+		FragTrap (std::string name);
 
-	return (0);
-}
+		FragTrap (const FragTrap &other);
+
+		FragTrap &operator=(const FragTrap &other);
+
+		~FragTrap();
+
+		void	attack (const std::string& target);
+
+		void	highFivesGuys();
+};
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 13:15:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/06 13:54:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ ClapTrap::ClapTrap()
 	this->name = "ytop";
 	this->hitPoints = 10;
 	this->energyPoints = 10;
-	this->attackDamage = 01;
+	this->attackDamage = 00;
 }
 
 ClapTrap::ClapTrap(const std::string name)
@@ -30,7 +30,7 @@ ClapTrap::ClapTrap(const std::string name)
 
 	this->hitPoints = 10;
 	this->energyPoints = 10;
-	this->attackDamage = 01;
+	this->attackDamage = 00;
 }
 
 ClapTrap::ClapTrap(const ClapTrap& other)
@@ -48,6 +48,7 @@ ClapTrap&	ClapTrap::operator=(const ClapTrap& other)
 	this->hitPoints = other.hitPoints;
 	this->energyPoints = other.energyPoints;
 	this->attackDamage = other.attackDamage;
+
 	return (*this);
 }
 
