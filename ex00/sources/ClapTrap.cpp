@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 13:15:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/07 17:15:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ ClapTrap::ClapTrap(const ClapTrap& other)
 	*this = other;
 }
 
-ClapTrap&	ClapTrap::operator=(const ClapTrap& other)
+ClapTrap& ClapTrap::operator=(const ClapTrap& other)
 {
 	std::cout << "ClapTrap assignation operator" << std::endl;
 

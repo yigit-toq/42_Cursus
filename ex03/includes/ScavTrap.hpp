@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 13:18:30 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:07:09 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/07 17:12:51 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,12 @@
 
 #include <iostream>
 
-class ScavTrap : public ClapTrap
+class ScavTrap : public virtual ClapTrap
 {
 	private:
 
 	public:
 		ScavTrap ();
-
 		ScavTrap (std::string name);
 
 		ScavTrap (const ScavTrap &other);

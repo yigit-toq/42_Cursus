@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:14:13 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:23:06 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/07 16:37:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ FragTrap::FragTrap()
 	std::cout << "FragTrap default constructor" << std::endl;
 
 	this->name = "ytop";
-	this->hitPoints = 100;
+	this->hitPoints = ClapTrap::hitPoints;
 	this->energyPoints = 100;
 	this->attackDamage = 30;
 }
@@ -27,7 +27,7 @@ FragTrap::FragTrap(std::string name)
 	std::cout << "FragTrap name constructor" << std::endl;
 
 	this->name = name;
-	this->hitPoints = 100;
+	this->hitPoints = ClapTrap::hitPoints;
 	this->energyPoints = 100;
 	this->attackDamage = 30;
 }
