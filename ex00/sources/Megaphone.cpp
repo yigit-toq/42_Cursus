@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*   Megaphone.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:01:44 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 22:01:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:06:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	main(int argc, char **argv)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	if (argc == 1)
 	{
 		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	}
 	else
 	{
-		while (argv[i])
+		while (argv[++i])
 		{
 			j = 0;
 			while (argv[i][j])
@@ -33,7 +33,6 @@ int	main(int argc, char **argv)
 				j++;
 			}
 			std::cout << argv[i] << std::endl;
-			i++;
 		}
 	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.hpp                                      :+:      :+:    :+:   */
+/*   Phonebook.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:19:13 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/03 15:57:07 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:18:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 #include <string>
 
 # define FIELD_WIDTH	10
-
-# define TRUE			1
 
 class Contact
 {
@@ -50,6 +48,6 @@ class Phonebook
 		void	Search();
 };
 
-int	ft_read_line(std::string &line);
+bool	ft_read_line(std::string &line);
 
 #endif

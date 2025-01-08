@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 14:11:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/03 15:57:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:15:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Phonebook::Phonebook()
 	this->count = 0;
 }
 
-std::string const	Contact::fields_names[5] = 
+std::string const Contact::fields_names[5] = 
 {
 	"First Name",
 	"Last Name",
@@ -37,12 +37,12 @@ std::string	Contact::GetValue(int index)
 	return (this->fields_value[index]);
 }
 
-void		Contact::SetValue(int index, std::string value)
+void Contact::SetValue(int index, std::string value)
 {
 	this->fields_value[index] = value;
 }
 
-int	ft_read_line(std::string &line)
+bool ft_read_line(std::string &line)
 {
 	std::getline(std::cin, line);
 	if (line.empty())
@@ -52,7 +52,7 @@ int	ft_read_line(std::string &line)
 			std::cout << std::endl << "Goodbye :D" << std::endl;
 			exit (0);
 		}
-		return (1);
+		return (false);
 	}
-	return (0);
+	return (true);
 }

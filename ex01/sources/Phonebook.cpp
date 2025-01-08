@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.cpp                                      :+:      :+:    :+:   */
+/*   Phonebook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:18:45 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/03 16:13:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:20:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	main(void)
 	std::cout << "1) Add a new contact     -> [ADD]"	<< std::endl;
 	std::cout << "2) Exit the phonebook    -> [EXIT]"	<< std::endl;
 	std::cout << "3) Search for a contact  -> [SEARCH]"	<< std::endl << std::endl;
-	while (TRUE)
+	while (true)
 	{
-		std::cout << "Enter your choice: " << std::endl;
-		if (ft_read_line(input))
+		std::cout << "Enter your choice: ";
+		if (!ft_read_line(input))
 		{
 			continue ;
 		}
@@ -66,7 +66,7 @@ void	Phonebook::Add()
 	while (i < 5)
 	{
 		std::cout << "Enter " << this->contact[this->index].GetNames(i) << ":	";
-		if (ft_read_line(input) || input[0] == ' ' || input.find('\t', 0) != std::string::npos)
+		if (!ft_read_line(input) || input[0] == ' ' || input.find('\t', 0) != std::string::npos)
 			continue ;
 		this->contact[this->index].SetValue(i, input);
 		i++;
@@ -105,7 +105,7 @@ void	Phonebook::Search()
         std::cout << std::endl;
     }
 	std::cout << "Enter index: ";
-	if (ft_read_line(input))
+	if (!ft_read_line(input))
 	{
 		return ;
 	}

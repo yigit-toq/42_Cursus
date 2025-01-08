@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 12:56:29 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 12:56:29 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:24:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,12 @@ Account::Account(int initial_deposit)
 {
 	_accountIndex = _nbAccounts++;
 
+	_totalAmount += initial_deposit;
+
 	_amount = initial_deposit;
+
 	_nbDeposits = 0;
 	_nbWithdrawals = 0;
-
-	_totalAmount += initial_deposit;
 
 	_displayTimestamp();
 	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";created" << std::endl;
@@ -63,7 +64,7 @@ Account::Account(int initial_deposit)
 Account::~Account( void )
 {
 	_displayTimestamp();
-	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";closed" << std::endl;
+	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";closed"  << std::endl;
 }
 
 void Account::makeDeposit( int deposit )
