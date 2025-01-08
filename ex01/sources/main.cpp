@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:58 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/07 17:56:14 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:50:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#include "Dog.hpp"
+#include "Cat.hpp"
 
-#include <iostream>
+#include "./wrong/WrongCat.hpp"
 
-class WrongAnimal
+int main()
 {
-	protected:
-		std::string type;
-
-	public:
-		WrongAnimal ();
-
-		WrongAnimal (const WrongAnimal& other);
-
-		WrongAnimal& operator=(const WrongAnimal& other);
-
-		virtual ~WrongAnimal();
-
-		virtual void makeSound() const;
-
-		std::string getType() const;
-};
-
-#endif
+	return (0);
+}

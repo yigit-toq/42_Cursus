@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:58 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 20:11:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ class WrongAnimal
 
 		WrongAnimal& operator=(const WrongAnimal& other);
 
-		virtual ~WrongAnimal();
+		~WrongAnimal();
 
-		virtual void makeSound() const;
+		void makeSound() const;
 
 		std::string getType() const;
 };

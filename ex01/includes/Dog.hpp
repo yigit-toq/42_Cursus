@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   Dog.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:58 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/07 17:58:03 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:47:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#ifndef DOG_HPP
+#define DOG_HPP
 
-#include <iostream>
+#include "Animal.hpp"
+#include "Brain.hpp"
 
-class WrongAnimal
+class Dog : public Animal
 {
-	protected:
-		std::string type;
+	private:
+		Brain* brain;
 
 	public:
-		WrongAnimal ();
+		Dog ();
 
-		WrongAnimal (const WrongAnimal& other);
+		Dog (const Dog& other);
 
-		WrongAnimal& operator=(const WrongAnimal& other);
+		Dog& operator=(const Dog& other);
 
-		virtual ~WrongAnimal();
+		~Dog();
 
-		virtual void makeSound() const;
+		void makeSound() const;
 
-		std::string getType() const;
+		std::string getIdea(int index) const;
+
+		void setIdea(int index, std::string idea);
 };
 
 #endif

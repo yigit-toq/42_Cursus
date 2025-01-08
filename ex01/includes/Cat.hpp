@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:58 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/07 17:58:12 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:47:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#ifndef CAT_HPP
+#define CAT_HPP
 
-#include <iostream>
+#include "Animal.hpp"
+#include "Brain.hpp"
 
-class WrongAnimal
+class Cat : public Animal
 {
-	protected:
-		std::string type;
+	private:
+		Brain* brain;
 
 	public:
-		WrongAnimal ();
+		Cat ();
 
-		WrongAnimal (const WrongAnimal& other);
+		Cat (const Cat& other);
 
-		WrongAnimal& operator=(const WrongAnimal& other);
+		Cat& operator=(const Cat& other);
 
-		virtual ~WrongAnimal();
+		~Cat();
 
-		virtual void makeSound() const;
+		void makeSound() const;
 
-		std::string getType() const;
+		std::string getIdea(int index) const;
+
+		void setIdea(int index, std::string idea);
 };
 
 #endif

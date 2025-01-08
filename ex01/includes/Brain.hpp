@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   Brain.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:52:58 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/08 20:20:39 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:42:09 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#ifndef BRAIN_HPP
+# define BRAIN_HPP
 
-#include <iostream>
+# include <iostream>
 
-class WrongAnimal
+class Brain
 {
-	protected:
-		std::string type;
+	private:
+		std::string	ideas[100];
 
 	public:
-		WrongAnimal ();
+		Brain ();
 
-		WrongAnimal (const WrongAnimal& other);
+		Brain(const Brain& other);
 
-		WrongAnimal& operator=(const WrongAnimal& other);
+		Brain& operator=(const Brain& other);
 
-		virtual ~WrongAnimal();
+		~Brain();
 
-		virtual void makeSound() const;
+		void setIdea(int index, std::string idea);
 
-		std::string getType() const;
+		std::string getIdea(int index) const;
 };
 
 #endif
