@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:32:38 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 17:21:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,19 @@ void	free_game(void)
 
 	game = get_game();
 	i = 0;
+	mlx_destroy_window(game->mlx, game->win);
 	while (i < MAX_PATH)
 	{
 		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;
 	}
 	mlx_destroy_image(game->mlx, game->img->frame.img);
-	clear_garbage();
 }
 
 int	exit_game(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
 	free_game();
+	mlx_destroy_display(game->mlx);
+	clear_garbage();
 	exit(EXIT_SUCCESS);
 }

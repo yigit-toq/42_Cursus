@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:32:17 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 17:16:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	init_game(void)
 	t_game	*game;
 
 	game = get_game();
-	game->mlx = mlx_init();
+	game->mlx = addgarbage(mlx_init());
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
 	init_img();
 	mlx_loop_hook(game->mlx, loop_frame, NULL);
