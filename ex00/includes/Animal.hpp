@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:55:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 18:06:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 18:59:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ class Animal
 
 		Animal& operator=(const Animal& other);
 
-		~Animal();
+		virtual ~Animal();
+
+		std::string	getType() const;
+
+		virtual void makeSound() const;
 };
 
 #endif

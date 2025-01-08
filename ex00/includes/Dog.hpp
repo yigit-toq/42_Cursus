@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:58:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 18:07:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/08 19:19:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #define DOG_HPP
 
 #include "Animal.hpp"
-
-#include <iostream>
 
 class Dog : public Animal
 {
@@ -27,6 +25,8 @@ class Dog : public Animal
 		Dog& operator=(const Dog& other);
 
 		~Dog();
+
+		void makeSound() const;
 };
 
 #endif
