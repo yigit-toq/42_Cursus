@@ -17,8 +17,14 @@
 #include <iomanip>
 #include <sstream>
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
+
+# define C_R			"\033[31m"
+# define C_G			"\033[32m"
+# define C_Y			"\033[33m"
+# define C_B			"\033[34m"
+# define END			"\033[0m"
 
 # define FIELD_WIDTH	10
 

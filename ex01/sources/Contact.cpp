@@ -12,12 +12,6 @@
 
 #include "Phonebook.hpp"
 
-Phonebook::Phonebook()
-{
-	this->index = 0;
-	this->count = 0;
-}
-
 std::string const Contact::fields_names[5] = 
 {
 	"First Name",
@@ -49,7 +43,7 @@ bool ft_read_line(std::string &line)
 	{
 		if (std::cin.eof())
 		{
-			std::cout << std::endl << "Goodbye :D" << std::endl;
+			std::cout << std::endl << C_Y << "Goodbye :D" << END << std::endl;
 			exit (0);
 		}
 		return (false);

@@ -43,47 +43,52 @@ int Account::getNbWithdrawals(void)
 void Account::displayAccountsInfos(void)
 {
 	_displayTimestamp();
+
 	std::cout << "accounts:" << getNbAccounts() << ";total:" << getTotalAmount() << ";deposits:" << getNbDeposits() << ";withdrawals:" << getNbWithdrawals() << std::endl;
 }
 
 Account::Account(int initial_deposit)
 {
-	_accountIndex = _nbAccounts++;
-
 	_totalAmount += initial_deposit;
+
+	_accountIndex = _nbAccounts++;
 
 	_amount = initial_deposit;
 
-	_nbDeposits = 0;
 	_nbWithdrawals = 0;
+	_nbDeposits = 0;
 
 	_displayTimestamp();
+
 	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";created" << std::endl;
 }
 
-Account::~Account( void )
+Account::~Account(void)
 {
 	_displayTimestamp();
+
 	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";closed"  << std::endl;
 }
 
-void Account::makeDeposit( int deposit )
+void Account::makeDeposit(int deposit)
 {
 	_displayTimestamp();
+
 	std::cout << "index:" << _accountIndex << ";p_amount:" << _amount << ";deposit:" << deposit;
 
-	_amount += deposit;
 	_totalAmount += deposit;
+	_amount += deposit;
 
-	_nbDeposits++;
 	_totalNbDeposits++;
+	_nbDeposits++;
 
 	std::cout << ";amount:" << _amount << ";nb_deposits:" << _nbDeposits << std::endl;
 }
 
-bool Account::makeWithdrawal( int withdrawal )
+bool Account::makeWithdrawal(int withdrawal)
 {
 	_displayTimestamp();
+
 	std::cout << "index:" << _accountIndex << ";p_amount:" << _amount << ";withdrawal:";
 
 	if (_amount < withdrawal)
@@ -92,28 +97,29 @@ bool Account::makeWithdrawal( int withdrawal )
 		return (false);
 	}
 
-	_amount -= withdrawal;
 	_totalAmount -= withdrawal;
+	_amount -= withdrawal;
 
-	_nbWithdrawals++;
 	_totalNbWithdrawals++;
+	_nbWithdrawals++;
 
 	std::cout << withdrawal << ";amount:" << _amount << ";nb_withdrawals:" << _nbWithdrawals << std::endl;
 	return (true);
 }
 
-int Account::checkAmount( void ) const
+int Account::checkAmount(void) const
 {
 	return (_amount);
 }
 
-void Account::displayStatus( void ) const
+void Account::displayStatus(void) const
 {
 	_displayTimestamp();
+
 	std::cout << "index:" << _accountIndex << ";amount:" << _amount << ";deposits:" << _nbDeposits << ";withdrawals:" << _nbWithdrawals << std::endl;
 }
 
-void Account::_displayTimestamp( void )
+void Account::_displayTimestamp(void)
 {
 	time_t		timestamp;
 	struct tm	*tm_info;
