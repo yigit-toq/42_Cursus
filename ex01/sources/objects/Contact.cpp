@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.cpp                                          :+:      :+:    :+:   */
+/*   Contact.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 14:11:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 18:15:56 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/09 19:49:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,4 @@ std::string	Contact::GetValue(int index)
 void Contact::SetValue(int index, std::string value)
 {
 	this->fields_value[index] = value;
-}
-
-bool ft_read_line(std::string &line)
-{
-	std::getline(std::cin, line);
-	if (line.empty())
-	{
-		if (std::cin.eof())
-		{
-			std::cout << std::endl << C_Y << "Goodbye :D" << END << std::endl;
-			exit (0);
-		}
-		return (false);
-	}
-	return (true);
 }

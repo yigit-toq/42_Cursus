@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:19:13 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 18:18:06 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/09 19:58:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define C_G			"\033[32m"
 # define C_Y			"\033[33m"
 # define C_B			"\033[34m"
+# define C_P			"\033[35m"
 # define END			"\033[0m"
 
 # define FIELD_WIDTH	10

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ytop <ytop@student.42.fr>                  +#+  +:+       +#+         #
+#    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/30 22:18:08 by ytop              #+#    #+#              #
-#    Updated: 2024/12/30 22:18:08 by ytop             ###   ########.fr        #
+#    Updated: 2025/01/09 20:21:13 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			=	ex01
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Phonebook.cpp $(SRCS_DIR)Contact.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)utils.cpp $(SRCS_DIR)objects/Phonebook.cpp $(SRCS_DIR)objects/Contact.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
