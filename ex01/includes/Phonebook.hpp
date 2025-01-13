@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:19:13 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/09 19:58:49 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 12:10:19 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ class Contact
 		std::string					fields_value[5];
 
 	public:
-		std::string	GetNames(int index);
-		std::string	GetValue(int index);
+		static std::string	GetNames(int index);
+	
+		std::string			GetValue(int index);
 
-		void		SetValue(int index, std::string value);
+		void				SetValue(int index, std::string value);
 };
 
 class Phonebook

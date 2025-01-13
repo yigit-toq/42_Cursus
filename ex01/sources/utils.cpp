@@ -6,27 +6,21 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 19:49:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/09 20:23:03 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 12:23:02 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Phonebook.hpp"
 
-void SetCursorPosition(int row, int col) 
-{
-    std::cout << "\033[" << row << ";" << col << "H";
-	std::cout << "\033[J";
-}
-
 bool ft_read_line(std::string &line)
 {
 	std::getline(std::cin, line);
-	SetCursorPosition(12, 0);
+	std::cout << "\033[12;0H\033[J";
 	if (line.empty())
 	{
 		if (std::cin.eof())
 		{
-			std::cout << std::endl << C_Y << "Thank you for choosing us" << END << std::endl;
+			std::cout << std::endl << C_Y << "Thank you for choosing us." << END << std::endl;
 			exit (0);
 		}
 		return (false);

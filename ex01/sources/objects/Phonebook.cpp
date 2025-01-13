@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:18:45 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/09 20:24:58 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 12:20:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	Phonebook::Add()
 	i = 0;
 	while (i < 5)
 	{
-		std::cout << C_G << "Enter " << this->contact[this->index].GetNames(i) << ":	" << END;
+		std::cout << C_G << "Enter " << Contact::GetNames(i) << ":	" << END;
 		if (!ft_read_line(input) || input[0] == ' ' || input.find('\t', 0) != std::string::npos)
 			continue ;
 		this->contact[this->index].SetValue(i, input);
@@ -52,7 +52,7 @@ void	Phonebook::Search()
 	std::cout << std::setw(FIELD_WIDTH) << "Index";
 	for (int i = 0; i < 3; i++)
 	{
-		std::cout << "|" << std::setw(FIELD_WIDTH) << this->contact[0].GetNames(i);
+		std::cout << "|" << std::setw(FIELD_WIDTH) << Contact::GetNames(i);
 	}
 		std::cout << "|" << std::endl;
 
@@ -85,7 +85,7 @@ void	Phonebook::Search()
 		std::cout << C_P;
 		for (int i = 0; i < 5; i++)
 		{
-			std::cout << this->contact[index - 1].GetNames(i) << ":	" << this->contact[index - 1].GetValue(i) << std::endl;
+			std::cout << Contact::GetNames(i) << ":	" << this->contact[index - 1].GetValue(i) << std::endl;
 		}
 		std::cout << END << std::endl;
 	}
