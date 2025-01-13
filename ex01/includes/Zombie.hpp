@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 19:00:38 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/01 20:01:24 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 20:37:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <iostream>
 
 #include <stdlib.h>
-
-#define TRUE	1
 
 class Zombie
 {

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:55:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/01 20:03:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 20:37:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,15 @@ int	main(int argc, char **argv)
 		N = 10;
 	else
 		N = atoi(argv[1]);
+
 	zombies = zombieHorde(N, getName());
+
 	for (int i = 0; i < N; i++)
 	{
 		zombies[i].announce();
 	}
 	delete[] zombies;
+
 	return (0);
 }
 
@@ -36,12 +39,12 @@ static std::string	getName()
 {
 	std::string	name;
 
-	while (TRUE)
-	{
-		std::cout << "Name the zombies: ";
-		std::getline(std::cin, name);
-		if (!name.empty())
-			break ;
-	}
+	std::cout << "Name the zombies: ";
+	std::getline(std::cin, name);
+	if (std::cin.eof())
+		exit(0);
+
+	if (name.empty())
+		getName();
 	return (name);
 }

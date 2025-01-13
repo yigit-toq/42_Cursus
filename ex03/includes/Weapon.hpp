@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 20:24:10 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/01 20:31:57 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 20:37:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Weapon
 
 		const std::string& getType();
 
-		void	setType(std::string type);
+		void setType(std::string type);
 };
 
 #endif

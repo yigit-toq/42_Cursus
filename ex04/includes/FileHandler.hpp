@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HumanA.hpp                                         :+:      :+:    :+:   */
+/*   FileHandler.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/01 20:24:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/13 20:37:39 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/13 20:45:28 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/13 20:50:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HUMANA_HPP
-#define HUMANA_HPP
+#ifndef FILEHANDLER_HPP
+#define FILEHANDLER_HPP
 
-#include "Weapon.hpp"
+#include <iostream>
+#include <fstream>
 
-class HumanA
+class FileHandler
 {
 	private:
-		std::string	name;
-		Weapon*		weapon;
+		std::fstream	files[2];
+		std::string		outName;
+		std::string		oldStr;
+		std::string		read;
+		std::string		line;
 
 	public:
-		HumanA(std::string name, Weapon& weapon);
+		FileHandler ();
 
-		void attack();
+		~FileHandler();
+
+		bool openFile(std::fstream &file, const char *path, int type);
+
+		bool readFile(int index);
 };
 
 #endif

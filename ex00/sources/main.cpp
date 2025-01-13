@@ -6,20 +6,24 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:55:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/01 19:21:01 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/13 20:37:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Zombie.hpp"
 
-int main()
+int	main()
 {
-    Zombie  *zombie;
+	Zombie	*zombie;
 
-    zombie = newZombie("Heap");
-    zombie->announce();
-    delete(zombie);
+	zombie = newZombie("Heap");
+	zombie->announce();
 
-    randomChup("Stack Zombie");
-    return (0);
+	delete(zombie);
+
+	std::cout << std::endl;
+
+	randomChup("Stack");
+
+	return (0);
 }
