@@ -6,11 +6,11 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/01 22:10:00 by ytop              #+#    #+#              #
-#    Updated: 2025/01/13 20:38:42 by ytop             ###   ########.fr        #
+#    Updated: 2025/01/14 13:17:04 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	ex06
+NAME			=	harlFilter 
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/

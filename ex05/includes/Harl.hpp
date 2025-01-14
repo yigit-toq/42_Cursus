@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 22:51:00 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/13 20:38:17 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/14 13:11:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 
 class Harl
 {
-private:
-		void	info( void );
-		void	debug( void );
-		void	error( void );
-		void	warning( void );
-public:
-		void	complain( std::string level );
+	private:
+			void	info( void );
+			void	debug( void );
+			void	error( void );
+			void	warning( void );
+
+	public:
+			void	complain( std::string level );
 };
 
 #endif
