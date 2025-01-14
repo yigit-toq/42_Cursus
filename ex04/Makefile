@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/01 21:07:36 by ytop              #+#    #+#              #
-#    Updated: 2025/01/13 20:38:13 by ytop             ###   ########.fr        #
+#    Updated: 2025/01/14 12:28:28 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			=	ex04
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)FileReplacer.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
