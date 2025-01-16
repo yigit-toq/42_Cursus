@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:16:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/02 14:52:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 13:31:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define FIXED_HPP
 
 #include <iostream>
-
 #include <cmath>
 
 class Fixed

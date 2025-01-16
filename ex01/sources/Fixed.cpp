@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/02 17:56:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 13:30:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,26 @@
 
 Fixed::Fixed()
 {
-	std::cout << "Default constructor called" << std::endl;
+	std::cout << "Constructor called" << std::endl;
 
 	this->value = 0;
 }
 
-Fixed::~Fixed()
+Fixed::Fixed(const int value)
 {
-	std::cout << "Destructor called" << std::endl;
+	std::cout << "Int	constructor called" << std::endl;
+	this->value = value << this->fracBits;
+}
+
+Fixed::Fixed(const float value)
+{
+	std::cout << "Float	constructor called" << std::endl;
+	this->value = roundf(value * (1 << this->fracBits));
 }
 
 Fixed::Fixed(const Fixed& other)
 {
-	std::cout << "Copy constructor called" << std::endl;
+	std::cout << "Copy	constructor called" << std::endl;
 
 	this->value = other.getRawBits();
 }
@@ -54,20 +61,9 @@ void	Fixed::setRawBits(int const raw)
 	this->value = raw;	
 }
 
-Fixed::Fixed(const int value)
+Fixed::~Fixed()
 {
-	std::cout << "Int constructor called" << std::endl;
-	this->value = value << this->fracBits;
-	std::cout << "Value of this Int externally is -> " << value << std::endl;
-	std::cout << "Value of this Int internally is -> " << this->value << std::endl;
-}
-
-Fixed::Fixed(const float value)
-{
-	std::cout << "Float constructor called." << std::endl;
-	this->value = roundf(value * (1 << this->fracBits));
-	std::cout << "Value of this Float externally is -> " << value << std::endl;
-	std::cout << "Value of this Float internally is -> " << this->value << std::endl;
+	std::cout << "Destructor  called" << std::endl;
 }
 
 int		Fixed::toInt	(void) const
