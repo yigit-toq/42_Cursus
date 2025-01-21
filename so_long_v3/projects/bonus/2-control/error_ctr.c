@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:36:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 18:01:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:37:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	error_controller(t_game *game, char type, char *message, void *ptr)
 		mlx_destroy_window(game->mlx, game->win);
 		free(game->dynamite);
 		free(game->door);
-		free(game->key);
+		free(game->keys);
 	}
 	if (type == 'M' || type == 'E' || type == 'A')
 	{
@@ -92,12 +92,12 @@ static void	image_free(t_game *game)
 	int		i;
 
 	i = 0;
-	if (!game->dynamite || !game->door || !game->key)
+	if (!game->dynamite || !game->door || !game->keys)
 		return ;
 	while (i < 9)
 	{
-		if (game->key->img[i])
-			mlx_destroy_image(game->mlx, game->key->img[i]);
+		if (game->keys->img[i])
+			mlx_destroy_image(game->mlx, game->keys->img[i]);
 		if (game->img->dynamite[i])
 			mlx_destroy_image(game->mlx, game->img->dynamite[i]);
 		if (i < 6)

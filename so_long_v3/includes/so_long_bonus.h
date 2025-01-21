@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:13:36 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 18:20:34 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:48:22 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ typedef struct dynamite
 
 typedef struct door
 {
-	void	*img[4];
+	t_data	*img[4];
 	int		frame;
 	int		unlock;
 }			t_door;
 
 typedef struct key
 {
-	void	*img[9];
+	t_data	*img[9];
 	int		frame;
 }			t_key;
 
@@ -109,12 +109,12 @@ typedef struct count
 
 typedef struct player
 {
-	void	*img;
-	void	*img_die[5];
-	void	*img_f[3];
-	void	*img_b[3];
-	void	*img_l[3];
-	void	*img_r[3];
+	t_data	*img;
+	t_data	*img_die[5];
+	t_data	*img_f[3];
+	t_data	*img_b[3];
+	t_data	*img_l[3];
+	t_data	*img_r[3];
 	int		death;
 	int		frame;
 	int		move;
@@ -127,16 +127,16 @@ typedef struct player
 
 typedef struct img
 {
-	void	*explosion[6];
-	void	*dynamite[9];
-	void	*enemy_f[3];
-	void	*enemy_b[3];
-	void	*enemy_l[3];
-	void	*enemy_r[3];
-	void	*floor[3];
-	void	*wall;
-	void	*coll;
-	void	*exit;
+	t_data	*explosion[6];
+	t_data	*dynamite[9];
+	t_data	*enemy_f[3];
+	t_data	*enemy_b[3];
+	t_data	*enemy_l[3];
+	t_data	*enemy_r[3];
+	t_data	*floor[3];
+	t_data	*wall;
+	t_data	*coll;
+	t_data	*exit;
 	int		w;
 	int		h;
 }			t_img;
@@ -147,9 +147,9 @@ typedef struct game
 	t_player	*player;
 	t_count		*count;
 	t_door		*door;
+	t_key		*keys;
 	t_map		*map;
 	t_img		*img;
-	t_key		*key;
 	t_enemy		**enemy;
 	void		*mlx;
 	void		*win;
@@ -173,13 +173,13 @@ void	player_animation(t_game *game);
 void	collect_animation(t_game *game);
 void	dynamite_animation(t_game *game);
 
+void	*new_image(t_game *game, char *path, char *string, int type);
+
 void	put_object(t_game *game, int x, int y, void *img);
 
-void	*new_image(t_game *game, char *path, char *string);
+void	add_images(t_game *game);
 
-void	add_image(t_game *game);
-
-void	draw_map(t_game *game);
+void	draw_level(t_game *game);
 
 void	object_control(t_game *game);
 

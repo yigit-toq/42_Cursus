@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:54:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/10 16:24:58 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:37:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	mlx_controller(t_game *game, int width, int height)
 static int	draw_init(t_game *game)
 {
 	usleep(25000);
-	draw_map(game);
+	draw_level(game);
 	door_animation(game);
 	collect_animation(game);
 	enemy_controller(game, game->enemy);
@@ -97,13 +97,13 @@ static void	image_init(t_game *game)
 	game->door = door;
 	error_controller(game, 'A', "Malloc not allocated.", door);
 	key = ft_calloc(1, sizeof(t_key));
-	game->key = key;
+	game->keys = key;
 	error_controller(game, 'A', "Malloc not allocated.", key);
-	add_image(game);
+	add_images(game);
 	wall = ft_strdup(WALL_IMG);
 	error_controller(game, 'A', "Malloc not allocated.", wall);
 	game->img->wall = new_image(game, wall, 0);
-	game->img->collect = game->key->img[0];
+	game->img->collect = game->keys->img[0];
 	game->img->exit = game->door->img[0];
 	game->player->img = game->player->img_f[0];
 	free(wall);

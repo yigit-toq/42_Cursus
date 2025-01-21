@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:39:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 18:23:46 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:37:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	dynamite_animation(t_game *game)
 
 void	collect_animation(t_game *game)
 {
-	if (game->key->frame < 9)
-		game->img->coll = game->key->img[game->key->frame];
+	if (game->keys->frame < 9)
+		game->img->coll = game->keys->img[game->keys->frame];
 	else
-		game->key->frame = 0;
-	game->key->frame++;
+		game->keys->frame = 0;
+	game->keys->frame++;
 	return ;
 }
 

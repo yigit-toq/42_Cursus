@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 19:17:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:31:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@
 # define SUCCESS		1
 # define FAILURE		0
 
+# define TRUE			1
+# define FALSE			0
+
 # define PLAYER			'P'
 # define COLL			'C'
 # define EXIT			'E'
@@ -71,5 +74,16 @@
 # define FLOOR			'0'
 
 # define VISITED		'V'
+
+typedef struct s_data
+{
+	void		*img;
+	char		*add;
+	int			bit_pp;
+	int			endian;
+	int			length;
+	int			w_s;
+	int			h_s;
+}				t_data;
 
 #endif

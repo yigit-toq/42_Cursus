@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:18:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/10 16:25:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:37:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static void	add_image_utils(t_game *game, char *string, int i);
 static void	add_image_finder(t_game *game, char *path, char *str, void **img);
 
-void	add_image(t_game *game)
+void	add_images(t_game *game)
 {
 	char	*string;
 	char	*frame;
@@ -33,7 +33,7 @@ void	add_image(t_game *game)
 		free(frame);
 		error_controller(game, 'A', "Malloc not allocated.", string);
 		add_image_finder(game, DYNAMITE_IMG, string, game->img->dynamite);
-		add_image_finder(game, KEY_IMG, string, game->key->img);
+		add_image_finder(game, KEY_IMG, string, game->keys->img);
 		add_image_utils(game, string, i);
 		free(string);
 		i++;

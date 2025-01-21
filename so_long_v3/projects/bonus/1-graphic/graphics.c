@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 14:26:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 18:23:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:29:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	put_image(t_game *game, int x, int y, void *img);
 static void	put_door(t_game *game, int x, int y);
 static void	put_str(t_game *game, int x, int y);
 
-void	draw_map(t_game *game)
+void	draw_level(t_game *game)
 {
 	t_map	*map;
 	int		x;

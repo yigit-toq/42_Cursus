@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:13:36 by ytop              #+#    #+#             */
-/*   Updated: 2024/06/11 17:21:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:37:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ typedef struct game
 	t_door		*door;
 	t_map		*map;
 	t_img		*img;
-	t_key		*key;
+	t_key		*keys;
 	t_enemy		**enemy;
 	void		*mlx;
 	void		*win;
@@ -206,9 +206,9 @@ void	put_object(t_game *game, int x, int y, void *img);
 
 void	*new_image(t_game *game, char *path, char *string);
 
-void	draw_map(t_game *game);
+void	draw_level(t_game *game);
 
-void	add_image(t_game *game);
+void	add_images(t_game *game);
 
 void	object_control(t_game *game);
 

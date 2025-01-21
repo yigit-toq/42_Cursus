@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 13:03:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 18:42:19 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/16 20:49:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <stdlib.h>
 
-static void	enemy_animation_utils(t_enemy *enemy, void **img);
+static void	enemy_animation_utils(t_enemy *enemy, t_data **img);
 
 void	enemy_finder(t_game *game, t_enemy **enemy, int x, int y)
 {
@@ -78,7 +78,7 @@ void	enemy_animation(t_game *game, t_enemy *enemy)
 	return ;
 }
 
-static void	enemy_animation_utils(t_enemy *enemy, void **img)
+static void	enemy_animation_utils(t_enemy *enemy, t_data **img)
 {
 	if (enemy->frame < 3)
 		enemy->img = img[enemy->frame];
