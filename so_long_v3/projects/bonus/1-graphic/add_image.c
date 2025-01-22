@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 19:18:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 20:48:41 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/22 14:44:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,38 +82,51 @@ static void	add_image_finder(t_game *game, char *path, char *string, t_data **im
 		free(string);
 		error_controller(game, 'A', "Malloc not allocated.", 0);
 	}
-	img[i] = new_image(game, result, string, TRUE);
+	img[i] = new_image(game, result);
 	free(result);
 	return ;
 }
 
-void	*new_image(t_game *game, char *path, char *string, int type)
+void	*new_image(t_game *game, char *path)
 {
-	t_data	data;
 	void	*img;
 
-	ft_memset(&data, 0, sizeof(t_data));
-	if (type)
+	img = mlx_xpm_file_to_image(game->mlx, path, &game->img->w, &game->img->h);
+	if (!img)
 	{
-		data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
-		error_controller(game, 'A', "Invalid texture file.", data.img);
-		data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
-		error_controller(game, 'A', "Invalid texture data.", data.add);
-		return (free(string), &data);
+		ft_printf("%sPath: %s\n%s", C_B, path, END);
+		error_controller(game, 'A', "Failed to load image.", 0);
 	}
-	else
-	{
-		img = mlx_xpm_file_to_image(game->mlx, path, &game->img->w, &game->img->h);
-		if (!img)
-		{
-			ft_printf("%sPath: %s\n%s", C_B, path, END);
-			free(path);
-			free(string);
-			error_controller(game, 'A', "Failed to load image.", 0);
-		}
-	}
-	return (NULL);
+	return (img);
 }
+
+// void	*new_image(t_game *game, char *path, char *string, int type)
+// {
+// 	t_data	data;
+// 	void	*img;
+
+// 	ft_memset(&data, 0, sizeof(t_data));
+// 	if (type)
+// 	{
+// 		data.img = mlx_xpm_file_to_image(game->mlx, path, &data.w_s, &data.h_s);
+// 		error_controller(game, 'A', "Invalid texture file.", data.img);
+// 		data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
+// 		error_controller(game, 'A', "Invalid texture data.", data.add);
+// 		return (free(string), &data);
+// 	}
+// 	else
+// 	{
+// 		img = mlx_xpm_file_to_image(game->mlx, path, &game->img->w, &game->img->h);
+// 		if (!img)
+// 		{
+// 			ft_printf("%sPath: %s\n%s", C_B, path, END);
+// 			free(path);
+// 			free(string);
+// 			error_controller(game, 'A', "Failed to load image.", 0);
+// 		}
+// 	}
+// 	return (NULL);
+// }
 
 void	floor_init(t_game *g, int x, int y, int i)
 {

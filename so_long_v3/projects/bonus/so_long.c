@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:54:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 20:45:33 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/22 14:43:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	image_init(t_game *game)
 	add_images(game);
 	wall = ft_strdup(WALL_IMG);
 	error_controller(game, 'A', "Malloc not allocated.", wall);
-	game->img->wall = new_image(game, wall, NULL, TRUE);
+	game->img->wall = new_image(game, wall);
 	game->img->coll = game->keys->img[0];
 	game->img->exit = game->door->img[0];
 	game->player->img = game->player->img_f[0];

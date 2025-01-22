@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 15:13:36 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/16 20:48:22 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/22 14:43:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	player_animation(t_game *game);
 void	collect_animation(t_game *game);
 void	dynamite_animation(t_game *game);
 
-void	*new_image(t_game *game, char *path, char *string, int type);
+void	*new_image(t_game *game, char *path);
 
 void	put_object(t_game *game, int x, int y, void *img);
 
