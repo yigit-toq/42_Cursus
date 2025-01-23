@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 17:15:09 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 17:50:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ ClapTrap::ClapTrap()
 
 ClapTrap::ClapTrap(const std::string name)
 {
-	std::cout << "ClapTrap name constructor" << std::endl;
+	std::cout << "ClapTrap name constructor " << name << " called" << std::endl;
 
 	this->name = name;
 

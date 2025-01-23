@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:57:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 17:36:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 19:00:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ DiamondTrap::DiamondTrap()
 	this->attackDamage = FragTrap::attackDamage;
 }
 
-DiamondTrap::DiamondTrap(std::string name) : ScavTrap(name + "_clap_name")
+DiamondTrap::DiamondTrap(std::string name) : FragTrap(name + "_clap_name")
 {
-	std::cout << "Diamond name constructor" << std::endl;
+	std::cout << "Diamond name constructor " << name << " called" << std::endl;
 
-	this->name = name + "_clap_name";
+	this->name = name;
 
 	this->hitPoints = FragTrap::hitPoints;
-	this->energyPoints = ScavTrap::energyPoints;
+	this->energyPoints = ScavTrap().getEnergyPoints();
 	this->attackDamage = FragTrap::attackDamage;
 }
 
@@ -60,7 +60,17 @@ DiamondTrap::~DiamondTrap()
 
 void	DiamondTrap::whoAmI()
 {
-	std::cout << this->getName() << std::endl;
+	std::cout << this->name << std::endl;
 
-	std::cout << ClapTrap::getName() << std::endl;
+	std::cout << ClapTrap::name << std::endl;
+}
+
+int		DiamondTrap::getHitPoints() const
+{
+	return (this->hitPoints);
+}
+
+int		DiamondTrap::getAttackDamage() const
+{
+	return (this->attackDamage);
 }

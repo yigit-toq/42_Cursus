@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 13:18:30 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 17:12:51 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 18:55:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ class ScavTrap : public virtual ClapTrap
 		void	attack (const std::string& target);
 
 		void	guardGate();
+
+		int		getEnergyPoints() const;
 };
 
 #endif

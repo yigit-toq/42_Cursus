@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:57:54 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 17:37:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 18:55:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #include <iostream>
 
-class DiamondTrap : public FragTrap, public ScavTrap
+class DiamondTrap : public ScavTrap, public FragTrap
 {
 	private:
 		std::string	name;
@@ -33,9 +33,12 @@ class DiamondTrap : public FragTrap, public ScavTrap
 
 		~DiamondTrap();
 
-		using ScavTrap::attack;
+		using	ScavTrap::attack;
 
 		void	whoAmI();
+
+		int		getHitPoints() const;
+		int		getAttackDamage() const;
 };
 
 #endif
