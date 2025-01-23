@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 14:01:12 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 16:27:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+#include "mlx.h"
 
 #include <math.h>
 
@@ -211,4 +213,14 @@ int	key_release_handler(int key, t_game *game)
 		game->player.speed = SPEED;
 	}
 	return (input_animation(key), SUCCESS);
+}
+
+int	mouse_move(int key, int x, int y)
+{
+	t_game	*game;
+
+	game = get_game();
+	mlx_mouse_get_pos(game->mlx, game->win, &x, &y);
+	printf("%d %d\n", x, y);
+	return (SUCCESS);
 }

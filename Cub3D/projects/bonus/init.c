@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 15:14:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 16:28:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	init_game(void)
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_release_handler, game);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, game);
+	mlx_hook(game->win, MOUSE_H, 1L << MOUSE_H, mouse_move, game);
 	mlx_loop(game->mlx);
 }

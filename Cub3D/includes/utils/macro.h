@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 12:58:36 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 16:25:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 #  define SPACE_KEY		32
 #  define ONE_KEY		49
 #  define TWO_KEY		50
+#  define LEFT_CLICK	1
+#  define RIGHT_CLICK	3
+#  define SCROLL_UP		4
+#  define SCROLL_DW		5
 # else
 #  define A_KEY			0
 #  define S_KEY			1
@@ -45,6 +49,10 @@
 #  define SPACE_KEY		49
 #  define ONE_KEY		18
 #  define TWO_KEY		19
+#  define LEFT_CLICK	1
+#  define RIGHT_CLICK	2
+#  define SCROLL_UP		4
+#  define SCROLL_DW		5
 # endif
 
 # define C_E		"\033[0m"
@@ -67,6 +75,8 @@
 # define ROTATE		0.050
 
 # define DESTROY	17
+
+# define MOUSE_H	6
 
 # define P_COUNT	1
 

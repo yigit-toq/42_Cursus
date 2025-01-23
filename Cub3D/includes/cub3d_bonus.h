@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 15:13:59 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/23 16:28:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ int				update_position(void);
 int				key_press_handler(int key, t_game *game);
 
 int				key_release_handler(int key, t_game *game);
+
+int				mouse_move(int x, int y);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
