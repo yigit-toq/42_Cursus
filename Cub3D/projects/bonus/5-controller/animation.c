@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 14:25:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/24 13:21:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@
 // 	}
 // }
 
-static void	init_frame(t_data *frame, char *path, int *range)
+static void	init_frame(t_data *frame, char *path, int start, int end)
 {
 	char	t_path[100];
 	int		temp;
 
-	temp = range[0];
-	while (range[0] < range[1])
+	temp = start;
+	while (start < end)
 	{
-		snprintf(t_path, 100, "%s (%d).xpm", path, range[0] + 1);
-		frame[range[0] - temp] = add_image(t_path, (t_size){0, 0});
-		range[0]++;
+		snprintf(t_path, 100, "%s (%d).xpm", path, start + 1);
+		frame[start - temp] = add_image(t_path, (t_size){0, 0});
+		start++;
 	}
 }
 
@@ -87,14 +87,6 @@ void	input_animation(int key)
 		game->player.slot->curr->play = FALSE;
 		game->img->next_anim = game->player.slot->skin;
 	}
-	if (key == SPACE_KEY)
-	{
-		if (game->player.slot->index == 2)
-		{
-			game->player.slot->curr->play = FALSE;
-			game->img->next_anim = game->player.slot->fire;
-		}
-	}
 	if (key == ONE_KEY || key == TWO_KEY || key == Q_KEY)
 	{
 		if (key == ONE_KEY)
@@ -131,15 +123,15 @@ void	swap_animation(t_anim *anim, t_anim *new)
 	update_animation(game->player.slot->curr);
 }
 
-void	init_animation(t_anim *anim, int *range, int delay, char *path)
+void	init_animation(t_anim *anim, int start, int end, int delay, char *path)
 {
 	int	total;
 
-	total = range[1] - range[0];
 	ft_bzero(anim, sizeof(t_anim));
+	total = end - start;
 	anim->frames = ft_calloc(total, sizeof(t_data));
 	anim->total = total;
 	anim->delay = delay;
 	anim->frame = anim->frames;
-	init_frame(anim->frames, path, (int[2]){range[0], range[1]});
+	init_frame(anim->frames, path, start, end);
 }

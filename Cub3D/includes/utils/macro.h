@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/23 16:25:46 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/24 12:22:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@
 # define ROTATE		0.050
 
 # define DESTROY	17
-
-# define MOUSE_H	6
 
 # define P_COUNT	1
 

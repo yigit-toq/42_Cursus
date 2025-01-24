@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/23 16:27:56 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/24 12:31:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,12 +215,38 @@ int	key_release_handler(int key, t_game *game)
 	return (input_animation(key), SUCCESS);
 }
 
-int	mouse_move(int key, int x, int y)
+int	mouse_moves_handler(int x, int y)
 {
 	t_game	*game;
 
 	game = get_game();
 	mlx_mouse_get_pos(game->mlx, game->win, &x, &y);
-	printf("%d %d\n", x, y);
+	return (SUCCESS);
+}
+
+int	mouse_press_handler(int button, int x, int y)
+{
+	t_game	*game;
+
+	game = get_game();
+	(void)x;
+	(void)y;
+	if (button == LEFT_CLICK)
+	{
+		if (game->player.slot->index == 2)
+		{
+			game->player.slot->curr->play = FALSE;
+			game->img->next_anim = game->player.slot->fire;
+		}
+	}
+	if (button == RIGHT_CLICK)
+	{
+	}
+	if (button == SCROLL_UP)
+	{
+	}
+	if (button == SCROLL_DW)
+	{
+	}
 	return (SUCCESS);
 }

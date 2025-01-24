@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/23 16:28:37 by ytop             ###   ########.fr       */
+/*   Updated: 2025/01/24 13:19:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,9 @@ int				key_press_handler(int key, t_game *game);
 
 int				key_release_handler(int key, t_game *game);
 
-int				mouse_move(int x, int y);
+int				mouse_moves_handler(int x, int y);
+
+int				mouse_press_handler(int button, int x, int y);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
@@ -193,7 +195,7 @@ void			input_animation(int key);
 
 void			swap_animation(t_anim *anim, t_anim *new);
 
-void			init_animation(t_anim *anim, int *range, int delay, char *path);
+void			init_animation(t_anim *anim, int start, int end, int delay, char *path);
 
 /*----------------------DRAW  CONTROLLER----------------------*/
 
