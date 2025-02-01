@@ -33,7 +33,7 @@ typedef struct s_img
 typedef struct s_player
 {
 	char		direction;
-	int			rotate[2];
+	int			rota[2];
 	int			move[2];
 	double		speed;
 	double		theta;

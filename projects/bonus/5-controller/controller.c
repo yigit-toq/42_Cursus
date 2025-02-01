@@ -82,9 +82,9 @@ int	update_position(void)
 	int		dr[2];
 
 	game = get_game();
-	if (game->player.rotate[0])
+	if (game->player.rota[0])
 		game->player.theta += ROTATE;
-	if (game->player.rotate[1])
+	if (game->player.rota[1])
 		game->player.theta -= ROTATE;
 	if (game->player.theta < 0)
 		game->player.theta += 2 * PI;
@@ -156,9 +156,9 @@ static int	input_systm(double h_move, double v_move)
 int	key_press_handler(int key, t_game *game)
 {
 	if (key == RIGHT_KEY)
-		game->player.rotate[0] = TRUE;
+		game->player.rota[0] = TRUE;
 	if (key == LEFT_KEY)
-		game->player.rotate[1] = TRUE;
+		game->player.rota[1] = TRUE;
 	if (key == W_KEY)
 		game->player.move[0] = +1;
 	if (key == S_KEY)
@@ -174,7 +174,7 @@ int	key_press_handler(int key, t_game *game)
 	return (SUCCESS);
 }
 
-int	key_release_handler(int key, t_game *game)
+int	key_relse_handler(int key, t_game *game)
 {
 	if (key == W_KEY || key == S_KEY)
 		game->player.move[0] = FALSE;
@@ -182,11 +182,11 @@ int	key_release_handler(int key, t_game *game)
 		game->player.move[1] = FALSE;
 	if (key == RIGHT_KEY)
 	{
-		game->player.rotate[0] = FALSE;
+		game->player.rota[0] = FALSE;
 	}
 	if (key == LEFT_KEY)
 	{
-		game->player.rotate[1] = FALSE;
+		game->player.rota[1] = FALSE;
 	}
 	if (key == ESC_KEY)
 	{
@@ -203,15 +203,6 @@ int	key_release_handler(int key, t_game *game)
 	return (input_animation(key), SUCCESS);
 }
 
-int	mouse_moves_handler(int x, int y)
-{
-	t_game	*game;
-
-	game = get_game();
-	mlx_mouse_get_pos(game->mlx, game->win, &x, &y);
-	return (SUCCESS);
-}
-
 int	mouse_press_handler(int button, int x, int y)
 {
 	t_game	*game;
@@ -221,11 +212,13 @@ int	mouse_press_handler(int button, int x, int y)
 	(void)y;
 	if (button == LEFT_CLICK)
 	{
-		if (game->player.slot->index == 2)
-		{
-			game->player.slot->curr->play = FALSE;
-			game->img->next_anim = game->player.slot->fire;
-		}
+		ft_printf("attack true\n");
+		game->player.attack = TRUE;
+		// if (game->player.slot->index == 2)
+		// {
+		// 	game->player.slot->curr->play = FALSE;
+		// 	game->img->next_anim = game->player.slot->fire;
+		// }
 	}
 	if (button == RIGHT_CLICK)
 	{
@@ -236,5 +229,38 @@ int	mouse_press_handler(int button, int x, int y)
 	if (button == SCROLL_DW)
 	{
 	}
+	return (SUCCESS);
+}
+
+int	mouse_relse_handler(int button, int x, int y)
+{
+	t_game	*game;
+
+	game = get_game();
+	(void)x;
+	(void)y;
+	if (button == LEFT_CLICK)
+	{
+		ft_printf("attack false\n");
+		game->player.attack = FALSE;
+	}
+	if (button == RIGHT_CLICK)
+	{
+	}
+	if (button == SCROLL_UP)
+	{
+	}
+	if (button == SCROLL_DW)
+	{
+	}
+	return (SUCCESS);
+}
+
+int	mouse_moves_handler(int x, int y)
+{
+	t_game	*game;
+
+	game = get_game();
+	mlx_mouse_get_pos(game->mlx, game->win, &x, &y);
 	return (SUCCESS);
 }

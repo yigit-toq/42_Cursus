@@ -80,11 +80,11 @@ int	update_position(void)
 	int		dr[2];
 
 	game = get_game();
-	if (game->player.rotate[0])
+	if (game->player.rota[0])
 	{
 		game->player.theta += ROTATE;
 	}
-	if (game->player.rotate[1])
+	if (game->player.rota[1])
 	{
 		game->player.theta -= ROTATE;
 	}
@@ -166,9 +166,9 @@ static int	input_systm(double h_move, double v_move)
 int	key_press_handler(int key, t_game *game)
 {
 	if (key == RIGHT_KEY)
-		game->player.rotate[0] = TRUE;
+		game->player.rota[0] = TRUE;
 	if (key == LEFT_KEY)
-		game->player.rotate[1] = TRUE;
+		game->player.rota[1] = TRUE;
 	if (key == W_KEY)
 		game->player.move[0] = +1;
 	if (key == S_KEY)
@@ -192,11 +192,11 @@ int	key_release_handler(int key, t_game *game)
 	}
 	if (key == RIGHT_KEY)
 	{
-		game->player.rotate[0] = FALSE;
+		game->player.rota[0] = FALSE;
 	}
 	if (key == LEFT_KEY)
 	{
-		game->player.rotate[1] = FALSE;
+		game->player.rota[1] = FALSE;
 	}
 	if (key == ESC_KEY)
 	{

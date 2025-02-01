@@ -36,6 +36,15 @@
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
+typedef struct s_gun
+{
+	int		ammo;
+	int		total;
+	int		range;
+	int		reload;
+	int		damage;
+}			t_gun;
+
 typedef struct s_anim
 {
 	t_data		*frames;
@@ -56,17 +65,8 @@ typedef struct s_slot
 	t_anim	*idle;
 	t_anim	*skin;
 	t_anim	*fire;
+	t_gun	gun;
 }			t_slot;
-
-typedef struct s_gun
-{
-	int		ammo;
-	int		total;
-	int		range;
-	int		reload;
-	int		attack;
-	int		damage;
-}			t_gun;
 
 typedef struct s_img
 {
@@ -88,8 +88,9 @@ typedef struct s_img
 typedef struct s_player
 {
 	char		direction;
-	int			rotate[2];
+	int			rota[2];
 	int			move[2];
+	int			attack;
 	double		speed;
 	double		theta;
 	t_vect		pos;
@@ -143,11 +144,13 @@ int				update_position(void);
 
 int				key_press_handler(int key, t_game *game);
 
-int				key_release_handler(int key, t_game *game);
+int				key_relse_handler(int key, t_game *game);
 
 int				mouse_moves_handler(int x, int y);
 
 int				mouse_press_handler(int button, int x, int y);
+
+int				mouse_relse_handler(int button, int x, int y);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
