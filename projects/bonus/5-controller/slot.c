@@ -38,7 +38,7 @@ void	init_slot(void)
 	init_animation(&game->img->vandal[0], (t_size){0, 15}, 2, VANDAL_TAKE);
 	init_animation(&game->img->vandal[1], (t_size){0, 20}, 2, VANDAL_IDLE);
 	init_animation(&game->img->vandal[2], (t_size){0, 80}, 2, VANDAL_SKIN);
-	init_animation(&game->img->vandal[3], (t_size){20, 30}, 2, VANDAL_SKIN);
+	init_animation(&game->img->vandal[3], (t_size){0, 05}, 2, VANDAL_SKIN);
 	add_slot(&game->player.slots[1], 1, game->img->vandal, TRUE);
 	init_animation(&game->img->qskill[0], (t_size){0, 07}, 2, QSKILL_TAKE);
 	init_animation(&game->img->qskill[1], (t_size){0, 35}, 2, QSKILL_IDLE);

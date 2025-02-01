@@ -20,8 +20,6 @@
 
 # define WIN_NAME		"Cub3D"
 
-# define MAX_PATH		4
-
 typedef struct s_img
 {
 	int			rgb[2][3];

@@ -34,7 +34,7 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < MAX_PATH)
+	while (i < DIR_SIZE)
 	{
 		if (!img->dir[i].img)
 			error_controller("Texture path is not found.", NULL);

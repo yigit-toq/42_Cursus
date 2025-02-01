@@ -33,6 +33,7 @@ void	error_controller(char *message, void *pointer)
 	ft_dprintf(2, C_G"----------------------------\n");
 	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
 	ft_dprintf(2, C_G"----------------------------\n");
+	ft_dprintf(2, C_E);
 	exit(EXIT_FAILURE);
 }
 
@@ -44,7 +45,7 @@ void	free_game(void)
 	game = get_game();
 	i = 0;
 	mlx_destroy_window(game->mlx, game->win);
-	while (i < MAX_PATH)
+	while (i < DIR_SIZE)
 	{
 		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;

@@ -21,8 +21,6 @@
 
 # define WIN_NAME	"Cub3D"
 
-# define DIR_SIZE	4
-
 # define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
 # define KNIFE_IDLE		"./assets/textures/gun/knife/idle/frame"
 
@@ -59,13 +57,13 @@ typedef struct s_anim
 
 typedef struct s_slot
 {
-	int		index;
-	t_anim	*curr;
-	t_anim	*take;
-	t_anim	*idle;
-	t_anim	*skin;
-	t_anim	*fire;
-	t_gun	gun;
+	int			index;
+	t_anim		*curr;
+	t_anim		*take;
+	t_anim		*idle;
+	t_anim		*skin;
+	t_anim		*fire;
+	t_gun		gun;
 }			t_slot;
 
 typedef struct s_img

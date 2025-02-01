@@ -212,7 +212,6 @@ int	mouse_press_handler(int button, int x, int y)
 	(void)y;
 	if (button == LEFT_CLICK)
 	{
-		ft_printf("attack true\n");
 		game->player.attack = TRUE;
 		// if (game->player.slot->index == 2)
 		// {
@@ -220,38 +219,37 @@ int	mouse_press_handler(int button, int x, int y)
 		// 	game->img->next_anim = game->player.slot->fire;
 		// }
 	}
-	if (button == RIGHT_CLICK)
-	{
-	}
-	if (button == SCROLL_UP)
-	{
-	}
-	if (button == SCROLL_DW)
-	{
-	}
 	return (SUCCESS);
 }
 
 int	mouse_relse_handler(int button, int x, int y)
 {
 	t_game	*game;
+	int		index;
 
 	game = get_game();
 	(void)x;
 	(void)y;
+	index = game->player.slot->index;
 	if (button == LEFT_CLICK)
 	{
-		ft_printf("attack false\n");
 		game->player.attack = FALSE;
 	}
-	if (button == RIGHT_CLICK)
+	if (button == SCROLL_UP || button == SCROLL_DW)
 	{
-	}
-	if (button == SCROLL_UP)
-	{
-	}
-	if (button == SCROLL_DW)
-	{
+		if (button == SCROLL_UP)
+			index++;
+		else
+			index--;
+		if (index < 0)
+			index = 1;
+		if (index > 1)
+			index = 0;
+		if (OS == 'L')
+			index += 49;
+		else
+			index += 18;
+		input_animation(index);
 	}
 	return (SUCCESS);
 }

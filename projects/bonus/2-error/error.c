@@ -33,6 +33,7 @@ void	error_controller(char *message, void *pointer)
 	ft_dprintf(2, C_G"----------------------------\n");
 	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
 	ft_dprintf(2, C_G"----------------------------\n");
+	ft_dprintf(2, C_E);
 	exit(EXIT_FAILURE);
 }
 
@@ -43,29 +44,58 @@ void	free_game(void)
 
 	game = get_game();
 	i = 0;
+	mlx_destroy_window(game->mlx, game->win);
 	while (i < DIR_SIZE)
 	{
 		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;
 	}
 	i = 0;
-	while (i < game->img->vandal[1].total)
+	while (i < game->img->knife[0].total)
 	{
-		mlx_destroy_image(game->mlx, game->img->vandal[1].frames[i].img);
+		mlx_destroy_image(game->mlx, game->img->knife[0].frames[i].img);
+		if (i < game->img->knife[1].total)
+			mlx_destroy_image(game->mlx, game->img->knife[1].frames[i].img);
+		i++;
+	}
+	i = 0;
+	while (i < game->img->vandal[2].total)
+	{
+		mlx_destroy_image(game->mlx, game->img->vandal[2].frames[i].img);
 		if (i < game->img->vandal[0].total)
-		mlx_destroy_image(game->mlx, game->img->vandal[0].frames[i].img);
+			mlx_destroy_image(game->mlx, game->img->vandal[0].frames[i].img);
+		if (i < game->img->vandal[1].total)
+			mlx_destroy_image(game->mlx, game->img->vandal[1].frames[i].img);
+		if (i < game->img->vandal[3].total)
+			mlx_destroy_image(game->mlx, game->img->vandal[3].frames[i].img);
+		i++;
+	}
+	i = 0;
+	while (i < game->img->qskill[1].total)
+	{
+		mlx_destroy_image(game->mlx, game->img->qskill[1].frames[i].img);
+		if (i < game->img->qskill[0].total)
+			mlx_destroy_image(game->mlx, game->img->qskill[0].frames[i].img);
+		if (i < game->img->qskill[3].total)
+			mlx_destroy_image(game->mlx, game->img->qskill[3].frames[i].img);
+		i++;
+	}
+	i = 0;
+	while (i < game->img->rskill[3].total)
+	{
+		mlx_destroy_image(game->mlx, game->img->rskill[3].frames[i].img);
 		i++;
 	}
 	mlx_destroy_image(game->mlx, game->img->bgframe.img);
 	mlx_destroy_image(game->mlx, game->img->minimap.img);
 	mlx_destroy_image(game->mlx, game->img->crossh.img);
-	clear_garbage();
 }
 
 int	exit_game(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
 	free_game();
+	mlx_destroy_display(game->mlx);
+	clear_garbage();
 	exit(EXIT_SUCCESS);
 }
 

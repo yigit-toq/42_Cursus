@@ -33,6 +33,7 @@
 #  define RIGHT_CLICK	3
 #  define SCROLL_UP		4
 #  define SCROLL_DW		5
+#  define OS			'L'
 # else
 #  define A_KEY			0
 #  define S_KEY			1
@@ -53,6 +54,7 @@
 #  define RIGHT_CLICK	2
 #  define SCROLL_UP		4
 #  define SCROLL_DW		5
+#  define OS			'M'
 # endif
 
 # define C_E		"\033[0m"
@@ -94,4 +96,6 @@
 
 # define FOV		60.00
 # define SEV		64.00
+
+# define DIR_SIZE   4
 #endif
