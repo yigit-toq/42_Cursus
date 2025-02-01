@@ -103,7 +103,6 @@ void	input_animation(int key)
 		game->player.slot->curr->play = FALSE;
 		game->player.slot = &game->player.slots[3];
 		game->img->next_anim = game->player.slot->fire;
-
 		game->player.slot->curr->index = 0;
 	}
 }
@@ -123,15 +122,15 @@ void	swap_animation(t_anim *anim, t_anim *new)
 	update_animation(game->player.slot->curr);
 }
 
-void	init_animation(t_anim *anim, int start, int end, int delay, char *path)
+void	init_animation(t_anim *anim, t_size range, int delay, char *path)
 {
 	int	total;
 
 	ft_bzero(anim, sizeof(t_anim));
-	total = end - start;
+	total = range.y - range.x;
 	anim->frames = ft_calloc(total, sizeof(t_data));
 	anim->total = total;
 	anim->delay = delay;
 	anim->frame = anim->frames;
-	init_frame(anim->frames, path, start, end);
+	init_frame(anim->frames, path, range.x, range.y);
 }

@@ -23,18 +23,18 @@
 
 # define DIR_SIZE	4
 
-# define KNF_TAKE	"./assets/textures/gun/knife/take/frame"
-# define KNF_IDLE	"./assets/textures/gun/knife/idle/frame"
+# define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
+# define KNIFE_IDLE		"./assets/textures/gun/knife/idle/frame"
 
-# define GUN_TAKE	"./assets/textures/gun/vandal/take/frame"
-# define GUN_IDLE	"./assets/textures/gun/vandal/idle/frame"
-# define GUN_SKIN	"./assets/textures/gun/vandal/skin/frame"
+# define VANDAL_TAKE	"./assets/textures/gun/vandal/take/frame"
+# define VANDAL_IDLE	"./assets/textures/gun/vandal/idle/frame"
+# define VANDAL_SKIN	"./assets/textures/gun/vandal/skin/frame"
 
-# define QSK_TAKE	"./assets/textures/char/reyna/q/take/frame"
-# define QSK_IDLE	"./assets/textures/char/reyna/q/idle/frame"
-# define QSK_FIRE	"./assets/textures/char/reyna/q/fire/frame"
+# define QSKILL_TAKE	"./assets/textures/char/reyna/q/take/frame"
+# define QSKILL_IDLE	"./assets/textures/char/reyna/q/idle/frame"
+# define QSKILL_FIRE	"./assets/textures/char/reyna/q/fire/frame"
 
-# define RSK_FIRE	"./assets/textures/char/reyna/r/fire/frame"
+# define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
 typedef struct s_anim
 {
@@ -195,7 +195,7 @@ void			input_animation(int key);
 
 void			swap_animation(t_anim *anim, t_anim *new);
 
-void			init_animation(t_anim *anim, int start, int end, int delay, char *path);
+void			init_animation(t_anim *anim, t_size range, int delay, char *path);
 
 /*----------------------DRAW  CONTROLLER----------------------*/
 
