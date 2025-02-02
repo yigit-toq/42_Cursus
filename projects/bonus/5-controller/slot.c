@@ -17,10 +17,10 @@ static void	add_slot(t_slot *slot, int curr, t_anim *anim, int loop)
 	static int	index;
 
 	slot->index = index++;
-	slot->take = &anim[0];
-	slot->idle = &anim[1];
-	slot->skin = &anim[2];
-	slot->fire = &anim[3];
+	slot->take = &anim[TAKE];
+	slot->idle = &anim[IDLE];
+	slot->fire = &anim[FIRE];
+	slot->skin = &anim[SKIN];
 	slot->curr = &anim[curr];
 	slot->curr->loop = loop;
 }
@@ -32,20 +32,18 @@ void	init_slot(void)
 	t_game	*game;
 
 	game = get_game();
-	init_animation(&game->img->knife[0], (t_size){0, 15}, 2, KNIFE_TAKE);
-	init_animation(&game->img->knife[1], (t_size){0, 10}, 2, KNIFE_IDLE);
+	init_animation(&game->img->knife[TAKE], (t_size){0, 15}, 2, KNIFE_TAKE);
+	init_animation(&game->img->knife[IDLE], (t_size){0, 10}, 2, KNIFE_IDLE);
 	add_slot(&game->player.slots[0], 1, game->img->knife, TRUE);
-	init_animation(&game->img->vandal[0], (t_size){0, 15}, 2, VANDAL_TAKE);
-	init_animation(&game->img->vandal[1], (t_size){0, 20}, 2, VANDAL_IDLE);
-	init_animation(&game->img->vandal[2], (t_size){0, 80}, 2, VANDAL_SKIN);
-	init_animation(&game->img->vandal[3], (t_size){0, 05}, 2, VANDAL_SKIN);
+	init_animation(&game->img->vandal[TAKE], (t_size){0, 15}, 2, VANDAL_TAKE);
+	init_animation(&game->img->vandal[IDLE], (t_size){0, 20}, 2, VANDAL_IDLE);
+	init_animation(&game->img->vandal[FIRE], (t_size){0, 05}, 2, VANDAL_SKIN);
+	init_animation(&game->img->vandal[SKIN], (t_size){0, 80}, 2, VANDAL_SKIN);
 	add_slot(&game->player.slots[1], 1, game->img->vandal, TRUE);
-	init_animation(&game->img->qskill[0], (t_size){0, 07}, 2, QSKILL_TAKE);
-	init_animation(&game->img->qskill[1], (t_size){0, 35}, 2, QSKILL_IDLE);
-	init_animation(&game->img->qskill[3], (t_size){0, 05}, 2, QSKILL_FIRE);
+	init_animation(&game->img->qskill[TAKE], (t_size){0, 07}, 2, QSKILL_TAKE);
+	init_animation(&game->img->qskill[IDLE], (t_size){0, 35}, 2, QSKILL_IDLE);
+	init_animation(&game->img->qskill[FIRE], (t_size){0, 05}, 2, QSKILL_FIRE);
 	add_slot(&game->player.slots[2], 1, game->img->qskill, TRUE);
-	init_animation(&game->img->rskill[3], (t_size){2, 10}, 2, RSKILL_FIRE);
+	init_animation(&game->img->rskill[FIRE], (t_size){2, 10}, 2, RSKILL_FIRE);
 	add_slot(&game->player.slots[3], 3, game->img->rskill, FALSE);
-	game->player.slot = &game->player.slots[0];
-	game->player.slot->curr->play = TRUE;
 }

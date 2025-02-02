@@ -63,6 +63,8 @@ void	init_game(void)
 	game->mlx = addgarbage(mlx_init());
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
 	init_img();
+	game->player.slot = &game->player.slots[0];
+	game->player.slot->curr->play = TRUE;
 	mlx_loop_hook(game->mlx, next_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_relse_handler, game);

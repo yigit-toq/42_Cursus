@@ -18,42 +18,54 @@
 #  define S_KEY			115
 #  define D_KEY			100
 #  define W_KEY			119
+
 #  define Q_KEY			113
 #  define R_KEY			114
+
 #  define Y_KEY			121
 #  define M_KEY			109
+
 #  define ESC_KEY		65307
-#  define LEFT_KEY		65361
-#  define RIGHT_KEY		65363
+#  define L_ARR_KEY		65361
+#  define R_ARR_KEY		65363
 #  define SHIFT_KEY		65505
 #  define SPACE_KEY		32
+
 #  define ONE_KEY		49
 #  define TWO_KEY		50
-#  define LEFT_CLICK	1
-#  define RIGHT_CLICK	3
-#  define SCROLL_UP		4
-#  define SCROLL_DW		5
+
+#  define L_CLICK		1
+#  define R_CLICK		3
+#  define SCRL_UP		4
+#  define SCRL_DW		5
+
 #  define OS			'L'
 # else
 #  define A_KEY			0
 #  define S_KEY			1
 #  define D_KEY			2
 #  define W_KEY			13
+
 #  define Q_KEY			12
 #  define R_KEY			15
+
 #  define Y_KEY			16
 #  define M_KEY			46
+
 #  define ESC_KEY		53
-#  define LEFT_KEY		123
-#  define RIGHT_KEY		124
+#  define L_ARR_KEY		123
+#  define R_ARR_KEY		124
 #  define SHIFT_KEY		257
 #  define SPACE_KEY		49
+
 #  define ONE_KEY		18
 #  define TWO_KEY		19
-#  define LEFT_CLICK	1
-#  define RIGHT_CLICK	2
-#  define SCROLL_UP		4
-#  define SCROLL_DW		5
+
+#  define L_CLICK		1
+#  define R_CLICK		2
+#  define SCRL_UP		4
+#  define SCRL_DW		5
+
 #  define OS			'M'
 # endif
 

@@ -155,9 +155,9 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (key == RIGHT_KEY)
+	if (key == R_ARR_KEY)
 		game->player.rota[0] = TRUE;
-	if (key == LEFT_KEY)
+	if (key == L_ARR_KEY)
 		game->player.rota[1] = TRUE;
 	if (key == W_KEY)
 		game->player.move[0] = +1;
@@ -180,11 +180,11 @@ int	key_relse_handler(int key, t_game *game)
 		game->player.move[0] = FALSE;
 	if (key == A_KEY || key == D_KEY)
 		game->player.move[1] = FALSE;
-	if (key == RIGHT_KEY)
+	if (key == R_ARR_KEY)
 	{
 		game->player.rota[0] = FALSE;
 	}
-	if (key == LEFT_KEY)
+	if (key == L_ARR_KEY)
 	{
 		game->player.rota[1] = FALSE;
 	}
@@ -210,17 +210,18 @@ int	mouse_press_handler(int button, int x, int y)
 	game = get_game();
 	(void)x;
 	(void)y;
-	if (button == LEFT_CLICK)
+	if (button == L_CLICK)
 	{
 		game->player.attack = TRUE;
-		// if (game->player.slot->index == 2)
-		// {
-		// 	game->player.slot->curr->play = FALSE;
-		// 	game->img->next_anim = game->player.slot->fire;
-		// }
 	}
 	return (SUCCESS);
 }
+
+// if (game->player.slot->index == 2)
+// {
+// 	game->player.slot->curr->play = FALSE;
+// 	game->img->next_anim = game->player.slot->fire;
+// }
 
 int	mouse_relse_handler(int button, int x, int y)
 {
@@ -231,13 +232,13 @@ int	mouse_relse_handler(int button, int x, int y)
 	(void)x;
 	(void)y;
 	index = game->player.slot->index;
-	if (button == LEFT_CLICK)
+	if (button == L_CLICK)
 	{
 		game->player.attack = FALSE;
 	}
-	if (button == SCROLL_UP || button == SCROLL_DW)
+	if (button == SCRL_UP || button == SCRL_DW)
 	{
-		if (button == SCROLL_UP)
+		if (button == SCRL_UP)
 			index++;
 		else
 			index--;

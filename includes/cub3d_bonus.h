@@ -19,7 +19,7 @@
 
 # include "./utils/libft.h"
 
-# define WIN_NAME	"Cub3D"
+# define WIN_NAME		"Cub3D"
 
 # define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
 # define KNIFE_IDLE		"./assets/textures/gun/knife/idle/frame"
@@ -33,6 +33,11 @@
 # define QSKILL_FIRE	"./assets/textures/char/reyna/q/fire/frame"
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
+
+# define TAKE			0
+# define IDLE			1
+# define FIRE			2
+# define SKIN			3
 
 typedef struct s_gun
 {

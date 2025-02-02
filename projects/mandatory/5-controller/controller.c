@@ -165,9 +165,9 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (key == RIGHT_KEY)
+	if (key == R_ARR_KEY)
 		game->player.rota[0] = TRUE;
-	if (key == LEFT_KEY)
+	if (key == L_ARR_KEY)
 		game->player.rota[1] = TRUE;
 	if (key == W_KEY)
 		game->player.move[0] = +1;
@@ -190,11 +190,11 @@ int	key_release_handler(int key, t_game *game)
 	{
 		game->player.move[1] = FALSE;
 	}
-	if (key == RIGHT_KEY)
+	if (key == R_ARR_KEY)
 	{
 		game->player.rota[0] = FALSE;
 	}
-	if (key == LEFT_KEY)
+	if (key == L_ARR_KEY)
 	{
 		game->player.rota[1] = FALSE;
 	}
