@@ -3,9 +3,9 @@ SO      ./assets/textures/env/2.xpm
 WE      ./assets/textures/env/3.xpm
 EA      ./assets/textures/env/4.xpm
 
-CR      ./assets/textures/gun/cross.xpm
-
 GR      ./assets/textures/env/ground.xpm
+
+CR      ./assets/textures/gun/vandal/cross.xpm
 
 F       140,140,140
 C       180,240,255

@@ -58,10 +58,3 @@ int	play_sound(char *file_path)
 		SDL_Delay(100);
 	return (SDL_CloseAudio(), SDL_FreeWAV(wav_buffer), SDL_Quit(), SUCCESS);
 }
-
-void	*audio_control(void)
-{
-	while (TRUE)
-		play_sound("./assets/sounds/background.wav");
-	return (NULL);
-}

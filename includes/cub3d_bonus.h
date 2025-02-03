@@ -26,6 +26,7 @@
 
 # define VANDAL_TAKE	"./assets/textures/gun/vandal/take/frame"
 # define VANDAL_IDLE	"./assets/textures/gun/vandal/idle/frame"
+# define VANDAL_FIRE	"./assets/textures/gun/vandal/fire/frame"
 # define VANDAL_SKIN	"./assets/textures/gun/vandal/skin/frame"
 
 # define QSKILL_TAKE	"./assets/textures/char/reyna/q/take/frame"

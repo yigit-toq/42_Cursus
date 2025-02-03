@@ -37,7 +37,7 @@ void	init_slot(void)
 	add_slot(&game->player.slots[0], 1, game->img->knife, TRUE);
 	init_animation(&game->img->vandal[TAKE], (t_size){0, 15}, 2, VANDAL_TAKE);
 	init_animation(&game->img->vandal[IDLE], (t_size){0, 20}, 2, VANDAL_IDLE);
-	init_animation(&game->img->vandal[FIRE], (t_size){0, 05}, 2, VANDAL_SKIN);
+	init_animation(&game->img->vandal[FIRE], (t_size){0, 04}, 2, VANDAL_FIRE);
 	init_animation(&game->img->vandal[SKIN], (t_size){0, 80}, 2, VANDAL_SKIN);
 	add_slot(&game->player.slots[1], 1, game->img->vandal, TRUE);
 	init_animation(&game->img->qskill[TAKE], (t_size){0, 07}, 2, QSKILL_TAKE);

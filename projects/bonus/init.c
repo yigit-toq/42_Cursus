@@ -12,7 +12,14 @@
 
 #include "cub3d_bonus.h"
 
+#include <pthread.h>
 #include <mlx.h>
+
+void	*audio_control(char *path)
+{
+	play_sound(path);
+	return (NULL);
+}
 
 static int	next_frame(void)
 {

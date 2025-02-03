@@ -22,4 +22,5 @@ typedef struct s_audio
 }			t_audio;
 
 int	play_sound(char *file_path);
+
 #endif
