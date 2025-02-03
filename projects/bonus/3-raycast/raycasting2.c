@@ -28,9 +28,9 @@ static void	draw_tex(double img_x, t_ray *ray, t_size pos, t_data img)
 
 static int	render_object(int x, int y)
 {
-	t_game	*game = get_game();
-	t_size	cross;
-	int		color;
+	t_game			*game = get_game();
+	t_size			cross;
+	unsigned int	color;
 
 	color = pixel_color(*game->player.slot->curr->frame, x, y);
 	if (image_filter(0, color, 'g', 200) || image_filter(1, color, 'b', 130)

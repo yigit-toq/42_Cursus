@@ -217,12 +217,6 @@ int	mouse_press_handler(int button, int x, int y)
 	return (SUCCESS);
 }
 
-// if (game->player.slot->index == 2)
-// {
-// 	game->player.slot->curr->play = FALSE;
-// 	game->img->next_anim = game->player.slot->fire;
-// }
-
 int	mouse_relse_handler(int button, int x, int y)
 {
 	t_game	*game;

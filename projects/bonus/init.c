@@ -21,8 +21,15 @@ static int	next_frame(void)
 	game = get_game();
 	update_position();
 	swap_animation(game->player.slot->curr, game->img->next_anim);
+	if (game->player.attack)
+	{
+		game->player.slot->curr->play = FALSE;
+		game->img->next_anim = game->player.slot->fire;
+	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
-	return (raycast(), minimap(), SUCCESS);
+	raycast();
+	minimap();
+	return (SUCCESS);
 }
 
 static void	init_img(void)
