@@ -46,4 +46,7 @@ void	init_slot(void)
 	add_slot(&game->player.slots[2], 1, game->img->qskill, TRUE);
 	init_animation(&game->img->rskill[FIRE], (t_size){2, 10}, 2, RSKILL_FIRE);
 	add_slot(&game->player.slots[3], 3, game->img->rskill, FALSE);
+
+	game->player.slot = &game->player.slots[0];
+	game->player.slot->curr->play = TRUE;
 }

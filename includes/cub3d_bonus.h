@@ -19,6 +19,8 @@
 
 # include "./utils/libft.h"
 
+# include <pthread.h>
+
 # define WIN_NAME		"Cub3D"
 
 # define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
@@ -89,6 +91,15 @@ typedef struct s_img
 	t_anim		rskill[4];
 }				t_img;
 
+typedef struct s_sound
+{
+	pthread_t	thread;
+	char		*path;
+	int			play;
+	int			loop;
+	int			volume;
+}				t_sound;
+
 typedef struct s_player
 {
 	char		direction;
@@ -97,6 +108,7 @@ typedef struct s_player
 	int			attack;
 	double		speed;
 	double		theta;
+	t_sound		sound;
 	t_vect		pos;
 	t_vect		axis;
 	t_vect		plane;
@@ -124,6 +136,7 @@ typedef struct s_map
 typedef struct s_game
 {
 	t_player	player;
+	t_sound		sound;
 	t_count		count;
 	t_img		*img;
 	t_map		*map;

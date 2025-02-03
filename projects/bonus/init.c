@@ -12,13 +12,25 @@
 
 #include "cub3d_bonus.h"
 
-#include <pthread.h>
 #include <mlx.h>
 
-void	*audio_control(char *path)
+void	*audio_control(t_sound *sound)
 {
-	play_sound(path);
+	while (sound->loop)
+	{
+		play_sound(sound->path);
+	}
 	return (NULL);
+}
+
+void	init_sound(t_sound *sound, char *path, int loop)
+{
+	sound->path = path;
+	sound->loop = loop;
+	if (pthread_create(&sound->thread, NULL, (void *)audio_control, sound))
+		error_controller("Failed to create thread.", NULL);
+	else
+		pthread_detach(sound->thread);
 }
 
 static int	next_frame(void)
@@ -41,9 +53,9 @@ static int	next_frame(void)
 
 static void	init_img(void)
 {
+	t_size	size;
 	t_img	*img;
 	t_map	*map;
-	t_size	size;
 	int		i;
 
 	img = get_game()->img;
@@ -77,8 +89,7 @@ void	init_game(void)
 	game->mlx = addgarbage(mlx_init());
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
 	init_img();
-	game->player.slot = &game->player.slots[0];
-	game->player.slot->curr->play = TRUE;
+	init_sound(&game->sound, "./assets/sounds/background.wav", 1);
 	mlx_loop_hook(game->mlx, next_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_relse_handler, game);
