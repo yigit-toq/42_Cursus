@@ -25,6 +25,8 @@
 #  define Y_KEY			121
 #  define M_KEY			109
 
+#  define P_KEY			112
+
 #  define ESC_KEY		65307
 #  define L_ARR_KEY		65361
 #  define R_ARR_KEY		65363
@@ -51,6 +53,8 @@
 
 #  define Y_KEY			16
 #  define M_KEY			46
+
+#  define P_KEY			35
 
 #  define ESC_KEY		53
 #  define L_ARR_KEY		123

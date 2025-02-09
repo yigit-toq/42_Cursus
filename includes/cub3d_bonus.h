@@ -42,6 +42,10 @@
 # define FIRE			2
 # define SKIN			3
 
+# define TURN_DECAY		0.95f
+
+# define MOUSE_SENS		0.02f
+
 typedef struct s_gun
 {
 	int		ammo;
@@ -108,6 +112,8 @@ typedef struct s_player
 	int			attack;
 	double		speed;
 	double		theta;
+	double		turn_speed;
+	int			mouse_rot;
 	t_sound		sound;
 	t_vect		pos;
 	t_vect		axis;
