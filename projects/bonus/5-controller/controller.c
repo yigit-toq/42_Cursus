@@ -87,18 +87,13 @@ int	update_position(void)
 	if (game->player.rota[1])
 		game->player.theta -= ROTATE;
 	if (game->player.theta < 0)
+	{
 		game->player.theta += 2 * PI;
+	}
 	else
 	{
 		if (game->player.theta >= 2 * PI)
 			game->player.theta -= 2 * PI;
-	}
-	if (game->player.mouse_rot)
-	{
-		game->player.theta += game->player.turn_speed;
-		game->player.turn_speed *= TURN_DECAY;
-		if (fabs(game->player.turn_speed) < 0.0001)
-			game->player.turn_speed = 0;
 	}
 	if (game->player.move[0] == FALSE)
 		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
@@ -110,6 +105,14 @@ int	update_position(void)
 		input_systm(dr[0], dr[1]);
 	return (SUCCESS);
 }
+
+// if (game->player.mouse_move)
+// {
+// 	game->player.theta += game->player.turn_speed;
+// 	game->player.turn_speed *= TURN_DECAY;
+// 	if (fabs(game->player.turn_speed) < 0.0001)
+// 		game->player.turn_speed = 0;
+// }
 
 static int	update_axis(double *position, double *axis, int sign)
 {
@@ -162,10 +165,10 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (game->player.mouse_rot == FALSE)
+	if (game->player.mouse_move == FALSE)
 	{
 		if (key == R_ARR_KEY)
-		game->player.rota[0] = TRUE;
+			game->player.rota[0] = TRUE;
 		if (key == L_ARR_KEY)
 			game->player.rota[1] = TRUE;
 	}
@@ -199,17 +202,11 @@ int	key_relse_handler(int key, t_game *game)
 		game->player.rota[1] = FALSE;
 	}
 	if (key == ESC_KEY)
-	{
 		exit_game(game);
-	}
 	if (key == M_KEY)
-	{
 		game->map->is_map = !game->map->is_map;
-	}
 	if (key == P_KEY)
-	{
-		game->player.mouse_rot = !game->player.mouse_rot;
-	}
+		game->player.mouse_move = !game->player.mouse_move;
 	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED;
@@ -254,10 +251,7 @@ int	mouse_relse_handler(int button, int x, int y)
 			index = 1;
 		if (index > 1)
 			index = 0;
-		if (OS == 'L')
-			index += 49;
-		else
-			index += 18;
+		index += NUM_STR;
 		input_animation(index);
 	}
 	return (SUCCESS);
@@ -266,18 +260,15 @@ int	mouse_relse_handler(int button, int x, int y)
 int	mouse_moves_handler(int x, int y)
 {
 	static int	last_x = WIN_W / 2;
-    int			delt_x;
-	t_game		*game;
+	int			delt_x;
 
 	(void)y;
-	game = get_game();
-	if (game->player.mouse_rot == FALSE)
-		return (SUCCESS);
-	delt_x = x - last_x;
-    if (delt_x)
-    {
-        get_game()->player.turn_speed = delt_x * MOUSE_SENS;
-    }
-    last_x = x;
-    return (SUCCESS);
+	if (get_game()->player.mouse_move == FALSE)
+		return (FAILURE);
+	if ((delt_x = x - last_x) != 0)
+	{
+		get_game()->player.theta += deg_to_rad(delt_x * MOUSE_SENS);
+	}
+	last_x = x;
+	return (SUCCESS);
 }

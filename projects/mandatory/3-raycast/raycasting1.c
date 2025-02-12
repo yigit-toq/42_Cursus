@@ -106,12 +106,12 @@ static void	calculate_ray_hit(t_ray *ray)
 	}
 }
 
-static void	calculate_wal_hgt(t_ray *ray)
-{
-	ray->wall.height = floor((WIN_H / 2) / ray->dist);
-	ray->wall.s_pos = (WIN_H / 2) - ray->wall.height;
-	ray->wall.e_pos = (WIN_H / 2) + ray->wall.height;
-}
+// static void	calculate_wal_hgt(t_ray *ray)
+// {
+// 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
+// 	ray->wall.s_pos = (WIN_H / 2) - ray->wall.height;
+// 	ray->wall.e_pos = (WIN_H / 2) + ray->wall.height;
+// }
 
 int	raycast(void)
 {
@@ -132,7 +132,9 @@ int	raycast(void)
 		calculate_ray_dir(&rays[index]);
 		calculate_ray_hit(&rays[index]);
 		calculate_ray_dis(&rays[index], angle);
-		calculate_wal_hgt(&rays[index]);
+		rays[index].wall.height = floor((WIN_H / 2) / rays[index].dist);
+		rays[index].wall.s_pos = (WIN_H / 2) - rays[index].wall.height;
+		rays[index].wall.e_pos = (WIN_H / 2) + rays[index].wall.height;
 		render_frame(&rays[index], index);
 		angle += FOV / WIN_W;
 		index++;

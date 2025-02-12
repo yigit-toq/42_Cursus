@@ -13,9 +13,10 @@
 #ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
 
-# include "./utils/struct.h"
-# include "./utils/macro.h"
-# include "./utils/audio.h"
+# include "./other/struct.h"
+# include "./other/macro.h"
+
+# include "./bonus/audio.h"
 
 # include "./utils/libft.h"
 
@@ -42,9 +43,7 @@
 # define FIRE			2
 # define SKIN			3
 
-# define TURN_DECAY		0.95f
-
-# define MOUSE_SENS		0.02f
+# define MOUSE_SENS		0.1f
 
 typedef struct s_gun
 {
@@ -113,7 +112,7 @@ typedef struct s_player
 	double		speed;
 	double		theta;
 	double		turn_speed;
-	int			mouse_rot;
+	int			mouse_move;
 	t_sound		sound;
 	t_vect		pos;
 	t_vect		axis;

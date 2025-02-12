@@ -63,11 +63,12 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < DIR_SIZE)
+	while (i < DIR_SIZE + 2)
 	{
 		if (!img->paths[i])
 			error_controller("Texture path is not found.", NULL);
-		img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
+		if (i < DIR_SIZE)
+			img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
 	img->crossh = add_image(img->paths[4], (t_size){0, 0});

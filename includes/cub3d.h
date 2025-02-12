@@ -13,8 +13,8 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "./utils/struct.h"
-# include "./utils/macro.h"
+# include "./other/struct.h"
+# include "./other/macro.h"
 
 # include "./utils/libft.h"
 

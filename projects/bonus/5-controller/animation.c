@@ -69,7 +69,7 @@ static void	update_animation(t_anim	*anim)
 			if (anim == game->player.slot->fire)
 			{
 				game->player.slot = &game->player.slots[1];
-				swap_animation(anim, game->player.slot->take);
+				swap_animation(anim, game->player.slot->idle);
 			}
 		}
 	}
@@ -87,18 +87,18 @@ void	input_animation(int key)
 		game->player.slot->curr->play = FALSE;
 		game->img->next_anim = game->player.slot->skin;
 	}
-	if (key == ONE_KEY || key == TWO_KEY || key == Q_KEY)
+	if (key == ONE_KEY || key == TWO_KEY || key == C_KEY)
 	{
 		if (key == ONE_KEY)
 			game->player.slot = &game->player.slots[0];
 		if (key == TWO_KEY)
 			game->player.slot = &game->player.slots[1];
-		if (key == Q_KEY)
+		if (key == C_KEY)
 			game->player.slot = &game->player.slots[2];
 		game->player.slot->curr->play = FALSE;
 		game->img->next_anim = game->player.slot->take;
 	}
-	if (key == R_KEY)
+	if (key == X_KEY)
 	{
 		game->player.slot->curr->play = FALSE;
 		game->player.slot = &game->player.slots[3];

@@ -81,36 +81,24 @@ int	update_position(void)
 
 	game = get_game();
 	if (game->player.rota[0])
-	{
 		game->player.theta += ROTATE;
-	}
 	if (game->player.rota[1])
-	{
 		game->player.theta -= ROTATE;
-	}
 	if (game->player.theta < 0)
-	{
 		game->player.theta += 2 * PI;
-	}
 	else
 	{
 		if (game->player.theta >= 2 * PI)
 			game->player.theta -= 2 * PI;
 	}
 	if (game->player.move[0] == FALSE)
-	{
 		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
-	}
 	if (game->player.move[1] == FALSE)
-	{
 		update_axis(&game->player.pos.x, &game->player.axis.x, +1);
-	}
 	dr[0] = game->player.move[0];
 	dr[1] = game->player.move[1];
 	if (dr[0] || dr[1])
-	{
 		input_systm(dr[0], dr[1]);
-	}
 	return (SUCCESS);
 }
 

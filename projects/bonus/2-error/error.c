@@ -30,9 +30,9 @@ void	error_controller(char *message, void *pointer)
 	if (pointer)
 		return ;
 	clear_garbage();
-	ft_dprintf(2, C_G"----------------------------\n");
-	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
-	ft_dprintf(2, C_G"----------------------------\n");
+	ft_dprintf(2, C_G"________________________________________\n");
+	ft_dprintf(2, C_R"\nError: " C_Y"%s\n" C_E, message);
+	ft_dprintf(2, C_G"________________________________________\n");
 	ft_dprintf(2, C_E);
 	exit(EXIT_FAILURE);
 }

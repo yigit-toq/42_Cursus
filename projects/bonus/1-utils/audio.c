@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
-#include "./utils/audio.h"
 
 static void	audio_callback(void *userdata, Uint8 *stream, Uint32 len)
 {

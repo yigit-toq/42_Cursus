@@ -19,13 +19,16 @@
 #  define D_KEY			100
 #  define W_KEY			119
 
+#  define C_KEY			99
 #  define Q_KEY			113
+#  define E_KEY			101
+#  define X_KEY			120
+
 #  define R_KEY			114
 
 #  define Y_KEY			121
-#  define M_KEY			109
-
 #  define P_KEY			112
+#  define M_KEY			109
 
 #  define ESC_KEY		65307
 #  define L_ARR_KEY		65361
@@ -41,20 +44,23 @@
 #  define SCRL_UP		4
 #  define SCRL_DW		5
 
-#  define OS			'L'
+#  define NUM_STR		49
 # else
 #  define A_KEY			0
 #  define S_KEY			1
 #  define D_KEY			2
 #  define W_KEY			13
 
+#  define C_KEY			8
 #  define Q_KEY			12
+#  define E_KEY			14
+#  define X_KEY			7
+
 #  define R_KEY			15
 
 #  define Y_KEY			16
-#  define M_KEY			46
-
 #  define P_KEY			35
+#  define M_KEY			46
 
 #  define ESC_KEY		53
 #  define L_ARR_KEY		123
@@ -70,7 +76,7 @@
 #  define SCRL_UP		4
 #  define SCRL_DW		5
 
-#  define OS			'M'
+#  define NUM_STR		18
 # endif
 
 # define C_E		"\033[0m"

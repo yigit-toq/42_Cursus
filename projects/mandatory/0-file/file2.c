@@ -65,7 +65,7 @@ static int	path_read(char *line, char **names)
 		}
 		i++;
 	}
-	return (wtspace_trim(line)[0] != WALL);
+	return (wtspace_trim(line)[0] != WALL); // will look again
 }
 
 int	path_control(void)
