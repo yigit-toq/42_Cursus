@@ -40,7 +40,7 @@ static int	next_frame(void)
 	game = get_game();
 	update_position();
 	swap_animation(game->player.slot->curr, game->img->next_anim);
-	if (game->player.attack)
+	if (game->player.slot->fire && game->player.attack)
 	{
 		game->player.slot->curr->play = FALSE;
 		game->img->next_anim = game->player.slot->fire;

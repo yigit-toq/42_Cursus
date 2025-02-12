@@ -17,10 +17,14 @@ static void	add_slot(t_slot *slot, int curr, t_anim *anim, int loop)
 	static int	index;
 
 	slot->index = index++;
-	slot->take = &anim[TAKE];
-	slot->idle = &anim[IDLE];
-	slot->fire = &anim[FIRE];
-	slot->skin = &anim[SKIN];
+	if(anim[TAKE].frame)
+		slot->take = &anim[TAKE];
+	if(anim[IDLE].frame)
+		slot->idle = &anim[IDLE];
+	if(anim[FIRE].frame)
+		slot->fire = &anim[FIRE];
+	if(anim[SKIN].frame)
+		slot->skin = &anim[SKIN];
 	slot->curr = &anim[curr];
 	slot->curr->loop = loop;
 }

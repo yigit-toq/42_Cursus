@@ -206,7 +206,13 @@ int	key_relse_handler(int key, t_game *game)
 	if (key == M_KEY)
 		game->map->is_map = !game->map->is_map;
 	if (key == P_KEY)
+	{
 		game->player.mouse_move = !game->player.mouse_move;
+		if (game->player.mouse_move)
+			mlx_mouse_show(game->mlx, game->win);
+		else
+			mlx_mouse_hide(game->mlx, game->win);
+	}
 	if (key == SHIFT_KEY)
 	{
 		game->player.speed = SPEED;
