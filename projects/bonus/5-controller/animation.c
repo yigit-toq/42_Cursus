@@ -47,34 +47,6 @@ static void	init_frame(t_data *frame, char *path, int start, int end)
 	}
 }
 
-static void	update_animation(t_anim	*anim)
-{
-	t_game	*game;
-
-	game = get_game();
-	if (!anim->play)
-		return ;
-	if (++anim->counter == anim->delay)
-	{
-		anim->counter = 0;
-		anim->index = (anim->index + 1) % anim->total;
-		anim->frame = anim->frames + anim->index;
-		if (!anim->index && !anim->loop)
-		{
-			anim->play = FALSE;
-			if (anim == game->player.slot->skin || anim == game->player.slot->take)
-			{
-				swap_animation(anim, game->player.slot->idle);
-			}
-			if (anim == game->player.slot->fire)
-			{
-				game->player.slot = &game->player.slots[1];
-				swap_animation(anim, game->player.slot->idle);
-			}
-		}
-	}
-}
-
 void	input_animation(int key)
 {
 	t_game	*game;
@@ -104,6 +76,34 @@ void	input_animation(int key)
 		game->player.slot = &game->player.slots[3];
 		game->img->next_anim = game->player.slot->fire;
 		game->player.slot->curr->index = 0;
+	}
+}
+
+void	update_animation(t_anim	*anim)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (!anim->play)
+		return ;
+	if (++anim->counter == anim->delay)
+	{
+		anim->counter = 0;
+		anim->index = (anim->index + 1) % anim->total;
+		anim->frame = anim->frames + anim->index;
+		if (!anim->index && !anim->loop)
+		{
+			anim->play = FALSE;
+			if (anim == game->player.slot->skin || anim == game->player.slot->take)
+			{
+				swap_animation(anim, game->player.slot->idle);
+			}
+			if (anim == game->player.slot->fire)
+			{
+				game->player.slot = &game->player.slots[1];
+				swap_animation(anim, game->player.slot->idle);
+			}
+		}
 	}
 }
 

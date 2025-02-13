@@ -70,5 +70,11 @@ void	init_slot(void)
 	game->player.slot->curr->play = TRUE;
 
 	game->player.slots[1].gun = init_gun(120, 10, 10);
-	game->player.slots[2].gun = init_gun(001, 10, 00);
+	game->player.slots[2].gun = init_gun(001, 10, 00);	
+
+	game->door = ft_calloc(game->count.door, sizeof(t_door));
+	while (game->count.door--)
+	{
+		init_animation(&game->door[game->count.door].anim, (t_size){0, 10}, 2, KNIFE_IDLE);
+	}
 }

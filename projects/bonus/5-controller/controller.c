@@ -12,7 +12,7 @@
 
 #include "cub3d_bonus.h"
 
-#include "mlx.h"
+#include <mlx.h>
 
 #include <math.h>
 
@@ -165,7 +165,7 @@ static int	input_systm(double h_move, double v_move)
 
 int	key_press_handler(int key, t_game *game)
 {
-	if (game->player.mouse_move == FALSE)
+	if (game->player.mctrl == FALSE)
 	{
 		if (key == R_ARR_KEY)
 			game->player.rota[0] = TRUE;
@@ -194,21 +194,23 @@ int	key_relse_handler(int key, t_game *game)
 	if (key == A_KEY || key == D_KEY)
 		game->player.move[1] = FALSE;
 	if (key == R_ARR_KEY)
-	{
 		game->player.rota[0] = FALSE;
-	}
 	if (key == L_ARR_KEY)
-	{
 		game->player.rota[1] = FALSE;
-	}
 	if (key == ESC_KEY)
 		exit_game(game);
+	if (key == E_KEY)
+	{
+		game->door->open = TRUE;
+	}
 	if (key == M_KEY)
+	{
 		game->map->is_map = !game->map->is_map;
+	}
 	if (key == P_KEY)
 	{
-		game->player.mouse_move = !game->player.mouse_move;
-		if (game->player.mouse_move)
+		game->player.mctrl = !game->player.mctrl;
+		if (game->player.mctrl)
 			mlx_mouse_show(game->mlx, game->win);
 		else
 			mlx_mouse_hide(game->mlx, game->win);
@@ -269,7 +271,7 @@ int	mouse_moves_handler(int x, int y)
 	int			delt_x;
 
 	(void)y;
-	if (get_game()->player.mouse_move == FALSE)
+	if (get_game()->player.mctrl == FALSE)
 		return (FAILURE);
 	if ((delt_x = x - last_x) != 0)
 	{

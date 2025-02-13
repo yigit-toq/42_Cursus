@@ -38,6 +38,9 @@
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
+# define DOOR_PATH		"./assets/textures/door/frame"
+# define DOOR			'D'
+
 # define TAKE			0
 # define IDLE			1
 # define FIRE			2
@@ -65,6 +68,15 @@ typedef struct s_anim
 	int			loop;
 	int			counter;
 }				t_anim;
+
+typedef struct s_door
+{
+	t_anim	anim;
+	int		coll;
+	int		open;
+	int		close;
+	int		state;
+}			t_door;
 
 typedef struct s_slot
 {
@@ -106,13 +118,12 @@ typedef struct s_sound
 typedef struct s_player
 {
 	char		direction;
-	int			rota[2];
 	int			move[2];
+	int			rota[2];
 	int			attack;
+	int			mctrl;
 	double		speed;
 	double		theta;
-	double		turn_speed;
-	int			mouse_move;
 	t_sound		sound;
 	t_vect		pos;
 	t_vect		axis;
@@ -123,6 +134,7 @@ typedef struct s_player
 
 typedef struct s_count
 {
+	int			door;
 	int			wall;
 	int			floor;
 	int			player;
@@ -143,10 +155,12 @@ typedef struct s_game
 	t_player	player;
 	t_sound		sound;
 	t_count		count;
+	t_door		*door;
 	t_img		*img;
 	t_map		*map;
 	void		*mlx;
 	void		*win;
+	char		sfps[8];
 	t_ray		rays[WIN_W];
 }				t_game;
 
@@ -245,4 +259,6 @@ void			minimap(void);
 void			init_slot(void);
 
 /*------------------------------------------------------------*/
+
+void			update_animation(t_anim	*anim);
 #endif

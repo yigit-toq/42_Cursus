@@ -14,6 +14,8 @@
 
 #include <mlx.h>
 
+#include <sys/time.h>
+
 void	*audio_control(t_sound *sound)
 {
 	while (sound->loop)
@@ -33,6 +35,30 @@ void	init_sound(t_sound *sound, char *path, int loop)
 		pthread_detach(sound->thread);
 }
 
+long double	sys_time(void)
+{
+	struct timeval	time_value;
+
+	if (gettimeofday(&time_value, NULL) == -1)
+		return (sys_time());
+	return (time_value.tv_sec + (time_value.tv_usec / 1000000.0));
+}
+
+char	*get_fps(char *fps)
+{
+	static long double	second = 0;
+	long double			start;
+	int					value;
+
+	start = sys_time();
+	value = (int)(1 / (start - second));
+	ft_strlcpy(fps, "FPS: ", 6);
+	fps[5] = (value / 10) + '0';
+	fps[6] = (value % 10) + '0';
+	fps[7] = '\0';
+	return (second = start, fps);
+}
+
 static int	next_frame(void)
 {
 	t_game	*game;
@@ -50,10 +76,15 @@ static int	next_frame(void)
 				game->player.slot->gun->reload = 0;
 			}
 			game->player.slot->curr->play = FALSE;
-			game->img->next_anim = game->player.slot->fire;	
+			game->img->next_anim = game->player.slot->fire;
 		}
 	}
+	if (game->door->open)
+	{
+		update_animation(&game->door->anim);
+	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
+	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
 	raycast();
 	minimap();
 	return (SUCCESS);

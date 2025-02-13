@@ -85,6 +85,7 @@ static void	calculate_ray_dis(t_ray *ray, double angle)
 static void	calculate_ray_hit(t_ray *ray)
 {
 	t_game	*game;
+	int		cell;
 
 	game = get_game();
 	while (TRUE)
@@ -101,8 +102,15 @@ static void	calculate_ray_hit(t_ray *ray)
 			ray->side.y += ray->delta.y;
 			ray->axis = 1;
 		}
-		if (game->map->map[(int)ray->plane.y][(int)ray->plane.x] == WALL)
+		cell = game->map->map[(int)ray->plane.y][(int)ray->plane.x];
+		if (cell == WALL || cell == DOOR)
+		{
+			if (cell == WALL)
+				game->door->coll = FALSE;
+			if (cell == DOOR)
+				game->door->coll = TRUE;
 			break ;
+		}
 	}
 }
 

@@ -56,28 +56,27 @@ static int	render_object(int x, int y)
 
 void	render_frame(t_ray *ray, int x)
 {
-	t_img	*img;
-	double	i_x;
+	t_game	*game;
+	int		ig_x;
 	int		y;
 
 	y = 0;
-	img = get_game()->img;
-	i_x = floor((int)(img->dir[0].w_s * ray->wall.contact));
+	game = get_game();
+	ig_x = floor((int)(game->img->dir[0].w_s * ray->wall.contact));
 	while (y < WIN_H)
 	{
 		if (!render_object(x, y))
 		{
 			if (y < ray->wall.s_pos)
-			{
-				mlx_image_put(img->bgframe, x, y, img->hex[1]);
-			}
+				mlx_image_put(game->img->bgframe, x, y, game->img->hex[1]);
 			else if (y > ray->wall.e_pos)
-			{
-				mlx_image_put(img->bgframe, x, y, img->hex[0]);
-			}
+				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			else
 			{
-				draw_tex(i_x, ray, (t_size){x, y}, img->dir[ray->wall.dir]);
+				if (game->door->coll)
+					draw_tex(ig_x, ray, (t_size){x, y}, *game->door->anim.frame);
+				else
+					draw_tex(ig_x, ray, (t_size){x, y}, game->img->dir[ray->wall.dir]);
 			}
 		}
 		y++;

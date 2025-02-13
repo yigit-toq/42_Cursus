@@ -58,6 +58,10 @@ static void	object_counter(int x, int y)
 		game->player.pos.y = y;
 		game->player.direction = m[x];
 	}
+	else if (m[x] == DOOR)
+	{
+		game->count.door++;
+	}
 	else if (m[x] == WALL)
 	{
 		game->count.wall++;
