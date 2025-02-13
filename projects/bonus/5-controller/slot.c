@@ -17,16 +17,31 @@ static void	add_slot(t_slot *slot, int curr, t_anim *anim, int loop)
 	static int	index;
 
 	slot->index = index++;
-	if(anim[TAKE].frame)
+	if (anim[TAKE].frame)
 		slot->take = &anim[TAKE];
-	if(anim[IDLE].frame)
+	if (anim[IDLE].frame)
 		slot->idle = &anim[IDLE];
-	if(anim[FIRE].frame)
+	if (anim[FIRE].frame)
 		slot->fire = &anim[FIRE];
-	if(anim[SKIN].frame)
+	if (anim[SKIN].frame)
 		slot->skin = &anim[SKIN];
 	slot->curr = &anim[curr];
 	slot->curr->loop = loop;
+}
+
+static t_gun	*init_gun(int total, int range, int damage)
+{
+	t_gun	*gun;
+
+	gun = ft_calloc(1, sizeof(t_gun));
+	gun->total = total;
+	if (total < 30)
+		gun->ammo = total;
+	else
+		gun->ammo = 30;
+	gun->range = range;
+	gun->damage = damage;
+	return (gun);
 }
 
 // anim[0] = take, anim[1] = idle, anim[2] = skin, anim[3] = fire
@@ -53,4 +68,7 @@ void	init_slot(void)
 
 	game->player.slot = &game->player.slots[0];
 	game->player.slot->curr->play = TRUE;
+
+	game->player.slots[1].gun = init_gun(120, 10, 10);
+	game->player.slots[2].gun = init_gun(001, 10, 00);
 }

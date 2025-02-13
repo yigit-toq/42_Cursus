@@ -74,7 +74,7 @@ typedef struct s_slot
 	t_anim		*idle;
 	t_anim		*skin;
 	t_anim		*fire;
-	t_gun		gun;
+	t_gun		*gun;
 }			t_slot;
 
 typedef struct s_img

@@ -42,8 +42,16 @@ static int	next_frame(void)
 	swap_animation(game->player.slot->curr, game->img->next_anim);
 	if (game->player.slot->fire && game->player.attack)
 	{
-		game->player.slot->curr->play = FALSE;
-		game->img->next_anim = game->player.slot->fire;
+		if (game->player.slot->gun->ammo > 0)
+		{
+			if (game->player.slot->gun)
+			{
+				game->player.slot->gun->ammo--;
+				game->player.slot->gun->reload = 0;
+			}
+			game->player.slot->curr->play = FALSE;
+			game->img->next_anim = game->player.slot->fire;	
+		}
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	raycast();

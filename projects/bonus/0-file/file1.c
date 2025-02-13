@@ -66,8 +66,8 @@ static void	object_counter(int x, int y)
 	{
 		game->count.floor++;
 	}
-	if (wtspace_check(m[x]) == FALSE)
-		if (ft_strchr("01NSWE", m[x]) == NULL)
+	if (wtspace_check(m[x]) == FALSE) // will look again
+		if (ft_strchr("01NSWED", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
 
