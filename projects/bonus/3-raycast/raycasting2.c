@@ -14,16 +14,17 @@
 
 #include <math.h>
 
-static void	draw_tex(double img_x, t_ray *ray, t_size pos, t_data img)
+static void	draw_tex(double img_x, t_ray *ray, t_size pos, t_data *img, int filter)
 {
 	double	img_y;
 	int		color;
 
-	img_y = ((pos.y - ray->wall.s_pos) * img.h_s) / (ray->wall.height * 2);
-	if (img_y > img.h_s - 1)
-		img_y = img.h_s - 1;
-	color = pixel_color(img, img_x, img_y);
-	mlx_image_put(get_game()->img->bgframe, pos.x, pos.y, color);
+	img_y = ((pos.y - ray->wall.s_pos) * img->h_s) / (ray->wall.height * 2);
+	if (img_y > img->h_s - 1)
+		img_y = img->h_s - 1;
+	color = pixel_color(*img, img_x, img_y);
+	if (color != filter)
+		mlx_image_put(get_game()->img->bgframe, pos.x, pos.y, color);
 }
 
 static int	render_object(int x, int y)
@@ -74,9 +75,9 @@ void	render_frame(t_ray *ray, int x)
 			else
 			{
 				if (game->door->coll)
-					draw_tex(ig_x, ray, (t_size){x, y}, *game->door->anim.frame);
+					draw_tex(ig_x, ray, (t_size){x, y}, game->door->anim.frame, 0xFF000000);
 				else
-					draw_tex(ig_x, ray, (t_size){x, y}, game->img->dir[ray->wall.dir]);
+					draw_tex(ig_x, ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
 			}
 		}
 		y++;

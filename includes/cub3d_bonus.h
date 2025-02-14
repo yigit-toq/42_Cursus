@@ -38,7 +38,7 @@
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
-# define DOOR_PATH		"./assets/textures/door/frame"
+# define DOOR_PATH		"./assets/textures/env/door/frame"
 # define DOOR			'D'
 
 # define TAKE			0
