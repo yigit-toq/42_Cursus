@@ -115,6 +115,9 @@
 
 # define WALL		'1'
 # define FLOOR		'0'
+# define SPACE		' '
+
+# define VISITED	'V'
 
 # define FOV		60.00
 # define SEV		64.00

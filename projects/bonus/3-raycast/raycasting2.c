@@ -75,7 +75,7 @@ void	render_frame(t_ray *ray, int x)
 			else
 			{
 				if (game->door->coll)
-					draw_tex(ig_x, ray, (t_size){x, y}, game->door->anim.frame, 0xFF000000);
+					draw_tex(ig_x, ray, (t_size){x, y}, game->door->anim.frame, 0x980088);
 				else
 					draw_tex(ig_x, ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
 			}

@@ -75,7 +75,7 @@ void	init_slot(void)
 	game->door = ft_calloc(game->count.door, sizeof(t_door));
 	while (game->count.door--)
 	{
-		init_animation(&game->door[game->count.door].anim, (t_size){0, 9}, 1, DOOR_PATH);
+		init_animation(&game->door[game->count.door].anim, (t_size){0, 64}, 1, DOOR_PATH);
 	}
 	game->door->anim.play = TRUE;
 }

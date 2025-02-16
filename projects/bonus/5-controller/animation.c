@@ -79,7 +79,7 @@ void	input_animation(int key)
 	}
 }
 
-void	update_animation(t_anim	*anim)
+void	updt_animation(t_anim *anim)
 {
 	t_game	*game;
 
@@ -119,7 +119,7 @@ void	swap_animation(t_anim *anim, t_anim *new)
 		new->index = 0;
 		new->play = TRUE;
 	}
-	update_animation(game->player.slot->curr);
+	updt_animation(game->player.slot->curr);
 }
 
 void	init_animation(t_anim *anim, t_size range, int delay, char *path)

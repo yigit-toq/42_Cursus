@@ -232,6 +232,8 @@ char			*wtspace_trim(char *str);
 
 void			input_animation(int key);
 
+void			updt_animation(t_anim *anim);
+
 void			swap_animation(t_anim *anim, t_anim *new);
 
 void			init_animation(t_anim *anim, t_size range, int delay, char *path);
@@ -260,5 +262,7 @@ void			init_slot(void);
 
 /*------------------------------------------------------------*/
 
-void			update_animation(t_anim	*anim);
+char			**copy_array(char **array, int size);
+
+/*------------------------------------------------------------*/
 #endif

@@ -81,7 +81,7 @@ static int	next_frame(void)
 	}
 	if (game->door->open)
 	{
-		update_animation(&game->door->anim);
+		updt_animation(&game->door->anim);
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));

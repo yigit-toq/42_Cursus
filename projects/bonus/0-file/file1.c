@@ -14,33 +14,34 @@
 
 #include <unistd.h>
 
-// static int	flood_fill(int x, int y)
-// {
-// 	char	**map;
-//
-// 	map = get_game()->map->map;
-// 	if (y < 0 || x < 0 || !map[y] || !map[y][x])
-// 		return (SUCCESS);
-// 	else if (map[y][x] == WALL || map[y][x] == 'M')
-// 	{
-// 		return (SUCCESS);
-// 	}
-// 	else if (map[y][x] == SPACE)
-// 	{
-// 		map[y][x] = 'M';
-// 	}
-// 	else
-// 		return (FAILURE);
-// 	if (flood_fill(x - 1, y))
-// 		return (FAILURE);
-// 	if (flood_fill(x, y - 1))
-// 		return (FAILURE);
-// 	if (flood_fill(x + 1, y))
-// 		return (FAILURE);
-// 	if (flood_fill(x, y + 1))
-// 		return (FAILURE);
-// 	return (SUCCESS);
-// }
+static int	flood_fill(int x, int y)
+{
+	static char	**map;
+
+	if (map == NULL)
+	{
+		map = copy_array(get_game()->map->map, get_game()->map->size.y);
+	}
+	if (y < 0 || x < 0 || !map[y] || map[y][x] == '\0')
+		return (FAILURE);
+	else if (map[y][x] == VISITED || map[y][x] == WALL || map[y][x] == DOOR)
+		return (SUCCESS);
+	else if (map[y][x] != SPACE)
+	{
+		map[y][x] = VISITED;
+	}
+	else
+		return (FAILURE);
+	if (flood_fill(x - 1, y) == FAILURE)
+		return (FAILURE);
+	if (flood_fill(x, y - 1) == FAILURE)
+		return (FAILURE);
+	if (flood_fill(x + 1, y) == FAILURE)
+		return (FAILURE);
+	if (flood_fill(x, y + 1) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
+}
 
 static void	object_counter(int x, int y)
 {
@@ -100,6 +101,8 @@ static void	maps_control(void)
 		y++;
 	}
 	game->map->size.y = y;
+	if (flood_fill((int)game->player.pos.x, (int)game->player.pos.y))
+		error_controller("Map is not closed!!", NULL);
 	if (game->count.player < P_COUNT)
 		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
