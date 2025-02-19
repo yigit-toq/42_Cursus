@@ -82,7 +82,7 @@ static void	calculate_ray_dis(t_ray *ray, double angle)
 	ray->wall.contact -= floor(ray->wall.contact);
 }
 
-static void	calculate_ray_hit(t_ray *ray)
+static void	calculate_ray_hit(t_ray *ray, int index)
 {
 	t_game	*game;
 	int		cell;
@@ -105,11 +105,27 @@ static void	calculate_ray_hit(t_ray *ray)
 		cell = game->map->map[(int)ray->plane.y][(int)ray->plane.x];
 		if (cell == WALL || cell == DOOR)
 		{
-			if (cell == WALL)
-				game->door->coll = FALSE;
 			if (cell == DOOR)
-				game->door->coll = TRUE;
-			break ;
+			{
+				for (int i = 0; i < game->count.door; i++)
+				{
+					if (ray->plane.x == game->door[i].coor.x && ray->plane.y == game->door[i].coor.y)
+					{
+						game->index = i;
+						break;
+					}
+				}
+				if (ray->dist <= 1 && index == WIN_W / 2)
+				{
+					game->curr = &game->door[game->index];
+				}
+				game->door[game->index].coll = TRUE;
+			}
+			else
+			{
+				game->door[game->index].coll = FALSE;
+			}
+			break;
 		}
 	}
 }
@@ -138,7 +154,7 @@ int	raycast(void)
 	{
 		init_ray(&rays[index], angle);
 		calculate_ray_dir(&rays[index]);
-		calculate_ray_hit(&rays[index]);
+		calculate_ray_hit(&rays[index], index);
 		calculate_ray_dis(&rays[index], angle);
 		calculate_wal_hgt(&rays[index]);
 		render_frame(&rays[index], index);

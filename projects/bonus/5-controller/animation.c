@@ -106,21 +106,19 @@ void	updt_animation(t_anim *anim, int reverse)
 				game->player.slot = &game->player.slots[1];
 				swap_animation(anim, game->player.slot->idle);
 			}
-			if (anim == &game->door->anim)
+			if (anim == &game->curr->anim)
 			{
-				if (game->door->state)
+				if (game->curr->state)
 				{
-					game->door->close = FALSE;
-					game->door->anim.index = 0;
-					game->door->anim.frame = game->door->anim.frames;
-					game->door->state = FALSE;
+					game->curr->anim.index = 0;
+					game->curr->anim.frame = game->curr->anim.frames;
+					game->curr->state = FALSE;
 				}
 				else
 				{
-					game->door->open = FALSE;
-					game->door->anim.index = game->door->anim.total - 1;
-					game->door->anim.frame = &game->door->anim.frames[game->door->anim.total - 1];
-					game->door->state = TRUE;
+					game->curr->anim.index = game->curr->anim.total - 1;
+					game->curr->anim.frame = &game->curr->anim.frames[game->curr->anim.total - 1];
+					game->curr->state = TRUE;
 				}
 			}
 		}

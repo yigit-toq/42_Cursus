@@ -16,6 +16,32 @@
 
 #include <sys/time.h>
 
+static void	init_door(void)
+{
+	t_game	*game;
+	t_size	index;
+
+	ft_bzero(&index, sizeof(t_size));
+	game = get_game();
+	game->door = ft_calloc(game->count.door, sizeof(t_door));
+	while (game->map->map[index.y])
+	{
+		index.x = 0;
+		while (game->map->map[index.y][index.x])
+		{
+			if (game->map->map[index.y][index.x] == DOOR)
+			{
+				game->door[game->index].coor.x = index.x;
+				game->door[game->index].coor.y = index.y;
+				init_animation(&game->door[game->index].anim, (t_size){0, 64}, 1, DOOR1_PATH);
+				game->index++;
+			}
+			index.x++;
+		}
+		index.y++;
+	}
+}
+
 void	*audio_control(t_sound *sound)
 {
 	while (sound->loop)
@@ -79,15 +105,12 @@ static int	next_frame(void)
 			game->img->next_anim = game->player.slot->fire;
 		}
 	}
-	if (game->door->open)
+	if (game->curr && game->curr->anim.play == TRUE)
 	{
-		game->door->anim.play = TRUE;
-		updt_animation(&game->door->anim, FALSE);
-	}
-	if (game->door->close)
-	{
-		game->door->anim.play = TRUE;
-		updt_animation(&game->door->anim, TRUE);
+		if (game->curr->state == FALSE)
+			updt_animation(&game->curr->anim, FALSE);
+		else
+			updt_animation(&game->curr->anim, TRUE);
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
@@ -125,6 +148,7 @@ static void	init_img(void)
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 	img->hex[1] = rgb_to_hexa(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
 	init_slot();
+	init_door();
 }
 
 void	init_game(void)

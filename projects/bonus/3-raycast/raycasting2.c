@@ -74,8 +74,8 @@ void	render_frame(t_ray *ray, int x)
 				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			else
 			{
-				if (game->door->coll)
-					draw_tex(ig_x, ray, (t_size){x, y}, game->door->anim.frame, 0x980088);
+				if (game->door[game->index].coll)
+					draw_tex(ig_x, ray, (t_size){x, y}, game->door[game->index].anim.frame, 0x980088);
 				else
 					draw_tex(ig_x, ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
 			}

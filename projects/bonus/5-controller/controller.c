@@ -106,14 +106,6 @@ int	update_position(void)
 	return (SUCCESS);
 }
 
-// if (game->player.mouse_move)
-// {
-// 	game->player.theta += game->player.turn_speed;
-// 	game->player.turn_speed *= TURN_DECAY;
-// 	if (fabs(game->player.turn_speed) < 0.0001)
-// 		game->player.turn_speed = 0;
-// }
-
 static int	update_axis(double *position, double *axis, int sign)
 {
 	t_game	*game;
@@ -199,12 +191,9 @@ int	key_relse_handler(int key, t_game *game)
 		game->player.rota[1] = FALSE;
 	if (key == ESC_KEY)
 		exit_game(game);
-	if (key == E_KEY)
+	if (key == E_KEY && game->curr)
 	{
-		if (game->door->state == FALSE)
-			game->door->open = TRUE;
-		else
-			game->door->close = TRUE;
+		game->curr->anim.play = TRUE;
 	}
 	if (key == M_KEY)
 	{

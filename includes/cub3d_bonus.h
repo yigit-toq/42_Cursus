@@ -38,7 +38,9 @@
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
-# define DOOR_PATH		"./assets/textures/env/door/frame"
+# define DOOR1_PATH		"./assets/textures/env/door/1/frame"
+# define DOOR2_PATH		"./assets/textures/env/door/2/frame"
+
 # define DOOR			'D'
 
 # define TAKE			0
@@ -72,9 +74,8 @@ typedef struct s_anim
 typedef struct s_door
 {
 	t_anim	anim;
+	t_vect	coor;
 	int		coll;
-	int		open;
-	int		close;
 	int		state;
 }			t_door;
 
@@ -156,6 +157,8 @@ typedef struct s_game
 	t_sound		sound;
 	t_count		count;
 	t_door		*door;
+	t_door		*curr;
+	int			index;
 	t_img		*img;
 	t_map		*map;
 	void		*mlx;
