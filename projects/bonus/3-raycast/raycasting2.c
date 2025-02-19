@@ -55,15 +55,23 @@ static int	render_object(int x, int y)
 	return (FALSE);
 }
 
+static void	render_sprite(t_ray *ray, t_size pos, t_data *img, int filter)
+{
+	double	img_x;
+
+	img_x = floor((int)(img->w_s * ray->wall.contact));
+	draw_tex(img_x, ray, pos, img, filter);
+}
+
 void	render_frame(t_ray *ray, int x)
 {
 	t_game	*game;
-	int		ig_x;
+	t_door	*door;
 	int		y;
 
 	y = 0;
 	game = get_game();
-	ig_x = floor((int)(game->img->dir[0].w_s * ray->wall.contact));
+	door = &game->door[game->index];
 	while (y < WIN_H)
 	{
 		if (!render_object(x, y))
@@ -74,10 +82,10 @@ void	render_frame(t_ray *ray, int x)
 				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			else
 			{
-				if (game->door[game->index].coll)
-					draw_tex(ig_x, ray, (t_size){x, y}, game->door[game->index].anim.frame, 0x980088);
+				if (door->coll)
+					render_sprite(ray, (t_size){x, y}, door->anim.frame, door->filter);
 				else
-					draw_tex(ig_x, ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
+					render_sprite(ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
 			}
 		}
 		y++;

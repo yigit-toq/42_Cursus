@@ -77,6 +77,7 @@ typedef struct s_door
 	t_vect	coor;
 	int		coll;
 	int		state;
+	int		filter;
 }			t_door;
 
 typedef struct s_slot

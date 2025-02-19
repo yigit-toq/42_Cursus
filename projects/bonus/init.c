@@ -33,6 +33,7 @@ static void	init_door(void)
 			{
 				game->door[game->index].coor.x = index.x;
 				game->door[game->index].coor.y = index.y;
+				game->door[game->index].filter = 0x980088;
 				init_animation(&game->door[game->index].anim, (t_size){0, 64}, 1, DOOR1_PATH);
 				game->index++;
 			}

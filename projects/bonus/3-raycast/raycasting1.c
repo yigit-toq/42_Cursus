@@ -115,9 +115,10 @@ static void	calculate_ray_hit(t_ray *ray, int index)
 						break;
 					}
 				}
-				if (ray->dist <= 1 && index == WIN_W / 2)
+				if (index == WIN_W / 2)
 				{
-					game->curr = &game->door[game->index];
+					if (ray->dist <= 2)
+						game->curr = &game->door[game->index];
 				}
 				game->door[game->index].coll = TRUE;
 			}
