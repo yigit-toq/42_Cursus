@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/24 13:01:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/19 17:48:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,13 @@ static int	next_frame(void)
 	}
 	if (game->door->open)
 	{
-		updt_animation(&game->door->anim);
+		game->door->anim.play = TRUE;
+		updt_animation(&game->door->anim, FALSE);
+	}
+	if (game->door->close)
+	{
+		game->door->anim.play = TRUE;
+		updt_animation(&game->door->anim, TRUE);
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/24 13:19:01 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/19 20:16:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ char			*wtspace_trim(char *str);
 
 void			input_animation(int key);
 
-void			updt_animation(t_anim *anim);
+void			updt_animation(t_anim *anim, int reverse);
 
 void			swap_animation(t_anim *anim, t_anim *new);
 

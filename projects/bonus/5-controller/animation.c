@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/24 13:21:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/19 20:23:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	input_animation(int key)
 	}
 }
 
-void	updt_animation(t_anim *anim)
+void	updt_animation(t_anim *anim, int reverse)
 {
 	t_game	*game;
 
@@ -89,8 +89,11 @@ void	updt_animation(t_anim *anim)
 	if (++anim->counter == anim->delay)
 	{
 		anim->counter = 0;
-		anim->index = (anim->index + 1) % anim->total;
 		anim->frame = anim->frames + anim->index;
+		if (reverse)
+			anim->index = (anim->index - 1) % anim->total;
+		else
+			anim->index = (anim->index + 1) % anim->total;
 		if (!anim->index && !anim->loop)
 		{
 			anim->play = FALSE;
@@ -102,6 +105,23 @@ void	updt_animation(t_anim *anim)
 			{
 				game->player.slot = &game->player.slots[1];
 				swap_animation(anim, game->player.slot->idle);
+			}
+			if (anim == &game->door->anim)
+			{
+				if (game->door->state)
+				{
+					game->door->close = FALSE;
+					game->door->anim.index = 0;
+					game->door->anim.frame = game->door->anim.frames;
+					game->door->state = FALSE;
+				}
+				else
+				{
+					game->door->open = FALSE;
+					game->door->anim.index = game->door->anim.total - 1;
+					game->door->anim.frame = &game->door->anim.frames[game->door->anim.total - 1];
+					game->door->state = TRUE;
+				}
 			}
 		}
 	}
@@ -119,7 +139,7 @@ void	swap_animation(t_anim *anim, t_anim *new)
 		new->index = 0;
 		new->play = TRUE;
 	}
-	updt_animation(game->player.slot->curr);
+	updt_animation(game->player.slot->curr, FALSE);
 }
 
 void	init_animation(t_anim *anim, t_size range, int delay, char *path)

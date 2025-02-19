@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/24 12:31:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/19 17:32:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,10 @@ int	key_relse_handler(int key, t_game *game)
 		exit_game(game);
 	if (key == E_KEY)
 	{
-		game->door->open = TRUE;
+		if (game->door->state == FALSE)
+			game->door->open = TRUE;
+		else
+			game->door->close = TRUE;
 	}
 	if (key == M_KEY)
 	{
@@ -211,9 +214,9 @@ int	key_relse_handler(int key, t_game *game)
 	{
 		game->player.mctrl = !game->player.mctrl;
 		if (game->player.mctrl)
-			mlx_mouse_show(game->mlx, game->win);
-		else
 			mlx_mouse_hide(game->mlx, game->win);
+		else
+			mlx_mouse_show(game->mlx, game->win);
 	}
 	if (key == SHIFT_KEY)
 	{
