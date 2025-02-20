@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 15:20:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/20 16:47:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ static void	render_sprite(t_ray *ray, t_size pos, t_data *img, int filter)
 	img_x = floor((int)(img->w_s * ray->wall.contact));
 	draw_tex(img_x, ray, pos, img, filter);
 }
+
+// static void	render_skybox(t_ray *ray, int x, int y)
+// {
+// 	t_game	*game;
+// }
 
 void	render_frame(t_ray *ray, int x)
 {

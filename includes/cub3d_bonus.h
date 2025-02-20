@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/19 20:16:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/20 15:00:03 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_slot
 typedef struct s_img
 {
 	t_anim		*next_anim;
-	char		*paths[6];
+	char		*paths[10];
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];
@@ -106,6 +106,7 @@ typedef struct s_img
 	t_anim		vandal[4];
 	t_anim		qskill[4];
 	t_anim		rskill[4];
+	t_data		skybox[4];
 }				t_img;
 
 typedef struct s_sound

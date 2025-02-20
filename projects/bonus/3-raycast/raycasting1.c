@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:01:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/20 13:09:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ static void	calculate_ray_hit(t_ray *ray, int index)
 				{
 					if (ray->dist <= 2)
 						game->curr = &game->door[game->index];
+					else
+						game->curr = NULL;
 				}
 				game->door[game->index].coll = TRUE;
 			}

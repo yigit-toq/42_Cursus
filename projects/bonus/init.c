@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/19 17:48:56 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/20 16:49:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,23 +125,27 @@ static void	init_img(void)
 	t_size	size;
 	t_img	*img;
 	t_map	*map;
+	int		len;
 	int		i;
 
 	img = get_game()->img;
 	map = get_game()->map;
+	len = (int)(sizeof(img->paths) / sizeof(char *));
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < DIR_SIZE + 2)
+	while (i < len)
 	{
 		if (!img->paths[i])
 			error_controller("Texture path is not found.", NULL);
 		if (i < DIR_SIZE)
 			img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
+		else if (i < DIR_SIZE + 4)
+			img->skybox[i - DIR_SIZE] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
-	img->crossh = add_image(img->paths[4], (t_size){0, 0});
-	img->ground = add_image(img->paths[5], (t_size){0, 0});
+	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
+	img->crossh = add_image(img->paths[len - 1], (t_size){0, 0});
 	img->bgframe = add_image(NULL, size);
 	size.x = map->size.x * map->mini.x;
 	size.y = map->size.y * map->mini.y;

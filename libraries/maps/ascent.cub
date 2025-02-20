@@ -5,6 +5,11 @@ EA      ./assets/textures/env/4.xpm
 
 GR      ./assets/textures/env/ground.xpm
 
+LT      ./assets/textures/env/background/1.xpm
+RT      ./assets/textures/env/background/2.xpm
+BA      ./assets/textures/env/background/3.xpm
+FR      ./assets/textures/env/background/4.xpm
+
 CR      ./assets/textures/gun/vandal/cross.xpm
 
 F       140,140,140
