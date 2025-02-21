@@ -65,10 +65,8 @@ void	init_slot(void)
 	add_slot(&game->player.slots[2], 1, game->img->qskill, TRUE);
 	init_animation(&game->img->rskill[FIRE], (t_size){2, 10}, 2, RSKILL_FIRE);
 	add_slot(&game->player.slots[3], 3, game->img->rskill, FALSE);
-
-	game->player.slot = &game->player.slots[0];
-	game->player.slot->curr->play = TRUE;
-
 	game->player.slots[1].gun = init_gun(120, 10, 10);
 	game->player.slots[2].gun = init_gun(001, 10, 00);
+	game->player.slot = &game->player.slots[0];
+	game->player.slot->curr->play = TRUE;
 }

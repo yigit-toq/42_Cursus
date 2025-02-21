@@ -60,19 +60,15 @@ static void	object_counter(int x, int y)
 		game->player.direction = m[x];
 	}
 	else if (m[x] == DOOR)
-	{
 		game->count.door++;
-	}
 	else if (m[x] == WALL)
-	{
 		game->count.wall++;
-	}
 	else if (m[x] == FLOOR)
-	{
 		game->count.floor++;
-	}
+	else if (m[x] == ENEMY)
+		game->count.enemy++;
 	if (wtspace_check(m[x]) == FALSE) // will look again
-		if (ft_strchr("01NSWED", m[x]) == NULL)
+		if (ft_strchr("01NSWEAD", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
 

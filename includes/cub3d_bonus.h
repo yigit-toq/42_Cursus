@@ -24,6 +24,13 @@
 
 # define WIN_NAME		"Cub3D"
 
+# define ENEMY_PATH		"./assets/textures/char/enemy/frame"
+# define ENEMY			'A'
+
+# define DOOR1_PATH		"./assets/textures/env/door/1/frame"
+# define DOOR2_PATH		"./assets/textures/env/door/2/frame"
+# define DOOR			'D'
+
 # define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
 # define KNIFE_IDLE		"./assets/textures/gun/knife/idle/frame"
 
@@ -37,11 +44,6 @@
 # define QSKILL_FIRE	"./assets/textures/char/reyna/q/fire/frame"
 
 # define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
-
-# define DOOR1_PATH		"./assets/textures/env/door/1/frame"
-# define DOOR2_PATH		"./assets/textures/env/door/2/frame"
-
-# define DOOR			'D'
 
 # define TAKE			0
 # define IDLE			1
@@ -140,6 +142,7 @@ typedef struct s_count
 	int			door;
 	int			wall;
 	int			floor;
+	int			enemy;
 	int			player;
 }				t_count;
 
@@ -155,6 +158,7 @@ typedef struct s_map
 
 typedef struct s_game
 {
+	t_anim		*enemy;
 	t_player	player;
 	t_sound		sound;
 	t_count		count;
@@ -257,6 +261,10 @@ int				image_filter(int index, int color, char filter, int limit);
 
 /*------------------------------------------------------------*/
 
+char			**copy_array(char **array, int size);
+
+/*------------------------------------------------------------*/
+
 int				raycast(void);
 
 void			minimap(void);
@@ -264,10 +272,6 @@ void			minimap(void);
 /*------------------------------------------------------------*/
 
 void			init_slot(void);
-
-/*------------------------------------------------------------*/
-
-char			**copy_array(char **array, int size);
 
 /*------------------------------------------------------------*/
 #endif

@@ -124,11 +124,11 @@ void			render_frame(t_ray *ray, int x);
 
 /*------------------------------------------------------------*/
 
-int				raycast(void);
+char			**copy_array(char **array, int size);
 
 /*------------------------------------------------------------*/
 
-char			**copy_array(char **array, int size);
+int				raycast(void);
 
 /*------------------------------------------------------------*/
 #endif
