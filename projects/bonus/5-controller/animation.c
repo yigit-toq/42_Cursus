@@ -89,11 +89,11 @@ void	updt_animation(t_anim *anim, int reverse)
 	if (++anim->counter == anim->delay)
 	{
 		anim->counter = 0;
-		anim->frame = anim->frames + anim->index;
 		if (reverse)
 			anim->index = (anim->index - 1) % anim->total;
 		else
 			anim->index = (anim->index + 1) % anim->total;
+		anim->frame = anim->frames + anim->index;
 		if (!anim->index && !anim->loop)
 		{
 			anim->play = FALSE;

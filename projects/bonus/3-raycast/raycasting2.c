@@ -63,10 +63,20 @@ static void	render_sprite(t_ray *ray, t_size pos, t_data *img, int filter)
 	draw_tex(img_x, ray, pos, img, filter);
 }
 
-// static void	render_skybox(t_ray *ray, int x, int y)
-// {
-// 	t_game	*game;
-// }
+static void	render_skybox(t_data bg, int x, int y)
+{
+	t_game	*game;
+	double	angle;
+	double	offst;
+	t_size	img;
+
+	game = get_game();
+	angle = rad_to_deg(game->player.theta);
+	offst = bg.w_s * ((angle / 90.0) + (x / (double)WIN_W));
+	img.x = fmod(offst, bg.w_s);
+	img.y = fmod(y    , bg.h_s);
+	mlx_image_put(game->img->bgframe, x, y, pixel_color(bg, img.x, img.y));
+}
 
 void	render_frame(t_ray *ray, int x)
 {
@@ -82,7 +92,7 @@ void	render_frame(t_ray *ray, int x)
 		if (!render_object(x, y))
 		{
 			if (y < ray->wall.s_pos)
-				mlx_image_put(game->img->bgframe, x, y, game->img->hex[1]);
+				render_skybox(*game->img->skybox, x, y);
 			else if (y > ray->wall.e_pos)
 				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			else
