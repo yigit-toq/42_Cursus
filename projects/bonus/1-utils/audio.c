@@ -57,3 +57,26 @@ int	play_sound(char *file_path)
 		SDL_Delay(100);
 	return (SDL_CloseAudio(), SDL_FreeWAV(wav_buffer), SDL_Quit(), SUCCESS);
 }
+
+void	*audio_control(t_sound *sound)
+{
+	while (sound->loop)
+	{
+		play_sound(sound->path);
+	}
+	return (NULL);
+}
+
+void	init_sound(t_sound *sound, char *path, int loop)
+{
+	sound->path = path;
+	sound->loop = loop;
+	if (pthread_create(&sound->thread, NULL, (void *)audio_control, sound) == FALSE)
+	{
+		pthread_detach(sound->thread);
+	}
+	else
+	{
+		error_controller("Failed to create thread.", NULL);
+	}
+}

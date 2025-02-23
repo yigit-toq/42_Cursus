@@ -50,7 +50,7 @@
 # define FIRE			2
 # define SKIN			3
 
-# define MOUSE_SENS		0.1f
+# define MOUSE_SENS		0.05f
 
 typedef struct s_gun
 {
@@ -80,6 +80,7 @@ typedef struct s_door
 	int		coll;
 	int		state;
 	int		filter;
+	double	ratio;
 }			t_door;
 
 typedef struct s_slot
@@ -120,6 +121,17 @@ typedef struct s_sound
 	int			volume;
 }				t_sound;
 
+typedef struct s_enemy
+{
+	t_vect	plane;
+	t_vect	pos;
+	t_vect	dir;
+	t_vect	axis;
+	t_anim	anim;
+	int		dead;
+	int		health;
+}			t_enemy;
+
 typedef struct s_player
 {
 	char		direction;
@@ -135,6 +147,7 @@ typedef struct s_player
 	t_vect		plane;
 	t_slot		*slot;
 	t_slot		slots[4];
+	double		velocity;
 }				t_player;
 
 typedef struct s_count
@@ -158,8 +171,8 @@ typedef struct s_map
 
 typedef struct s_game
 {
-	t_anim		*enemy;
 	t_player	player;
+	t_enemy		*enemy;
 	t_sound		sound;
 	t_count		count;
 	t_door		*door;

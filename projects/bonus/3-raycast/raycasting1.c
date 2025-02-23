@@ -103,7 +103,7 @@ static void	calculate_ray_hit(t_ray *ray, int index)
 			ray->axis = 1;
 		}
 		cell = game->map->map[(int)ray->plane.y][(int)ray->plane.x];
-		if (cell == WALL || cell == DOOR)
+		if (cell == WALL || cell == DOOR || cell == ENEMY)
 		{
 			if (cell == DOOR)
 			{

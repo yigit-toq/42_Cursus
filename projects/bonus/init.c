@@ -16,54 +16,6 @@
 
 #include <sys/time.h>
 
-static void	init_door(void)
-{
-	t_game	*game;
-	t_size	index;
-
-	ft_bzero(&index, sizeof(t_size));
-	game = get_game();
-	game->door = ft_calloc(game->count.door, sizeof(t_door));
-	while (game->map->map[index.y])
-	{
-		index.x = 0;
-		while (game->map->map[index.y][index.x])
-		{
-			if (game->map->map[index.y][index.x] == DOOR)
-			{
-				game->door[game->index].coor.x = index.x;
-				game->door[game->index].coor.y = index.y;
-				game->door[game->index].filter = 0x980088;
-				init_animation(&game->door[game->index].anim, (t_size){0, 64}, 1, DOOR1_PATH);
-				game->index++;
-			}
-			index.x++;
-		}
-		index.y++;
-	}
-	game->enemy = ft_calloc(game->count.enemy, sizeof(t_anim));
-	init_animation(game->enemy, (t_size){0, 6}, 2, ENEMY_PATH);
-}
-
-void	*audio_control(t_sound *sound)
-{
-	while (sound->loop)
-	{
-		play_sound(sound->path);
-	}
-	return (NULL);
-}
-
-void	init_sound(t_sound *sound, char *path, int loop)
-{
-	sound->path = path;
-	sound->loop = loop;
-	if (pthread_create(&sound->thread, NULL, (void *)audio_control, sound))
-		error_controller("Failed to create thread.", NULL);
-	else
-		pthread_detach(sound->thread);
-}
-
 long double	sys_time(void)
 {
 	struct timeval	time_value;
@@ -86,6 +38,42 @@ char	*get_fps(char *fps)
 	fps[6] = (value % 10) + '0';
 	fps[7] = '\0';
 	return (second = start, fps);
+}
+
+static void	init_objs(void)
+{
+	t_game	*game;
+	t_size	index;
+
+	ft_bzero(&index, sizeof(t_size));
+	game = get_game();
+	game->door = ft_calloc(game->count.door, sizeof(t_door));
+	error_controller("Failed to allocate memory.", game->door);
+	game->enemy = ft_calloc(game->count.enemy, sizeof(t_enemy));
+	error_controller("Failed to allocate memory.", game->enemy);
+	while (game->map->map[index.y])
+	{
+		index.x = 0;
+		while (game->map->map[index.y][index.x])
+		{
+			if (game->map->map[index.y][index.x] == DOOR)
+			{
+				game->door[game->index].coor.x = index.x;
+				game->door[game->index].coor.y = index.y;
+				game->door[game->index].filter = 0x980088;
+				init_animation(&game->door[game->index].anim, (t_size){0, 64}, 1, DOOR1_PATH);
+				game->index++;
+			}
+			if (game->map->map[index.y][index.x] == ENEMY)
+			{
+				game->enemy->pos.x = index.x;
+				game->enemy->pos.y = index.y;
+			}
+			index.x++;
+		}
+		index.y++;
+	}
+	init_animation(&game->enemy->anim, (t_size){0, 6}, 2, ENEMY_PATH);
 }
 
 static int	next_frame(void)
@@ -114,6 +102,7 @@ static int	next_frame(void)
 			updt_animation(&game->curr->anim, FALSE);
 		else
 			updt_animation(&game->curr->anim, TRUE);
+		game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
@@ -154,7 +143,7 @@ static void	init_img(void)
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 	img->hex[1] = rgb_to_hexa(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
 	init_slot();
-	init_door();
+	init_objs();
 }
 
 void	init_game(void)

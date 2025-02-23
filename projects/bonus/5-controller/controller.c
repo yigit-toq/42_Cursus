@@ -76,6 +76,43 @@ static int	update_axis(double *position, double *axis, int sign);
 
 static int	input_systm(double h_move, double v_move);
 
+int	is_mouse_inside_window(void)
+{
+	int	x;
+	int	y;
+
+	mlx_mouse_get_pos(get_game()->mlx, get_game()->win, &x, &y);
+	return (x >= 0 && x < WIN_W && y >= 0 && y < WIN_H);
+}
+
+void	mouse_control(void)
+{
+	t_game	*game;
+	double	damping;
+	double	m_speed;
+
+	game = get_game();
+	damping = 0.800;
+	m_speed = 0.005;
+	if (game->player.mctrl == FALSE)
+		return ;
+	game->player.theta += game->player.velocity;
+	if (!is_mouse_inside_window())
+	{
+		if (fabs(game->player.velocity) < m_speed)
+		{
+			if (game->player.velocity < 0)
+				game->player.velocity = -m_speed;
+			else
+				game->player.velocity = +m_speed;
+		}
+	}
+	else
+		game->player.velocity = game->player.velocity * damping;
+	if (fabs(game->player.velocity) < 0.01)
+		game->player.velocity = 0.0;
+}
+
 int	update_position(void)
 {
 	t_game	*game;
@@ -87,14 +124,13 @@ int	update_position(void)
 	if (game->player.rota[1])
 		game->player.theta -= ROTATE;
 	if (game->player.theta < 0)
-	{
 		game->player.theta += 2 * PI;
-	}
 	else
 	{
 		if (game->player.theta >= 2 * PI)
 			game->player.theta -= 2 * PI;
 	}
+	mouse_control();
 	if (game->player.move[0] == FALSE)
 		update_axis(&game->player.pos.y, &game->player.axis.y, -1);
 	if (game->player.move[1] == FALSE)
@@ -267,8 +303,24 @@ int	mouse_moves_handler(int x, int y)
 		return (FAILURE);
 	if ((delt_x = x - last_x) != 0)
 	{
-		get_game()->player.theta += deg_to_rad(delt_x * MOUSE_SENS);
+		get_game()->player.velocity += deg_to_rad(delt_x * MOUSE_SENS);
 	}
 	last_x = x;
 	return (SUCCESS);
 }
+
+// int	mouse_moves_handler(int x, int y)
+// {
+// 	static int	last_x = WIN_W / 2;
+// 	int			delt_x;
+//
+// 	(void)y;
+// 	if (get_game()->player.mctrl == FALSE)
+// 		return (FAILURE);
+// 	if ((delt_x = x - last_x) != 0)
+// 	{
+// 		get_game()->player.theta += deg_to_rad(delt_x * MOUSE_SENS);
+// 	}
+// 	last_x = x;
+// 	return (SUCCESS);
+// }
