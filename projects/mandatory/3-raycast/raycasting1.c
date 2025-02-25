@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 17:33:34 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 15:51:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static void	calculate_ray_dis(t_ray *ray, double angle)
 		ray->dist = (ray->plane.x - ray->src.x
 				+ (1 - ray->step.x) / 2) / ray->dir.x;
 		if (ray->dir.x > 0)
-			ray->wall.dir = 3;
+			ray->wall.direct = 3;
 		else
-			ray->wall.dir = 2;
+			ray->wall.direct = 2;
 		ray->wall.contact = ray->src.y + ray->dist * ray->dir.y;
 	}
 	else
@@ -73,9 +73,9 @@ static void	calculate_ray_dis(t_ray *ray, double angle)
 		ray->dist = (ray->plane.y - ray->src.y
 				+ (1 - ray->step.y) / 2) / ray->dir.y;
 		if (ray->dir.y > 0)
-			ray->wall.dir = 1;
+			ray->wall.direct = 1;
 		else
-			ray->wall.dir = 0;
+			ray->wall.direct = 0;
 		ray->wall.contact = ray->src.x + ray->dist * ray->dir.x;
 	}
 	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;

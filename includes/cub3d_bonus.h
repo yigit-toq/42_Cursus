@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/20 15:00:03 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 17:05:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,8 @@ typedef struct s_door
 {
 	t_anim	anim;
 	t_vect	coor;
-	int		coll;
 	int		state;
 	int		filter;
-	double	ratio;
 }			t_door;
 
 typedef struct s_slot

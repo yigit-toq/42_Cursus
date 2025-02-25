@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 23:09:54 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 16:25:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 15:51:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,23 @@ typedef struct s_data
 	int			h_s;
 }				t_data;
 
-typedef struct s_wall
+typedef struct s_objs
 {
 	double		contact;
 	double		height;
 	double		s_pos;
 	double		e_pos;
-	int			dir;
-}				t_wall;
+	double		dist;
+	int			coll;
+	int			direct;
+}				t_objs;
 
 typedef struct s_ray
 {
 	char		*hit;
 	int			axis;
-	double		dist;
-	t_wall		wall;
+	t_objs		wall;
+	t_objs		door;
 	t_vect		src;
 	t_vect		dir;
 	t_vect		step;

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/20 16:49:31 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 15:48:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	next_frame(void)
 			updt_animation(&game->curr->anim, FALSE);
 		else
 			updt_animation(&game->curr->anim, TRUE);
-		game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
+		//game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));

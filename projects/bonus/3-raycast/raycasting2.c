@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/20 16:47:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 17:32:53 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,38 @@
 
 #include <math.h>
 
-static void	draw_tex(double img_x, t_ray *ray, t_size pos, t_data *img, int filter)
+static int	draw_tex(t_objs obj, t_size pos, t_data *img, int filter)
 {
+	double	img_x;
 	double	img_y;
 	int		color;
 
-	img_y = ((pos.y - ray->wall.s_pos) * img->h_s) / (ray->wall.height * 2);
+	img_x = floor((int)(img->w_s * obj.contact));
+	img_y = ((pos.y - obj.s_pos) * img->h_s) / (obj.height * 2);
 	if (img_y > img->h_s - 1)
 		img_y = img->h_s - 1;
 	color = pixel_color(*img, img_x, img_y);
 	if (color != filter)
+	{
 		mlx_image_put(get_game()->img->bgframe, pos.x, pos.y, color);
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
+static void	render_skybox(t_data bg, int x, int y)
+{
+	t_game	*game;
+	double	angle;
+	double	offst;
+	t_size	img;
+
+	game = get_game();
+	angle = rad_to_deg(game->player.theta);
+	offst = bg.w_s * ((angle / 90.0) + (x / (double)WIN_W));
+	img.x = fmod(offst, bg.w_s);
+	img.y = fmod(y    , bg.h_s);
+	mlx_image_put(game->img->bgframe, x, y, pixel_color(bg, img.x, img.y));
 }
 
 static int	render_object(int x, int y)
@@ -54,54 +75,41 @@ static int	render_object(int x, int y)
 	return (FALSE);
 }
 
-static void	render_sprite(t_ray *ray, t_size pos, t_data *img, int filter)
-{
-	double	img_x;
-
-	img_x = floor((int)(img->w_s * ray->wall.contact));
-	draw_tex(img_x, ray, pos, img, filter);
-}
-
-static void	render_skybox(t_data bg, int x, int y)
-{
-	t_game	*game;
-	double	angle;
-	double	offst;
-	t_size	img;
-
-	game = get_game();
-	angle = rad_to_deg(game->player.theta);
-	offst = bg.w_s * ((angle / 90.0) + (x / (double)WIN_W));
-	img.x = fmod(offst, bg.w_s);
-	img.y = fmod(y    , bg.h_s);
-	mlx_image_put(game->img->bgframe, x, y, pixel_color(bg, img.x, img.y));
-}
-
 void	render_frame(t_ray *ray, int x)
 {
 	t_game	*game;
 	t_door	*door;
+	t_objs	wall;
 	int		y;
 
 	y = 0;
 	game = get_game();
 	door = &game->door[game->index];
+	if (ray->door.coll)
+		wall = ray->door;
+	else
+		wall = ray->wall;
 	while (y < WIN_H)
 	{
-		if (!render_object(x, y))
+		if (render_object(x, y) == FALSE)
 		{
-			if (y < ray->wall.s_pos)
+			if (y < wall.s_pos)
 				render_skybox(*game->img->skybox, x, y);
-			else if (y > ray->wall.e_pos)
+			else if (y > wall.e_pos)
 				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			else
 			{
-				if (door->coll)
-					render_sprite(ray, (t_size){x, y}, door->anim.frame, door->filter);
-				else
-					render_sprite(ray, (t_size){x, y}, &game->img->dir[ray->wall.dir], -1);
+				if (draw_tex(wall, (t_size){x, y}, door->anim.frame, door->filter) == FALSE)
+				{
+					ray->door.coll = FALSE;
+					wall = ray->wall;
+				}
+				if (ray->door.coll == FALSE)
+					draw_tex(wall, (t_size){x, y}, &game->img->dir[ray->wall.direct], -1);
 			}
 		}
 		y++;
 	}
+	if (ray->door.coll)
+		ray->door.coll = FALSE;
 }

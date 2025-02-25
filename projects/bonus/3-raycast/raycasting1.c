@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/20 13:09:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 17:29:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,36 +53,73 @@ static void	calculate_ray_dir(t_ray *ray)
 	}
 }
 
-static void	calculate_ray_dis(t_ray *ray, double angle)
+static void	calculate_ray_dis(t_ray *ray, double angle, t_objs *obj)
 {
 	t_game	*game;
 
 	game = get_game();
 	if (ray->axis == 0)
 	{
-		ray->dist = (ray->plane.x - ray->src.x
+		obj->dist = (ray->plane.x - ray->src.x
 				+ (1 - ray->step.x) / 2) / ray->dir.x;
 		if (ray->dir.x > 0)
-			ray->wall.dir = 3;
+			obj->direct = 3;
 		else
-			ray->wall.dir = 2;
-		ray->wall.contact = ray->src.y + ray->dist * ray->dir.y;
+			obj->direct = 2;
+		obj->contact = ray->src.y + obj->dist * ray->dir.y;
 	}
 	else
 	{
-		ray->dist = (ray->plane.y - ray->src.y
+		obj->dist = (ray->plane.y - ray->src.y
 				+ (1 - ray->step.y) / 2) / ray->dir.y;
 		if (ray->dir.y > 0)
-			ray->wall.dir = 1;
+			obj->direct = 1;
 		else
-			ray->wall.dir = 0;
-		ray->wall.contact = ray->src.x + ray->dist * ray->dir.x;
+			obj->direct = 0;
+		obj->contact = ray->src.x + obj->dist * ray->dir.x;
 	}
-	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
-	ray->wall.contact -= floor(ray->wall.contact);
+	obj->dist = cos(deg_to_rad(angle) - game->player.theta) * obj->dist;
+	obj->contact -= floor(obj->contact);
 }
 
-static void	calculate_ray_hit(t_ray *ray, int index)
+static void	calculate_wal_hgt(t_ray *ray, double angle, t_objs *obj)
+{
+	(void)ray;
+	(void)angle;
+	obj->height = floor((WIN_H / 2) / obj->dist);
+	obj->s_pos = (WIN_H / 2) - obj->height;
+	obj->e_pos = (WIN_H / 2) + obj->height;
+}
+
+static void	calculate_door(t_ray *ray, int index, double angle)
+{
+	t_game	*game;
+	int		i;
+
+	i = 0;
+	game = get_game();
+	while (i < game->count.door)
+	{
+		if (ray->plane.x == game->door[i].coor.x && ray->plane.y == game->door[i].coor.y)
+		{
+			game->index = i;
+			break;
+		}
+		i++;
+	}
+	if (index == WIN_W / 2)
+	{
+		if (ray->door.dist <= 2)
+			game->curr = &game->door[game->index];
+		else
+			game->curr = NULL;
+	}
+	calculate_ray_dis(ray, angle, &ray->door);
+	calculate_wal_hgt(ray, angle, &ray->door);
+	ray->door.coll = TRUE;
+}
+
+static void	calculate_ray_hit(t_ray *ray, int index, double angle)
 {
 	t_game	*game;
 	int		cell;
@@ -103,41 +140,11 @@ static void	calculate_ray_hit(t_ray *ray, int index)
 			ray->axis = 1;
 		}
 		cell = game->map->map[(int)ray->plane.y][(int)ray->plane.x];
-		if (cell == WALL || cell == DOOR || cell == ENEMY)
-		{
-			if (cell == DOOR)
-			{
-				for (int i = 0; i < game->count.door; i++)
-				{
-					if (ray->plane.x == game->door[i].coor.x && ray->plane.y == game->door[i].coor.y)
-					{
-						game->index = i;
-						break;
-					}
-				}
-				if (index == WIN_W / 2)
-				{
-					if (ray->dist <= 2)
-						game->curr = &game->door[game->index];
-					else
-						game->curr = NULL;
-				}
-				game->door[game->index].coll = TRUE;
-			}
-			else
-			{
-				game->door[game->index].coll = FALSE;
-			}
-			break;
-		}
+		if (cell == DOOR)
+			calculate_door(ray, index, angle);
+		if (cell == WALL)
+			break ;
 	}
-}
-
-static void	calculate_wal_hgt(t_ray *ray)
-{
-	ray->wall.height = floor((WIN_H / 2) / ray->dist);
-	ray->wall.s_pos = (WIN_H / 2) - ray->wall.height;
-	ray->wall.e_pos = (WIN_H / 2) + ray->wall.height;
 }
 
 int	raycast(void)
@@ -157,9 +164,9 @@ int	raycast(void)
 	{
 		init_ray(&rays[index], angle);
 		calculate_ray_dir(&rays[index]);
-		calculate_ray_hit(&rays[index], index);
-		calculate_ray_dis(&rays[index], angle);
-		calculate_wal_hgt(&rays[index]);
+		calculate_ray_hit(&rays[index], index, angle);
+		calculate_ray_dis(&rays[index], angle, &rays[index].wall);
+		calculate_wal_hgt(&rays[index], angle, &rays[index].wall);
 		render_frame(&rays[index], index);
 		angle += FOV / WIN_W;
 		index++;

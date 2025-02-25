@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:04:16 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 15:51:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	render_frame(t_ray *ray, int x)
 		}
 		else
 		{
-			draw_tex(i_x, ray, (t_size){x, y}, img->dir[ray->wall.dir]);
+			draw_tex(i_x, ray, (t_size){x, y}, img->dir[ray->wall.direct]);
 		}
 		y++;
 	}
