@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 17:29:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 18:01:34 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int	raycast(void)
 		calculate_ray_hit(&rays[index], index, angle);
 		calculate_ray_dis(&rays[index], angle, &rays[index].wall);
 		calculate_wal_hgt(&rays[index], angle, &rays[index].wall);
-		render_frame(&rays[index], index);
+		render_frame(&rays[index], index, angle);
 		angle += FOV / WIN_W;
 		index++;
 	}

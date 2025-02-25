@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 17:32:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 18:10:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,26 @@ static void	render_skybox(t_data bg, int x, int y)
 	mlx_image_put(game->img->bgframe, x, y, pixel_color(bg, img.x, img.y));
 }
 
+static void	render_floor(t_data fl, int x, int y, double angle)
+{
+	t_game	*game;
+	t_vect	direction;
+	t_vect	texture;
+	t_vect	tile;
+	double	distance;
+
+	game = get_game();
+	direction.x = cos(angle);
+	direction.y = sin(angle);
+	distance = WIN_H / (2.0 * y - WIN_H);
+	distance = distance / cos(game->player.theta - angle);
+	tile.x = distance * direction.x + game->player.plane.x;
+	tile.y = distance * direction.y + game->player.plane.y;
+	texture.x = (int)(floor(tile.x * fl.w_s)) % fl.w_s;
+	texture.y = (int)(floor(tile.y * fl.h_s)) % fl.h_s;
+	mlx_image_put(game->img->bgframe, x, y, pixel_color(fl, texture.x, texture.y));
+}
+
 static int	render_object(int x, int y)
 {
 	t_game			*game = get_game();
@@ -68,14 +88,14 @@ static int	render_object(int x, int y)
 		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
 		if (color == 0x000000)
 		{
-			mlx_image_put(game->img->bgframe, x, y, color);
+			mlx_image_put(game->img->bgframe, x, y, 0xFFFFFF);
 			return (TRUE);
 		}
 	}
 	return (FALSE);
 }
 
-void	render_frame(t_ray *ray, int x)
+void	render_frame(t_ray *ray, int x, double angle)
 {
 	t_game	*game;
 	t_door	*door;
@@ -96,7 +116,7 @@ void	render_frame(t_ray *ray, int x)
 			if (y < wall.s_pos)
 				render_skybox(*game->img->skybox, x, y);
 			else if (y > wall.e_pos)
-				mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
+				render_floor(game->img->ground, x, y, deg_to_rad(angle));
 			else
 			{
 				if (draw_tex(wall, (t_size){x, y}, door->anim.frame, door->filter) == FALSE)

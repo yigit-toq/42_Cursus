@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 16:34:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 18:20:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	files_controller(char *path)
 	game->map->mini.y = 4;
 	game->map->scale.x = 1;
 	game->map->scale.y = 1;
-	game->player.speed = SPEED;
+	game->player.speed = SPEED * 2;
 	if (game->player.direction == EAST)
 		game->player.theta = deg_to_rad(00);
 	if (game->player.direction == SOUTH)

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/19 17:32:30 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 18:20:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ int	key_press_handler(int key, t_game *game)
 		game->player.move[1] = -1;
 	if (key == SHIFT_KEY)
 	{
-		game->player.speed = SPEED * 2;
+		game->player.speed = SPEED * 4;
 	}
 	return (SUCCESS);
 }

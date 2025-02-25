@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 17:05:37 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/25 17:58:16 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ int				draw_circ(t_data data, t_vect center, t_vect radius, int color);
 
 /*------------------------------------------------------------*/
 
-void			render_frame(t_ray *ray, int x);
+void			render_frame(t_ray *ray, int x, double angle);
 
 int				image_filter(int index, int color, char filter, int limit);
 
