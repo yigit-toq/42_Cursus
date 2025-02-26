@@ -186,7 +186,8 @@ static int	input_systm(double h_move, double v_move)
 	pos.y += v_move * game->player.speed * side.y;
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
-	if (game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)] == WALL)
+	int cell = game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)];
+	if (cell == WALL || (cell == DOOR && !game->curr->state))
 		return (FAILURE);
 	return (game->player.pos = pos, SUCCESS);
 }

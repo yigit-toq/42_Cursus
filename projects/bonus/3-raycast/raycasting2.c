@@ -33,7 +33,7 @@ static int	draw_tex(t_objs obj, t_size pos, t_data *img, int filter)
 	return (FALSE);
 }
 
-static void	render_skybox(t_data bg, int x, int y)
+static void	render_skybx(t_data bg, int x, int y)
 {
 	t_game	*game;
 	double	angle;
@@ -114,7 +114,7 @@ void	render_frame(t_ray *ray, int x, double angle)
 		if (render_object(x, y) == FALSE)
 		{
 			if (y < wall.s_pos)
-				render_skybox(*game->img->skybox, x, y);
+				render_skybx(game->img->skybox[0], x, y);
 			else if (y > wall.e_pos)
 				render_floor(game->img->ground, x, y, deg_to_rad(angle));
 			else
