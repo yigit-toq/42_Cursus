@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:57:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/23 19:00:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/27 17:29:51 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ DiamondTrap::DiamondTrap()
 	this->name = ClapTrap::name + "_clap_name";
 
 	this->hitPoints = FragTrap::hitPoints;
-	this->energyPoints = ScavTrap::energyPoints;
+	this->energyPoints = ScavTrap().getEnergyPoints();
 	this->attackDamage = FragTrap::attackDamage;
 }
 

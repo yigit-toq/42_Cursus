@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Fixed.hpp                                          :+:      :+:    :+:   */
+/*   ClapTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:16:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/02 17:55:15 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/27 16:33:28 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 
 #include <sstream>
 #include <string>
+
+#define C_Y	"\033[0;33m"
+#define C_E "\033[0m"
 
 class ClapTrap
 {
@@ -40,6 +43,8 @@ class ClapTrap
 
 		void	takeDamage(unsigned int amount);
 		void	beRepaired(unsigned int amount);
+
+		void	showStatus() const;
 
 		std::string	getName() const;
 };

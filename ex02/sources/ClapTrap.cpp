@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/07 17:15:15 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/27 17:21:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ ClapTrap::ClapTrap()
 
 ClapTrap::ClapTrap(const std::string name)
 {
-	std::cout << "ClapTrap name constructor" << std::endl;
+	std::cout << "ClapTrap name constructor " << name << " called" << std::endl;
 
 	this->name = name;
 
@@ -87,6 +87,8 @@ void	ClapTrap::takeDamage(unsigned int amount)
 
 	if (this->hitPoints > 0)
 	{
+		this->energyPoints -= 1;
+
 		this->hitPoints -= amount;
 
 		message = "takes " + itoa(amount) + " points of damage!";
@@ -106,13 +108,18 @@ void	ClapTrap::beRepaired(unsigned int amount)
 	{
 		this->hitPoints += amount;
 
-		message = "is repaired by " + itoa(amount) + "  points!";
+		message = "is repaired by " + itoa(amount) + " points!";
 	}
 	else
 	{
 		message = "cannot be repaired because it has no energy!";
 	}
 	std::cout << "ClapTrap " << this->name << " " << message << std::endl;
+}
+
+void	ClapTrap::showStatus() const
+{
+	std::cout << C_Y << "ClapTrap " << this->name << " has " << this->hitPoints << " hit points, " << this->energyPoints << " energy points and " << this->attackDamage << " attack damage." << C_E << std::endl;
 }
 
 std::string	ClapTrap::getName() const

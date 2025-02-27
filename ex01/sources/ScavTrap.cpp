@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 13:19:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/06 14:27:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/27 17:25:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ ScavTrap::ScavTrap()
 	std::cout << "ScavTrap default constructor" << std::endl;
 
 	this->name = "ytop";
-	this->hitPoints = 100;
+	this->hitPoints = ClapTrap::hitPoints;
 	this->energyPoints = 50;
 	this->attackDamage = 20;
 }
@@ -27,7 +27,7 @@ ScavTrap::ScavTrap(std::string name)
 	std::cout << "ScavTrap name constructor" << std::endl;
 
 	this->name = name;
-	this->hitPoints = 100;
+	this->hitPoints = ClapTrap::hitPoints;
 	this->energyPoints = 50;
 	this->attackDamage = 20;
 }
