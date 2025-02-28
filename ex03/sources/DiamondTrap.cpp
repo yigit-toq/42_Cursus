@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:57:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/27 17:29:51 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/28 13:42:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ DiamondTrap::DiamondTrap()
 
 DiamondTrap::DiamondTrap(std::string name) : FragTrap(name + "_clap_name")
 {
-	std::cout << "Diamond name constructor " << name << " called" << std::endl;
+	std::cout << "DiamondTrap name constructor " << name << " called" << std::endl;
 
 	this->name = name;
 

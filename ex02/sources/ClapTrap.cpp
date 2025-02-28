@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/27 17:21:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/28 13:56:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	ClapTrap::beRepaired(unsigned int amount)
 
 	if (this->energyPoints > 0)
 	{
+		this->energyPoints -= 1;
+
 		this->hitPoints += amount;
 
 		message = "is repaired by " + itoa(amount) + " points!";
