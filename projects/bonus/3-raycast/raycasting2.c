@@ -71,10 +71,15 @@ static void	render_floor(t_data fl, int x, int y, double angle)
 static int	render_object(int x, int y)
 {
 	t_game			*game = get_game();
+	t_data			frame;
+	t_size			img_p;
 	t_size			cross;
 	unsigned int	color;
 
-	color = pixel_color(*game->player.slot->curr->frame, x, y);
+	frame = *game->player.slot->curr->frame;
+	img_p.x = (x * frame.w_s) / WIN_W;
+	img_p.y = (y * frame.h_s) / WIN_H;
+	color = pixel_color(frame, img_p.x, img_p.y);
 	if (image_filter(0, color, 'g', 200) || image_filter(1, color, 'g', 200)
 		|| image_filter(2, color, 'g', 200) || image_filter(3, color, 'g', 200))
 	{
@@ -88,12 +93,13 @@ static int	render_object(int x, int y)
 		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
 		if (color == 0x000000)
 		{
-			mlx_image_put(game->img->bgframe, x, y, 0xFFFFFF);
+			mlx_image_put(game->img->bgframe, x, y, CROSS_COLOR);
 			return (TRUE);
 		}
 	}
 	return (FALSE);
 }
+
 
 void	render_frame(t_ray *ray, int x, double angle)
 {
@@ -119,13 +125,13 @@ void	render_frame(t_ray *ray, int x, double angle)
 				render_floor(game->img->ground, x, y, deg_to_rad(angle));
 			else
 			{
-				if (draw_tex(wall, (t_size){x, y}, door->anim.frame, door->filter) == FALSE)
+				if (game->count.door && draw_tex(wall, (t_size){x, y}, door->anim.frame, door->filter) == FALSE)
 				{
 					ray->door.coll = FALSE;
 					wall = ray->wall;
 				}
 				if (ray->door.coll == FALSE)
-					draw_tex(wall, (t_size){x, y}, &game->img->dir[ray->wall.direct], -1);
+					draw_tex(wall, (t_size){x, y}, &game->img->direct[ray->wall.direct], -1);
 			}
 		}
 		y++;

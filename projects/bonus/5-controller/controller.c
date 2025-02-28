@@ -246,7 +246,7 @@ int	key_relse_handler(int key, t_game *game)
 	}
 	if (key == SHIFT_KEY)
 	{
-		game->player.speed = SPEED;
+		game->player.speed = SPEED * 2;
 	}
 	return (input_animation(key), SUCCESS);
 }

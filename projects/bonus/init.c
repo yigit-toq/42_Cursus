@@ -61,7 +61,7 @@ static void	init_objs(void)
 				game->door[game->index].coor.x = index.x;
 				game->door[game->index].coor.y = index.y;
 				game->door[game->index].filter = 0x980088;
-				init_animation(&game->door[game->index].anim, (t_size){0, 64}, 1, DOOR1_PATH);
+				init_animation(&game->door[game->index].anim, (t_size){0, 64}, ANIM_SPEED / 2, DOOR1_PATH);
 				game->index++;
 			}
 			if (game->map->map[index.y][index.x] == ENEMY)
@@ -73,7 +73,7 @@ static void	init_objs(void)
 		}
 		index.y++;
 	}
-	init_animation(&game->enemy->anim, (t_size){0, 6}, 2, ENEMY_PATH);
+	init_animation(&game->enemy->anim, (t_size){0, 6}, ANIM_SPEED, ENEMY_PATH);
 }
 
 static int	next_frame(void)
@@ -129,7 +129,7 @@ static void	init_img(void)
 	{
 		error_controller("Texture path is not found.", img->paths[i]);
 		if (i < DIR_SIZE)
-			img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
+			img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
 		else if (i < DIR_SIZE + 4)
 			img->skybox[i - DIR_SIZE] = add_image(img->paths[i], (t_size){0, 0});
 		i++;

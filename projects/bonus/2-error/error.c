@@ -47,7 +47,8 @@ void	free_game(void)
 	mlx_destroy_window(game->mlx, game->win);
 	while (i < DIR_SIZE)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir[i].img);
+		mlx_destroy_image(game->mlx, game->img->direct[i].img);
+		mlx_destroy_image(game->mlx, game->img->skybox[i].img);
 		i++;
 	}
 	i = 0;
@@ -86,9 +87,31 @@ void	free_game(void)
 		mlx_destroy_image(game->mlx, game->img->rskill[3].frames[i].img);
 		i++;
 	}
+	while (game->count.door > 0)
+	{
+		i = 0;
+		game->count.door--;
+		while (i < game->door[game->count.door].anim.total)
+		{
+			mlx_destroy_image(game->mlx, game->door[game->count.door].anim.frames[i].img);
+			i++;
+		}
+		
+	}
+	while (game->count.enemy > 0)
+	{
+		i = 0;
+		game->count.enemy--;
+		while (i < game->enemy[game->count.enemy].anim.total)
+		{
+			mlx_destroy_image(game->mlx, game->enemy[game->count.enemy].anim.frames[i].img);
+			i++;
+		}
+	}
 	mlx_destroy_image(game->mlx, game->img->bgframe.img);
 	mlx_destroy_image(game->mlx, game->img->minimap.img);
 	mlx_destroy_image(game->mlx, game->img->crossh.img);
+	mlx_destroy_image(game->mlx, game->img->ground.img);
 }
 
 int	exit_game(t_game *game)

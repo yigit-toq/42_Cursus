@@ -56,7 +56,7 @@ B_OBJS				=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))
 RM					=	@rm -rf
 
 CC					=	@cc
-CFLAGS				=	-Wall -Wextra -Werror -I ./includes -I $(MLX_DIR) -g
+CFLAGS				=	-Wall -Wextra -Werror -I ./includes -I $(MLX_DIR)
 
 OS 					=	$(shell uname)
 

@@ -50,7 +50,14 @@
 # define FIRE			2
 # define SKIN			3
 
+# define WIN_W			640
+# define WIN_H			360
+
+# define ANIM_SPEED		6
+
 # define MOUSE_SENS		0.05f
+
+# define CROSS_COLOR	0xFFFFFF
 
 typedef struct s_gun
 {
@@ -92,13 +99,38 @@ typedef struct s_slot
 	t_gun		*gun;
 }			t_slot;
 
+typedef struct s_objs
+{
+	double		contact;
+	double		height;
+	double		s_pos;
+	double		e_pos;
+	double		dist;
+	int			coll;
+	int			direct;
+}				t_objs;
+
+typedef struct s_ray
+{
+	char		*hit;
+	int			axis;
+	t_objs		wall;
+	t_objs		door;
+	t_vect		src;
+	t_vect		dir;
+	t_vect		step;
+	t_vect		side;
+	t_vect		delta;
+	t_vect		plane;
+}				t_ray;
+
 typedef struct s_img
 {
 	t_anim		*next_anim;
 	char		*paths[10];
 	int			rgb[2][3];
 	int			hex[2];
-	t_data		dir[4];
+	t_data		direct[4];
 	t_data		crossh;
 	t_data		ground;
 	t_data		minimap;

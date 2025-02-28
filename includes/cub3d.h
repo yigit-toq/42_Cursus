@@ -18,7 +18,33 @@
 
 # include "./utils/libft.h"
 
-# define WIN_NAME		"Cub3D"
+# define WIN_NAME	"Cub3D"
+
+# define WIN_W		1280
+# define WIN_H		720
+
+typedef struct s_wall
+{
+	double		contact;
+	double		height;
+	double		s_pos;
+	double		e_pos;
+	int			direct;
+}				t_wall;
+
+typedef struct s_ray
+{
+	char		*hit;
+	int			axis;
+	double		dist;
+	t_wall		wall;
+	t_vect		src;
+	t_vect		dir;
+	t_vect		step;
+	t_vect		side;
+	t_vect		delta;
+	t_vect		plane;
+}				t_ray;
 
 typedef struct s_img
 {

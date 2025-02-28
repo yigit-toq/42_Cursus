@@ -92,9 +92,6 @@
 
 # define PI			3.14159265
 
-# define WIN_W		1280
-# define WIN_H		720
-
 # define SPEED		0.050
 # define ROTATE		0.050
 
