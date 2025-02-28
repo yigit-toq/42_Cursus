@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:17:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/27 17:25:19 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/28 14:22:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	ClapTrap::beRepaired(unsigned int amount)
 
 void	ClapTrap::showStatus() const
 {
-	std::cout << C_Y << "ClapTrap " << this->name << " has " << this->hitPoints << " hit points, " << this->energyPoints << " energy points and " << this->attackDamage << " attack damage." << C_E << std::endl;
+	std::cout << C_Y << this->name << " has " << this->hitPoints << " hit points, " << this->energyPoints << " energy points and " << this->attackDamage << " attack damage." << C_E << std::endl;
 }
 
 std::string	ClapTrap::getName() const
