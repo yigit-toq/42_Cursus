@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 14:16:47 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/28 14:03:54 by ytop             ###   ########.fr       */
+/*   Updated: 2025/02/28 15:04:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int	main()
 	ScavTrap	Jim("Jim");
 	std::cout << std::endl;
 	ScavTrap	Joe("Joe");
+
+	std::cout << std::endl;
+	Bob.showStatus();
+	Jim.showStatus();
+	Joe.showStatus();
 	std::cout << std::endl;
 
 	Bob.attack("Jim");
