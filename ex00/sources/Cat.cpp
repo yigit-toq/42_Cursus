@@ -14,32 +14,36 @@
 
 Cat::Cat()
 {
-	type = "Cat";
+	this->type = "Cat";
 
+	std::cout << G_C;
 	std::cout << "Cat constructor called" << std::endl;
+	std::cout << E_C;
 }
 
-Cat::Cat(const Cat& other)
-{
-	*this = other;
-
-	std::cout << "Cat copy constructor called" << std::endl;
-}
+// Cat::Cat(const Cat& other)
+// {
+// 	std::cout << G_C << "Cat copy constructor called" << E_C << std::endl;
+//
+// 	*this = other;
+// }
 
 Cat& Cat::operator=(const Cat& other)
 {
-	type = other.type;
-	std::cout << "Cat assignation operator called" << std::endl;
+	std::cout << G_C << "Cat assignation operator called" << E_C << std::endl;
+
+	if (this != &other)
+		this->type = other.type;
 
 	return (*this);
 }
 
 Cat::~Cat()
 {
-	std::cout << "Cat destructor called" << std::endl;
+	std::cout << R_C << "Cat destructor called" << E_C << std::endl;
 }
 
 void Cat::makeSound() const
 {
-	std::cout << "Meow Meow" << std::endl;
+	std::cout << B_C << "Meow Meow" << E_C << std::endl;
 }

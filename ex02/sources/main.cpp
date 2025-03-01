@@ -1,34 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Dog.hpp                                            :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 17:58:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 19:19:42 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/07 17:56:14 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:50:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOG_HPP
-#define DOG_HPP
+#include "Dog.hpp"
+#include "Cat.hpp"
 
-#include "Animal.hpp"
-
-class Dog : public Animal
+int main()
 {
-	private:
-
-	public:
-		Dog ();
-
-		Dog (const Dog& other);
-
-		Dog& operator=(const Dog& other);
-
-		~Dog();
-
-		void makeSound() const;
-};
-
-#endif
+	return (0);
+}

@@ -16,33 +16,36 @@ Animal::Animal()
 {
 	this->type = "Animal";
 
+	std::cout << G_C;
 	std::cout << "Animal constructor called" << std::endl;
+	std::cout << E_C;
 }
 
 Animal::Animal(const Animal& other)
 {
-	std::cout << "Animal copy constructor called" << std::endl;
+	std::cout << G_C << "Animal copy constructor called" << E_C << std::endl;
 
 	*this = other;
 }
 
 Animal& Animal::operator=(const Animal& other)
 {
-	std::cout << "Animal assignation operator called" << std::endl;
+	std::cout << G_C << "Animal assignation operator called" << E_C << std::endl;
+
 	if (this != &other)
-		type = other.type;
+		this->type = other.type;
 
 	return (*this);
 }
 
 Animal::~Animal()
 {
-	std::cout << "Animal destructor called" << std::endl;
+	std::cout << R_C << "Animal destructor called" << E_C << std::endl;
 }
 
 void Animal::makeSound() const
 {
-	std::cout << "Animal sound" << std::endl;
+	std::cout << B_C << "Animal sound" << E_C << std::endl;
 }
 
 std::string	Animal::getType() const

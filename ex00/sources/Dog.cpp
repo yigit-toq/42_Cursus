@@ -14,32 +14,36 @@
 
 Dog::Dog()
 {
-	type = "Dog";
+	this->type = "Dog";
 
+	std::cout << G_C;
 	std::cout << "Dog constructor called" << std::endl;
+	std::cout << E_C;
 }
 
-Dog::Dog(const Dog& other)
-{
-	*this = other;
-
-	std::cout << "Dog copy constructor called" << std::endl;
-}
+// Dog::Dog(const Dog& other)
+// {
+// 	std::cout << G_C << "Dog copy constructor called" << E_C << std::endl;
+//
+// 	*this = other;
+// }
 
 Dog& Dog::operator=(const Dog& other)
 {
-	type = other.type;
-	std::cout << "Dog assignation operator called" << std::endl;
+	std::cout << G_C << "Dog assignation operator called" << E_C << std::endl;
+
+	if (this != &other)
+		this->type = other.type;
 
 	return (*this);
 }
 
 Dog::~Dog()
 {
-	std::cout << "Dog destructor called" << std::endl;
+	std::cout << R_C << "Dog destructor called" << E_C << std::endl;
 }
 
 void Dog::makeSound() const
 {
-	std::cout << "Woof Woof" << std::endl;
+	std::cout << B_C << "Woof Woof" << E_C << std::endl;
 }

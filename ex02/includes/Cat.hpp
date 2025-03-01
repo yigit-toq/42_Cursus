@@ -1,43 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WrongAnimal.hpp                                    :+:      :+:    :+:   */
+/*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 19:20:12 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:11:27 by ytop             ###   ########.fr       */
+/*   Created: 2025/01/07 17:58:12 by ytop              #+#    #+#             */
+/*   Updated: 2025/01/08 20:47:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WRONGANIMAL_HPP
-#define WRONGANIMAL_HPP
+#ifndef CAT_HPP
+#define CAT_HPP
 
-#include <iostream>
+#include "Animal.hpp"
+#include "Brain.hpp"
 
-#define B_C "\033[1;34m"
-#define Y_C "\033[1;33m"
-#define G_C "\033[1;32m"
-#define R_C "\033[1;31m"
-#define E_C "\033[0m"
-
-class WrongAnimal
+class Cat : public Animal
 {
-	protected:
-		std::string type;
+	private:
+		Brain* brain;
 
 	public:
-		WrongAnimal ();
+		Cat ();
 
-		WrongAnimal (const WrongAnimal& other);
+		Cat (const Cat& other);
 
-		WrongAnimal& operator=(const WrongAnimal& other);
+		Cat& operator=(const Cat& other);
 
-		~WrongAnimal();
+		~Cat();
 
 		void makeSound() const;
 
-		std::string getType() const;
+		std::string getIdea(int index) const;
+
+		void setIdea(int index, std::string idea);
 };
 
 #endif
