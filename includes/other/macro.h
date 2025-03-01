@@ -92,9 +92,6 @@
 
 # define PI			3.14159265
 
-# define SPEED		0.050
-# define ROTATE		0.050
-
 # define DESTROY	17
 
 # define P_COUNT	1

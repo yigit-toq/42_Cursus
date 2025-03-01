@@ -132,8 +132,8 @@ void	files_controller(char *path)
 	path_control();
 	maps_control();
 	game = get_game();
-	game->map->mini.x = 4;
-	game->map->mini.y = 4;
+	game->map->mini.x = WIN_H / 180;
+	game->map->mini.y = WIN_H / 180;
 	game->map->scale.x = 1;
 	game->map->scale.y = 1;
 	game->player.speed = SPEED;

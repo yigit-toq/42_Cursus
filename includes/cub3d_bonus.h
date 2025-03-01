@@ -53,9 +53,12 @@
 # define WIN_W			640
 # define WIN_H			360
 
-# define ANIM_SPEED		6
+# define SPEED			0.025
+# define ROTATE			0.050
 
 # define MOUSE_SENS		0.05f
+
+# define ANIM_SPEED		6
 
 # define CROSS_COLOR	0xFFFFFF
 

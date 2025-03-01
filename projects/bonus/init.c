@@ -76,21 +76,19 @@ static void	init_objs(void)
 	init_animation(&game->enemy->anim, (t_size){0, 6}, ANIM_SPEED, ENEMY_PATH);
 }
 
-static int	next_frame(void)
+static void	update_animtion(void)
 {
 	t_game	*game;
 
 	game = get_game();
-	update_position();
-	swap_animation(game->player.slot->curr, game->img->next_anim);
 	if (game->player.slot->fire && game->player.attack)
 	{
 		if (game->player.slot->gun->ammo > 0)
 		{
 			if (game->player.slot->gun)
 			{
-				game->player.slot->gun->ammo--;
 				game->player.slot->gun->reload = 0;
+				game->player.slot->gun->ammo--;
 			}
 			game->player.slot->curr->play = FALSE;
 			game->img->next_anim = game->player.slot->fire;
@@ -104,10 +102,21 @@ static int	next_frame(void)
 			updt_animation(&game->curr->anim, TRUE);
 		//game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
 	}
+}
+
+static int	next_frame(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	update_position();
+	update_animtion();
+	swap_animation(game->player.slot->curr, game->img->next_anim);
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
 	raycast();
 	minimap();
+	attack();
 	return (SUCCESS);
 }
 
