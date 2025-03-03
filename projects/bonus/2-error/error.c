@@ -6,13 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/03 12:24:12 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 14:08:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
 #include <mlx.h>
+
+static void	free_game(void);
 
 void	exten_controller(char *path)
 {
@@ -37,88 +39,55 @@ void	error_controller(char *message, void *pointer)
 	exit(EXIT_FAILURE);
 }
 
-void	free_game(void)
-{
-	t_game	*game;
-	int		i;
-
-	game = get_game();
-	i = 0;
-	mlx_destroy_window(game->mlx, game->win);
-	while (i < DIR_SIZE)
-	{
-		mlx_destroy_image(game->mlx, game->img->direct[i].img);
-		mlx_destroy_image(game->mlx, game->img->skybox[i].img);
-		i++;
-	}
-	i = 0;
-	while (i < game->img->knife[0].total)
-	{
-		mlx_destroy_image(game->mlx, game->img->knife[0].frames[i].img);
-		if (i < game->img->knife[1].total)
-			mlx_destroy_image(game->mlx, game->img->knife[1].frames[i].img);
-		i++;
-	}
-	i = 0;
-	while (i < game->img->vandal[3].total)
-	{
-		mlx_destroy_image(game->mlx, game->img->vandal[3].frames[i].img);
-		if (i < game->img->vandal[0].total)
-			mlx_destroy_image(game->mlx, game->img->vandal[0].frames[i].img);
-		if (i < game->img->vandal[1].total)
-			mlx_destroy_image(game->mlx, game->img->vandal[1].frames[i].img);
-		if (i < game->img->vandal[2].total)
-			mlx_destroy_image(game->mlx, game->img->vandal[2].frames[i].img);
-		i++;
-	}
-	i = 0;
-	while (i < game->img->qskill[1].total)
-	{
-		mlx_destroy_image(game->mlx, game->img->qskill[1].frames[i].img);
-		if (i < game->img->qskill[0].total)
-			mlx_destroy_image(game->mlx, game->img->qskill[0].frames[i].img);
-		if (i < game->img->qskill[2].total)
-			mlx_destroy_image(game->mlx, game->img->qskill[2].frames[i].img);
-		i++;
-	}
-	i = 0;
-	while (i < game->img->rskill[2].total)
-	{
-		mlx_destroy_image(game->mlx, game->img->rskill[2].frames[i].img);
-		i++;
-	}
-	while (game->count.door > 0)
-	{
-		i = 0;
-		game->count.door--;
-		while (i < game->door[game->count.door].anim.total)
-		{
-			mlx_destroy_image(game->mlx, game->door[game->count.door].anim.frames[i].img);
-			i++;
-		}
-	}
-	while (game->count.enemy > 0)
-	{
-		i = 0;
-		game->count.enemy--;
-		while (i < game->enemy[game->count.enemy].anim.total)
-		{
-			mlx_destroy_image(game->mlx, game->enemy[game->count.enemy].anim.frames[i].img);
-			i++;
-		}
-	}
-	mlx_destroy_image(game->mlx, game->img->bgframe.img);
-	mlx_destroy_image(game->mlx, game->img->minimap.img);
-	mlx_destroy_image(game->mlx, game->img->crossh.img);
-	mlx_destroy_image(game->mlx, game->img->ground.img);
-}
-
 int	exit_game(t_game *game)
 {
 	free_game();
 	mlx_destroy_display(game->mlx);
 	clear_garbage();
 	exit(EXIT_SUCCESS);
+}
+
+static void	destroy_images(t_data *frames, int total)
+{
+	t_game	*game;
+	int		i;
+
+	i = 0;
+	game = get_game();
+    while (i < total)
+	{
+		if (frames[i].img)
+			mlx_destroy_image(game->mlx, frames[i].img);
+		i++;
+	}
+}
+
+static void	free_game(void)
+{
+	t_game	*game;
+
+	game = get_game();
+	mlx_destroy_window(game->mlx, game->win);
+	destroy_images(game->img->direct, DIR_SIZE);
+	destroy_images(game->img->skybox, DIR_SIZE);
+	destroy_images(game->img->knife[0].frames, game->img->knife[0].total);
+	destroy_images(game->img->knife[1].frames, game->img->knife[1].total);
+	destroy_images(game->img->vandal[0].frames, game->img->vandal[0].total);
+	destroy_images(game->img->vandal[1].frames, game->img->vandal[1].total);
+	destroy_images(game->img->vandal[2].frames, game->img->vandal[2].total);
+	destroy_images(game->img->vandal[3].frames, game->img->vandal[3].total);
+	destroy_images(game->img->qskill[0].frames, game->img->qskill[0].total);
+	destroy_images(game->img->qskill[1].frames, game->img->qskill[1].total);
+	destroy_images(game->img->qskill[2].frames, game->img->qskill[2].total);
+	destroy_images(game->img->rskill[2].frames, game->img->rskill[2].total);
+	while (game->count.door-- > 0)
+		destroy_images(game->door[game->count.door].anim.frames, game->door[game->count.door].anim.total);
+	while (game->count.enemy-- > 0)
+		destroy_images(game->enemy[game->count.enemy].anim.frames, game->enemy[game->count.enemy].anim.total);	
+	mlx_destroy_image(game->mlx, game->img->bgframe.img);
+	mlx_destroy_image(game->mlx, game->img->minimap.img);
+	mlx_destroy_image(game->mlx, game->img->crossh.img);
+	mlx_destroy_image(game->mlx, game->img->ground.img);
 }
 
 // int	arg_check(char *arg)
@@ -133,7 +102,7 @@ int	exit_game(t_game *game)
 // 	}
 // 	return (0);
 // }
-
+//
 // int	arg_controller(char **argv)
 // {
 // 	t_game	*game;
@@ -158,7 +127,7 @@ int	exit_game(t_game *game)
 // 	}
 // 	return (i);
 // }
-
+//
 // int	exten_controller(char *path)
 // {
 // 	char	*extension;
