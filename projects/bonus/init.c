@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 15:48:40 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 12:04:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ static int	next_frame(void)
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
 	raycast();
 	minimap();
-	attack();
 	return (SUCCESS);
 }
 

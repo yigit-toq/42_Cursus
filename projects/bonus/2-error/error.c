@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 15:14:30 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 12:24:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ void	free_game(void)
 		i++;
 	}
 	i = 0;
-	while (i < game->img->vandal[2].total)
+	while (i < game->img->vandal[3].total)
 	{
-		mlx_destroy_image(game->mlx, game->img->vandal[2].frames[i].img);
+		mlx_destroy_image(game->mlx, game->img->vandal[3].frames[i].img);
 		if (i < game->img->vandal[0].total)
 			mlx_destroy_image(game->mlx, game->img->vandal[0].frames[i].img);
 		if (i < game->img->vandal[1].total)
 			mlx_destroy_image(game->mlx, game->img->vandal[1].frames[i].img);
-		if (i < game->img->vandal[3].total)
-			mlx_destroy_image(game->mlx, game->img->vandal[3].frames[i].img);
+		if (i < game->img->vandal[2].total)
+			mlx_destroy_image(game->mlx, game->img->vandal[2].frames[i].img);
 		i++;
 	}
 	i = 0;
@@ -77,14 +77,14 @@ void	free_game(void)
 		mlx_destroy_image(game->mlx, game->img->qskill[1].frames[i].img);
 		if (i < game->img->qskill[0].total)
 			mlx_destroy_image(game->mlx, game->img->qskill[0].frames[i].img);
-		if (i < game->img->qskill[3].total)
-			mlx_destroy_image(game->mlx, game->img->qskill[3].frames[i].img);
+		if (i < game->img->qskill[2].total)
+			mlx_destroy_image(game->mlx, game->img->qskill[2].frames[i].img);
 		i++;
 	}
 	i = 0;
-	while (i < game->img->rskill[3].total)
+	while (i < game->img->rskill[2].total)
 	{
-		mlx_destroy_image(game->mlx, game->img->rskill[3].frames[i].img);
+		mlx_destroy_image(game->mlx, game->img->rskill[2].frames[i].img);
 		i++;
 	}
 	while (game->count.door > 0)
@@ -96,7 +96,6 @@ void	free_game(void)
 			mlx_destroy_image(game->mlx, game->door[game->count.door].anim.frames[i].img);
 			i++;
 		}
-		
 	}
 	while (game->count.enemy > 0)
 	{
