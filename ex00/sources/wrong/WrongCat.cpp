@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:24:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 19:56:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 16:17:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ WrongCat::WrongCat()
 	std::cout << E_C;
 }
 
-// WrongCat::WrongCat(const WrongCat& other)
-// {
-// 	std::cout << R_C << "WrongCat copy constructor called" << E_C << std::endl;
-//
-// 	*this = other;
-// }
+WrongCat::WrongCat(const WrongCat& other)
+{
+	std::cout << R_C << "WrongCat copy constructor called" << E_C << std::endl;
+
+	*this = other;
+}
 
 WrongCat& WrongCat::operator=(const WrongCat& other)
 {

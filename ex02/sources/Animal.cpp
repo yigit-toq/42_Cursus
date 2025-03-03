@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 20:10:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 16:14:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ Animal& Animal::operator=(const Animal& other)
 Animal::~Animal()
 {
 	std::cout << R_C << "Animal destructor called" << E_C << std::endl;
-}
-
-void Animal::makeSound() const
-{
-	std::cout << B_C << "Animal sound" << E_C << std::endl;
 }
 
 std::string	Animal::getType() const
