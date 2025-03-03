@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 18:02:13 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 19:02:14 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 16:45:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ Cat::Cat()
 	std::cout << E_C;
 }
 
-// Cat::Cat(const Cat& other)
-// {
-// 	std::cout << G_C << "Cat copy constructor called" << E_C << std::endl;
-//
-// 	*this = other;
-// }
+Cat::Cat(const Cat& other)
+{
+	std::cout << G_C << "Cat copy constructor called" << E_C << std::endl;
+
+	*this = other;
+}
 
 Cat& Cat::operator=(const Cat& other)
 {

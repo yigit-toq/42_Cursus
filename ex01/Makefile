@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/02 14:15:39 by ytop              #+#    #+#              #
-#    Updated: 2025/01/08 20:43:57 by ytop             ###   ########.fr        #
+#    Updated: 2025/03/03 16:38:32 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			=	ex01
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Animal.cpp $(SRCS_DIR)Cat.cpp $(SRCS_DIR)Dog.cpp $(SRCS_DIR)Brain.cpp $(SRCS_DIR)wrong/WrongAnimal.cpp $(SRCS_DIR)wrong/WrongCat.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Animal.cpp $(SRCS_DIR)Cat.cpp $(SRCS_DIR)Dog.cpp $(SRCS_DIR)Brain.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
