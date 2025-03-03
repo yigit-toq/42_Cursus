@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:29:56 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 17:58:16 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 18:48:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,10 @@ typedef struct s_sound
 
 typedef struct s_enemy
 {
-	t_vect	plane;
 	t_vect	pos;
-	t_vect	dir;
-	t_vect	axis;
 	t_anim	anim;
-	int		dead;
-	int		health;
+	double	dist;
+	int		visible;
 }			t_enemy;
 
 typedef struct s_player

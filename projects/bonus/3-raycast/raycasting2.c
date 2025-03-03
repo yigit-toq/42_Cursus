@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 18:10:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 19:06:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,31 @@ static void	render_floor(t_data fl, int x, int y, double angle)
 	mlx_image_put(game->img->bgframe, x, y, pixel_color(fl, texture.x, texture.y));
 }
 
+static int	render_enemy(void)
+{
+	t_game	*game;
+	t_size	scren;
+	t_vect	d;
+	int		i;
+
+	i = 0;
+	game = get_game();
+	while (i < game->count.enemy)
+	{
+		d.x = game->enemy[i].pos.x - game->player.pos.x;
+		d.y = game->enemy[i].pos.y - game->player.pos.y;
+		double angle = atan2(d.y, d.x) - game->player.theta;
+		if (angle > PI / 2 || angle < -PI / 2)
+			continue ;
+		double dist = game->enemy[i].dist * cos(angle);
+		scren.x = (WIN_W / 2) * (1 + tan(angle));
+		scren.y = (int)(WIN_H / dist);
+		mlx_put_image_to_window(game->mlx, game->win, game->enemy[i].anim.frame->img, scren.x, scren.y);
+		i++;
+	}
+	return (FALSE);
+}
+
 static int	render_object(int x, int y)
 {
 	t_game			*game = get_game();
@@ -97,7 +122,7 @@ static int	render_object(int x, int y)
 			return (TRUE);
 		}
 	}
-	return (FALSE);
+	return (render_enemy());
 }
 
 

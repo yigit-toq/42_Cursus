@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/03 12:04:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/03 18:53:11 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,23 @@ static void	update_animtion(void)
 	}
 }
 
+void	update_enemy(void)
+{
+	t_game	*game;
+	t_vect	d;
+	int		i;
+
+	i = 0;
+	game = get_game();
+	while (i < game->count.enemy)
+	{
+		d.x = game->enemy[i].pos.x - game->player.pos.x;
+		d.y = game->enemy[i].pos.y - game->player.pos.y;
+		game->enemy[i].dist = sqrt(d.x * d.x + d.y * d.y);
+		i++;
+	}
+}
+
 static int	next_frame(void)
 {
 	t_game	*game;
@@ -116,6 +133,7 @@ static int	next_frame(void)
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
 	raycast();
 	minimap();
+	update_enemy();
 	return (SUCCESS);
 }
 
