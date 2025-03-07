@@ -122,7 +122,7 @@ static void	calculate_door(t_ray *ray, int index, double angle)
 		if (ray->plane.x == door[i].coor.x && ray->plane.y == door[i].coor.y)
 		{
 			game->grp->index = i;
-			break;
+			break ;
 		}
 		i++;
 	}

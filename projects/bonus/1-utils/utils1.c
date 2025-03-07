@@ -52,7 +52,8 @@ t_data	add_image(char *path, t_size size)
 		data.h_s = size.y;
 	}
 	error_controller("Invalid texture file.", data.img);
-	data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
+	data.add = mlx_get_data_addr(data.img, &data.bit_pp,
+			&data.length, &data.endian);
 	error_controller("Invalid texture data.", data.add);
 	return (data);
 }
@@ -76,6 +77,7 @@ int	wtspace_check(char c)
 
 char	*wtspace_trim(char *str)
 {
+	char	*result;
 	char	*start;
 	int		len;
 
@@ -93,11 +95,9 @@ char	*wtspace_trim(char *str)
 		len--;
 	}
 	if (len <= 0)
-	{
-		return (ft_substr(start, 0, 0));
-	}
+		result = ft_substr(start, 0, 0);
 	else
-	{
-		return (ft_substr(start, 0, len));
-	}
+		result = ft_substr(start, 0, len);
+	error_controller("Failed to allocate memory.", result);
+	return (result);
 }

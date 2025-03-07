@@ -31,20 +31,21 @@ void	error_controller(char *message, void *pointer)
 {
 	if (pointer)
 		return ;
-	clear_garbage();
 	ft_dprintf(2, C_G"________________________________________\n");
 	ft_dprintf(2, C_R"\nError: " C_Y"%s\n" C_E, message);
 	ft_dprintf(2, C_G"________________________________________\n");
 	ft_dprintf(2, C_E);
-	exit(EXIT_FAILURE);
+	exit_game(get_game(), EXIT_FAILURE);
 }
 
-int	exit_game(t_game *game)
+int	exit_game(t_game *game, int status)
 {
-	free_game();
-	mlx_destroy_display(game->mlx);
+	if (game->img != NULL)
+		free_game();
+	if (game->mlx != NULL)
+		mlx_destroy_display(game->mlx);
 	clear_garbage();
-	exit(EXIT_SUCCESS);
+	exit(status);
 }
 
 static void	destroy_images(t_data *frames, int total)
@@ -54,7 +55,7 @@ static void	destroy_images(t_data *frames, int total)
 
 	i = 0;
 	game = get_game();
-    while (i < total)
+	while (i < total)
 	{
 		if (frames[i].img)
 			mlx_destroy_image(game->mlx, frames[i].img);
@@ -67,9 +68,9 @@ static void	free_game(void)
 	t_game	*game;
 
 	game = get_game();
-	mlx_destroy_window(game->mlx, game->win);
+	if (game->win != NULL)
+		mlx_destroy_window(game->mlx, game->win);
 	destroy_images(game->img->direct, DIR);
-	destroy_images(game->img->skybox, DIR);
 	destroy_images(game->img->knife[0].frames, game->img->knife[0].total);
 	destroy_images(game->img->knife[1].frames, game->img->knife[1].total);
 	destroy_images(game->img->vandal[0].frames, game->img->vandal[0].total);
@@ -80,14 +81,26 @@ static void	free_game(void)
 	destroy_images(game->img->qskill[1].frames, game->img->qskill[1].total);
 	destroy_images(game->img->qskill[2].frames, game->img->qskill[2].total);
 	destroy_images(game->img->rskill[2].frames, game->img->rskill[2].total);
-	while (game->count.door-- > 0)
-		destroy_images(game->grp->door[game->count.door].anim.frames, game->grp->door[game->count.door].anim.total);
-	while (game->count.enmy-- > 0)
-		destroy_images(game->grp->enmy[game->count.enmy].anim.frames, game->grp->enmy[game->count.enmy].anim.total);	
-	mlx_destroy_image(game->mlx, game->img->bgframe.img);
-	mlx_destroy_image(game->mlx, game->img->minimap.img);
-	mlx_destroy_image(game->mlx, game->img->crossh.img);
-	mlx_destroy_image(game->mlx, game->img->ground.img);
+	if (game->grp->door)
+	{
+		while (game->count.door-- > 0)
+			destroy_images(game->grp->door[game->count.door].anim.frames, game->grp->door[game->count.door].anim.total);
+	}
+	if (game->grp->enmy)
+	{
+		while (game->count.enmy-- > 0)
+			destroy_images(game->grp->enmy[game->count.enmy].anim.frames, game->grp->enmy[game->count.enmy].anim.total);
+	}
+	if (game->img->bgframe.img)
+		mlx_destroy_image(game->mlx, game->img->bgframe.img);
+	if (game->img->minimap.img)
+		mlx_destroy_image(game->mlx, game->img->minimap.img);
+	if (game->img->skybox.img)
+		mlx_destroy_image(game->mlx, game->img->skybox.img);
+	if (game->img->ground.img)
+		mlx_destroy_image(game->mlx, game->img->ground.img);
+	if (game->img->crossh.img)
+		mlx_destroy_image(game->mlx, game->img->crossh.img);
 }
 
 // int	arg_check(char *arg)

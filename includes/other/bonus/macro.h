@@ -116,15 +116,12 @@
 # define C_Y			"\033[33m"
 
 # define H_B			0x00000000
-# define H_W			0x00FFFFFF
-# define H_Y			0x00FFFF00
 # define H_R			0x00FF0000
+# define H_Y			0x00FFFF00
+# define H_W			0x00FFFFFF
 # define H_G			0x00D1DDDE
 
 # define PI				3.14159265
-
-# define CRSS_COLOR		0xFFFFFFFF
-# define DOOR_COLOR		0x980088
 
 # define ANIM_SPEED		6
 

@@ -67,7 +67,7 @@ static void	object_counter(int x, int y)
 		game->count.wall++;
 	else if (m[x] == FLOOR)
 		game->count.floor++;
-	if (m[x] != SPACE)
+	if (wtspace_check(m[x]) == FALSE) // bakılacak
 		if (ft_strchr("01NSWEAD", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
@@ -93,12 +93,12 @@ static void	maps_control(void)
 		y++;
 	}
 	game->map->size.y = y;
-	if (flood_fill((int)game->player.pos.x, (int)game->player.pos.y))
-		error_controller("Map is not closed!!", NULL);
-	if (game->count.player < P_COUNT)
-		error_controller("There is no player.", NULL);
 	if (game->count.player > P_COUNT)
 		error_controller("There can be only one player.", NULL);
+	if (game->count.player < P_COUNT)
+		error_controller("There is no player.", NULL);
+	if (flood_fill((int)game->player.pos.x, (int)game->player.pos.y))
+		error_controller("Map is not closed!!", NULL);
 }
 
 static void	reading_file(int fd)

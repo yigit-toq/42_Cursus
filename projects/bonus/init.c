@@ -61,7 +61,7 @@ static void	init_objs(void)
 			{
 				game->grp->door[game->grp->index].coor.x = index.x;
 				game->grp->door[game->grp->index].coor.y = index.y;
-				game->grp->door[game->grp->index].filter = DOOR_COLOR;
+				game->grp->door[game->grp->index].filter = 0x980088;
 				init_animation(&game->grp->door[game->grp->index].anim, (t_size){0, 64}, ANIM_SPEED / 2, DOOR1_PATH);
 				game->grp->index++;
 			}
@@ -148,19 +148,18 @@ static void	init_img(void)
 
 	img = get_game()->img;
 	map = get_game()->map;
-	len = (int)(sizeof(img->paths) / sizeof(char *));
+	len = sizeof(img->paths) / sizeof(char *);
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < len)
+	while (i < len) // bakılacak
 	{
 		error_controller("Texture path is not found.", img->paths[i]);
 		if (i < DIR)
 			img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
-		else if (i < DIR + 4)
-			img->skybox[i - DIR] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
+	img->skybox = add_image(img->paths[len - 3], size);
 	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
 	img->crossh = add_image(img->paths[len - 1], (t_size){0, 0});
 	img->bgframe = add_image(NULL, size);
@@ -168,7 +167,6 @@ static void	init_img(void)
 	size.y = map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
-	img->hex[1] = rgb_to_hexa(img->rgb[1][0], img->rgb[1][1], img->rgb[1][2]);
 	init_slot();
 	init_objs();
 }

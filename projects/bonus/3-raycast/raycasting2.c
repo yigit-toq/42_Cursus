@@ -93,7 +93,7 @@ static int	render_object(int x, int y)
 		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
 		if (color == 0x000000)
 		{
-			mlx_image_put(game->img->bgframe, x, y, CRSS_COLOR);
+			mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
 			return (TRUE);
 		}
 	}
@@ -120,7 +120,7 @@ void	render_frame(t_ray *ray, int x, double angle)
 		if (render_object(x, y) == FALSE)
 		{
 			if (y < wall.s_pos)
-				render_skybx(game->img->skybox[0], x, y);
+				render_skybx(game->img->skybox, x, y);
 			else if (y > wall.e_pos)
 				render_floor(game->img->ground, x, y, deg_to_rad(angle));
 			else

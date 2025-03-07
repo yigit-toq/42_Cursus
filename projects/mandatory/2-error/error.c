@@ -14,6 +14,8 @@
 
 #include <mlx.h>
 
+static void	free_game(void);
+
 void	exten_controller(char *path)
 {
 	char	*extension;
@@ -27,43 +29,48 @@ void	exten_controller(char *path)
 
 void	error_controller(char *message, void *pointer)
 {
-	t_game	*game;
-
 	if (pointer)
 		return ;
-	game = get_game();
-	if (game->mlx)
-		mlx_destroy_display(game->mlx);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	clear_garbage();
-	ft_dprintf(2, C_G"----------------------------\n");
-	ft_dprintf(2, C_R"Error: " C_Y"%s\n" C_E, message);
-	ft_dprintf(2, C_G"----------------------------\n");
+	ft_dprintf(2, C_G"________________________________________\n");
+	ft_dprintf(2, C_R"\nError: " C_Y"%s\n" C_E, message);
+	ft_dprintf(2, C_G"________________________________________\n");
 	ft_dprintf(2, C_E);
-	exit(EXIT_FAILURE);
+	exit_game(get_game(), EXIT_FAILURE);
 }
 
-void	free_game(void)
+int	exit_game(t_game *game, int status)
+{
+	if (game->img != NULL)
+		free_game();
+	if (game->mlx != NULL)
+		mlx_destroy_display(game->mlx);
+	clear_garbage();
+	exit(status);
+}
+
+static void	destroy_images(t_data *frames, int total)
 {
 	t_game	*game;
 	int		i;
 
-	game = get_game();
 	i = 0;
-	mlx_destroy_window(game->mlx, game->win);
-	while (i < DIR)
+	game = get_game();
+	while (i < total)
 	{
-		mlx_destroy_image(game->mlx, game->img->dir[i].img);
+		if (frames[i].img)
+			mlx_destroy_image(game->mlx, frames[i].img);
 		i++;
 	}
-	mlx_destroy_image(game->mlx, game->img->frame.img);
 }
 
-int	exit_game(t_game *game)
+static void	free_game(void)
 {
-	free_game();
-	mlx_destroy_display(game->mlx);
-	clear_garbage();
-	exit(EXIT_SUCCESS);
+	t_game	*game;
+
+	game = get_game();
+	if (game->win != NULL)
+		mlx_destroy_window(game->mlx, game->win);
+	destroy_images(game->img->dir, 4);
+	if (game->img->frame.img)
+		mlx_destroy_image(game->mlx, game->img->frame.img);
 }

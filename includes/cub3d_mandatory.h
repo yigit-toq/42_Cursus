@@ -21,7 +21,7 @@
 
 t_game			*get_game(void);
 
-int				exit_game(t_game *game);
+int				exit_game(t_game *game, int status);
 
 /*----------------------ERROR CONTROLLER----------------------*/
 
@@ -47,7 +47,7 @@ void			mlx_image_put(t_data img, int x, int y, unsigned int color);
 
 /*----------------------FILE  CONTROLLER----------------------*/
 
-int				path_control(void);
+void			path_control(void);
 
 void			files_controller(char *path);
 

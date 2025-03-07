@@ -227,7 +227,7 @@ int	key_relse_handler(int key, t_game *game)
 	if (key == L_ARR_KEY)
 		game->player.rota[1] = FALSE;
 	if (key == ESC_KEY)
-		exit_game(game);
+		exit_game(game, EXIT_SUCCESS);
 	if (key == E_KEY && game->grp->curr)
 	{
 		game->grp->curr->anim.play = TRUE;

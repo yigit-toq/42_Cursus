@@ -77,6 +77,7 @@ int	wtspace_check(char c)
 
 char	*wtspace_trim(char *str)
 {
+	char	*result;
 	char	*start;
 	int		len;
 
@@ -94,11 +95,9 @@ char	*wtspace_trim(char *str)
 		len--;
 	}
 	if (len <= 0)
-	{
-		return (ft_substr(start, 0, 0));
-	}
+		result = ft_substr(start, 0, 0);
 	else
-	{
-		return (ft_substr(start, 0, len));
-	}
+		result = ft_substr(start, 0, len);
+	error_controller("Failed to allocate memory.", result);
+	return (result);
 }

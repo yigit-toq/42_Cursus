@@ -64,6 +64,7 @@ typedef struct s_ray
 
 typedef struct s_img
 {
+	char		*paths[4];
 	int			rgb[2][3];
 	int			hex[2];
 	t_data		dir[4];

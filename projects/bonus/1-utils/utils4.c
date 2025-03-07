@@ -23,6 +23,7 @@ char	**copy_array(char **array, int size)
 	while (array[i])
 	{
 		copy[i] = ft_strdup(array[i]);
+		error_controller("Memory allocation failed.", copy[i]);
 		i++;
 	}
 	return (copy);

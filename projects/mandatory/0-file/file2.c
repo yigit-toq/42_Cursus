@@ -19,6 +19,9 @@ static void	set_rgb_color(int *color, char *line)
 	int		i;
 	int		j;
 
+	line = wtspace_trim(line);
+	if (line[ft_strlen(line) - 1] == ',')
+		error_controller("Invalid color.", NULL); // will look again bonusa eklenmedi
 	i = 0;
 	rgb = ft_split(line, ',');
 	while (rgb[i])
@@ -40,7 +43,7 @@ static void	set_rgb_color(int *color, char *line)
 		error_controller("Invalid color.", NULL);
 }
 
-static int	path_read(char *line, char **names)
+static int	path_read(char *line, char **names, int *j)
 {
 	t_game	*game;
 	int		len;
@@ -55,12 +58,13 @@ static int	path_read(char *line, char **names)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->rgb[i - 4], line + len);
+				set_rgb_color(game->img->rgb[i - DIR], line + len);
 			}
 			else
 			{
-				game->img->dir[i].img = wtspace_trim(line + len);
+				game->img->paths[i] = wtspace_trim(line + len);
 			}
+			(*j)++;
 			break ;
 		}
 		i++;
@@ -68,20 +72,24 @@ static int	path_read(char *line, char **names)
 	return (wtspace_trim(line)[0] != WALL); // will look again
 }
 
-int	path_control(void)
+void	path_control(void)
 {
 	static char	*names[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	char		**file;
 	char		*line;
+	int			size;
 
+	size = 0;
 	file = get_game()->map->map;
 	while (*file)
 	{
 		line = wtspace_trim(*file);
-		if (path_read(line, names) == FALSE)
+		if (path_read(line, names, &size) == FALSE)
 			break ;
 		file++;
 	}
 	get_game()->map->map = file;
-	return (error_controller("Map is not found.", *file), SUCCESS);
+	if (size != DIR + 2)
+		error_controller("Missing path.", NULL);
+	error_controller("Map is not found.", *file);
 }

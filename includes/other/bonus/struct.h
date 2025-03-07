@@ -117,19 +117,19 @@ typedef struct s_ray
 typedef struct s_img
 {
 	t_anim		*next_anim;
-	char		*paths[10];
-	int			hex[2];
-	int			rgb[2][3];
+	char		*paths[7];
+	int			hex[1];
+	int			rgb[1][3];
 	t_data		direct[4];
 	t_data		crossh;
 	t_data		ground;
+	t_data		skybox;
 	t_data		minimap;
 	t_data		bgframe;
 	t_anim		knife[4];
 	t_anim		vandal[4];
 	t_anim		qskill[4];
 	t_anim		rskill[4];
-	t_data		skybox[4];
 }				t_img;
 
 typedef struct s_sound

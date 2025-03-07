@@ -34,11 +34,12 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < DIR)
+	while (i < DIR) // bakılacak
 	{
-		if (!img->dir[i].img)
-			error_controller("Texture path is not found.", NULL);
-		img->dir[i] = add_image(img->dir[i].img, (t_size){0, 0});
+		if (img->paths[i])
+			img->dir[i] = add_image(img->paths[i], (t_size){0, 0});
+		if (img->dir[i].img == NULL)
+			error_controller("Texture path is not found :D", NULL);
 		i++;
 	}
 	img->frame = add_image(NULL, size);

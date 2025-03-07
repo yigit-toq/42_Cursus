@@ -186,7 +186,7 @@ int	key_release_handler(int key, t_game *game)
 	}
 	if (key == ESC_KEY)
 	{
-		exit_game(game);
+		exit_game(game, EXIT_SUCCESS);
 	}
 	return (SUCCESS);
 }

@@ -26,7 +26,7 @@ unsigned int	pixel_color(t_data img, int x, int y)
 	else
 	{
 		pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
-		return (*(unsigned int *)pixel_address);	
+		return (*(unsigned int *)pixel_address);
 	}
 }
 
