@@ -6,15 +6,16 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 16:40:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:59:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
+
+#include <sys/time.h>
+#include <fcntl.h>
 
 #include <mlx.h>
-#include <fcntl.h>
-#include <sys/time.h>
 
 void	delay(int ms)
 {
@@ -51,7 +52,8 @@ t_data	add_image(char *path, t_size size)
 		data.h_s = size.y;
 	}
 	error_controller("Invalid texture file.", data.img);
-	data.add = mlx_get_data_addr(data.img, &data.bit_pp, &data.length, &data.endian);
+	data.add = mlx_get_data_addr(data.img, &data.bit_pp,
+			&data.length, &data.endian);
 	error_controller("Invalid texture data.", data.add);
 	return (data);
 }

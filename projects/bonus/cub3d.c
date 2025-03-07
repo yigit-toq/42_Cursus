@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:16:49 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:54:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ t_game	*get_game(void)
 		ft_bzero(&game, sizeof(t_game));
 		init = TRUE;
 		game.map = ft_calloc(1, sizeof(t_map));
+		error_controller("Failed to allocate memory.", game.map);
 		game.img = ft_calloc(1, sizeof(t_img));
+		error_controller("Failed to allocate memory.", game.img);
+		game.grp = ft_calloc(1, sizeof(t_grp));
+		error_controller("Failed to allocate memory.", game.grp);
 	}
 	return (&game);
 }

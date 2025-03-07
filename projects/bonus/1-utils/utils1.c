@@ -6,15 +6,16 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:25:41 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 16:39:54 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:37:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-#include <mlx.h>
-#include <fcntl.h>
 #include <sys/time.h>
+#include <fcntl.h>
+
+#include <mlx.h>
 
 void	delay(int ms)
 {

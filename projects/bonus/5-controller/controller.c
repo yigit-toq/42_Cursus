@@ -6,15 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 18:20:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:47:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-#include <mlx.h>
-
 #include <math.h>
+
+#include <mlx.h>
 
 // int	input_systm(int f, int s, double acceleration)
 // {
@@ -187,7 +187,7 @@ static int	input_systm(double h_move, double v_move)
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
 	int cell = game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)];
-	if (cell == WALL || (cell == DOOR && !game->curr->state))
+	if (cell == WALL || (cell == DOOR && !game->grp->curr->state))
 		return (FAILURE);
 	return (game->player.pos = pos, SUCCESS);
 }
@@ -228,9 +228,9 @@ int	key_relse_handler(int key, t_game *game)
 		game->player.rota[1] = FALSE;
 	if (key == ESC_KEY)
 		exit_game(game);
-	if (key == E_KEY && game->curr)
+	if (key == E_KEY && game->grp->curr)
 	{
-		game->curr->anim.play = TRUE;
+		game->grp->curr->anim.play = TRUE;
 	}
 	if (key == M_KEY)
 	{

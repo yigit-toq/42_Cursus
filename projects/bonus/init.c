@@ -6,15 +6,16 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/03 18:53:11 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:56:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-#include <mlx.h>
-
 #include <sys/time.h>
+#include <math.h>
+
+#include <mlx.h>
 
 long double	sys_time(void)
 {
@@ -47,10 +48,10 @@ static void	init_objs(void)
 
 	ft_bzero(&index, sizeof(t_size));
 	game = get_game();
-	game->door = ft_calloc(game->count.door, sizeof(t_door));
-	error_controller("Failed to allocate memory.", game->door);
-	game->enemy = ft_calloc(game->count.enemy, sizeof(t_enemy));
-	error_controller("Failed to allocate memory.", game->enemy);
+	game->grp->door = ft_calloc(game->count.door, sizeof(t_door));
+	error_controller("Failed to allocate memory.", game->grp->door);
+	game->grp->enmy = ft_calloc(game->count.enmy, sizeof(t_enmy));
+	error_controller("Failed to allocate memory.", game->grp->enmy);
 	while (game->map->map[index.y])
 	{
 		index.x = 0;
@@ -58,22 +59,22 @@ static void	init_objs(void)
 		{
 			if (game->map->map[index.y][index.x] == DOOR)
 			{
-				game->door[game->index].coor.x = index.x;
-				game->door[game->index].coor.y = index.y;
-				game->door[game->index].filter = 0x980088;
-				init_animation(&game->door[game->index].anim, (t_size){0, 64}, ANIM_SPEED / 2, DOOR1_PATH);
-				game->index++;
+				game->grp->door[game->grp->index].coor.x = index.x;
+				game->grp->door[game->grp->index].coor.y = index.y;
+				game->grp->door[game->grp->index].filter = DOOR_COLOR;
+				init_animation(&game->grp->door[game->grp->index].anim, (t_size){0, 64}, ANIM_SPEED / 2, DOOR1_PATH);
+				game->grp->index++;
 			}
-			if (game->map->map[index.y][index.x] == ENEMY)
+			if (game->map->map[index.y][index.x] == ENMY)
 			{
-				game->enemy->pos.x = index.x;
-				game->enemy->pos.y = index.y;
+				game->grp->enmy->pos.x = index.x;
+				game->grp->enmy->pos.y = index.y;
 			}
 			index.x++;
 		}
 		index.y++;
 	}
-	init_animation(&game->enemy->anim, (t_size){0, 6}, ANIM_SPEED, ENEMY_PATH);
+	init_animation(&game->grp->enmy->anim, (t_size){0, 6}, ANIM_SPEED, ENMY_PATH);
 }
 
 static void	update_animtion(void)
@@ -94,12 +95,12 @@ static void	update_animtion(void)
 			game->img->next_anim = game->player.slot->fire;
 		}
 	}
-	if (game->curr && game->curr->anim.play == TRUE)
+	if (game->grp->curr && game->grp->curr->anim.play == TRUE)
 	{
-		if (game->curr->state == FALSE)
-			updt_animation(&game->curr->anim, FALSE);
+		if (game->grp->curr->state == FALSE)
+			updt_animation(&game->grp->curr->anim, FALSE);
 		else
-			updt_animation(&game->curr->anim, TRUE);
+			updt_animation(&game->grp->curr->anim, TRUE);
 		//game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
 	}
 }
@@ -112,11 +113,11 @@ void	update_enemy(void)
 
 	i = 0;
 	game = get_game();
-	while (i < game->count.enemy)
+	while (i < game->count.enmy)
 	{
-		d.x = game->enemy[i].pos.x - game->player.pos.x;
-		d.y = game->enemy[i].pos.y - game->player.pos.y;
-		game->enemy[i].dist = sqrt(d.x * d.x + d.y * d.y);
+		d.x = game->grp->enmy[i].pos.x - game->player.pos.x;
+		d.y = game->grp->enmy[i].pos.y - game->player.pos.y;
+		game->grp->enmy[i].dist = sqrt(d.x * d.x + d.y * d.y);
 		i++;
 	}
 }
@@ -154,10 +155,10 @@ static void	init_img(void)
 	while (i < len)
 	{
 		error_controller("Texture path is not found.", img->paths[i]);
-		if (i < DIR_SIZE)
+		if (i < DIR)
 			img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
-		else if (i < DIR_SIZE + 4)
-			img->skybox[i - DIR_SIZE] = add_image(img->paths[i], (t_size){0, 0});
+		else if (i < DIR + 4)
+			img->skybox[i - DIR] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
 	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
@@ -187,6 +188,5 @@ void	init_game(void)
 	mlx_hook(game->win, 5, 1L << 3, mouse_relse_handler, game);
 	mlx_hook(game->win, 6, 1L << 6, mouse_moves_handler, game);
 	mlx_hook(game->win, DESTROY, 1L << DESTROY, exit_game, game);
-	mlx_mouse_hook(game->win, mouse_press_handler, game);
 	mlx_loop(game->mlx);
 }

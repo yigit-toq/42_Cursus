@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 22:47:50 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/16 22:47:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 16:54:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 char	**copy_array(char **array, int size)
 {

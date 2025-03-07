@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:36:08 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 13:59:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:02:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ unsigned int	pixel_color(t_data img, int x, int y)
 
 	if (x < 0 || y < 0 || x >= img.w_s || y >= img.h_s)
 		return (FALSE);
-	pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
-	return (*(unsigned int *)pixel_address);
+	else
+	{
+		pixel_address = img.add + (y * img.length) + (x * (img.bit_pp / 8));
+		return (*(unsigned int *)pixel_address);	
+	}
 }
 
 void	mlx_image_put(t_data img, int x, int y, unsigned int color)

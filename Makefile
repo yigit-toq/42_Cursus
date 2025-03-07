@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/16 17:04:41 by ytop              #+#    #+#              #
-#    Updated: 2024/12/30 12:53:24 by ytop             ###   ########.fr        #
+#    Updated: 2025/03/07 15:36:23 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ B_SRCS_DIR			=	$(PROJECTS)bonus/
 B_OBJS_DIR			=	objects_b/
 
 M_SRCS				=	$(M_SRCS_DIR)cub3d.c	$(M_FILE_DIR)file1.c	$(M_UTILS_DIR)utils1.c	$(M_ERROR_DIR)error.c	$(M_RAYCAST_DIR)raycasting1.c	$(M_GRAPHICS_DIR)graphics.c	$(M_CONTROLLER_DIR)controller.c	\
-						$(M_SRCS_DIR)init.c		$(M_FILE_DIR)file2.c	$(M_UTILS_DIR)utils2.c							$(M_RAYCAST_DIR)raycasting2.c																\
+						$(M_SRCS_DIR)init.c		$(M_FILE_DIR)file2.c	$(M_UTILS_DIR)utils2.c																														\
 																		$(M_UTILS_DIR)utils3.c																														\
 																		$(M_UTILS_DIR)utils4.c																														\
 

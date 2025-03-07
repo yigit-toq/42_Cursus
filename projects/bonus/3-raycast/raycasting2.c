@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:24:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/03 19:06:40 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:51:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	draw_tex(t_objs obj, t_size pos, t_data *img, int filter)
 	double	img_y;
 	int		color;
 
-	img_x = floor((int)(img->w_s * obj.contact));
+	img_x = floor(img->w_s * obj.contact);
 	img_y = ((pos.y - obj.s_pos) * img->h_s) / (obj.height * 2);
 	if (img_y > img->h_s - 1)
 		img_y = img->h_s - 1;
@@ -68,31 +68,6 @@ static void	render_floor(t_data fl, int x, int y, double angle)
 	mlx_image_put(game->img->bgframe, x, y, pixel_color(fl, texture.x, texture.y));
 }
 
-static int	render_enemy(void)
-{
-	t_game	*game;
-	t_size	scren;
-	t_vect	d;
-	int		i;
-
-	i = 0;
-	game = get_game();
-	while (i < game->count.enemy)
-	{
-		d.x = game->enemy[i].pos.x - game->player.pos.x;
-		d.y = game->enemy[i].pos.y - game->player.pos.y;
-		double angle = atan2(d.y, d.x) - game->player.theta;
-		if (angle > PI / 2 || angle < -PI / 2)
-			continue ;
-		double dist = game->enemy[i].dist * cos(angle);
-		scren.x = (WIN_W / 2) * (1 + tan(angle));
-		scren.y = (int)(WIN_H / dist);
-		mlx_put_image_to_window(game->mlx, game->win, game->enemy[i].anim.frame->img, scren.x, scren.y);
-		i++;
-	}
-	return (FALSE);
-}
-
 static int	render_object(int x, int y)
 {
 	t_game			*game = get_game();
@@ -118,11 +93,11 @@ static int	render_object(int x, int y)
 		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
 		if (color == 0x000000)
 		{
-			mlx_image_put(game->img->bgframe, x, y, CROSS_COLOR);
+			mlx_image_put(game->img->bgframe, x, y, CRSS_COLOR);
 			return (TRUE);
 		}
 	}
-	return (render_enemy());
+	return (FALSE);
 }
 
 
@@ -135,7 +110,7 @@ void	render_frame(t_ray *ray, int x, double angle)
 
 	y = 0;
 	game = get_game();
-	door = &game->door[game->index];
+	door = &game->grp->door[game->grp->index];
 	if (ray->door.coll)
 		wall = ray->door;
 	else

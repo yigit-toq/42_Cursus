@@ -6,14 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:13:02 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:38:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-#include <mlx.h>
 #include <math.h>
+
+#include <mlx.h>
 
 void	draw_hit(t_data image, t_size start, t_size curr, int color)
 {
@@ -172,7 +173,7 @@ int	draw_circ(t_data data, t_vect center, t_vect radius, int color)
 // rot.x = center.x + (cos(game->player.theta) * radius.x);
 // rot.y = center.y + (sin(game->player.theta) * radius.y);
 // mlx_pixel_put(game->mlx, game->win, rot.x, rot.y, H_W);
-
+//
 // for (double angle = 0; angle < 2 * PI; angle += 0.001)
 // {
 //     p_coord.x = center.x + radius.x * cos(angle);

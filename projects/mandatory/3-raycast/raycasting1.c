@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 15:51:10 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:06:45 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 #include <math.h>
 
@@ -78,8 +78,8 @@ static void	calculate_ray_dis(t_ray *ray, double angle)
 			ray->wall.direct = 0;
 		ray->wall.contact = ray->src.x + ray->dist * ray->dir.x;
 	}
-	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
 	ray->wall.contact -= floor(ray->wall.contact);
+	ray->dist = cos(deg_to_rad(angle) - game->player.theta) * ray->dist;
 }
 
 static void	calculate_ray_hit(t_ray *ray)
@@ -105,13 +105,6 @@ static void	calculate_ray_hit(t_ray *ray)
 			break ;
 	}
 }
-
-// static void	calculate_wal_hgt(t_ray *ray)
-// {
-// 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
-// 	ray->wall.s_pos = (WIN_H / 2) - ray->wall.height;
-// 	ray->wall.e_pos = (WIN_H / 2) + ray->wall.height;
-// }
 
 int	raycast(void)
 {

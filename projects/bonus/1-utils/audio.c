@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 19:54:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/30 13:42:37 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 16:59:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+#include "./bonus/audio.h"
 
 static void	audio_callback(void *userdata, Uint8 *stream, Uint32 len)
 {

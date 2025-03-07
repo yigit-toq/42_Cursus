@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 16:40:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 16:54:08 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 #include <unistd.h>
 
@@ -67,7 +67,7 @@ static void	object_counter(int x, int y)
 	{
 		game->count.floor++;
 	}
-	if (wtspace_check(m[x]) == FALSE) // will look again
+	if (m[x] != SPACE)
 		if (ft_strchr("01NSWE", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
@@ -78,7 +78,6 @@ static void	maps_control(void)
 	int		x;
 	int		y;
 
-	x = 0;
 	y = 0;
 	game = get_game();
 	while (game->map->map[y])

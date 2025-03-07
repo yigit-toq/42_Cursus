@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 10:13:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 18:01:34 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:47:09 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ static void	calculate_ray_dis(t_ray *ray, double angle, t_objs *obj)
 			obj->direct = 0;
 		obj->contact = ray->src.x + obj->dist * ray->dir.x;
 	}
-	obj->dist = cos(deg_to_rad(angle) - game->player.theta) * obj->dist;
 	obj->contact -= floor(obj->contact);
+	obj->dist = cos(deg_to_rad(angle) - game->player.theta) * obj->dist;
 }
 
 static void	calculate_wal_hgt(t_ray *ray, double angle, t_objs *obj)
@@ -91,29 +91,42 @@ static void	calculate_wal_hgt(t_ray *ray, double angle, t_objs *obj)
 	obj->e_pos = (WIN_H / 2) + obj->height;
 }
 
+static void	middle_ray(t_ray *ray, int index, void *type)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (index == WIN_W / 2)
+	{
+		if (game->grp->door == type)
+		{
+			if (ray->door.dist <= 2)
+				game->grp->curr = &game->grp->door[game->grp->index];
+			else
+				game->grp->curr = NULL;
+		}
+	}
+}
+
 static void	calculate_door(t_ray *ray, int index, double angle)
 {
 	t_game	*game;
+	t_door	*door;
 	int		i;
 
 	i = 0;
 	game = get_game();
+	door = game->grp->door;
 	while (i < game->count.door)
 	{
-		if (ray->plane.x == game->door[i].coor.x && ray->plane.y == game->door[i].coor.y)
+		if (ray->plane.x == door[i].coor.x && ray->plane.y == door[i].coor.y)
 		{
-			game->index = i;
+			game->grp->index = i;
 			break;
 		}
 		i++;
 	}
-	if (index == WIN_W / 2)
-	{
-		if (ray->door.dist <= 2)
-			game->curr = &game->door[game->index];
-		else
-			game->curr = NULL;
-	}
+	middle_ray(ray, index, door);
 	calculate_ray_dis(ray, angle, &ray->door);
 	calculate_wal_hgt(ray, angle, &ray->door);
 	ray->door.coll = TRUE;

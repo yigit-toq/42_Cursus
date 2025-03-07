@@ -5,166 +5,50 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/25 00:43:59 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 14:10:36 by ytop             ###   ########.fr       */
+/*   Created: 2024/10/29 14:13:24 by ytop              #+#    #+#             */
+/*   Updated: 2025/03/07 18:10:28 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
-#include <mlx.h>
 #include <math.h>
 
-void	draw_hit(t_data image, t_size start, t_size curr, int color)
+static void	draw_tex(double img_x, t_ray *ray, t_size pos, t_data img)
 {
-	t_game	*game;
-	t_size	step;
-	t_size	dir;
-	int		er1;
-	int		er2;
+	double	img_y;
+	int		color;
 
-	game = get_game();
-	dir.x = abs(curr.x - start.x);
-	dir.y = abs(curr.y - start.y);
-	if (start.x < curr.x)
-		step.x = +1;
-	else
-		step.x = -1;
-	if (start.y < curr.y)
-		step.y = +1;
-	else
-		step.y = -1;
-	er1 = dir.x - dir.y;
-	while (start.x != curr.x || start.y != curr.y)
+	img_y = ((pos.y - ray->wall.s_pos) * img.h_s) / (ray->wall.height * 2);
+	if (img_y > img.h_s - 1)
+		img_y = img.h_s - 1;
+	color = pixel_color(img, img_x, img_y);
+	mlx_image_put(get_game()->img->frame, pos.x, pos.y, color);
+}
+
+void	render_frame(t_ray *ray, int x)
+{
+	t_img	*img;
+	double	i_x;
+	int		y;
+
+	y = 0;
+	img = get_game()->img;
+	i_x = floor((int)(img->dir[0].w_s * ray->wall.contact));
+	while (y < WIN_H)
 	{
-		if (image.add)
-			mlx_image_put(image, start.x, start.y, color);
+		if (y < ray->wall.s_pos)
+		{
+			mlx_image_put(img->frame, x, y, img->hex[1]);
+		}
+		else if (y > ray->wall.e_pos)
+		{
+			mlx_image_put(img->frame, x, y, img->hex[0]);
+		}
 		else
-			mlx_pixel_put(game->mlx, game->win, start.x, start.y, color);
-		er2 = 2 * er1;
-		if (er2 < +dir.x)
 		{
-			er1 += dir.x;
-			start.y += step.y;
+			draw_tex(i_x, ray, (t_size){x, y}, img->dir[ray->wall.direct]);
 		}
-		if (er2 > -dir.y)
-		{
-			er1 -= dir.y;
-			start.x += step.x;
-		}
+		y++;
 	}
-}
-
-void	draw_ray(t_data data, t_vect pos, double theta, int color)
-{
-	t_game	*game;
-	t_vect	coord;
-
-	game = get_game();
-	coord.x = cos(theta);
-	coord.y = sin(theta);
-	while (TRUE)
-	{
-		if (data.add)
-			mlx_image_put(data, pos.x, pos.y, color);
-		else
-			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
-		pos.x += coord.x;
-		pos.y += coord.y;
-		if (pos.x < 0 || pos.x >= WIN_W || pos.y < 0 || pos.y >= WIN_H)
-			break ;
-	}
-}
-
-void	draw_line(t_data data, t_vect pos, t_vect vect, int color)
-{
-	t_game	*game;
-	t_vect	coord;
-	t_vect	limit;
-	double	steps;
-	int		index;
-
-	game = get_game();
-	index = 0;
-	limit.x = pos.x + vect.x * cos(vect.y);
-	limit.y = pos.y + vect.x * sin(vect.y);
-	coord.x = limit.x - pos.x;
-	coord.y = limit.y - pos.y;
-	steps = fmax(fabs(coord.x), fabs(coord.y));
-	coord.x = coord.x / steps;
-	coord.y = coord.y / steps;
-	while (index <= (int)steps)
-	{
-		if (data.add)
-			mlx_image_put(data, pos.x, pos.y, color);
-		else
-			mlx_pixel_put(game->mlx, game->win, pos.x, pos.y, color);
-		pos.x += coord.x;
-		pos.y += coord.y;
-		index++;
-	}
-}
-
-void	draw_rectangle(t_data data, t_vect center, t_vect size, int color)
-{
-	t_game	*game;
-	t_vect	pos;
-	t_vect	put;
-
-	game = get_game();
-	center.x *= size.x;
-	center.y *= size.y;
-	ft_bzero(&pos, sizeof(t_vect));
-	while (pos.y < size.y)
-	{
-		pos.x = 0;
-		while (pos.x < size.x)
-		{
-			put.x = center.x + pos.x;
-			put.y = center.y + pos.y;
-			if (data.add)
-				mlx_image_put(data, put.x, put.y, color);
-			else
-				mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
-			pos.x++;
-		}
-		pos.y++;
-	}
-}
-
-int	draw_circle(t_data data, t_vect center, t_vect radius, int color)
-{
-	t_game	*game;
-	t_vect	pos;
-	t_vect	rds;
-	t_vect	put;
-
-	game = get_game();
-	radius.x /= 2;
-	radius.y /= 2;
-	rds.x = pow(radius.x, 2);
-	rds.y = pow(radius.y, 2);
-	pos.y = -radius.y;
-	while (pos.y <= radius.y)
-	{
-		pos.x = -radius.x;
-		while (pos.x <= radius.x)
-		{
-			if ((pow(pos.x, 2) / rds.x) + (pow(pos.y, 2) / rds.y) <= 1)
-			{
-				put.x = center.x + pos.x;
-				put.y = center.y + pos.y;
-				if (data.add)
-					mlx_image_put(data, put.x, put.y, color);
-				else
-					mlx_pixel_put(game->mlx, game->win, put.x, put.y, color);
-			}
-			pos.x++;
-		}
-		pos.y++;
-	}
-	if (radius.x == radius.y)
-		return (SUCCESS);
-	else
-		return (FAILURE);
 }

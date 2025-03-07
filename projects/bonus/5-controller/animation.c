@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/19 20:23:49 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:52:29 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+#include <stdio.h>
 
 // void	init_frame(t_data *frame, char *path, int *range)
 // {
@@ -106,19 +108,19 @@ void	updt_animation(t_anim *anim, int reverse)
 				game->player.slot = &game->player.slots[1];
 				swap_animation(anim, game->player.slot->idle);
 			}
-			if (anim == &game->curr->anim)
+			if (anim == &game->grp->curr->anim)
 			{
-				if (game->curr->state)
+				if (game->grp->curr->state)
 				{
-					game->curr->anim.index = 0;
-					game->curr->anim.frame = game->curr->anim.frames;
-					game->curr->state = FALSE;
+					game->grp->curr->anim.index = 0;
+					game->grp->curr->anim.frame = game->grp->curr->anim.frames;
+					game->grp->curr->state = FALSE;
 				}
 				else
 				{
-					game->curr->anim.index = game->curr->anim.total - 1;
-					game->curr->anim.frame = &game->curr->anim.frames[game->curr->anim.total - 1];
-					game->curr->state = TRUE;
+					game->grp->curr->anim.index = game->grp->curr->anim.total - 1;
+					game->grp->curr->anim.frame = &game->grp->curr->anim.frames[game->grp->curr->anim.total - 1];
+					game->grp->curr->state = TRUE;
 				}
 			}
 		}

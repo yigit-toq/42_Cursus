@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2025/02/25 18:20:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 16:56:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,18 @@ static void	object_counter(int x, int y)
 		game->player.pos.y = y;
 		game->player.direction = m[x];
 	}
+	else if (m[x] == ENMY)
+		game->count.enmy++;
 	else if (m[x] == DOOR)
 		game->count.door++;
 	else if (m[x] == WALL)
 		game->count.wall++;
 	else if (m[x] == FLOOR)
 		game->count.floor++;
-	else if (m[x] == ENEMY)
-		game->count.enemy++;
-	if (wtspace_check(m[x]) == FALSE) // will look again
+	if (m[x] != SPACE)
 		if (ft_strchr("01NSWEAD", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
-
-// if (flood_fill(x, y))
-	// 	error_controller("Map is not closed.", NULL);
 
 static void	maps_control(void)
 {
@@ -81,7 +78,6 @@ static void	maps_control(void)
 	int		x;
 	int		y;
 
-	x = 0;
 	y = 0;
 	game = get_game();
 	while (game->map->map[y])

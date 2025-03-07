@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 17:21:40 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:04:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 #include <mlx.h>
 
@@ -45,7 +45,7 @@ void	free_game(void)
 	game = get_game();
 	i = 0;
 	mlx_destroy_window(game->mlx, game->win);
-	while (i < DIR_SIZE)
+	while (i < DIR)
 	{
 		mlx_destroy_image(game->mlx, game->img->dir[i].img);
 		i++;

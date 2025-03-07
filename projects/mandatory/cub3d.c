@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/26 16:57:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:54:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 t_game	*get_game(void)
 {
@@ -22,7 +22,9 @@ t_game	*get_game(void)
 		ft_bzero(&game, sizeof(t_game));
 		init = TRUE;
 		game.map = ft_calloc(1, sizeof(t_map));
+		error_controller("Failed to allocate memory.", game.map);
 		game.img = ft_calloc(1, sizeof(t_img));
+		error_controller("Failed to allocate memory.", game.img);
 	}
 	return (&game);
 }

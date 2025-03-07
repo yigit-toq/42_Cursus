@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:45 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/03 14:08:33 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:51:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static void	free_game(void)
 
 	game = get_game();
 	mlx_destroy_window(game->mlx, game->win);
-	destroy_images(game->img->direct, DIR_SIZE);
-	destroy_images(game->img->skybox, DIR_SIZE);
+	destroy_images(game->img->direct, DIR);
+	destroy_images(game->img->skybox, DIR);
 	destroy_images(game->img->knife[0].frames, game->img->knife[0].total);
 	destroy_images(game->img->knife[1].frames, game->img->knife[1].total);
 	destroy_images(game->img->vandal[0].frames, game->img->vandal[0].total);
@@ -81,9 +81,9 @@ static void	free_game(void)
 	destroy_images(game->img->qskill[2].frames, game->img->qskill[2].total);
 	destroy_images(game->img->rskill[2].frames, game->img->rskill[2].total);
 	while (game->count.door-- > 0)
-		destroy_images(game->door[game->count.door].anim.frames, game->door[game->count.door].anim.total);
-	while (game->count.enemy-- > 0)
-		destroy_images(game->enemy[game->count.enemy].anim.frames, game->enemy[game->count.enemy].anim.total);	
+		destroy_images(game->grp->door[game->count.door].anim.frames, game->grp->door[game->count.door].anim.total);
+	while (game->count.enmy-- > 0)
+		destroy_images(game->grp->enmy[game->count.enmy].anim.frames, game->grp->enmy[game->count.enmy].anim.total);	
 	mlx_destroy_image(game->mlx, game->img->bgframe.img);
 	mlx_destroy_image(game->mlx, game->img->minimap.img);
 	mlx_destroy_image(game->mlx, game->img->crossh.img);

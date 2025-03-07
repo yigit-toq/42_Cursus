@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/24 12:22:10 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 17:56:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,42 +79,83 @@
 #  define NUM_STR		18
 # endif
 
-# define C_E		"\033[0m"
-# define C_R		"\033[31m"
-# define C_G		"\033[32m"
-# define C_Y		"\033[33m"
+# define WIN_NAME		"Cub3D"
 
-# define H_B		0x00000000
-# define H_W		0x00FFFFFF
-# define H_Y		0x00FFFF00
-# define H_R		0x00FF0000
-# define H_G		0x00D1DDDE
+# define ENMY_PATH		"./assets/textures/char/enemy/frame"
+# define ENMY			'A'
 
-# define PI			3.14159265
+# define DOOR1_PATH		"./assets/textures/env/door/1/frame"
+# define DOOR2_PATH		"./assets/textures/env/door/2/frame"
+# define DOOR			'D'
 
-# define DESTROY	17
+# define KNIFE_TAKE		"./assets/textures/gun/knife/take/frame"
+# define KNIFE_IDLE		"./assets/textures/gun/knife/idle/frame"
 
-# define P_COUNT	1
+# define VANDAL_TAKE	"./assets/textures/gun/vandal/take/frame"
+# define VANDAL_IDLE	"./assets/textures/gun/vandal/idle/frame"
+# define VANDAL_FIRE	"./assets/textures/gun/vandal/fire/frame"
+# define VANDAL_SKIN	"./assets/textures/gun/vandal/skin/frame"
 
-# define TRUE		1
-# define FALSE		0
+# define QSKILL_TAKE	"./assets/textures/char/reyna/q/take/frame"
+# define QSKILL_IDLE	"./assets/textures/char/reyna/q/idle/frame"
+# define QSKILL_FIRE	"./assets/textures/char/reyna/q/fire/frame"
 
-# define FAILURE	1
-# define SUCCESS	0
+# define RSKILL_FIRE	"./assets/textures/char/reyna/r/fire/frame"
 
-# define NORTH		'N'
-# define SOUTH		'S'
-# define WEST		'W'
-# define EAST		'E'
+# define TAKE			0
+# define IDLE			1
+# define FIRE			2
+# define SKIN			3
 
-# define WALL		'1'
-# define FLOOR		'0'
-# define SPACE		' '
+# define WIN_W			640
+# define WIN_H			360
 
-# define VISITED	'V'
+# define C_E			"\033[0m"
+# define C_R			"\033[31m"
+# define C_G			"\033[32m"
+# define C_Y			"\033[33m"
 
-# define FOV		60.00
-# define SEV		64.00
+# define H_B			0x00000000
+# define H_W			0x00FFFFFF
+# define H_Y			0x00FFFF00
+# define H_R			0x00FF0000
+# define H_G			0x00D1DDDE
 
-# define DIR_SIZE   4
+# define PI				3.14159265
+
+# define CRSS_COLOR		0xFFFFFFFF
+# define DOOR_COLOR		0x980088
+
+# define ANIM_SPEED		6
+
+# define MOUSE_SENS		0.050
+
+# define ROTATE			0.050
+# define SPEED			0.025
+
+# define DESTROY		17
+
+# define P_COUNT		1
+
+# define TRUE			1
+# define FALSE			0
+
+# define FAILURE		1
+# define SUCCESS		0
+
+# define VISITED		'V'
+
+# define NORTH			'N'
+# define SOUTH			'S'
+# define WEST			'W'
+# define EAST			'E'
+
+# define WALL			'1'
+# define FLOOR			'0'
+# define SPACE			' '
+
+# define DIR			4
+
+# define FOV			60.00
+# define SEV			64.00
 #endif

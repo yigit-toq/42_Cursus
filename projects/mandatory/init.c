@@ -6,11 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/01/08 17:16:35 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 16:53:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_mandatory.h"
 
 #include <mlx.h>
 
@@ -34,7 +34,7 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < DIR_SIZE)
+	while (i < DIR)
 	{
 		if (!img->dir[i].img)
 			error_controller("Texture path is not found.", NULL);
