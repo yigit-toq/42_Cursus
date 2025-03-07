@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:30:09 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 17:52:29 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:40:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void	init_animation(t_anim *anim, t_size range, int delay, char *path)
 	ft_bzero(anim, sizeof(t_anim));
 	total = range.y - range.x;
 	anim->frames = ft_calloc(total, sizeof(t_data));
+	error_controller("Memory failed", anim->frames);
 	anim->total = total;
 	anim->delay = delay;
 	anim->frame = anim->frames;

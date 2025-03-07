@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 00:05:54 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 18:02:23 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:15:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ unsigned int	pixel_color(t_data img, int x, int y)
 
 	if (x < 0 || y < 0 || x >= img.w_s || y >= img.h_s)
 	{
-		return (FALSE);	
+		return (FALSE);
 	}
 	else
 	{

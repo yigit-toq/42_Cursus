@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 17:56:06 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:38:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@
 #  define NUM_STR		18
 # endif
 
-# define WIN_NAME		"Cub3D"
+# define WIN			"Cub3D"
 
 # define ENMY_PATH		"./assets/textures/char/enemy/frame"
 # define ENMY			'A'

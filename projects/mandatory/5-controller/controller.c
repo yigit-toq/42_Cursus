@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 23:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 16:53:45 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:34:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,31 +124,29 @@ static int	update_axis(double *position, double *axis, int sign)
 
 static int	input_systm(double h_move, double v_move)
 {
-	t_game	*game;
-	t_vect	forw;
-	t_vect	side;
-	t_vect	pos;
-	double	avg;
+	t_player	*player;
+	t_vect		forw;
+	t_vect		side;
+	t_vect		pos;
+	double		avg;
 
-	game = get_game();
-	pos = game->player.pos;
-	side.x = -sin(game->player.theta);
-	side.y = +cos(game->player.theta);
-	forw.x = +cos(game->player.theta);
-	forw.y = +sin(game->player.theta);
+	player = &get_game()->player;
+	side.x = -sin(player->theta);
+	side.y = +cos(player->theta);
+	forw.x = +cos(player->theta);
+	forw.y = +sin(player->theta);
+	pos = player->pos;
 	avg = sqrt(h_move * h_move + v_move * v_move);
 	if (avg > 1)
 	{
 		h_move /= avg;
 		v_move /= avg;
 	}
-	pos.x += v_move * game->player.speed * side.x;
-	pos.y += v_move * game->player.speed * side.y;
-	pos.x += h_move * game->player.speed * forw.x;
-	pos.y += h_move * game->player.speed * forw.y;
-	if (game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)] == WALL)
+	pos.x += v_move * player->speed * side.x + h_move * player->speed * forw.x;
+	pos.y += v_move * player->speed * side.y + h_move * player->speed * forw.y;
+	if (get_game()->map->map[(int)(pos.y + 0.5)][(int)(pos.x + 0.5)] == WALL)
 		return (FAILURE);
-	return (game->player.pos = pos, SUCCESS);
+	return (player->pos = pos, SUCCESS);
 }
 
 int	key_press_handler(int key, t_game *game)

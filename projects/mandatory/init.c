@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 16:53:36 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/07 18:39:09 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = addgarbage(mlx_init());
-	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN_NAME);
+	error_controller("Mlx initialization failed", game->mlx);
+	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN);
+	error_controller("Window creation failed :D", game->win);
 	init_img();
 	mlx_loop_hook(game->mlx, loop_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
