@@ -21,6 +21,7 @@ static void	set_rgb_color(int *color, char *line)
 
 	i = 0;
 	rgb = ft_split(line, ',');
+	error_controller("Failed to allocate memory.", rgb);
 	while (rgb[i])
 	{
 		j = 0;

@@ -159,7 +159,7 @@ static void	init_img(void)
 			img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
-	img->skybox = add_image(img->paths[len - 3], size);
+	img->skybox = add_image(img->paths[len - 3], (t_size){0, 0});
 	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
 	img->crossh = add_image(img->paths[len - 1], (t_size){0, 0});
 	img->bgframe = add_image(NULL, size);
@@ -177,7 +177,9 @@ void	init_game(void)
 
 	game = get_game();
 	game->mlx = addgarbage(mlx_init());
+	error_controller("Mlx initialization failed", game->mlx);
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN);
+	error_controller("Window creation failed :D", game->win);
 	init_img();
 	mlx_loop_hook(game->mlx, next_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);

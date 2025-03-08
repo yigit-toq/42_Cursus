@@ -81,16 +81,6 @@ static void	free_game(void)
 	destroy_images(game->img->qskill[1].frames, game->img->qskill[1].total);
 	destroy_images(game->img->qskill[2].frames, game->img->qskill[2].total);
 	destroy_images(game->img->rskill[2].frames, game->img->rskill[2].total);
-	if (game->grp->door)
-	{
-		while (game->count.door-- > 0)
-			destroy_images(game->grp->door[game->count.door].anim.frames, game->grp->door[game->count.door].anim.total);
-	}
-	if (game->grp->enmy)
-	{
-		while (game->count.enmy-- > 0)
-			destroy_images(game->grp->enmy[game->count.enmy].anim.frames, game->grp->enmy[game->count.enmy].anim.total);
-	}
 	if (game->img->bgframe.img)
 		mlx_destroy_image(game->mlx, game->img->bgframe.img);
 	if (game->img->minimap.img)
@@ -101,6 +91,18 @@ static void	free_game(void)
 		mlx_destroy_image(game->mlx, game->img->ground.img);
 	if (game->img->crossh.img)
 		mlx_destroy_image(game->mlx, game->img->crossh.img);
+	if (game->grp == NULL)
+		return ;
+	if (game->grp->door)
+	{
+		while (game->count.door-- > 0)
+			destroy_images(game->grp->door[game->count.door].anim.frames, game->grp->door[game->count.door].anim.total);
+	}
+	if (game->grp->enmy)
+	{
+		while (game->count.enmy-- > 0)
+			destroy_images(game->grp->enmy[game->count.enmy].anim.frames, game->grp->enmy[game->count.enmy].anim.total);
+	}
 }
 
 // int	arg_check(char *arg)
