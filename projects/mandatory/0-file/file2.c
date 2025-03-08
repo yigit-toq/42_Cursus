@@ -23,8 +23,7 @@ static void	set_rgb_color(int *color, char *line)
 	if (line[ft_strlen(line) - 1] == ',')
 		error_controller("Invalid color.", NULL); // will look again bonusa eklenmedi
 	i = 0;
-	rgb = ft_split(line, ',');
-	error_controller("Failed to allocate memory.", rgb);
+	error_controller("Failed memory.", rgb = ft_split(line, ','));
 	while (rgb[i])
 	{
 		j = 0;

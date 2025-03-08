@@ -55,7 +55,7 @@ t_data	add_image(char *path, t_size size)
 	data.add = mlx_get_data_addr(data.img, &data.bit_pp,
 			&data.length, &data.endian);
 	error_controller("Invalid texture data.", data.add);
-	return (data);
+	return (get_load(), data);
 }
 
 int	open_file(char *path)

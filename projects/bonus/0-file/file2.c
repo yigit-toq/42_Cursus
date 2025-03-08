@@ -20,8 +20,7 @@ static void	set_rgb_color(int *color, char *line)
 	int		j;
 
 	i = 0;
-	rgb = ft_split(line, ',');
-	error_controller("Failed to allocate memory.", rgb);
+	error_controller("Failed memory.", rgb = ft_split(line, ','));
 	while (rgb[i])
 	{
 		j = 0;

@@ -110,6 +110,8 @@
 # define WIN_W			640
 # define WIN_H			360
 
+# define TOTAL			342
+
 # define C_E			"\033[0m"
 # define C_R			"\033[31m"
 # define C_G			"\033[32m"

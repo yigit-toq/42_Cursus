@@ -162,9 +162,10 @@ typedef struct s_player
 typedef struct s_count
 {
 	int			door;
-	int			wall;
 	int			enmy;
+	int			wall;
 	int			floor;
+	int			count;
 	int			player;
 }				t_count;
 
@@ -196,6 +197,7 @@ typedef struct s_game
 	t_grp		*grp;
 	void		*mlx;
 	void		*win;
+	char		load[4];
 	char		sfps[8];
 	t_ray		rays[WIN_W];
 }				t_game;
