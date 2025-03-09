@@ -23,11 +23,11 @@ static void	draw_player(void)
 	t_vect	scale;
 
 	game = get_game();
-	scale.x = game->map->mini.x / (TILE * 1.5);
-	scale.y = game->map->mini.y / (TILE * 1.5);
-	plane.x = game->map->mini.x / 2;
-    plane.y = game->map->mini.y / 2;
-    draw_rect(game->img->minimap, plane, scale, H_R);
+	scale.x = game->map->mini.x / (MINI * 1.5);
+	scale.y = game->map->mini.y / (MINI * 1.5);
+	plane.x = (game->map->mini.x / 2) - (scale.x / 2);
+	plane.y = (game->map->mini.y / 2) - (scale.y / 2);
+	draw_rect(game->img->minimap, plane, scale, H_R);
 }
 
 static void	draw_minimap_utils(int x, int y)
@@ -39,16 +39,22 @@ static void	draw_minimap_utils(int x, int y)
 
 	game = get_game();
 	mini = tc_vect(game->map->mini);
-	coord.x = (game->player.pos.x - (TILE / 2)) + (x * TILE) / mini.x;
-	coord.y = (game->player.pos.y - (TILE / 2)) + (y * TILE) / mini.y;
-	if (coord.x >= game->map->size.x || coord.y >= game->map->size.y)
-		value = WALL;
+	coord.x = (game->player.pos.x - (MINI / 2)) + (x * MINI) / mini.x;
+	coord.y = (game->player.pos.y - (MINI / 2)) + (y * MINI) / mini.y;
+	if (coord.x >= game->map->size.x - 0.5 || coord.y >= game->map->size.y - 0.5)
+		value = 0;
 	else
-		value = game->map->map[(int)floor(coord.y)][(int)floor(coord.x)];
+		value = game->map->map[(int)round(coord.y)][(int)round(coord.x)];
 	if (value == FLOOR || value == game->player.direction)
 		mlx_image_put(game->img->minimap, x, y, H_G);
-	else
+	else if (value == WALL)
 		mlx_image_put(game->img->minimap, x, y, H_W);
+	else if (value == DOOR)
+		mlx_image_put(game->img->minimap, x, y, H_Y);
+	else if (value == ENMY)
+		mlx_image_put(game->img->minimap, x, y, H_P);
+	else
+		mlx_image_put(game->img->minimap, x, y, H_B);
 }
 
 static void	draw_minimap(void)

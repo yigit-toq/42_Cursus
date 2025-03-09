@@ -123,6 +123,7 @@
 # define H_R			0x00FF0000
 # define H_Y			0x00FFFF00
 # define H_W			0x00FFFFFF
+# define H_P			0x00FF00FF
 # define H_G			0x00D1DDDE
 
 # define PI				3.14159265
@@ -153,10 +154,10 @@
 # define FLOOR			'0'
 # define SPACE			' '
 
-# define DIR			4
-
 # define FOV			60.00
 # define SEV			64.00
 
-# define TILE			10
+# define DIR			4
+
+# define MINI           8
 #endif
