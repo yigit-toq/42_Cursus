@@ -12,6 +12,11 @@
 
 #include "cub3d_mandatory.h"
 
+// line = wtspace_trim(line);
+// if (line[ft_strlen(line) - 1] == ',')
+// 	error_controller("Invalid color.", NULL);
+// will look again bonusa eklenmedi
+
 static void	set_rgb_color(int *color, char *line)
 {
 	char	**rgb;
@@ -19,9 +24,6 @@ static void	set_rgb_color(int *color, char *line)
 	int		i;
 	int		j;
 
-	line = wtspace_trim(line);
-	if (line[ft_strlen(line) - 1] == ',')
-		error_controller("Invalid color.", NULL); // will look again bonusa eklenmedi
 	i = 0;
 	error_controller("Failed memory.", rgb = ft_split(line, ','));
 	while (rgb[i])
@@ -69,8 +71,10 @@ static int	path_read(char *line, char **names, int *j)
 		}
 		i++;
 	}
-	return (wtspace_trim(line)[0] != WALL); // will look again
+	return (wtspace_trim(line)[0] != WALL);
 }
+
+// will look again
 
 void	path_control(void)
 {

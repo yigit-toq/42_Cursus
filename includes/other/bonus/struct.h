@@ -184,7 +184,8 @@ typedef struct s_grp
 	t_enmy		*enmy;
 	t_door		*door;
 	t_door		*curr;
-	int			index;
+	int			d_i;
+	int			e_i;
 }				t_grp;
 
 typedef struct s_game

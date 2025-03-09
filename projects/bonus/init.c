@@ -16,42 +16,6 @@
 
 #include <mlx.h>
 
-static void	init_objs(void)
-{
-	t_game	*game;
-	t_size	index;
-
-	ft_bzero(&index, sizeof(t_size));
-	game = get_game();
-	game->grp->door = ft_calloc(game->count.door, sizeof(t_door));
-	error_controller("Failed to allocate memory.", game->grp->door);
-	game->grp->enmy = ft_calloc(game->count.enmy, sizeof(t_enmy));
-	error_controller("Failed to allocate memory.", game->grp->enmy);
-	while (game->map->map[index.y])
-	{
-		index.x = 0;
-		while (game->map->map[index.y][index.x])
-		{
-			if (game->map->map[index.y][index.x] == DOOR)
-			{
-				game->grp->door[game->grp->index].coor.x = index.x;
-				game->grp->door[game->grp->index].coor.y = index.y;
-				game->grp->door[game->grp->index].filter = 0x980088;
-				init_animation(&game->grp->door[game->grp->index].anim, (t_size){0, 64}, ANIM_SPEED / 2, DOOR1_PATH);
-				game->grp->index++;
-			}
-			if (game->map->map[index.y][index.x] == ENMY)
-			{
-				game->grp->enmy->pos.x = index.x;
-				game->grp->enmy->pos.y = index.y;
-			}
-			index.x++;
-		}
-		index.y++;
-	}
-	init_animation(&game->grp->enmy->anim, (t_size){0, 6}, ANIM_SPEED, ENMY_PATH);
-}
-
 static void	update_animtion(void)
 {
 	t_game	*game;
@@ -76,9 +40,11 @@ static void	update_animtion(void)
 			updt_animation(&game->grp->curr->anim, FALSE);
 		else
 			updt_animation(&game->grp->curr->anim, TRUE);
-		//game->curr->ratio = (double)game->curr->anim.index / (double)game->curr->anim.total;
 	}
 }
+
+//game->curr->ratio = (double)game->curr->anim.index
+// /(double)game->curr->anim.total;
 
 void	update_enemy(void)
 {
@@ -127,11 +93,9 @@ static void	init_img(void)
 	size.x = WIN_W;
 	size.y = WIN_H;
 	i = 0;
-	while (i < len) // bakılacak
+	while (i < DIR)
 	{
-		error_controller("Texture path is not found.", img->paths[i]);
-		if (i < DIR)
-			img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
+		img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
 	img->skybox = add_image(img->paths[len - 3], (t_size){0, 0});
@@ -142,8 +106,6 @@ static void	init_img(void)
 	size.y = map->size.y * map->mini.y;
 	img->minimap = add_image(NULL, size);
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
-	init_slot();
-	init_objs();
 }
 
 void	init_game(void)
@@ -156,6 +118,9 @@ void	init_game(void)
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, WIN);
 	error_controller("Window creation failed :D", game->win);
 	init_img();
+	init_slot();
+	init_door();
+	init_enmy();
 	mlx_loop_hook(game->mlx, next_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_relse_handler, game);

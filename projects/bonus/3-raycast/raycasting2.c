@@ -14,128 +14,81 @@
 
 #include <math.h>
 
-static int	draw_tex(t_objs obj, t_size pos, t_data *img, int filter)
-{
-	double	img_x;
-	double	img_y;
-	int		color;
-
-	img_x = floor(img->w_s * obj.contact);
-	img_y = ((pos.y - obj.s_pos) * img->h_s) / (obj.height * 2);
-	if (img_y > img->h_s - 1)
-		img_y = img->h_s - 1;
-	color = pixel_color(*img, img_x, img_y);
-	if (color != filter)
-	{
-		mlx_image_put(get_game()->img->bgframe, pos.x, pos.y, color);
-		return (TRUE);
-	}
-	return (FALSE);
-}
-
-static void	render_skybx(t_data bg, int x, int y)
+void	calculate_ray_dis(t_ray *ray, double angle, t_objs *obj)
 {
 	t_game	*game;
-	double	angle;
-	double	offst;
-	t_size	img;
 
 	game = get_game();
-	angle = rad_to_deg(game->player.theta);
-	offst = bg.w_s * ((angle / 90.0) + (x / (double)WIN_W));
-	img.x = fmod(offst, bg.w_s);
-	img.y = fmod(y    , bg.h_s);
-	mlx_image_put(game->img->bgframe, x, y, pixel_color(bg, img.x, img.y));
+	if (ray->axis == 0)
+	{
+		obj->dist = (ray->plane.x - ray->src.x
+				+ (1 - ray->step.x) / 2) / ray->dir.x;
+		if (ray->dir.x > 0)
+			obj->direct = 3;
+		else
+			obj->direct = 2;
+		obj->contact = ray->src.y + obj->dist * ray->dir.y;
+	}
+	else
+	{
+		obj->dist = (ray->plane.y - ray->src.y
+				+ (1 - ray->step.y) / 2) / ray->dir.y;
+		if (ray->dir.y > 0)
+			obj->direct = 1;
+		else
+			obj->direct = 0;
+		obj->contact = ray->src.x + obj->dist * ray->dir.x;
+	}
+	obj->contact -= floor(obj->contact);
+	obj->dist = cos(deg_to_rad(angle) - game->player.theta) * obj->dist;
 }
 
-static void	render_floor(t_data fl, int x, int y, double angle)
+void	calculate_wal_hgt(t_ray *ray, double angle, t_objs *obj)
+{
+	(void)ray;
+	(void)angle;
+	obj->height = floor((WIN_H / 2) / obj->dist);
+	obj->s_pos = (WIN_H / 2) - obj->height;
+	obj->e_pos = (WIN_H / 2) + obj->height;
+}
+
+static void	middle_ray(t_ray *ray, int index, void *type)
 {
 	t_game	*game;
-	t_vect	direction;
-	t_vect	texture;
-	t_vect	tile;
-	double	distance;
 
 	game = get_game();
-	direction.x = cos(angle);
-	direction.y = sin(angle);
-	distance = WIN_H / (2.0 * y - WIN_H);
-	distance = distance / cos(game->player.theta - angle);
-	tile.x = distance * direction.x + game->player.plane.x;
-	tile.y = distance * direction.y + game->player.plane.y;
-	texture.x = (int)(floor(tile.x * fl.w_s)) % fl.w_s;
-	texture.y = (int)(floor(tile.y * fl.h_s)) % fl.h_s;
-	mlx_image_put(game->img->bgframe, x, y, pixel_color(fl, texture.x, texture.y));
-}
-
-static int	render_object(int x, int y)
-{
-	t_game			*game = get_game();
-	t_data			frame;
-	t_size			img_p;
-	t_size			cross;
-	unsigned int	color;
-
-	frame = *game->player.slot->curr->frame;
-	img_p.x = (x * frame.w_s) / WIN_W;
-	img_p.y = (y * frame.h_s) / WIN_H;
-	color = pixel_color(frame, img_p.x, img_p.y);
-	if (image_filter(0, color, 'g', 200) || image_filter(1, color, 'g', 200)
-		|| image_filter(2, color, 'g', 200) || image_filter(3, color, 'g', 200))
+	if (index == WIN_W / 2)
 	{
-		mlx_image_put(game->img->bgframe, x, y, color);
-		return (TRUE);
-	}
-	cross.x = (WIN_W / 2) - 32;
-	cross.y = (WIN_H / 2) - 32;
-	if ((x > cross.x && x < cross.x + 64) && (y > cross.y && y < cross.y + 64))
-	{
-		color = pixel_color(game->img->crossh, x - cross.x, y - cross.y);
-		if (color == 0x000000)
+		if (game->grp->door == type)
 		{
-			mlx_image_put(game->img->bgframe, x, y, game->img->hex[0]);
-			return (TRUE);
+			if (ray->door.dist <= 2)
+				game->grp->curr = &game->grp->door[game->grp->d_i];
+			else
+				game->grp->curr = NULL;
 		}
 	}
-	return (FALSE);
 }
 
-
-void	render_frame(t_ray *ray, int x, double angle)
+void	calculate_door(t_ray *ray, int index, double angle)
 {
 	t_game	*game;
 	t_door	*door;
-	t_objs	wall;
-	int		y;
+	int		i;
 
-	y = 0;
+	i = 0;
 	game = get_game();
-	door = &game->grp->door[game->grp->index];
-	if (ray->door.coll)
-		wall = ray->door;
-	else
-		wall = ray->wall;
-	while (y < WIN_H)
+	door = game->grp->door;
+	while (i < game->count.door)
 	{
-		if (render_object(x, y) == FALSE)
+		if (ray->plane.x == door[i].coor.x && ray->plane.y == door[i].coor.y)
 		{
-			if (y < wall.s_pos)
-				render_skybx(game->img->skybox, x, y);
-			else if (y > wall.e_pos)
-				render_floor(game->img->ground, x, y, deg_to_rad(angle));
-			else
-			{
-				if (game->count.door && draw_tex(wall, (t_size){x, y}, door->anim.frame, door->filter) == FALSE)
-				{
-					ray->door.coll = FALSE;
-					wall = ray->wall;
-				}
-				if (ray->door.coll == FALSE)
-					draw_tex(wall, (t_size){x, y}, &game->img->direct[ray->wall.direct], -1);
-			}
+			game->grp->d_i = i;
+			break ;
 		}
-		y++;
+		i++;
 	}
-	if (ray->door.coll)
-		ray->door.coll = FALSE;
+	middle_ray(ray, index, door);
+	calculate_ray_dis(ray, angle, &ray->door);
+	calculate_wal_hgt(ray, angle, &ray->door);
+	ray->door.coll = TRUE;
 }

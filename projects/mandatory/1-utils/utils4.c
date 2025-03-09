@@ -19,11 +19,11 @@ char	**copy_array(char **array, int size)
 
 	i = 0;
 	copy = ft_calloc(size + 1, sizeof(char *));
-	error_controller("Memory allocation failed.", copy);
+	error_controller("Failed to allocate memory.", copy);
 	while (array[i])
 	{
 		copy[i] = ft_strdup(array[i]);
-		error_controller("Memory allocation failed.", copy[i]);
+		error_controller("Failed to allocate memory.", copy[i]);
 		i++;
 	}
 	return (copy);

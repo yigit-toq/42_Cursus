@@ -60,17 +60,17 @@ static void	object_counter(int x, int y)
 		game->player.direction = m[x];
 	}
 	else if (m[x] == WALL)
-	{
 		game->count.wall++;
-	}
 	else if (m[x] == FLOOR)
-	{
 		game->count.floor++;
-	}
-	if (wtspace_check(m[x]) == FALSE) // bakılacak
+	if (x == 0 && (m[y][x] == '\r' || m[y][x] == '\n'))
+		error_controller("Invalid Map.", NULL);
+	if (wtspace_check(m[x]) == FALSE)
 		if (ft_strchr("01NSWE", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
+
+// bakılacak ikisinede
 
 static void	maps_control(void)
 {
@@ -85,8 +85,6 @@ static void	maps_control(void)
 		x = 0;
 		while (game->map->map[y][x])
 		{
-			if (x == 0 && (game->map->map[y][x] == '\r' || game->map->map[y][x] == '\n')) // will look again bonusa eklenmedi
-				error_controller("Invalid Map", NULL);
 			object_counter(x, y);
 			x++;
 		}

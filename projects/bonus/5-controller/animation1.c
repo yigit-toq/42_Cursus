@@ -49,11 +49,8 @@ static void	init_frame(t_data *frame, char *path, int start, int end)
 	}
 }
 
-void	input_animation(int key)
+void	inpt_animation(t_game *game, int key)
 {
-	t_game	*game;
-
-	game = get_game();
 	if (key == Y_KEY)
 	{
 		if (!game->player.slot->skin)
@@ -81,52 +78,6 @@ void	input_animation(int key)
 	}
 }
 
-void	updt_animation(t_anim *anim, int reverse)
-{
-	t_game	*game;
-
-	game = get_game();
-	if (!anim->play)
-		return ;
-	if (++anim->counter == anim->delay)
-	{
-		anim->counter = 0;
-		if (reverse)
-			anim->index = (anim->index - 1) % anim->total;
-		else
-			anim->index = (anim->index + 1) % anim->total;
-		anim->frame = anim->frames + anim->index;
-		if (!anim->index && !anim->loop)
-		{
-			anim->play = FALSE;
-			if (anim == game->player.slot->skin || anim == game->player.slot->take)
-			{
-				swap_animation(anim, game->player.slot->idle);
-			}
-			if (anim == game->player.slot->fire)
-			{
-				game->player.slot = &game->player.slots[1];
-				swap_animation(anim, game->player.slot->idle);
-			}
-			if (anim == &game->grp->curr->anim)
-			{
-				if (game->grp->curr->state)
-				{
-					game->grp->curr->anim.index = 0;
-					game->grp->curr->anim.frame = game->grp->curr->anim.frames;
-					game->grp->curr->state = FALSE;
-				}
-				else
-				{
-					game->grp->curr->anim.index = game->grp->curr->anim.total - 1;
-					game->grp->curr->anim.frame = &game->grp->curr->anim.frames[game->grp->curr->anim.total - 1];
-					game->grp->curr->state = TRUE;
-				}
-			}
-		}
-	}
-}
-
 void	swap_animation(t_anim *anim, t_anim *new)
 {
 	t_game	*game;
@@ -142,7 +93,7 @@ void	swap_animation(t_anim *anim, t_anim *new)
 	updt_animation(game->player.slot->curr, FALSE);
 }
 
-void	init_animation(t_anim *anim, t_size range, int delay, char *path)
+void	init_animation(t_anim *anim, t_size range, int delay, char *ph)
 {
 	int	total;
 
@@ -153,5 +104,5 @@ void	init_animation(t_anim *anim, t_size range, int delay, char *path)
 	anim->total = total;
 	anim->delay = delay;
 	anim->frame = anim->frames;
-	init_frame(anim->frames, path, range.x, range.y);
+	init_frame(anim->frames, ph, range.x, range.y);
 }

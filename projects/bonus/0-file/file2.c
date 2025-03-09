@@ -55,7 +55,7 @@ static int	path_read(char *line, char **names, int *j)
 		{
 			if (len == 1)
 			{
-				set_rgb_color(game->img->rgb[i - (sizeof(game->img->paths) / sizeof(char *))], line + len);
+				set_rgb_color(game->img->rgb[0], line + len);
 			}
 			else
 			{
@@ -66,12 +66,14 @@ static int	path_read(char *line, char **names, int *j)
 		}
 		i++;
 	}
-	return (wtspace_trim(line)[0] != WALL); // will look again
+	return (wtspace_trim(line)[0] != WALL);
 }
+
+// will look again
 
 void	path_control(void)
 {
-	static char	*names[] = {"NO", "SO", "WE", "EA", "WP", "GR", "CR", "C", NULL};
+	static char	*names[] = {"NO", "SO", "WE", "EA", "WP", "GR", "CR", "C", 0};
 	char		**file;
 	char		*line;
 	int			size;
@@ -86,7 +88,7 @@ void	path_control(void)
 		file++;
 	}
 	get_game()->map->map = file;
-	if (size != 8)
+	if (size != DIR + 4)
 		error_controller("Missing path.", NULL);
 	error_controller("Map is not found.", *file);
 }

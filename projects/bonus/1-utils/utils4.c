@@ -44,25 +44,16 @@ char	*get_fps(char *fps)
 void	get_load(void)
 {
 	t_game	*game;
+	t_size	posit;
 	char	string[30];
 
 	game = get_game();
-	sprintf(string, "Loading... %d%%", ++game->count.count * 100 / TOTAL);
 	mlx_clear_window(game->mlx, game->win);
-	mlx_string_put(game->mlx, game->win, WIN_W / 2 - 42, WIN_H / 2, H_W, string);
+	posit.x = WIN_W / 2 - 42;
+	posit.y = WIN_H / 2;
+	sprintf(string, "Loading... %d%%", ++game->count.count * 100 / TOTAL);
+	mlx_string_put(game->mlx, game->win, posit.x, posit.y, H_W, string);
 }
-
-// void	get_load(t_game *game)
-// {
-// 	char	string[30];
-// 	char	*val;
-//
-// 	val = ft_itoa(++game->count.count * 100 / TOTAL);
-// 	ft_strlcpy(string, "Loading... ", sizeof(string));
-// 	ft_strlcat(string, val, sizeof(string));
-// 	ft_strlcat(string, "%", sizeof(string));
-// 	mlx_string_put(game->mlx, game->win, WIN_W / 2 - 40, WIN_H / 2, H_W, string);
-// }
 
 char	**copy_array(char **array, int size)
 {
@@ -71,12 +62,40 @@ char	**copy_array(char **array, int size)
 
 	i = 0;
 	copy = ft_calloc(size + 1, sizeof(char *));
-	error_controller("Memory allocation failed.", copy);
+	error_controller("Failed to allocate memory.", copy);
 	while (array[i])
 	{
 		copy[i] = ft_strdup(array[i]);
-		error_controller("Memory allocation failed.", copy[i]);
+		error_controller("Failed to allocate memory.", copy[i]);
 		i++;
 	}
 	return (copy);
 }
+
+void	exten_controller(char *path)
+{
+	char	*extension;
+
+	extension = ft_strrchr(path, '.');
+	if (!extension)
+		error_controller("Wrong format  :D", NULL);
+	if (ft_strcmp(extension, ".cub"))
+		error_controller("Wrong extension.", NULL);
+}
+
+// void	get_load(t_game *game)
+// {
+// 	char	string[30];
+// 	char	*val;
+// 	int		x;
+// 	int		y;
+//
+// 	mlx_clear_window(game->mlx, game->win);
+// 	x = WIN_W / 2 - 40;
+// 	y = WIN_H / 2;
+// 	val = ft_itoa(++game->count.count * 100 / TOTAL);
+// 	ft_strlcpy(string, "Loading... ", sizeof(string));
+// 	ft_strlcat(string, val, sizeof(string));
+// 	ft_strlcat(string, "%", sizeof(string));
+// 	mlx_string_put(game->mlx, game->win, x, y, H_W, string);
+// }

@@ -37,11 +37,13 @@ int				key_press_handler(int key, t_game *game);
 
 int				key_relse_handler(int key, t_game *game);
 
-int				mouse_moves_handler(int x, int y);
-
 int				mouse_press_handler(int button, int x, int y);
 
 int				mouse_relse_handler(int button, int x, int y);
+
+int				mouse_moves_handler(int x, int y, t_game *game);
+
+int				mouse_inside_window(void);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
@@ -73,9 +75,9 @@ double			grid_to_ct(double pos, double scale);
 
 /*----------------------UTIL  CONTROLLER----------------------*/
 
-t_data			add_image(char *path, t_size size);
-
 int				open_file(char *path);
+
+t_data			add_image(char *path, t_size size);
 
 /*------------------------------------------------------------*/
 
@@ -85,13 +87,13 @@ char			*wtspace_trim(char *str);
 
 /*----------------------ANIM  CONTROLLER----------------------*/
 
-void			input_animation(int key);
+void			inpt_animation(t_game *game, int key);
 
 void			updt_animation(t_anim *anim, int reverse);
 
 void			swap_animation(t_anim *anim, t_anim *new);
 
-void			init_animation(t_anim *anim, t_size range, int delay, char *path);
+void			init_animation(t_anim *anim, t_size range, int delay, char *ph);
 
 /*----------------------DRAW  CONTROLLER----------------------*/
 
@@ -118,12 +120,25 @@ void			minimap(void);
 /*------------------------------------------------------------*/
 
 void			init_slot(void);
+void			init_door(void);
+void			init_enmy(void);
 
 /*------------------------------------------------------------*/
 
 void			get_load(void);
 
 char			*get_fps(char *fps);
+
+/*------------------------------------------------------------*/
+
+void			calculate_door(t_ray *ray, int index, double angle);
+
+void			calculate_ray_dis(t_ray *ray, double angle, t_objs *obj);
+void			calculate_wal_hgt(t_ray *ray, double angle, t_objs *obj);
+
+/*------------------------------------------------------------*/
+
+int				render_object(int x, int y);
 
 /*------------------------------------------------------------*/
 #endif

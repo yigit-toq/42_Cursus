@@ -107,6 +107,8 @@
 # define FIRE			2
 # define SKIN			3
 
+# define DELAY			6
+
 # define WIN_W			640
 # define WIN_H			360
 
@@ -124,8 +126,6 @@
 # define H_G			0x00D1DDDE
 
 # define PI				3.14159265
-
-# define ANIM_SPEED		6
 
 # define MOUSE_SENS		0.050
 

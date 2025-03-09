@@ -39,16 +39,16 @@ M_OBJS_DIR			=	objects_m/
 B_SRCS_DIR			=	$(PROJECTS)bonus/
 B_OBJS_DIR			=	objects_b/
 
-M_SRCS				=	$(M_SRCS_DIR)cub3d.c	$(M_FILE_DIR)file1.c	$(M_UTILS_DIR)utils1.c	$(M_ERROR_DIR)error.c	$(M_RAYCAST_DIR)raycasting1.c	$(M_GRAPHICS_DIR)graphics.c	$(M_CONTROLLER_DIR)controller.c	\
-						$(M_SRCS_DIR)init.c		$(M_FILE_DIR)file2.c	$(M_UTILS_DIR)utils2.c																														\
-																		$(M_UTILS_DIR)utils3.c																														\
-																		$(M_UTILS_DIR)utils4.c																														\
+M_SRCS				=	$(M_SRCS_DIR)cub3d.c	$(M_FILE_DIR)file1.c	$(M_UTILS_DIR)utils1.c	$(M_ERROR_DIR)error.c	$(M_RAYCAST_DIR)raycasting1.c	$(M_GRAPHICS_DIR)graphics.c	$(M_CONTROLLER_DIR)controller.c		\
+						$(M_SRCS_DIR)init.c		$(M_FILE_DIR)file2.c	$(M_UTILS_DIR)utils2.c																															\
+																		$(M_UTILS_DIR)utils3.c																															\
+																		$(M_UTILS_DIR)utils4.c																															\
 
-B_SRCS				=	$(B_SRCS_DIR)cub3d.c	$(B_FILE_DIR)file1.c	$(B_UTILS_DIR)utils1.c	$(B_ERROR_DIR)error.c	$(B_RAYCAST_DIR)raycasting1.c	$(B_GRAPHICS_DIR)graphics.c	$(B_CONTROLLER_DIR)controller.c	\
-						$(B_SRCS_DIR)init.c		$(B_FILE_DIR)file2.c	$(B_UTILS_DIR)utils2.c							$(B_RAYCAST_DIR)raycasting2.c	$(B_GRAPHICS_DIR)minimap.c	$(B_CONTROLLER_DIR)animation.c	\
-																		$(B_UTILS_DIR)utils3.c																						$(B_CONTROLLER_DIR)slot.c		\
-																		$(B_UTILS_DIR)utils4.c																														\
-																		$(B_UTILS_DIR)audio.c																														\
+B_SRCS				=	$(B_SRCS_DIR)cub3d.c	$(B_FILE_DIR)file1.c	$(B_UTILS_DIR)utils1.c	$(B_ERROR_DIR)error.c	$(B_RAYCAST_DIR)raycasting1.c	$(B_GRAPHICS_DIR)graphics.c	$(B_CONTROLLER_DIR)controller1.c	\
+						$(B_SRCS_DIR)init.c		$(B_FILE_DIR)file2.c	$(B_UTILS_DIR)utils2.c							$(B_RAYCAST_DIR)raycasting2.c	$(B_GRAPHICS_DIR)minimap.c	$(B_CONTROLLER_DIR)controller2.c	\
+																		$(B_UTILS_DIR)utils3.c							$(B_RAYCAST_DIR)render1.c									$(B_CONTROLLER_DIR)animation1.c		\
+																		$(B_UTILS_DIR)utils4.c							$(B_RAYCAST_DIR)render2.c									$(B_CONTROLLER_DIR)animation2.c		\
+																		$(B_UTILS_DIR)audio.c																						$(B_CONTROLLER_DIR)progress.c		\
 
 M_OBJS				=	$(patsubst %.c, $(M_OBJS_DIR)/%.o, $(M_SRCS))
 B_OBJS				=	$(patsubst %.c, $(B_OBJS_DIR)/%.o, $(B_SRCS))

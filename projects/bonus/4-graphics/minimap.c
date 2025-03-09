@@ -56,9 +56,11 @@ static void	draw_minimap(void)
 			if (value == 0)
 				break ;
 			if (value == WALL)
-				draw_rect(game->img->minimap, tc_vect(index), tc_vect(game->map->mini), H_W);
+				draw_rect(game->img->minimap, tc_vect(index),
+					tc_vect(game->map->mini), H_W);
 			if (value == FLOOR || value == game->player.direction)
-				draw_rect(game->img->minimap, tc_vect(index), tc_vect(game->map->mini), H_G);
+				draw_rect(game->img->minimap, tc_vect(index),
+					tc_vect(game->map->mini), H_G);
 			index.x++;
 		}
 		index.y++;
@@ -68,17 +70,18 @@ static void	draw_minimap(void)
 
 void	minimap(void)
 {
+	t_size	pivot;
 	t_game	*game;
-	t_map	*map;
 	void	*img;
 
 	game = get_game();
-	map = game->map;
-	if (map->is_map == FALSE)
+	if (game->map->is_map == FALSE)
 	{
 		return ;
 	}
 	draw_minimap();
 	img = game->img->minimap.img;
-	mlx_put_image_to_window(game->mlx, game->win, img, map->pivot.x, map->pivot.y);
+	pivot.x = game->map->pivot.x;
+	pivot.y = game->map->pivot.y;
+	mlx_put_image_to_window(game->mlx, game->win, img, pivot.x, pivot.y);
 }

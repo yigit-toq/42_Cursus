@@ -67,10 +67,12 @@ static void	object_counter(int x, int y)
 		game->count.wall++;
 	else if (m[x] == FLOOR)
 		game->count.floor++;
-	if (wtspace_check(m[x]) == FALSE) // bakılacak
+	if (wtspace_check(m[x]) == FALSE)
 		if (ft_strchr("01NSWEAD", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
+
+// bakılacak
 
 static void	maps_control(void)
 {

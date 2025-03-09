@@ -12,6 +12,8 @@
 
 #include "cub3d_bonus.h"
 
+#include <mlx.h>
+
 unsigned int	rgb_to_hexa(int r, int g, int b)
 {
 	return ((r << 16) | (g << 8) | (b << 0));
@@ -52,4 +54,15 @@ int	image_filter(int index, int color, char filter, int limit)
 	if (filter == 'b')
 		value = (color >> 0) & 255;
 	return (value < limit && game->player.slot->index == index);
+}
+
+int	mouse_inside_window(void)
+{
+	t_game	*game;
+	int		x;
+	int		y;
+
+	game = get_game();
+	mlx_mouse_get_pos(game->mlx, game->win, &x, &y);
+	return (x >= 0 && x < WIN_W && y >= 0 && y < WIN_H);
 }
