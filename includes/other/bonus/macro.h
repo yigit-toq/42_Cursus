@@ -157,4 +157,6 @@
 
 # define FOV			60.00
 # define SEV			64.00
+
+# define TILE			10
 #endif

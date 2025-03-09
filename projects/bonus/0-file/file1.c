@@ -130,8 +130,8 @@ void	files_controller(char *path)
 	path_control();
 	maps_control();
 	game = get_game();
-	game->map->mini.x = WIN_H / 180;
-	game->map->mini.y = WIN_H / 180;
+	game->map->mini.x = WIN_H / 3;
+	game->map->mini.y = WIN_H / 3;
 	game->map->scale.x = 1;
 	game->map->scale.y = 1;
 	game->player.speed = SPEED;
@@ -144,5 +144,5 @@ void	files_controller(char *path)
 	if (game->player.direction == NORTH)
 		game->player.theta = deg_to_rad(270);
 	game->map->pivot.x = 0;
-	game->map->pivot.y = WIN_H - (game->map->size.y * game->map->mini.y);
+	game->map->pivot.y = WIN_H - (game->map->mini.y);
 }

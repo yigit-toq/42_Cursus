@@ -113,8 +113,6 @@ void	draw_rect(t_data data, t_vect center, t_vect size, int color)
 	t_vect	put;
 
 	game = get_game();
-	center.x *= size.x;
-	center.y *= size.y;
 	ft_bzero(&pos, sizeof(t_vect));
 	while (pos.y < size.y)
 	{

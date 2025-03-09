@@ -102,8 +102,8 @@ static void	init_img(void)
 	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
 	img->crossh = add_image(img->paths[len - 1], (t_size){0, 0});
 	img->bgframe = add_image(NULL, size);
-	size.x = map->size.x * map->mini.x;
-	size.y = map->size.y * map->mini.y;
+	size.x = map->mini.x;
+	size.y = map->mini.y;
 	img->minimap = add_image(NULL, size);
 	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 }
