@@ -46,22 +46,32 @@ static void	update_animtion(void)
 //game->curr->ratio = (double)game->curr->anim.index
 // /(double)game->curr->anim.total;
 
-void	update_enemy(void)
-{
-	t_game	*game;
-	t_vect	d;
-	int		i;
-
-	i = 0;
-	game = get_game();
-	while (i < game->count.enmy)
-	{
-		d.x = game->grp->enmy[i].pos.x - game->player.pos.x;
-		d.y = game->grp->enmy[i].pos.y - game->player.pos.y;
-		game->grp->enmy[i].dist = sqrt(d.x * d.x + d.y * d.y);
-		i++;
-	}
-}
+// void	update_enemy(void)
+// {
+// 	t_game	*game;
+// 	t_vect	d;
+// 	t_vect	p;
+// 	int		i;
+//
+// 	i = 0;
+// 	game = get_game();
+// 	while (i < game->count.enmy)
+// 	{
+// 		d.x = game->grp->enmy[i].pos.x - game->player.pos.x;
+// 		d.y = game->grp->enmy[i].pos.y - game->player.pos.y;
+// 		p = (t_vect){cos(game->player.theta), sin(game->player.theta)};
+// 		if (vector_angle(p, d) < 0.5f)
+// 		{
+// 			game->grp->enmy[i].dist = sqrt(d.x * d.x + d.y * d.y);
+// 			game->grp->enmy[i].visible = TRUE;
+// 		}
+// 		else
+// 		{
+// 			game->grp->enmy[i].visible = FALSE;
+// 		}
+// 		i++;
+// 	}
+// }
 
 static int	next_frame(void)
 {
@@ -75,7 +85,6 @@ static int	next_frame(void)
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
 	raycast();
 	minimap();
-	update_enemy();
 	return (SUCCESS);
 }
 

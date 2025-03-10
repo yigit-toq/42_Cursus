@@ -73,6 +73,9 @@ double			rad_to_deg(double radian);
 
 double			grid_to_ct(double pos, double scale);
 
+double			vector_angle(t_vect vect1, t_vect vect2);
+double			calcul_dista(t_vect vect1, t_vect vect2);
+
 /*----------------------UTIL  CONTROLLER----------------------*/
 
 int				open_file(char *path);
