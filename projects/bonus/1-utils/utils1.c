@@ -17,22 +17,22 @@
 
 #include <mlx.h>
 
-void	delay(int ms)
-{
-	struct timeval	time[2];
-	long long int	t_time;
-	long long int	c_time;
-
-	gettimeofday(&time[0], NULL);
-	gettimeofday(&time[1], NULL);
-	t_time = time[0].tv_sec * 1000 + time[0].tv_usec / 1000 + ms;
-	c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
-	while (c_time < t_time)
-	{
-		gettimeofday(&time[1], NULL);
-		c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
-	}
-}
+// void	delay(int ms)
+// {
+// 	struct timeval	time[2];
+// 	long long int	t_time;
+// 	long long int	c_time;
+//
+// 	gettimeofday(&time[0], NULL);
+// 	gettimeofday(&time[1], NULL);
+// 	t_time = time[0].tv_sec * 1000 + time[0].tv_usec / 1000 + ms;
+// 	c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
+// 	while (c_time < t_time)
+// 	{
+// 		gettimeofday(&time[1], NULL);
+// 		c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
+// 	}
+// }
 
 t_data	add_image(char *path, t_size size)
 {
@@ -100,4 +100,19 @@ char	*wtspace_trim(char *str)
 		result = ft_substr(start, 0, len);
 	error_controller("Failed to allocate memory.", result);
 	return (result);
+}
+
+t_gun	*init_gun(int total, int range, int damage)
+{
+	t_gun	*gun;
+
+	gun = ft_calloc(1, sizeof(t_gun));
+	gun->total = total;
+	if (total < 30)
+		gun->ammo = total;
+	else
+		gun->ammo = 30;
+	gun->range = range;
+	gun->damage = damage;
+	return (gun);
 }

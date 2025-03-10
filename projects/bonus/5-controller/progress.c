@@ -12,21 +12,6 @@
 
 #include "cub3d_bonus.h"
 
-static t_gun	*init_gun(int total, int range, int damage)
-{
-	t_gun	*gun;
-
-	gun = ft_calloc(1, sizeof(t_gun));
-	gun->total = total;
-	if (total < 30)
-		gun->ammo = total;
-	else
-		gun->ammo = 30;
-	gun->range = range;
-	gun->damage = damage;
-	return (gun);
-}
-
 static void	add_slot(t_slot *slot, int curr, t_anim *anim, int loop)
 {
 	static int	index;
@@ -73,7 +58,10 @@ void	init_slot(void)
 	game->player.slot->curr->play = TRUE;
 }
 
-void	init_door(void)
+static void	init_door(t_size index);
+static void	init_enmy(t_size index);
+
+void	init_objs(void)
 {
 	t_game	*game;
 	t_size	index;
@@ -82,33 +70,6 @@ void	init_door(void)
 	game = get_game();
 	game->grp->door = ft_calloc(game->count.door, sizeof(t_door));
 	error_controller("Failed to allocate memory.", game->grp->door);
-	while (game->map->map[index.y])
-	{
-		index.x = 0;
-		while (game->map->map[index.y][index.x])
-		{
-			if (game->map->map[index.y][index.x] == DOOR)
-			{
-				game->grp->door[game->grp->d_i].coor.x = index.x;
-				game->grp->door[game->grp->d_i].coor.y = index.y;
-				game->grp->door[game->grp->d_i].filter = 0x980088;
-				init_animation(&game->grp->door[game->grp->d_i].anim,
-					(t_size){0, 64}, DELAY / 2, DOOR1_PATH);
-				game->grp->d_i++;
-			}
-			index.x++;
-		}
-		index.y++;
-	}
-}
-
-void	init_enmy(void)
-{
-	t_game	*game;
-	t_size	index;
-
-	ft_bzero(&index, sizeof(t_size));
-	game = get_game();
 	game->grp->enmy = ft_calloc(game->count.enmy, sizeof(t_enmy));
 	error_controller("Failed to allocate memory.", game->grp->enmy);
 	while (game->map->map[index.y])
@@ -116,16 +77,50 @@ void	init_enmy(void)
 		index.x = 0;
 		while (game->map->map[index.y][index.x])
 		{
-			if (game->map->map[index.y][index.x] == ENMY)
-			{
-				game->grp->enmy[game->grp->e_i].pos.x = index.x;
-				game->grp->enmy[game->grp->e_i].pos.y = index.y;
-				init_animation(&game->grp->enmy[game->grp->e_i].anim,
-					(t_size){0, 6}, DELAY / 2, ENMY_PATH);
-				game->grp->e_i++;
-			}
+			init_door(index);
+			init_enmy(index);
 			index.x++;
 		}
 		index.y++;
+	}
+}
+
+static void	init_door(t_size index)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (game->map->map[index.y][index.x] == DOOR)
+	{
+		game->grp->door[game->grp->d_i].coor.x = index.x;
+		game->grp->door[game->grp->d_i].coor.y = index.y;
+		if (game->grp->d_i % 2)
+		{
+			game->grp->door[game->grp->d_i].filter = 0x980088;
+			init_animation(&game->grp->door[game->grp->d_i].anim,
+				(t_size){0, 64}, DELAY / 2, DOOR1_PATH);
+		}
+		else
+		{
+			game->grp->door[game->grp->d_i].filter = 0xFF000000;
+			init_animation(&game->grp->door[game->grp->d_i].anim,
+				(t_size){0, 9}, DELAY / 2, DOOR2_PATH);
+		}
+		game->grp->d_i++;
+	}
+}
+
+static void	init_enmy(t_size index)
+{
+	t_game	*game;
+
+	game = get_game();
+	if (game->map->map[index.y][index.x] == ENMY)
+	{
+		game->grp->enmy[game->grp->e_i].pos.x = index.x;
+		game->grp->enmy[game->grp->e_i].pos.y = index.y;
+		init_animation(&game->grp->enmy[game->grp->e_i].anim,
+			(t_size){0, 6}, DELAY / 2, ENMY_PATH);
+		game->grp->e_i++;
 	}
 }

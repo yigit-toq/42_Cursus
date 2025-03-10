@@ -119,8 +119,7 @@ void	init_game(void)
 	error_controller("Window creation failed :D", game->win);
 	init_img();
 	init_slot();
-	init_door();
-	init_enmy();
+	init_objs();
 	mlx_loop_hook(game->mlx, next_frame, NULL);
 	mlx_hook(game->win, 2, 1L << 0, key_press_handler, game);
 	mlx_hook(game->win, 3, 1L << 1, key_relse_handler, game);

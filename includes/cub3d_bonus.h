@@ -120,8 +120,9 @@ void			minimap(void);
 /*------------------------------------------------------------*/
 
 void			init_slot(void);
-void			init_door(void);
-void			init_enmy(void);
+void			init_objs(void);
+
+t_gun			*init_gun(int total, int range, int damage);
 
 /*------------------------------------------------------------*/
 
