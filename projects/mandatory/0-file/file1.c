@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 18:54:59 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 16:54:08 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/14 18:39:19 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,10 @@ static void	object_counter(int x, int y)
 		game->count.wall++;
 	else if (m[x] == FLOOR)
 		game->count.floor++;
-	if (x == 0 && (m[y][x] == '\r' || m[y][x] == '\n'))
-		error_controller("Invalid Map.", NULL);
 	if (wtspace_check(m[x]) == FALSE)
 		if (ft_strchr("01NSWE", m[x]) == NULL)
 			error_controller("Invalid character in file.", NULL);
 }
-
-// bakılacak ikisinede
 
 static void	maps_control(void)
 {
@@ -101,6 +97,26 @@ static void	maps_control(void)
 		error_controller("Map is not closed!!", NULL);
 }
 
+static void	map_start(char *line)
+{
+	static int	flag;
+	char		*str;
+
+	if (flag == FALSE)
+	{
+		str = wtspace_trim(line);
+		if (str[0] == WALL)
+		{
+			flag = TRUE;
+		}
+		gfree(str);
+	}
+	else if (line[0] == '\n')
+	{
+		error_controller("Invalid map.", NULL);
+	}
+}
+
 static void	reading_file(int fd)
 {
 	char	**file;
@@ -113,6 +129,7 @@ static void	reading_file(int fd)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
+		map_start(line);
 		total = ft_strjoin(total, line);
 	}
 	close(fd);

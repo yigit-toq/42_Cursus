@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 00:52:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 18:39:21 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/12 18:38:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,12 @@ static void	update_animtion(void)
 	}
 	if (game->grp->curr && game->grp->curr->anim.play == TRUE)
 	{
-		if (game->grp->curr->state == FALSE)
-			updt_animation(&game->grp->curr->anim, FALSE);
+		if (game->grp->curr->state == TRUE)
+			updt_animation(&game->grp->curr->anim, 1);
 		else
-			updt_animation(&game->grp->curr->anim, TRUE);
+			updt_animation(&game->grp->curr->anim, 0);
 	}
 }
-
-//game->curr->ratio = (double)game->curr->anim.index
-// /(double)game->curr->anim.total;
 
 // void	update_enemy(void)
 // {
@@ -52,7 +49,7 @@ static void	update_animtion(void)
 // 	t_vect	d;
 // 	t_vect	p;
 // 	int		i;
-//
+// 
 // 	i = 0;
 // 	game = get_game();
 // 	while (i < game->count.enmy)
@@ -80,9 +77,9 @@ static int	next_frame(void)
 	game = get_game();
 	update_position();
 	update_animtion();
-	swap_animation(game->player.slot->curr, game->img->next_anim);
 	mlx_put_image_to_window(game->mlx, game->win, game->img->bgframe.img, 0, 0);
 	mlx_string_put(game->mlx, game->win, 10, 16, 0x000000, get_fps(game->sfps));
+	swap_animation(game->player.slot->curr, game->img->next_anim);
 	raycast();
 	minimap();
 	return (SUCCESS);
@@ -107,6 +104,7 @@ static void	init_img(void)
 		img->direct[i] = add_image(img->paths[i], (t_size){0, 0});
 		i++;
 	}
+	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 	img->skybox = add_image(img->paths[len - 3], (t_size){0, 0});
 	img->ground = add_image(img->paths[len - 2], (t_size){0, 0});
 	img->crossh = add_image(img->paths[len - 1], (t_size){0, 0});
@@ -114,7 +112,6 @@ static void	init_img(void)
 	size.x = map->mini.x;
 	size.y = map->mini.y;
 	img->minimap = add_image(NULL, size);
-	img->hex[0] = rgb_to_hexa(img->rgb[0][0], img->rgb[0][1], img->rgb[0][2]);
 }
 
 void	init_game(void)

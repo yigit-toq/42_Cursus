@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 17:31:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/09 17:31:07 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/14 17:06:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,9 @@ static int	walls_check(t_vect pos)
 	game = get_game();
 	cell = game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)];
 	if (cell == WALL || (cell == DOOR && !game->grp->curr->state))
+	{
 		return (FAILURE);
+	}
 	else
 	{
 		game->player.pos = pos;

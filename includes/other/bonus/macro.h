@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 13:49:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 18:38:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/12 19:02:09 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@
 # define FIRE			2
 # define SKIN			3
 
-# define DELAY			6
+# define DELAY			4
 
 # define WIN_W			640
 # define WIN_H			360

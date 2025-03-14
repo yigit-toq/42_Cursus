@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:37 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 17:39:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/12 17:51:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static void	draw_player(void)
 	t_vect	scale;
 
 	game = get_game();
-	scale.x = game->map->mini.x / (MINI * 1.5);
-	scale.y = game->map->mini.y / (MINI * 1.5);
+	scale.x = game->map->mini.x / (MINI * 2);
+	scale.y = game->map->mini.y / (MINI * 2);
 	plane.x = (game->map->mini.x / 2) - (scale.x / 2);
 	plane.y = (game->map->mini.y / 2) - (scale.y / 2);
 	draw_rect(game->img->minimap, plane, scale, H_R);
@@ -39,12 +39,12 @@ static void	draw_minimap_utils(int x, int y)
 
 	game = get_game();
 	mini = tc_vect(game->map->mini);
-	coord.x = (game->player.pos.x - (MINI / 2)) + (x * MINI) / mini.x;
-	coord.y = (game->player.pos.y - (MINI / 2)) + (y * MINI) / mini.y;
-	if (coord.x >= game->map->size.x - 0.5 || coord.y >= game->map->size.y - 0.5)
+	coord.x = round((game->player.pos.x - (MINI / 2)) + (x * MINI) / mini.x);
+	coord.y = round((game->player.pos.y - (MINI / 2)) + (y * MINI) / mini.y);
+	if (coord.x >= game->map->size.x || coord.y >= game->map->size.y)
 		value = 0;
 	else
-		value = game->map->map[(int)round(coord.y)][(int)round(coord.x)];
+		value = game->map->map[(int)(coord.y)][(int)(coord.x)];
 	if (value == FLOOR || value == game->player.direction)
 		mlx_image_put(game->img->minimap, x, y, H_G);
 	else if (value == WALL)

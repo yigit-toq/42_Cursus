@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:59:18 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/07 17:54:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/12 18:42:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ int	main(int argc, char **argv)
 		argv++;
 		exten_controller(*argv);
 		files_controller(*argv);
+		init_game();
 	}
-	return (init_game(), EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
-
-//argv += arg_controller(argv);

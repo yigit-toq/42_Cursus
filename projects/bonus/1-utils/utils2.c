@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 00:36:00 by ytop              #+#    #+#             */
-/*   Updated: 2024/12/27 13:59:14 by ytop             ###   ########.fr       */
+/*   Updated: 2025/03/14 16:34:14 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ t_vect	tc_vect(t_size size)
 	return (vect);
 }
 
+double	calcul_dista(t_vect vect1, t_vect vect2)
+{
+	t_vect	dist;
+
+	dist.x = vect1.x - vect2.x;
+	dist.y = vect1.y - vect2.y;
+	return (sqrt(dist.x * dist.x + dist.y * dist.y));
+}
+
 double	vector_angle(t_vect vect1, t_vect vect2)
 {
 	double	dot_product;
@@ -56,13 +65,4 @@ double	vector_angle(t_vect vect1, t_vect vect2)
 	magnitude.x = sqrt(vect1.x * vect1.x + vect1.y * vect1.y);
 	magnitude.y = sqrt(vect2.x * vect2.x + vect2.y * vect2.y);
 	return (acos(dot_product / (magnitude.x * magnitude.y)));
-}
-
-double	calcul_dista(t_vect vect1, t_vect vect2)
-{
-	t_vect	dist;
-
-	dist.x = vect1.x - vect2.x;
-	dist.y = vect1.y - vect2.y;
-	return (sqrt(dist.x * dist.x + dist.y * dist.y));
 }
