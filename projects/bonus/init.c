@@ -12,8 +12,6 @@
 
 #include "cub3d_bonus.h"
 
-#include <math.h>
-
 #include <mlx.h>
 
 static void	update_animtion(void)

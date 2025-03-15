@@ -70,7 +70,6 @@ static void	free_game(void)
 	game = get_game();
 	if (game->win != NULL)
 		mlx_destroy_window(game->mlx, game->win);
-	destroy_images(game->img->dir, 4);
-	if (game->img->frame.img)
-		mlx_destroy_image(game->mlx, game->img->frame.img);
+	destroy_images(game->img->frame, 1);
+	destroy_images(game->img->dir, DIR);
 }

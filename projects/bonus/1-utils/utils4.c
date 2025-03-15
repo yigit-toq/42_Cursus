@@ -82,20 +82,3 @@ void	exten_controller(char *path)
 	if (ft_strcmp(extension, ".cub"))
 		error_controller("Wrong extension.", NULL);
 }
-
-// void	get_load(t_game *game)
-// {
-// 	char	string[30];
-// 	char	*val;
-// 	int		x;
-// 	int		y;
-//
-// 	mlx_clear_window(game->mlx, game->win);
-// 	x = WIN_W / 2 - 40;
-// 	y = WIN_H / 2;
-// 	val = ft_itoa(++game->count.count * 100 / TOTAL);
-// 	ft_strlcpy(string, "Loading... ", sizeof(string));
-// 	ft_strlcat(string, val, sizeof(string));
-// 	ft_strlcat(string, "%", sizeof(string));
-// 	mlx_string_put(game->mlx, game->win, x, y, H_W, string);
-// }

@@ -47,12 +47,10 @@ static void	object_counter(int x, int y)
 {
 	t_game	*game;
 	char	*m;
-	int		p;
 
 	game = get_game();
 	m = game->map->map[y];
-	p = (m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST);
-	if (p == TRUE)
+	if (m[x] == NORTH || m[x] == SOUTH || m[x] == WEST || m[x] == EAST)
 	{
 		game->count.player++;
 		game->player.pos.x = x;
@@ -63,9 +61,10 @@ static void	object_counter(int x, int y)
 		game->count.wall++;
 	else if (m[x] == FLOOR)
 		game->count.floor++;
-	if (wtspace_check(m[x]) == FALSE)
-		if (ft_strchr("01NSWE", m[x]) == NULL)
-			error_controller("Invalid character in file.", NULL);
+	if (x == 0 && (m[x] == '\n' || m[x] == '\r'))
+		error_controller("Empty line detected", NULL);
+	else
+		error_controller("Invalid character!!", ft_strchr("01NSWE \r\n", m[x]));
 }
 
 static void	maps_control(void)
@@ -89,32 +88,12 @@ static void	maps_control(void)
 		y++;
 	}
 	game->map->size.y = y;
-	if (game->count.player > P_COUNT)
-		error_controller("There can be only one player.", NULL);
 	if (game->count.player < P_COUNT)
-		error_controller("There is no player.", NULL);
-	if (flood_fill((int)game->player.pos.x, (int)game->player.pos.y))
-		error_controller("Map is not closed!!", NULL);
-}
-
-static void	map_start(char *line)
-{
-	static int	flag;
-	char		*str;
-
-	if (flag == FALSE)
-	{
-		str = wtspace_trim(line);
-		if (str[0] == WALL)
-		{
-			flag = TRUE;
-		}
-		gfree(str);
-	}
-	else if (line[0] == '\n')
-	{
-		error_controller("Invalid map.", NULL);
-	}
+		error_controller("There is no player", NULL);
+	if (game->count.player > P_COUNT)
+		error_controller("Too many players!!", NULL);
+	if (flood_fill(game->player.pos.x, game->player.pos.y))
+		error_controller("Map is not closed!", NULL);
 }
 
 static void	reading_file(int fd)
@@ -129,7 +108,6 @@ static void	reading_file(int fd)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		map_start(line);
 		total = ft_strjoin(total, line);
 	}
 	close(fd);

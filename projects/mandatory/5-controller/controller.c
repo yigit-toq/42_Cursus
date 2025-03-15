@@ -88,7 +88,7 @@ static int	input_systm(double h_move, double v_move)
 	}
 	pos.x += v_move * player->speed * side.x + h_move * player->speed * forw.x;
 	pos.y += v_move * player->speed * side.y + h_move * player->speed * forw.y;
-	return (walls_check(pos));
+	return (wall_check(pos));
 }
 
 int	key_press_handler(int key, t_game *game)
@@ -108,7 +108,7 @@ int	key_press_handler(int key, t_game *game)
 	return (SUCCESS);
 }
 
-int	key_release_handler(int key, t_game *game)
+int	key_relse_handler(int key, t_game *game)
 {
 	if (key == W_KEY || key == S_KEY)
 	{

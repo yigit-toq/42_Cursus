@@ -109,6 +109,8 @@
 
 # define DELAY			4
 
+# define CAMMO			30
+
 # define WIN_W			640
 # define WIN_H			360
 

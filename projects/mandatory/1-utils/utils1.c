@@ -12,7 +12,6 @@
 
 #include "cub3d_mandatory.h"
 
-#include <sys/time.h>
 #include <fcntl.h>
 
 #include <mlx.h>

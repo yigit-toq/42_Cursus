@@ -14,8 +14,6 @@
 
 #include <math.h>
 
-#include "mlx.h"
-
 static int	update_axis(double *position, double *axis, int sign);
 
 static int	input_systm(double h_move, double v_move);
@@ -97,7 +95,7 @@ static int	update_axis(double *position, double *axis, int sign)
 	return (SUCCESS);
 }
 
-static int	walls_check(t_vect pos)
+static int	wall_check(t_vect pos)
 {
 	t_game	*game;
 	int		cell;
@@ -139,5 +137,5 @@ static int	input_systm(double h_move, double v_move)
 	pos.y += v_move * game->player.speed * side.y;
 	pos.x += h_move * game->player.speed * forw.x;
 	pos.y += h_move * game->player.speed * forw.y;
-	return (walls_check(pos));
+	return (wall_check(pos));
 }

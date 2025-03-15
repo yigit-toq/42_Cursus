@@ -134,29 +134,3 @@ int	raycast(void)
 	}
 	return (SUCCESS);
 }
-
-// static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
-// {
-// 	t_game	*game;
-// 	t_size	map;
-//
-// 	game = get_game();
-// 	ray->pos.x = pos.x;
-// 	ray->pos.y = pos.y;
-// 	ray->dir.x = cos(deg_to_rad(angle)) / SEV;
-// 	ray->dir.y = sin(deg_to_rad(angle)) / SEV;
-// 	while (TRUE)
-// 	{
-// 		ray->pos.x += ray->dir.x;
-// 		ray->pos.y += ray->dir.y;
-// 		map.x = floor(ray->pos.x / game->map->scale.x);
-// 		map.y = floor(ray->pos.y / game->map->scale.y);
-// 		if (game->map->map[map.y][map.x] == WALL)
-// 			break ;
-// 	}
-// 	ray->dist = sqrt(pow(ray->pos.x - pos.x, 2) + pow(ray->pos.y - pos.y, 2));
-//
-// 	ray->dist = ray->dist * cos (deg_to_rad(angle) - game->player.theta);
-//
-// 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
-// }

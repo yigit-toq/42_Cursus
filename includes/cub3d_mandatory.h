@@ -35,7 +35,7 @@ int				update_position(void);
 
 int				key_press_handler(int key, t_game *game);
 
-int				key_release_handler(int key, t_game *game);
+int				key_relse_handler(int key, t_game *game);
 
 /*----------------------COLOR CONTROLLER----------------------*/
 
@@ -80,7 +80,7 @@ void			render_frame(t_ray *ray, int x);
 
 char			**copy_array(char **array, int size);
 
-int				walls_check(t_vect pos);
+int				wall_check(t_vect pos);
 
 /*------------------------------------------------------------*/
 

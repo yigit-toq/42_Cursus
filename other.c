@@ -166,6 +166,34 @@
 //     mlx_pixel_put(game->mlx, game->win, p_coord.x, p_coord.y, 0xFFFFFF);
 // }
 
+// raycasting1.c
+
+// static void	rays_in_povs(t_ray *ray, t_vect pos, double angle)
+// {
+// 	t_game	*game;
+// 	t_size	map;
+//
+// 	game = get_game();
+// 	ray->pos.x = pos.x;
+// 	ray->pos.y = pos.y;
+// 	ray->dir.x = cos(deg_to_rad(angle)) / SEV;
+// 	ray->dir.y = sin(deg_to_rad(angle)) / SEV;
+// 	while (TRUE)
+// 	{
+// 		ray->pos.x += ray->dir.x;
+// 		ray->pos.y += ray->dir.y;
+// 		map.x = floor(ray->pos.x / game->map->scale.x);
+// 		map.y = floor(ray->pos.y / game->map->scale.y);
+// 		if (game->map->map[map.y][map.x] == WALL)
+// 			break ;
+// 	}
+// 	ray->dist = sqrt(pow(ray->pos.x - pos.x, 2) + pow(ray->pos.y - pos.y, 2));
+//
+// 	ray->dist = ray->dist * cos (deg_to_rad(angle) - game->player.theta);
+//
+// 	ray->wall.height = floor((WIN_H / 2) / ray->dist);
+// }
+
 // utils1.c
 
 // void	delay(int ms)
@@ -183,4 +211,103 @@
 // 		gettimeofday(&time[1], NULL);
 // 		c_time = time[1].tv_sec * 1000 + time[1].tv_usec / 1000;
 // 	}
+// }
+
+// utils4.c
+
+// void	get_load(t_game *game)
+// {
+// 	char	string[30];
+// 	char	*val;
+// 	int		x;
+// 	int		y;
+//
+// 	mlx_clear_window(game->mlx, game->win);
+// 	x = WIN_W / 2 - 40;
+// 	y = WIN_H / 2;
+// 	val = ft_itoa(++game->count.count * 100 / TOTAL);
+// 	ft_strlcpy(string, "Loading... ", sizeof(string));
+// 	ft_strlcat(string, val, sizeof(string));
+// 	ft_strlcat(string, "%", sizeof(string));
+// 	mlx_string_put(game->mlx, game->win, x, y, H_W, string);
+// }
+
+// animation1.c
+
+// void	init_frame(t_data *frame, char *path, int *range)
+// {
+// 	char	t_path[100];
+// 	char	*fstr;
+// 	int		temp;
+// 	int		size;
+//
+// 	size = 100;
+// 	temp = range[0];
+// 	while (range[0] < range[1])
+// 	{
+// 		fstr = ft_itoa(range[0] + 1);
+// 		ft_strlcpy(t_path, path, size);
+// 		ft_strlcat(t_path, fstr, size);
+// 		ft_strlcat(t_path, ").xpm", size);
+// 		frame[range[0] - temp] = add_image(t_path, (t_size){0, 0});
+// 		range[0]++;
+// 		gfree(fstr);
+// 	}
+// }
+
+// error.c
+
+// int	arg_check(char *arg)
+// {
+// 	if (!ft_strcmp(arg, "--load") || !ft_strcmp(arg, "-l"))
+// 	{
+// 		return (1);
+// 	}
+// 	if (!ft_strcmp(arg, "--save") || !ft_strcmp(arg, "-s"))
+// 	{
+// 		return (2);
+// 	}
+// 	return (0);
+// }
+//
+// int	arg_controller(char **argv)
+// {
+// 	t_game	*game;
+// 	int		i;
+//
+// 	i = 0;
+// 	game = get_game();
+// 	while (argv[i + 1] && arg_check(argv[i]))
+// 	{
+// 		if (arg_check(argv[i]) == 1)
+// 			game->load = TRUE;
+// 		else
+// 			game->save = TRUE;
+// 		i++;
+// 	}
+// 	if (game->load)
+// 	{
+// 		if (exten_controller(argv[i]) == 2)
+// 			load_scene(open_file(argv[i]));
+// 		else
+// 			error_controller("Usage: ./cub3d <map.save>", NULL);
+// 	}
+// 	return (i);
+// }
+//
+// int	exten_controller(char *path)
+// {
+// 	char	*extension;
+//
+// 	extension = ft_strrchr(path, '.');
+// 	if (!extension)
+// 		return (0);
+// 	else
+// 	{
+// 		if (!ft_strcmp(extension,  ".cub"))
+// 			return (1);
+// 		if (!ft_strcmp(extension, ".save"))
+// 			return (2);
+// 	}
+// 	return (0);
 // }

@@ -14,27 +14,6 @@
 
 #include <stdio.h>
 
-// void	init_frame(t_data *frame, char *path, int *range)
-// {
-// 	char	t_path[100];
-// 	char	*fstr;
-// 	int		temp;
-// 	int		size;
-//
-// 	size = 100;
-// 	temp = range[0];
-// 	while (range[0] < range[1])
-// 	{
-// 		fstr = ft_itoa(range[0] + 1);
-// 		ft_strlcpy(t_path, path, size);
-// 		ft_strlcat(t_path, fstr, size);
-// 		ft_strlcat(t_path, ").xpm", size);
-// 		frame[range[0] - temp] = add_image(t_path, (t_size){0, 0});
-// 		range[0]++;
-// 		gfree(fstr);
-// 	}
-// }
-
 static void	init_frame(t_data *frame, char *path, int start, int end)
 {
 	char	t_path[100];

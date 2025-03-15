@@ -29,14 +29,14 @@ char	**copy_array(char **array, int size)
 	return (copy);
 }
 
-int	walls_check(t_vect pos)
+int	wall_check(t_vect pos)
 {
 	t_game	*game;
 	int		cell;
 
 	game = get_game();
 	cell = game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)];
-	if (cell == WALL || cell == '\0')
+	if (cell == WALL || cell == SPACE || cell == '\n' || cell == '\0')
 	{
 		return (FAILURE);
 	}
