@@ -25,8 +25,8 @@ t_game	*get_game(void)
 		error_controller("Failed to allocate memory.", game.map);
 		game.img = ft_calloc(1, sizeof(t_img));
 		error_controller("Failed to allocate memory.", game.img);
-		game.grp = ft_calloc(1, sizeof(t_grp));
-		error_controller("Failed to allocate memory.", game.grp);
+		game.utl = ft_calloc(1, sizeof(t_utl));
+		error_controller("Failed to allocate memory.", game.utl);
 	}
 	return (&game);
 }

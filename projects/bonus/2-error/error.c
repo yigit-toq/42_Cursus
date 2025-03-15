@@ -67,17 +67,17 @@ static void	free_game_utils(void)
 		mlx_destroy_image(game->mlx, game->img->ground.img);
 	if (game->img->crossh.img)
 		mlx_destroy_image(game->mlx, game->img->crossh.img);
-	if (game->grp == NULL)
+	if (game->utl == NULL)
 		return ;
-	while (game->grp->door && game->count.door-- > 0)
+	while (game->utl->door && game->count.door-- > 0)
 	{
-		destroy_images(game->grp->door[game->count.door].anim.frames,
-			game->grp->door[game->count.door].anim.total);
+		destroy_images(game->utl->door[game->count.door].anim.frames,
+			game->utl->door[game->count.door].anim.total);
 	}
-	while (game->grp->enmy && game->count.enmy-- > 0)
+	while (game->enmy)
 	{
-		destroy_images(game->grp->enmy[game->count.enmy].anim.frames,
-			game->grp->enmy[game->count.enmy].anim.total);
+		destroy_images(game->enmy->anim.frames, game->enmy->anim.total);
+		game->enmy = game->enmy->next;
 	}
 }
 

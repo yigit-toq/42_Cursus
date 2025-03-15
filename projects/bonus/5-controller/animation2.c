@@ -18,7 +18,7 @@ static void	door_animation(t_anim *anim)
 	t_door	*door;
 
 	game = get_game();
-	door = game->grp->curr;
+	door = game->utl->curr;
 	if (anim == &door->anim)
 	{
 		if (door->state)

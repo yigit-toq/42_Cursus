@@ -102,7 +102,7 @@ static int	wall_check(t_vect pos)
 
 	game = get_game();
 	cell = game->map->map[(int)grid_to_ct(pos.y, 1)][(int)grid_to_ct(pos.x, 1)];
-	if (cell == WALL || (cell == DOOR && !game->grp->curr->state))
+	if (cell == WALL || (cell == DOOR && !game->utl->curr->state))
 	{
 		return (FAILURE);
 	}

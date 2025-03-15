@@ -50,8 +50,8 @@ int	key_relse_handler(int key, t_game *game)
 		game->player.rota[1] = FALSE;
 	if (key == ESC_KEY)
 		exit_game(game, EXIT_SUCCESS);
-	if (key == E_KEY && game->grp->curr)
-		game->grp->curr->anim.play = TRUE;
+	if (key == E_KEY && game->utl->curr)
+		game->utl->curr->anim.play = TRUE;
 	if (key == M_KEY)
 		game->map->is_map = !game->map->is_map;
 	if (key == P_KEY)

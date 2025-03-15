@@ -59,12 +59,12 @@ static void	middle_ray(t_ray *ray, int index, void *type)
 	game = get_game();
 	if (index == WIN_W / 2)
 	{
-		if (game->grp->door == type)
+		if (game->utl->door == type)
 		{
 			if (ray->door.dist <= 2)
-				game->grp->curr = &game->grp->door[game->grp->d_i];
+				game->utl->curr = &game->utl->door[game->utl->index];
 			else
-				game->grp->curr = NULL;
+				game->utl->curr = NULL;
 		}
 	}
 }
@@ -77,12 +77,12 @@ void	calculate_door(t_ray *ray, int index, double angle)
 
 	i = 0;
 	game = get_game();
-	door = game->grp->door;
+	door = game->utl->door;
 	while (i < game->count.door)
 	{
 		if (ray->plane.x == door[i].coor.x && ray->plane.y == door[i].coor.y)
 		{
-			game->grp->d_i = i;
+			game->utl->index = i;
 			break ;
 		}
 		i++;

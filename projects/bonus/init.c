@@ -32,12 +32,12 @@ static void	update_animtion(void)
 			game->img->next_anim = game->player.slot->fire;
 		}
 	}
-	if (game->grp->curr && game->grp->curr->anim.play == TRUE)
+	if (game->utl->curr && game->utl->curr->anim.play == TRUE)
 	{
-		if (game->grp->curr->state == TRUE)
-			updt_animation(&game->grp->curr->anim, 1);
+		if (game->utl->curr->state == TRUE)
+			updt_animation(&game->utl->curr->anim, 1);
 		else
-			updt_animation(&game->grp->curr->anim, 0);
+			updt_animation(&game->utl->curr->anim, 0);
 	}
 }
 

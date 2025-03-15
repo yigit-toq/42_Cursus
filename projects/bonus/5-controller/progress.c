@@ -59,26 +59,29 @@ void	init_slot(void)
 }
 
 static void	init_door(t_size index);
-static void	init_enmy(t_size index);
 
 void	init_objs(void)
 {
 	t_game	*game;
+	t_enmy	*enmy;
 	t_size	index;
 
 	ft_bzero(&index, sizeof(t_size));
 	game = get_game();
-	game->grp->door = ft_calloc(game->count.door, sizeof(t_door));
-	error_controller("Failed to allocate memory.", game->grp->door);
-	game->grp->enmy = ft_calloc(game->count.enmy, sizeof(t_enmy));
-	error_controller("Failed to allocate memory.", game->grp->enmy);
+	enmy = game->enmy;
+	game->utl->door = ft_calloc(game->count.door, sizeof(t_door));
+	error_controller("Failed to allocate memory.", game->utl->door);
 	while (game->map->map[index.y])
 	{
 		index.x = 0;
 		while (game->map->map[index.y][index.x])
 		{
+			if (enmy)
+			{
+				init_animation(&enmy->anim, (t_size){0, 6}, DELAY, ENMY_PATH);
+				enmy = enmy->next;
+			}
 			init_door(index);
-			init_enmy(index);
 			index.x++;
 		}
 		index.y++;
@@ -92,35 +95,20 @@ static void	init_door(t_size index)
 	game = get_game();
 	if (game->map->map[index.y][index.x] == DOOR)
 	{
-		game->grp->door[game->grp->d_i].coor.x = index.x;
-		game->grp->door[game->grp->d_i].coor.y = index.y;
-		if (game->grp->d_i % 2)
+		game->utl->door[game->utl->index].coor.x = index.x;
+		game->utl->door[game->utl->index].coor.y = index.y;
+		if (game->utl->index % 2)
 		{
-			game->grp->door[game->grp->d_i].filter = 0x980088;
-			init_animation(&game->grp->door[game->grp->d_i].anim,
+			game->utl->door[game->utl->index].filter = 0x00980088;
+			init_animation(&game->utl->door[game->utl->index].anim,
 				(t_size){0, 64}, DELAY / 2, DOOR1_PATH);
 		}
 		else
 		{
-			game->grp->door[game->grp->d_i].filter = 0xFF000000;
-			init_animation(&game->grp->door[game->grp->d_i].anim,
+			game->utl->door[game->utl->index].filter = 0xFF000000;
+			init_animation(&game->utl->door[game->utl->index].anim,
 				(t_size){0, 9}, DELAY / 2, DOOR2_PATH);
 		}
-		game->grp->d_i++;
-	}
-}
-
-static void	init_enmy(t_size index)
-{
-	t_game	*game;
-
-	game = get_game();
-	if (game->map->map[index.y][index.x] == ENMY)
-	{
-		game->grp->enmy[game->grp->e_i].pos.x = index.x;
-		game->grp->enmy[game->grp->e_i].pos.y = index.y;
-		init_animation(&game->grp->enmy[game->grp->e_i].anim,
-			(t_size){0, 6}, DELAY / 2, ENMY_PATH);
-		game->grp->e_i++;
+		game->utl->index++;
 	}
 }

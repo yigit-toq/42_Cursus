@@ -83,10 +83,12 @@ typedef struct s_door
 
 typedef struct s_enmy
 {
-	t_vect		pos;
-	t_anim		anim;
-	double		dist;
-}				t_enmy;
+	t_vect			pos;
+	t_vect			dir;
+	t_anim			anim;
+	double			dist;
+	struct s_enmy	*next;
+}					t_enmy;
 
 typedef struct s_objs
 {
@@ -179,23 +181,22 @@ typedef struct s_map
 	t_size		mini;
 }				t_map;
 
-typedef struct s_grp
+typedef struct s_utl
 {
-	t_enmy		*enmy;
 	t_door		*door;
 	t_door		*curr;
-	int			d_i;
-	int			e_i;
-}				t_grp;
+	int			index;
+}				t_utl;
 
 typedef struct s_game
 {
 	t_player	player;
 	t_sound		sound;
 	t_count		count;
+	t_enmy		*enmy;
+	t_utl		*utl;
 	t_img		*img;
 	t_map		*map;
-	t_grp		*grp;
 	void		*mlx;
 	void		*win;
 	char		load[4];

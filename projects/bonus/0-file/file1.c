@@ -43,6 +43,29 @@ static int	flood_fill(int x, int y)
 	return (SUCCESS);
 }
 
+void	add_enemy_to_end(t_vect pos)
+{
+	t_game	*game;
+	t_enmy	*temp;
+	t_enmy	*node;
+
+	game = get_game();
+	node = ft_calloc(1, sizeof(t_enmy));
+	if (!node)
+		error_controller("Failed to allocate memory.", NULL);
+	node->pos = pos;
+	game->count.enmy++;
+	if (!game->enmy)
+	{
+		game->enmy = node;
+		return ;
+	}
+	temp = game->enmy;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = node;
+}
+
 static void	object_counter(int x, int y)
 {
 	t_game	*game;
@@ -58,7 +81,7 @@ static void	object_counter(int x, int y)
 		game->player.direction = m[x];
 	}
 	else if (m[x] == ENMY)
-		game->count.enmy++;
+		add_enemy_to_end((t_vect){x, y});
 	else if (m[x] == DOOR)
 		game->count.door++;
 	else if (m[x] == WALL)

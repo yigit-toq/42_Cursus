@@ -75,7 +75,7 @@ static void	render_walls(t_ray *ray, t_objs *obj, int x, int y)
 	t_door	*door;
 
 	game = get_game();
-	door = &game->grp->door[game->grp->d_i];
+	door = &game->utl->door[game->utl->index];
 	if (game->count.door && draw_tex(*obj, (t_size){x, y},
 		door->anim.frame, door->filter) == FALSE)
 	{
