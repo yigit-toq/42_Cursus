@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef FORM_HPP
+#define FORM_HPP
 
 #include <iostream>
 
@@ -56,5 +57,7 @@ class Form
 
 		void	gradeControl(int grade);
 };
+
+std::ostream& operator<<(std::ostream &os, const Form &f);
 
 #endif

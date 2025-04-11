@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "AForm.hpp"
 
-Form::Form () : name("default"), recSign(45), recExec(10)
+AForm::AForm () : name("default"), recSign(45), recExec(10)
 {
 	this->sign = false;
 
 	std::cout << "Constructor for " << this->name << std::endl;
 }
 
-Form::Form (const std::string &nName, int nRecSign, int nRecExec) : name(nName), recSign(nRecSign), recExec(nRecExec)
+AForm::AForm (const std::string &nName, int nRecSign, int nRecExec) : name(nName), recSign(nRecSign), recExec(nRecExec)
 {
 	std::cout << "Constructor for " << this->name << std::endl;
 
@@ -29,19 +29,19 @@ Form::Form (const std::string &nName, int nRecSign, int nRecExec) : name(nName),
 	this->sign = false;
 }
 
-Form::Form (const Form &copy) : name(getName()), recSign(getRecSign()), recExec(getRecExec())
+AForm::AForm (const AForm &copy) : name(getName()), recSign(getRecSign()), recExec(getRecExec())
 {
 	*this = copy;
 
 	std::cout << "Copy const  for " << this->name << std::endl;
 }
 
-Form::~Form()
+AForm::~AForm()
 {
 	std::cout << "Destructor  for " << this->name << std::endl;
 }
 
-Form	&Form::operator=(const Form &copy)
+AForm	&AForm::operator=(const AForm &copy)
 {
 	if (this != &copy)
 	{
@@ -53,17 +53,17 @@ Form	&Form::operator=(const Form &copy)
 	return (*this);
 }
 
-const char  *Form::GradeTooLowException ::what() const throw()
+const char  *AForm::GradeTooLowException ::what() const throw()
 {
 	return ("Grade is too low !");
 }
 
-const char  *Form::GradeTooHighException::what() const throw()
+const char  *AForm::GradeTooHighException::what() const throw()
 {
 	return ("Grade is too high!");
 }
 
-void	Form::gradeControl(int grade)
+void	AForm::gradeControl(int grade)
 {
 	if (grade > 150)
 		throw GradeTooLowException();
@@ -71,33 +71,48 @@ void	Form::gradeControl(int grade)
 		throw GradeTooHighException();
 }
 
-std::string	Form::getName() const
+std::string	AForm::getName() const
 {
 	return (this->name);
 }
 
-bool		Form::getSign() const
+bool		AForm::getSign() const
 {
 	return (this->sign);
 }
 
-int			Form::getRecSign() const
+int			AForm::getRecSign() const
 {
 	return (this->recSign);
 }
 
-int			Form::getRecExec() const
+int			AForm::getRecExec() const
 {
 	return (this->recExec);
 }
 
-void		Form::beSinged(Bureaucrat &b)
+void		AForm::beSinged(Bureaucrat &b)
 {
 	if (b.getGrade() > this->getRecSign)
-		std::cout << "Bureaucrat " << b.getName() << " couldn't signed the " << this->getName() << " form because they have a grade of " << b.getGrade() << " and the form requires " << this->getReqSign() << " grade!" << std::endl;
+		std::cout << "Bureaucrat " << b.getName() << " couldn't signed the " << this->getName() << " form because they have a grade of " << b.getGrade() << " and the form requires " << this->getRecSign() << " grade!" << std::endl;
 }
 
-std::ostream&	operator<<(std::ostream &os, const Form &f)
+std::ostream&	operator<<(std::ostream &os, const AForm &f)
 {
 	os << f.getName() << " form is currently";
+
+	if (f.getSign())
+		os << " signed";
+	else
+		os << " not signed";
+
+	os << " and requires " << f.getRecSign() << " grade to sign and " << f.getRecExec() << " grade to execute.";
+
+	return (os);
+}
+
+void	AForm::execute(Bureaucrat const & executor) const
+{
+	if (executor.getGrade() > this->getRecExec())
+		std::cout << "Bureaucrat " << executor.getName() << " couldn't execute the " << this->getName() << " form because they have a grade of " << executor.getGrade() << " and the form requires " << this->getRecExec() << " grade!" << std::endl;
 }

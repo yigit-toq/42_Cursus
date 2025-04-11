@@ -10,9 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "AForm.hpp"
+
+#include "Bureaucrat.hpp"
 
 int	main(void)
 {
+	PresidentialPardonForm form("target");
+	Bureaucrat b("b", 1);
+
+	b.signForm(form);
+	b.executeForm(form);
+
+	ShrubberyCreationForm form2("target");
+	Bureaucrat b2("b2", 1);
 	return (0);
 }
