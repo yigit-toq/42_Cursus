@@ -16,4 +16,4 @@
 |04| [cpp02](https://github.com/yigit-toq/42_Cursus/tree/04-cpp02) | C | CPP exercise | 100%
 |04| [cpp03](https://github.com/yigit-toq/42_Cursus/tree/04-cpp03) | C | CPP exercise | 100%
 |04| [cpp04](https://github.com/yigit-toq/42_Cursus/tree/04-cpp04) | C | CPP exercise | 100%
-|04| [cub3d](https://github.com/yigit-toq/42_Cursus/tree/8-cub3d) | C | 3D raycasting game |
+|04| [cub3d](https://github.com/yigit-toq/42_Cursus/tree/8-cub3d) | C | 3D raycasting game | 125%
