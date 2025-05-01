@@ -11,9 +11,10 @@
 |02| [so_long](https://github.com/yigit-toq/42_Cursus/tree/4-so_long) | C | 2D map-based game | 100% |
 |03| [minishell](https://github.com/yigit-toq/42_Cursus/tree/7-minishell) | C | Simple command-line shell | 100% |
 |03| [philosophers](https://github.com/yigit-toq/42_Cursus/tree/6-philosophers) | C | Deadlock resolution simulation | 100% |
-|04| [cpp00](https://github.com/yigit-toq/42_Cursus/tree/04-cpp00) | C | CPP exercise | 100%
-|04| [cpp01](https://github.com/yigit-toq/42_Cursus/tree/04-cpp01) | C | CPP exercise | 100%
-|04| [cpp02](https://github.com/yigit-toq/42_Cursus/tree/04-cpp02) | C | CPP exercise | 100%
-|04| [cpp03](https://github.com/yigit-toq/42_Cursus/tree/04-cpp03) | C | CPP exercise | 100%
-|04| [cpp04](https://github.com/yigit-toq/42_Cursus/tree/04-cpp04) | C | CPP exercise | 100%
 |04| [cub3d](https://github.com/yigit-toq/42_Cursus/tree/8-cub3d) | C | 3D raycasting game | 125%
+|04| [cpp00](https://github.com/yigit-toq/42_Cursus/tree/04-cpp00) | C++ | CPP exercise | 100%
+|04| [cpp01](https://github.com/yigit-toq/42_Cursus/tree/04-cpp01) | C++ | CPP exercise | 100%
+|04| [cpp02](https://github.com/yigit-toq/42_Cursus/tree/04-cpp02) | C++ | CPP exercise | 100%
+|04| [cpp03](https://github.com/yigit-toq/42_Cursus/tree/04-cpp03) | C++ | CPP exercise | 100%
+|04| [cpp04](https://github.com/yigit-toq/42_Cursus/tree/04-cpp04) | C++ | CPP exercise | 100%
+|05| [cpp05](https://github.com/yigit-toq/42_Cursus/tree/05-cpp05) | C++ | CPP exercise | 100%
