@@ -2,7 +2,7 @@
 
 ## 📽️ Demo
 
-![08ta54g](https://github.com/user-attachments/assets/8a7212fe-47fb-44fd-bcba-a19937b3248e)
+![cub3D](https://github.com/user-attachments/assets/e2914311-8c13-48ea-a9d4-c2c7e7994c40)
 
 ## 🔧 Setup
 ...
