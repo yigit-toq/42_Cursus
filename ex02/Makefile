@@ -40,7 +40,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CC) $(CFLAGS) $(STD) $^ -o $(NAME)
-					@echo "\e[1m$(C_Y)EX00		$(C_G)[OK]\e[0m$(C_E)"
+					@echo "\e[1m$(C_Y)EX02		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RM) -rf $(OBJS)

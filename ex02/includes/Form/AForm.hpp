@@ -13,7 +13,7 @@
 #ifndef AFORM_HPP
 #define AFORM_HPP
 
-#include <iostream>
+#include "Bureaucrat.hpp"
 
 class Bureaucrat;
 
@@ -43,7 +43,7 @@ class AForm
 
 		void		beSinged(Bureaucrat &b);
 
-		virtual void execute(Bureaucrat const & executor) const = 0;
+		virtual void execute(Bureaucrat const & executor) const = 0; // new
 
 		class GradeTooHighException : public std::exception
 		{
@@ -57,7 +57,21 @@ class AForm
 				const char *what() const throw();
 		};
 
+		class FormNotSignedException : public std::exception
+		{
+			public:
+				const char *what() const throw();
+		};
+
+		class FormSignedException : public std::exception
+		{
+			public:
+				const char *what() const throw();
+		};
+
 		void	gradeControl(int grade);
+
+		void	exectControl(Bureaucrat const &executor) const;
 };
 
 std::ostream& operator<<(std::ostream &os, const AForm &f);

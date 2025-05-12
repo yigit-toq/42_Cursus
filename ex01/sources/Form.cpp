@@ -63,6 +63,11 @@ const char  *Form::GradeTooHighException::what() const throw()
 	return ("Grade is too high!");
 }
 
+const char *Form::FormSignedException::what() const throw()
+{
+	return ("Form is already signed!");
+}
+
 void	Form::gradeControl(int grade)
 {
 	if (grade > 150)
@@ -93,11 +98,32 @@ int			Form::getRecExec() const
 
 void		Form::beSinged(Bureaucrat &b)
 {
-	if (b.getGrade() > this->getRecSign)
-		std::cout << "Bureaucrat " << b.getName() << " couldn't signed the " << this->getName() << " form because they have a grade of " << b.getGrade() << " and the form requires " << this->getReqSign() << " grade!" << std::endl;
+	if (this->sign)
+	{
+		throw FormSignedException();
+	}
+
+	if (b.getGrade() > this->recSign)
+		std::cout << b.getName() << " couldn’t sign " << this->name << " because his grade is too low." << std::endl;
+	else
+	{
+		std::cout << b.getName() << " signed " << this->name << std::endl;
+		this->sign = true;
+	}
 }
 
 std::ostream&	operator<<(std::ostream &os, const Form &f)
 {
 	os << f.getName() << " form is currently";
+
+	if (f.getSign())
+		os << " signed ";
+	else
+		os << " not signed ";
+
+	os << std::endl;
+
+	os << "and requires a grade of " << f.getRecSign() << " to be signed and a grade of " << f.getRecExec() << " to be executed." << std::endl;
+
+	return (os);
 }

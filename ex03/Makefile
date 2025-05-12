@@ -10,19 +10,21 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	ex01
+NAME			=	ex03
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Bureaucrat.cpp $(SRCS_DIR)Form.cpp
+FORM_DIR		=	$(SRCS_DIR)Form/
+
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Bureaucrat.cpp $(FORM_DIR)AForm.cpp $(FORM_DIR)ShrubberyCreationForm.cpp $(FORM_DIR)RobotomyRequestForm.cpp $(FORM_DIR)PresidentialPardonForm.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
 RM				=	@rm -rf
 
 CC				=	@c++
-CFLAGS			=	-Wall -Wextra -Werror -I ./includes
+CFLAGS			=	-Wall -Wextra -Werror -I ./includes -I ./includes/Form
 
 STD				=	-std=c++98
 
@@ -38,7 +40,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CC) $(CFLAGS) $(STD) $^ -o $(NAME)
-					@echo "\e[1m$(C_Y)EX01		$(C_G)[OK]\e[0m$(C_E)"
+					@echo "\e[1m$(C_Y)EX03		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RM) -rf $(OBJS)

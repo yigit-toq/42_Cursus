@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FORM_HPP
-#define FORM_HPP
+#ifndef AFORM_HPP
+#define AFORM_HPP
 
 #include "Bureaucrat.hpp"
 
 class Bureaucrat;
 
-class Form
+class AForm
 {
 	private:
 		const std::string	name;
@@ -26,14 +26,14 @@ class Form
 		const int			recExec;
 
 	public:
-		Form ();
-		Form (const std::string &nName, int nRecSign, int nRecExec);
+		AForm ();
+		AForm (const std::string &nName, int nRecSign, int nRecExec);
 
-		Form (const Form &other);
+		AForm (const AForm &other);
 
-		~Form();
+		~AForm();
 
-		Form &operator = (const Form &other);
+		AForm &operator = (const AForm &other);
 
 		std::string	getName () const;
 		bool		getSign () const;
@@ -42,6 +42,8 @@ class Form
 		int			getRecExec () const;
 
 		void		beSinged(Bureaucrat &b);
+
+		virtual void execute(Bureaucrat const & executor) const = 0; // new
 
 		class GradeTooHighException : public std::exception
 		{
@@ -55,6 +57,12 @@ class Form
 				const char *what() const throw();
 		};
 
+		class FormNotSignedException : public std::exception
+		{
+			public:
+				const char *what() const throw();
+		};
+
 		class FormSignedException : public std::exception
 		{
 			public:
@@ -62,8 +70,10 @@ class Form
 		};
 
 		void	gradeControl(int grade);
+
+		void	exectControl(Bureaucrat const &executor) const;
 };
 
-std::ostream& operator<<(std::ostream &os, const Form &f);
+std::ostream& operator<<(std::ostream &os, const AForm &f);
 
 #endif
