@@ -16,5 +16,12 @@
 
 int	main(void)
 {
-	return (0);
+	try
+	{
+
+	}
+	catch (std::exception &e) 
+	{
+		std::cout << R_CLR "Exception: " << e.what() << RESET << std::endl;
+	}
 }

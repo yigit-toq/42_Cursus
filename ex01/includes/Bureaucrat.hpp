@@ -17,6 +17,13 @@
 
 #include "Form.hpp"
 
+#define R_CLR "\033[1;31m"
+#define G_CLR "\033[1;32m"
+#define Y_CLR "\033[1;33m"
+#define B_CLR "\033[1;34m"
+#define W_CLR "\033[1;37m"
+#define RESET "\033[0m"
+
 class Form;
 
 class Bureaucrat

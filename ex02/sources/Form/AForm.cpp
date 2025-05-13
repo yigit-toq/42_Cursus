@@ -16,12 +16,12 @@ AForm::AForm () : name("default"), recSign(45), recExec(10)
 {
 	this->sign = false;
 
-	std::cout << "Constructor for " << this->name << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << this->name << RESET << std::endl;
 }
 
 AForm::AForm (const std::string &nName, int nRecSign, int nRecExec) : name(nName), recSign(nRecSign), recExec(nRecExec)
 {
-	std::cout << "Constructor for " << this->name << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << this->name << RESET << std::endl;
 
 	gradeControl(recSign);
 	gradeControl(recExec);
@@ -33,12 +33,12 @@ AForm::AForm (const AForm &copy) : name(getName()), recSign(getRecSign()), recEx
 {
 	*this = copy;
 
-	std::cout << "Copy const  for " << this->name << std::endl;
+	std::cout << Y_CLR << "Copy const  for " << B_CLR << this->name << RESET << std::endl;
 }
 
 AForm::~AForm()
 {
-	std::cout << "Destructor  for " << this->name << std::endl;
+	std::cout << R_CLR << "Destructor  for " << B_CLR << this->name << RESET << std::endl;
 }
 
 AForm	&AForm::operator=(const AForm &copy)
@@ -48,29 +48,29 @@ AForm	&AForm::operator=(const AForm &copy)
 		this->sign = copy.sign;
 	}
 
-	std::cout << "Copy assigment operator for " << this->name << std::endl;
+	std::cout << Y_CLR << "Copy assignment operator for " << B_CLR << this->name << RESET << std::endl;
 
 	return (*this);
 }
 
 const char  *AForm::GradeTooLowException ::what() const throw()
 {
-	return ("Grade is too low !");
+	return (R_CLR "Grade is too low !" RESET);
 }
 
 const char  *AForm::GradeTooHighException::what() const throw()
 {
-	return ("Grade is too high!");
+	return (R_CLR "Grade is too high!" RESET);
 }
 
 const char *AForm::FormNotSignedException::what() const throw()
 {
-	return ("Form is not signed!");
+	return (R_CLR "Form is not signed!" RESET);
 }
 
 const char *AForm::FormSignedException::what() const throw()
 {
-	return ("Form is already signed!");
+	return (Y_CLR "Form is already signed!" RESET);
 }
 
 void	AForm::exectControl(Bureaucrat const &executor) const
@@ -113,7 +113,7 @@ int			AForm::getRecExec() const
 	return (this->recExec);
 }
 
-void		AForm::beSinged(Bureaucrat &b)
+void		AForm::beSigned(Bureaucrat &b)
 {
 	if (this->sign)
 	{
@@ -121,26 +121,26 @@ void		AForm::beSinged(Bureaucrat &b)
 	}
 
 	if (b.getGrade() > this->recSign)
-		std::cout << b.getName() << " couldn’t sign " << this->name << " because his grade is too low." << std::endl;
+		std::cout << B_CLR << b.getName() << R_CLR << " couldn’t sign " << B_CLR << this->name << Y_CLR << " because his grade is too low." << RESET << std::endl;
 	else
 	{
-		std::cout << b.getName() << " signed " << this->name << std::endl;
+		std::cout << B_CLR << b.getName() << G_CLR << " signed " << B_CLR << this->name << RESET << std::endl;
 		this->sign = true;
 	}
 }
 
 std::ostream&	operator<<(std::ostream &os, const AForm &f)
 {
-	os << f.getName() << " form is currently";
+	os << B_CLR << f.getName() << W_CLR << " form is currently";
 
 	if (f.getSign())
-		os << " signed ";
+		os << G_CLR << " signed ";
 	else
-		os << " not signed ";
+		os << R_CLR << " not signed ";
 
 	os << std::endl;
 
-	os << "and requires a grade of " << f.getRecSign() << " to be signed and a grade of " << f.getRecExec() << " to be executed." << std::endl;
+	os << Y_CLR << "and requires a grade of " << f.getRecSign() << " to be signed and a grade of " << f.getRecExec() << " to be executed." << RESET << std::endl;
 
 	return (os);
 }

@@ -41,7 +41,7 @@ class AForm
 		int			getRecSign () const;
 		int			getRecExec () const;
 
-		void		beSinged(Bureaucrat &b);
+		void		beSigned(Bureaucrat &b);
 
 		virtual void execute(Bureaucrat const & executor) const = 0; // new
 

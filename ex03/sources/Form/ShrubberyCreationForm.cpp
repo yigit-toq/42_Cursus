@@ -18,7 +18,7 @@ ShrubberyCreationForm::ShrubberyCreationForm () : AForm("ShrubberyCreationForm",
 
 ShrubberyCreationForm::ShrubberyCreationForm (const std::string             &target) : AForm("ShrubberyCreationForm", 145, 137)
 {
-	std::cout << "Constructor for " << getName() << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << getName() << RESET << std::endl;
 
 	this->target = target;
 }
@@ -27,12 +27,12 @@ ShrubberyCreationForm::ShrubberyCreationForm (const ShrubberyCreationForm   &cop
 {
 	*this = copy;
 
-	std::cout << "Copy const  for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy const  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
-	std::cout << "Destructor  for " << getName() << std::endl;
+	std::cout << R_CLR << "Destructor  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &copy)
@@ -42,7 +42,7 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
 		this->target = copy.target;
 	}
 
-	std::cout << "Copy assigment operator for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy assignment operator for " << B_CLR << getName() << RESET << std::endl;
 
 	return (*this);
 }
@@ -55,7 +55,7 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 
 	if (!file.is_open())
 	{
-		std::cerr << "Error: could not open file" << std::endl;
+		std::cerr << R_CLR << "Error: could not open file" << RESET << std::endl;
 		return ;
 	}
 
@@ -70,5 +70,5 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 			"      // \\\\      ";
 
 	file.close();
-	std::cout << "Shrubbery has been created." << std::endl;
+	std::cout << G_CLR << "Shrubbery has been created." << RESET << std::endl;
 }

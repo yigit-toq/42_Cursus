@@ -28,7 +28,12 @@ int	main(void)
 		std::cout << high << std::endl;
 
 		a.signForm(high);
+
+		std::cout << std::endl;
+
 		b.signForm(high);
+
+		std::cout << std::endl;
 
 		std::cout << high << std::endl;
 

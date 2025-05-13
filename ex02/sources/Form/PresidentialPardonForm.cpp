@@ -16,7 +16,7 @@ PresidentialPardonForm::PresidentialPardonForm () : AForm("PresidentialPardonFor
 
 PresidentialPardonForm::PresidentialPardonForm (const std::string				&target) : AForm("PresidentialPardonForm", 25, 5)
 {
-	std::cout << "Constructor for " << getName() << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << getName() << RESET << std::endl;
 
 	this->target = target;
 }
@@ -25,12 +25,12 @@ PresidentialPardonForm::PresidentialPardonForm (const PresidentialPardonForm	&co
 {
 	*this = copy;
 
-	std::cout << "Copy const  for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy const  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 PresidentialPardonForm::~PresidentialPardonForm()
 {
-	std::cout << "Destructor  for " << getName() << std::endl;
+	std::cout << R_CLR << "Destructor  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 PresidentialPardonForm	&PresidentialPardonForm::operator=(const PresidentialPardonForm &copy)
@@ -40,7 +40,7 @@ PresidentialPardonForm	&PresidentialPardonForm::operator=(const PresidentialPard
 		this->target = copy.target;
 	}
 
-	std::cout << "Copy assigment operator for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy assignment operator for " << B_CLR << getName() << RESET << std::endl;
 
 	return (*this);
 }
@@ -49,5 +49,5 @@ void	PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
 	exectControl(executor);
 
-	std::cout << this->target << " has been pardoned by Zafod Beeblebrox." << std::endl;
+	std::cout << W_CLR << this->target << Y_CLR << " has been pardoned by Zafod Beeblebrox." << RESET << std::endl;
 }

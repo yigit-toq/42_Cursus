@@ -18,7 +18,7 @@ RobotomyRequestForm::RobotomyRequestForm () : AForm("RobotomyRequestForm", 72, 4
 
 RobotomyRequestForm::RobotomyRequestForm (const std::string			&target) : AForm("RobotomyRequestForm", 72, 45)
 {
-	std::cout << "Constructor for " << getName() << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << getName() << RESET << std::endl;
 
 	this->target = target;
 }
@@ -27,12 +27,12 @@ RobotomyRequestForm::RobotomyRequestForm (const RobotomyRequestForm	&copy  ) : A
 {
 	*this = copy;
 
-	std::cout << "Copy const  for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy const  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 RobotomyRequestForm::~RobotomyRequestForm()
 {
-	std::cout << "Destructor  for " << getName() << std::endl;
+	std::cout << R_CLR << "Destructor  for " << B_CLR << getName() << RESET << std::endl;
 }
 
 RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &copy)
@@ -42,7 +42,7 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &c
 		this->target = copy.target;
 	}
 
-	std::cout << "Copy assigment operator for " << getName() << std::endl;
+	std::cout << Y_CLR << "Copy assignment operator for " << B_CLR << getName() << RESET << std::endl;
 
 	return (*this);
 }
@@ -51,12 +51,12 @@ void RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
 	exectControl(executor);
 
-	std::cout << "BZZZZZZZZZZZ... KRRRRRRRRRZZZZ... TAK-TAK-TAK... BZZZZRRRRRRR!" << std::endl;
+	std::cout << Y_CLR << "BZZZZZZZZZZZ... KRRRRRRRRRZZZZ... TAK-TAK-TAK... BZZZZRRRRRRR!" << RESET << std::endl;
 
 	srand(time(0));
 
 	if (rand() % 2)
-		std::cout << this->target << " has been robotomized successfully." << std::endl;
+		std::cout << W_CLR << this->target << G_CLR << " has been robotomized successfully." << RESET << std::endl;
 	else
-		std::cout << this->target << " robotomization failed." << std::endl;
+		std::cout << W_CLR << this->target << R_CLR << " robotomization failed." << RESET << std::endl;
 }

@@ -41,7 +41,7 @@ class Form
 		int			getRecSign () const;
 		int			getRecExec () const;
 
-		void		beSinged(Bureaucrat &b);
+		void		beSigned(Bureaucrat &b);
 
 		class GradeTooHighException : public std::exception
 		{

@@ -17,7 +17,7 @@ OBJS_DIR		=	./objects/
 
 FORM_DIR		=	$(SRCS_DIR)Form/
 
-SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Bureaucrat.cpp $(FORM_DIR)AForm.cpp $(FORM_DIR)ShrubberyCreationForm.cpp $(FORM_DIR)RobotomyRequestForm.cpp $(FORM_DIR)PresidentialPardonForm.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Bureaucrat.cpp $(SRCS_DIR)Intern.cpp $(FORM_DIR)AForm.cpp $(FORM_DIR)ShrubberyCreationForm.cpp $(FORM_DIR)RobotomyRequestForm.cpp $(FORM_DIR)PresidentialPardonForm.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

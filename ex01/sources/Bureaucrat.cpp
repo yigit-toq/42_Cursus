@@ -16,7 +16,7 @@ Bureaucrat::Bureaucrat () : name("default"), grade(150) {}
 
 Bureaucrat::Bureaucrat (const std::string &name, int grade) : name(name)
 {
-	std::cout << "Constructor for " << this->name << std::endl;
+	std::cout << G_CLR << "Constructor for " << B_CLR << this->name << RESET << std::endl;
 
 	gradeControl(grade);
 
@@ -27,12 +27,12 @@ Bureaucrat::Bureaucrat (const Bureaucrat &copy)
 {
 	*this = copy;
 
-	std::cout << "Copy const  for " << this->name << std::endl;
+	std::cout << Y_CLR << "Copy const  for " << B_CLR << this->name << RESET << std::endl;
 }
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << "Destructor  for " << this->name << std::endl;
+	std::cout << R_CLR << "Destructor  for " << B_CLR << this->name << RESET << std::endl;
 }
 
 Bureaucrat	&Bureaucrat::operator=(const Bureaucrat &copy)
@@ -42,19 +42,19 @@ Bureaucrat	&Bureaucrat::operator=(const Bureaucrat &copy)
 		this->grade = copy.grade;
 	}
 
-	std::cout << "Copy assigment operator for " << this->name << std::endl;
+	std::cout << Y_CLR << "Copy assignment operator for " << B_CLR << this->name << RESET << std::endl;
 
 	return (*this);
 }
 
 const char  *Bureaucrat::GradeTooLowException ::what() const throw()
 {
-	return ("Grade is too low !");
+	return (R_CLR "Grade is too low !" RESET);
 }
 
 const char  *Bureaucrat::GradeTooHighException::what() const throw()
 {
-	return ("Grade is too high!");
+	return (R_CLR "Grade is too high!" RESET);
 }
 
 void	Bureaucrat::gradeControl(int grade)
@@ -91,12 +91,12 @@ int			Bureaucrat::getGrade() const
 
 std::ostream&	operator<<(std::ostream &os, const Bureaucrat &b)
 {
-	os << b.getName() << ", bureaucrat grade " << b.getGrade();
+	os << B_CLR << b.getName() << Y_CLR << ", bureaucrat grade " << b.getGrade() << RESET;
 
 	return (os);
 }
 
 void			Bureaucrat::signForm(Form &form)
 {
-	form.beSinged(*this);
+	form.beSigned(*this);
 }
