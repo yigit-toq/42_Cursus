@@ -15,8 +15,12 @@ NAME			=	ircserv
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
+CLIENT_DIR		=	${SRCS_DIR}client/
+SERVER_DIR		=	${SRCS_DIR}server/
+
 SRCS 			=	$(SRCS_DIR)Main.cpp		\
-					$(SRCS_DIR)Server.cpp	\
+					$(CLIENT_DIR)Client.cpp	\
+					$(SERVER_DIR)Server.cpp	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

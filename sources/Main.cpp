@@ -20,7 +20,26 @@ int main(int argc, char **argv)
 
 		return (EXIT_FAILURE);
 	}
+
 	int port = std::atoi(argv[1]);
 
-	return (EXIT_SUCCESS);
+	if (port <= 0 || port > 65535)
+	{
+		std::cerr << "Invalid port number." << std::endl;
+
+		return (EXIT_FAILURE);
+	}
+
+	try
+	{
+		Server server(port, argv[2]);
+
+		server.Start ();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+
+		return (EXIT_FAILURE);
+	}
 }
