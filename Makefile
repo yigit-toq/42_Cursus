@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/05/30 17:32:52 by ytop             ###   ########.fr        #
+#    Updated: 2025/06/20 14:47:47 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,13 @@ NAME			=	ircserv
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-CLIENT_DIR		=	${SRCS_DIR}client/
-SERVER_DIR		=	${SRCS_DIR}server/
+NETWORK_DIR		=	${SRCS_DIR}network/
+PROCESS_DIR		=	${SRCS_DIR}process/
+PROTOCOL_DIR	=	${SRCS_DIR}protocol/
+UTILS_DIR		=	${SRCS_DIR}utils/
 
-SRCS 			=	$(SRCS_DIR)Main.cpp		\
-					$(CLIENT_DIR)Client.cpp	\
-					$(SERVER_DIR)Server.cpp	\
+SRCS 			=	$(SRCS_DIR)main.cpp			\
+					$(NETWORK_DIR)Socket.cpp	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   Logger.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/30 23:12:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/05/30 23:12:03 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/20 14:31:16 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/20 14:31:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-#define CLIENT_HPP
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
-#include <iostream>
-
-class Client
+class Logger
 {
 	private:
-		int			_socket;
-
-		std::string	_username;
-		std::string	_hostname;
-
-		bool		_isRegistered;
 
 	public:
-		Client (const int socket);
+		Logger ();
 
+		~Logger();
 };
 
 #endif

@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.cpp                                         :+:      :+:    :+:   */
+/*   SelectHandler.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/30 23:13:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/05/30 23:13:04 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/20 13:51:29 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/20 13:53:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#ifndef SELECTHANDLER_HPP
+#define SELECTHANDLER_HPP
 
-Client::Client(const int socket)
+class SelectHandler
 {
-	_socket = socket;
+	private:
 
-	_username = "";
-	_hostname = "";
+	public:
+		SelectHandler ();
 
-	_isRegistered = false;
+		~SelectHandler();
+};
 
-	std::cout << "Client created with socket: " << _socket << std::endl;
-}
+#endif
