@@ -5,30 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 13:51:02 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/24 17:49:37 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/24 19:00:00 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/24 19:00:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef POLLHANDLER_HPP
-#define POLLHANDLER_HPP
+#include "PollHandler.hpp"
+#include <iostream>
+#include <algorithm>
 
-# include <vector>
-# include <poll.h>
+PollHandler::PollHandler() {}
+PollHandler::~PollHandler() {}
 
-class PollHandler
-{
-	private:
-		std::vector<struct pollfd> _fds;
-
-	public:
-		PollHandler ();
-
-		~PollHandler();
-
-		void addFd(int fd);
-		void removeFd(int fd);
-		std::vector<struct pollfd> waitForEvents(int timeout_ms = -1);
-};
-
-#endif
+void PollHandler::addFd(int fd, short events) {
+	struct pollfd pfd;
+	pfd.fd = fd;
+	pfd.events = events;
+	_fds.push_back(pfd);
+}

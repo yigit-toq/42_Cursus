@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 15:53:47 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/20 15:57:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/24 17:32:08 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,29 @@ void User::SetHostname(const std::string &hostname) { _hostname = hostname; }
 
 void User::SetAuthenticated(bool authenticated) { _isAuthenticated = authenticated; }
 
+void User::AppendToInputBuffer(const std::string &data)
+{
+	_input_buffer += data;
+}
 
+void User::AppendToOutputBuffer(const std::string &data)
+{
+	_output_buffer += data;
+}
 
+void User::ClearOutputBuffer()
+{
+	_output_buffer.clear();
+}
+
+std::string User::ExtractNextMessage() // bakılacak
+{
+	size_t pos = _input_buffer.find('\r\n');
+
+	if (pos == std::string::npos)
+		return "";
+
+	std::string message = _input_buffer.substr(0, pos);
+	_input_buffer.erase(0, pos + 1);
+	return message;
+}

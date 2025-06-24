@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:24 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/20 16:10:40 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/24 17:29:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ class User
 
 		void ClearOutputBuffer();
 
-		std::string extractNextMessage();
+		std::string ExtractNextMessage();
 };
 
 #endif
