@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/30 17:26:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/05/30 17:46:17 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/27 15:31:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 	}
 
 	int port = std::atoi(argv[1]);
+	int pass = std::atoi(argv[2]);
 
 	if (port <= 0 || port > 65535)
 	{
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
 
 	try
 	{
-		Server server(port, argv[2]);
+		Server server(port, pass);
 
 		server.Start ();
 	}

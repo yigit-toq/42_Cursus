@@ -5,67 +5,71 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:43:36 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/20 15:47:38 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/27 17:23:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Socket.hpp"
 
-Socket::Socket(int port) : _fd(-1), _port(port)
+Socket::Socket		(int port) : _port(port), _socket(-1)
 {
-	_address.sin_family = AF_INET;
-	_address.sin_addr.s_addr = INADDR_ANY;
-	_address.sin_port = htons(port);
+	_address.sin_port			= htons(port)	;
+
+	_address.sin_family			= AF_INET		;
+
+	_address.sin_addr.s_addr	= INADDR_ANY	;
 }
 
-Socket::~Socket()
+Socket::~Socket		()
 {
-	if (_fd != -1)
+	if (_socket != -1)
 	{
-		close(_fd);
+		close(_socket);
 	}
 }
 
-void Socket::Create()
+void Socket::Create	()
 {
-	_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (_fd < 0)
+	_socket = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (_socket < 0)
 	{
 		throw std::runtime_error("Failed to create socket");
 	}
 
-	if (fcntl(_fd, F_SETFL, O_NONBLOCK) < 0)
+	if (fcntl(_socket, F_SETFL, O_NONBLOCK) < 0)
 	{
-		close(_fd);
+		close(_socket);
+
 		throw std::runtime_error("Failed to set socket to non-blocking mode");
 	}
 }
 
 void Socket::Bind()
 {
-	if (bind(_fd, (struct sockaddr *)&_address, sizeof(_address)) < 0)
+	if (bind(_socket, (struct sockaddr *)&_address, sizeof(_address)) < 0)
 	{
-		close(_fd);
+		close(_socket);
 		throw std::runtime_error("Failed to bind socket");
 	}
 }
 
 void Socket::Listen(int backlog)
 {
-	if (listen(_fd, backlog) < 0)
+	if (listen(_socket, backlog) < 0)
 	{
-		close(_fd);
+		close(_socket);
 		throw std::runtime_error("Failed to listen on socket");
 	}
 	std::cout << "Socket is listening on port " << _port << std::endl;
 }
 
-int Socket::Accept()
+int	Socket::Accept()
 {
 	socklen_t addrlen = sizeof(_address);
 
-	int client_fd = accept(_fd, (struct sockaddr *)&_address, &addrlen);
+	int client_fd = accept(_socket, (struct sockaddr *)&_address, &addrlen);
 
 	if (client_fd < 0)
 	{
@@ -78,7 +82,7 @@ int Socket::Accept()
 	return client_fd;
 }
 
-int Socket::Receive(int fd, char *buffer, size_t length)
+int	Socket::Receive(int fd, char *buffer, size_t length)
 {
 	memset(buffer, 0, length);
 
@@ -95,12 +99,21 @@ int Socket::Receive(int fd, char *buffer, size_t length)
 	return static_cast<int>(bytes_received);
 }
 
-int Socket::GetFd() const
+int	Socket::Send	(int fd, char *buffer, size_t length)
 {
-	return _fd;
+	(void)buffer;
+	(void)length;
+	(void)fd;
+
+	return (0);
 }
 
-int Socket::GetPort() const
+int	Socket::GetPort	() const
 {
-	return _port;
+	return	(_port);
+}
+
+int	Socket::GetSock	() const
+{
+	return	(_socket);
 }

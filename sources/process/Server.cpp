@@ -6,35 +6,44 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/24 17:48:57 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/27 17:15:26 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <vector>
 #include <errno.h>
+#include <cstring>
 
-Server::Server(int port) : _server_socket(port), _poll_handler()
+Server::Server(int port, int pass) : _srvr_socket(port)
 {
-	_server_socket.Create();
-	_server_socket.Bind();
-	_server_socket.Listen(5);
-	_poll_handler.AddSocket(_server_socket.GetFd(), POLLIN);
+    (void)pass;
+
+    _srvr_socket.Create     () ;
+    _srvr_socket.Bind       () ;
+
+    _srvr_socket.Listen     ();
+
+    _poll_handlr.AddSocket (_srvr_socket.GetSock(), POLLIN);
+
+    std::cout << "Server started on port " << port << std::endl;
 }
 
 Server::~Server()
 {
-	for (auto &pair : _users)
-	{
-		delete pair.second;
-	}
+    for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it) {
+        delete it->second; // Kullanıcıları sil
+    }
+    _users.clear();
+    _poll_handlr.RmvSocket(_srvr_socket.GetSock()); // Sunucu soketini kaldır
+    std::cout << "Server shutting down." << std::endl;
 }
 
 void Server::Start()
 {
 	while (true) {
         // Pollhandler'dan olayları bekle
-        std::vector<struct pollfd> active_fds = _poll_handler.waitForEvents();
+        std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents();
 
         for (size_t i = 0; i < active_fds.size(); ++i) {
             int fd = active_fds[i].fd;
@@ -44,21 +53,21 @@ void Server::Start()
                 // Hata durumu veya geçersiz dosya tanımlayıcı
                 std::cerr << "Error or invalid FD: " << fd << std::endl;
                 if (_users.count(fd)) { // Eğer bir kullanıcı ise
-                    disconnectClient(fd);
+                    HandleClientDisconnection(fd);
                 }
-                _poll_handler.removeFd(fd);
+                _poll_handlr.RmvSocket(fd);
                 continue;
             }
 
-            if (fd == _server_socket.getFd()) {
+            if (fd == _srvr_socket.GetSock()) {
                 // Sunucu soketinde bir olay varsa (yeni bağlantı)
                 if (revents & POLLIN) {
-                    handleNewConnection();
+                    HandleNewConnection();
                 }
             } else {
                 // İstemci soketinde bir olay varsa
                 if (revents & POLLIN) {
-                    handleClientData(fd); // İstemciden veri oku
+                    HandleClientMessage(fd); // İstemciden veri oku
                 }
                 // Diğer olaylar (POLLOUT vb.) burada ele alınabilir
             }
@@ -66,37 +75,37 @@ void Server::Start()
     }
 }
 
-void Server::handleNewConnection()
+void Server::HandleNewConnection()
 {
-	int client_fd = _server_socket.Accept();
+	int client_fd = _srvr_socket.Accept();
 	if (client_fd < 0) {
 		std::cerr << "Failed to accept new connection: " << strerror(errno) << std::endl;
 		return;
 	}
 
-	User *new_user = new User(client_fd);
+	Client *new_user = new Client(client_fd);
 	_users[client_fd] = new_user;
 
-	_poll_handler.AddSocket(client_fd, POLLIN);
+	_poll_handlr.AddSocket(client_fd, POLLIN);
 	std::cout << "New connection accepted: FD " << client_fd << std::endl;
 }
 
 void	Server::HandleClientMessage(int client_fd)
 {
-	har buffer[BUFFER_SIZE + 1]; // +1 null sonlandırma için
-    int bytes_read = _server_socket.receive(client_fd, buffer, BUFFER_SIZE);
+	char buffer[BUFFER_SIZE + 1]; // +1 null sonlandırma için
+    int bytes_read = _srvr_socket.Receive(client_fd, buffer, BUFFER_SIZE);
 
     if (bytes_read > 0) {
         buffer[bytes_read] = '\0'; // Null sonlandırma
-        User* user = _users[client_fd];
+        Client* user = _users[client_fd];
         if (user) {
-            user->appendToInputBuffer(buffer); // Gelen veriyi kullanıcının tamponuna ekle
+            user->AppendToInputBuffer(buffer); // Gelen veriyi kullanıcının tamponuna ekle
             std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": " << buffer << std::endl;
 
             // Tampondaki tam mesajları kontrol et ve işle
             std::string message;
-            while ((message = user->extractNextMessage()) != "") {
-                std::cout << "Full message extracted: " << message; // CRLF içerir
+            while ((message = user->ExtractNextMessage()) != "") {
+                std::cout << "Full message extracted: " << message << std::endl; // CRLF içerir
                 // Burada Message sınıfını kullanarak 'message' stringini ayrıştırın
                 // Sonra ilgili CommandHandler'a yönlendirin.
                 // Örneğin: Message parsed_msg; parsed_msg.parse(message);
@@ -106,18 +115,18 @@ void	Server::HandleClientMessage(int client_fd)
     } else if (bytes_read == 0) {
         // İstemci bağlantıyı kapattı (EOF)
         std::cout << "Client FD " << client_fd << " disconnected." << std::endl;
-        disconnectClient(client_fd);
+        HandleClientDisconnection(client_fd);
     } else if (bytes_read == -1) {
         // Gerçek bir hata oluştu
         std::cerr << "Error reading from client FD " << client_fd << std::endl;
-        disconnectClient(client_fd);
+        HandleClientDisconnection(client_fd);
     }
 }
 
 void Server::HandleClientDisconnection(int fd)
 {
 	std::cout << "Client FD " << fd << " disconnected." << std::endl;
-	_poll_handler.RemoveSocket(fd);
+	_poll_handlr.RmvSocket(fd);
 	delete _users[fd];
 	_users.erase(fd);
 }

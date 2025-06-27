@@ -1,27 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   KqueueHandler.hpp                                  :+:      :+:    :+:   */
+/*   SpecificCommand.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 13:51:25 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/27 17:00:47 by ytop             ###   ########.fr       */
+/*   Created: 2025/06/27 16:53:35 by ytop              #+#    #+#             */
+/*   Updated: 2025/06/27 16:53:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KQUEUEHANDLER_HPP
-#define KQUEUEHANDLER_HPP
-
-class KqueueHandler
-{
-	private:
-
-	public:
-		 KqueueHandler	();
-
-		~KqueueHandler	();
-
-};
-
-#endif
+#include "SpecificCommand.hpp"

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/24 17:48:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/27 15:31:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,29 @@
 #include <map>
 #include <string>
 #include "Socket.hpp"
-#include "User.hpp"
+#include "Client.hpp"
 #include "PollHandler.hpp"
+#include <cstdlib>
 
 #define BUFFER_SIZE	512
 
 class Server
 {
 	private:
-		Socket _server_socket;
-		PollHandler _poll_handler;
-		std::map<int, User*> _users;
+		Socket					_srvr_socket;
+		PollHandler				_poll_handlr;
+		std::map<int, Client*>	_users;
 
-		void HandleNewConnection();
-		void HandleClientMessage(int client_fd);
-		void HandleClientDisconnection(int fd);
+		void HandleNewConnection		();
+		void HandleClientMessage		(int fd);
+		void HandleClientDisconnection	(int fd);
 
 	public:
-		Server (int port);
+		Server		(int port, int pass);
 
-		~Server();
+		~Server		();
 
-		void Start();
+		void Start	();
 };
 
 #endif
