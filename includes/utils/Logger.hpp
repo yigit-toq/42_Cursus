@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:31:16 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/20 14:31:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/30 16:11:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ class Logger
 	private:
 
 	public:
-		Logger ();
+		 Logger ();
 
-		~Logger();
+		~Logger ();
 };
 
 #endif

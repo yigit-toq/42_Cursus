@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:51:02 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/27 17:19:12 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/30 16:07:40 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 class PollHandler
 {
 	private:
-		std::vector<struct pollfd> _fds;
+		std::vector<struct pollfd>	_fds;
 
 	public:
 		 PollHandler	();

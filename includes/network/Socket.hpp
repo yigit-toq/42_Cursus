@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:47:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/27 17:18:45 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/30 16:29:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 
 #include <netinet/in.h>
 
+#include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
-
-#include <iostream>
 #include <cstring>
 #include <cerrno>
 
@@ -31,10 +30,10 @@ typedef struct sockaddr_in sockaddr_in;
 class Socket
 {
 	private:
-		int					_port;
-		int					_socket;
+		int				_port;
+		int				_sock;
 
-		sockaddr_in			_address;
+		sockaddr_in		_address;
 
 	public:
 		 Socket			(int port);

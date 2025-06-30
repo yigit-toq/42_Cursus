@@ -6,21 +6,18 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/27 17:15:26 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/30 16:49:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-#include <vector>
-#include <errno.h>
-#include <cstring>
 
 Server::Server(int port, int pass) : _srvr_socket(port)
 {
     (void)pass;
 
-    _srvr_socket.Create     () ;
-    _srvr_socket.Bind       () ;
+    _srvr_socket.Create     ();
+    _srvr_socket.Bind       ();
 
     _srvr_socket.Listen     ();
 
@@ -92,41 +89,57 @@ void Server::HandleNewConnection()
 
 void	Server::HandleClientMessage(int client_fd)
 {
-	char buffer[BUFFER_SIZE + 1]; // +1 null sonlandırma için
-    int bytes_read = _srvr_socket.Receive(client_fd, buffer, BUFFER_SIZE);
+	char	buffer[BUFFER_SIZE + 1];
 
-    if (bytes_read > 0) {
-        buffer[bytes_read] = '\0'; // Null sonlandırma
-        Client* user = _users[client_fd];
-        if (user) {
-            user->AppendToInputBuffer(buffer); // Gelen veriyi kullanıcının tamponuna ekle
-            std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": " << buffer << std::endl;
+	int		bytes_read = _srvr_socket.Receive(client_fd, buffer, BUFFER_SIZE);
 
-            // Tampondaki tam mesajları kontrol et ve işle
-            std::string message;
-            while ((message = user->ExtractNextMessage()) != "") {
-                std::cout << "Full message extracted: " << message << std::endl; // CRLF içerir
-                // Burada Message sınıfını kullanarak 'message' stringini ayrıştırın
-                // Sonra ilgili CommandHandler'a yönlendirin.
-                // Örneğin: Message parsed_msg; parsed_msg.parse(message);
-                // processMessage(user, parsed_msg);
-            }
-        }
-    } else if (bytes_read == 0) {
-        // İstemci bağlantıyı kapattı (EOF)
-        std::cout << "Client FD " << client_fd << " disconnected." << std::endl;
-        HandleClientDisconnection(client_fd);
-    } else if (bytes_read == -1) {
-        // Gerçek bir hata oluştu
-        std::cerr << "Error reading from client FD " << client_fd << std::endl;
-        HandleClientDisconnection(client_fd);
-    }
+	if (bytes_read > 0)
+	{
+		memset(buffer, 0, BUFFER_SIZE + 1);
+
+		Client*	user = _users[client_fd];
+
+		if (user)
+		{
+			user->AppendToInputBuffer(buffer);
+
+			std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": " << buffer << std::endl;
+
+			std::string	message;
+
+			while ((message = user->ExtractNextMessage()) != "")
+			{
+				std::cout << "Full message extracted: " << message << std::endl;
+
+				// Burada Message sınıfını kullanarak 'message' stringini ayrıştırın
+				// Sonra ilgili CommandHandler'a yönlendirin.
+
+				// Örneğin: Message parsed_msg; parsed_msg.parse(message);
+				// processMessage(user, parsed_msg);
+			}
+		}
+	}
+	else if (bytes_read == 0)
+	{
+		std::cout << "Client FD " << client_fd << " disconnected." << std::endl;
+
+		HandleClientDisconnection(client_fd);
+	}
+	else if (bytes_read == -1)
+	{
+		std::cerr << "Error reading from client FD " << client_fd << std::endl;
+
+		HandleClientDisconnection(client_fd);
+	}
 }
 
-void Server::HandleClientDisconnection(int fd)
+void	Server::HandleClientDisconnection(int fd)
 {
 	std::cout << "Client FD " << fd << " disconnected." << std::endl;
+
 	_poll_handlr.RmvSocket(fd);
-	delete _users[fd];
+
+	delete (_users[fd]);
+
 	_users.erase(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/20 14:32:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/06/30 16:11:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ class Utils
 	private:
 
 	public:
-		Utils ();
+		 Utils ();
 
-		~Utils();
+		~Utils ();
 };
 
 #endif
