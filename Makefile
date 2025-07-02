@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/06/30 16:11:22 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/02 17:29:28 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,9 @@ NETWORK_DIR		=	${SOURCES_DIR}network/
 
 PROTOCOL_DIR	=	${SOURCES_DIR}protocol/
 
-SRCS 			=	$(SOURCES_DIR)Main.cpp			\
-					$(PROCESS_DIR)Server.cpp		\
-					$(PROCESS_DIR)Client.cpp		\
-					$(NETWORK_DIR)Socket.cpp		\
-					$(NETWORK_DIR)PollHandler.cpp	\
+SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp		\
+											$(PROCESS_DIR)Client.cpp	$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp		\
+											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp									\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

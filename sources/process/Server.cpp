@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 14:50:33 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/02 18:13:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	Server::HandleClientMessage(int client_fd)
 {
 	char	buffer[BUFFER_SIZE + 1];
 
+	memset(	buffer, 0, sizeof(buffer));
+
 	int		bytes_read = _srvr_socket.Receive(client_fd, buffer, BUFFER_SIZE);
 
 	if (bytes_read > 0)
@@ -114,13 +116,28 @@ void	Server::HandleClientMessage(int client_fd)
 		{
 			user->AppendToInputBuffer(buffer);
 
-			std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": " << buffer << std::endl;
+			std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": [" << buffer << "]" << std::endl;
 
 			std::string	message;
 
 			while ((message = user->ExtractNextMessage()) != "")
 			{
 				std::cout << "Full message extracted: " << message << std::endl;
+
+				Message	msg;
+				if (msg.parse(message))
+				{
+					msg.print();
+
+					// Şimdi 'msg' nesnesini kullanarak ilgili komut işleyicisine yönlendirebiliriz.
+					// Örneğin: processMessage(user, msg);
+				}
+				else
+				{
+					std::cerr << "Failed to parse message from FD " << client_fd << ": " << message << std::endl;
+
+					// Geçersiz mesaj durumunda istemciye hata yanıtı gönderme veya bağlantıyı kesme düşünülebilir.
+				}
 			}
 		}
 	}

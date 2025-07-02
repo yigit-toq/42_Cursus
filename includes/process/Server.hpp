@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/30 16:09:55 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/02 18:10:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 #include "Socket.hpp"
 #include "Client.hpp"
+#include "Message.hpp"
 #include "PollHandler.hpp"
 
 #pragma endregion
