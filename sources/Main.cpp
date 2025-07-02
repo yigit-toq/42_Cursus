@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/30 16:42:24 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/02 15:06:11 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int main(int argc, char **argv)
 
 	try
 	{
-		Server server(port, pass);
+		Server server	(port, pass);
 
-		server.Start ();
+		server.Start	();
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
 
-		return (EXIT_FAILURE);
+		return			(EXIT_FAILURE);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/30 16:36:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/02 15:04:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,15 @@ void Socket::Create	(void)
 	if (_sock < 0)
 	{
 		throw std::runtime_error("Failed to create socket");
+	}
+
+	int optval = 1;
+
+	if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0)
+	{
+		close(_sock);
+
+		throw std::runtime_error("Failed to set socket options");
 	}
 
 	if (fcntl(_sock, F_SETFL, O_NONBLOCK) < 0)
