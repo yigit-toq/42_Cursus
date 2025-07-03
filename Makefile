@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/07/02 17:29:28 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/03 18:56:41 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,13 @@ UTILS_DIR		=	${SOURCES_DIR}utils/
 PROCESS_DIR		=	${SOURCES_DIR}process/
 NETWORK_DIR		=	${SOURCES_DIR}network/
 
+COMMAND_DIR		=	${SOURCES_DIR}command/
+
 PROTOCOL_DIR	=	${SOURCES_DIR}protocol/
 
-SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp		\
-											$(PROCESS_DIR)Client.cpp	$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp		\
-											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp									\
+SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp		$(COMMAND_DIR)NickCommand.cpp	\
+											$(PROCESS_DIR)Client.cpp	$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp		$(COMMAND_DIR)UserCommand.cpp	\
+											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp																	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
@@ -34,6 +36,7 @@ CC				=	@c++
 
 CFLAGS			=	-Wall  -Wextra -Werror	\
 					-I ./includes/protocol	\
+					-I ./includes/command	\
 					-I ./includes/network	\
 					-I ./includes/process	\
 					-I ./includes/utils		\

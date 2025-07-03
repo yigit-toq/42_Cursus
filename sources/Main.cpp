@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 15:06:11 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 15:04:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	{
 		std::cerr << "Usage: " << argv[0] << " <port>" << " <pass>" << std::endl;
 
-		return (EXIT_FAILURE);
+		return			(EXIT_FAILURE);
 	}
 
 	int port = std::atoi(argv[1]);
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	{
 		std::cerr << "Invalid port number." << std::endl;
 
-		return (EXIT_FAILURE);
+		return			(EXIT_FAILURE);
 	}
 
 	try

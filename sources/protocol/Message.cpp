@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:53:21 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 18:37:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 17:59:46 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Message.hpp"
+
+#include "Utils.hpp"
 
 Message:: Message() {}
 
@@ -26,78 +28,101 @@ bool Message::parse(const std::string& raw_message)
 	_command	.clear();
 	_parameters	.clear();
 
-	if (raw_message.length() < 2 || raw_message.substr(raw_message.length() - 2) != "\r\n")
-	{
-		std::cerr << "Error: Message does not end with CRLF." << std::endl;
+	std::string				ms_content	= raw_message;
 
+	if (ms_content.empty())
+	{
 		return (false);
 	}
 
-	std::string				msg_content		= raw_message.substr(0, raw_message.length() - 2);
+	std::string::size_type	next_space	= 0;
+	std::string::size_type	curr_posit	= 0;
 
-    std::string::size_type	current_pos		= 0;
-
-	if (msg_content[0] == ':')
+	if (ms_content[0] == ':')
 	{
-		std::string::size_type space_pos	= msg_content.find(' ', 1);
-
-		if (space_pos == std::string::npos)
+		if ((next_space = ms_content.find(' ', 1)) == std::string::npos)
 		{
-			std::cerr << "Error: Prefix found but no command." << std::endl;
+			std::cerr << "Error: Malformed message with only prefix or empty command part." << std::endl;
 
 			return (false);
 		}
 
-		_prefix		= msg_content.substr(1, space_pos - 1);
+		_prefix		= ms_content.substr(1, next_space - 1);
 
-		current_pos	= space_pos + 1;
+		 curr_posit	= next_space + 1;
 	}
 
-	std::string::size_type	command_end_pos = msg_content.find(' ', current_pos);
-
-	if (command_end_pos == std::string::npos)
+	if ((curr_posit = ms_content.find_first_not_of(' ', curr_posit)) == std::string::npos)
 	{
-		_command	 = msg_content.substr(current_pos);
+		std::cerr << "Error: No command found after prefix or leading spaces." << std::endl;
 
-		std::transform(_command.begin(), _command.end(), _command.begin(), ::toupper);
+		return (false);
+	}
 
-		return (true);
+	next_space		= ms_content.find(' ',	curr_posit);
+
+	if (next_space == std::string::npos)
+	{
+		_command	= ms_content.substr(	curr_posit);
 	}
 	else
 	{
-		_command	 = msg_content.substr(current_pos, command_end_pos - current_pos);
+		_command	= ms_content.substr(	curr_posit, next_space - curr_posit);
 
-		std::transform(_command.begin(), _command.end(), _command.begin(), ::toupper);
-
-		current_pos	 = command_end_pos + 1;
+		curr_posit	= next_space + 1;
 	}
 
-	while (current_pos < msg_content.length())
-	{
-		if (msg_content[current_pos] == ':')
-		{
-			_parameters.push_back(msg_content.substr(current_pos + 1));
+	std::transform(_command.begin(), _command.end(), _command.begin(), ::toupper);
 
-			break ;
+	curr_posit		= ms_content.find_first_not_of(' ', curr_posit);
+
+	if (curr_posit != std::string::npos && curr_posit < ms_content.length())
+	{
+		if (ms_content[curr_posit] == ':')
+		{
+			_parameters.push_back(ms_content.substr(curr_posit + 1));
 		}
 		else
 		{
-			std::string::size_type next_space = msg_content.find(' ', current_pos);
+			std::string				remaning_param_str	= ms_content.substr(curr_posit);
 
-			if (next_space == std::string::npos)
+			std::string::size_type	trailing_colon_pos	= remaning_param_str.find(':');
+
+			if (trailing_colon_pos != std::string::npos)
 			{
-				_parameters.push_back(msg_content.substr(current_pos));
+				std::string					non_tr_part			= remaning_param_str.substr(0, trailing_colon_pos);
 
-				break ;
+				std::vector<std::string>	temp_params			= Utils::split(non_tr_part, ' ');
+
+				for (size_t i = 0; i < temp_params.size(); ++i)
+				{
+					std::string trimmed_param = Utils::trim(temp_params[i]);
+
+					if (!trimmed_param.empty ())
+					{
+						_parameters.push_back(trimmed_param);
+					}
+				}
+
+				_parameters.push_back(remaning_param_str.substr(trailing_colon_pos + 1));
 			}
 			else
 			{
-				_parameters.push_back(msg_content.substr(current_pos, next_space - current_pos));
+				std::vector<std::string>	temp_params = Utils::split(remaning_param_str, ' ');
 
-				current_pos = next_space + 1;
+				for (size_t i = 0; i <		temp_params.size(); ++i)
+				{
+					std::string trimmed_param = Utils::trim(temp_params[i]);
+
+					if (!trimmed_param.empty ())
+					{
+						_parameters.push_back(trimmed_param);
+					}
+				}
 			}
 		}
 	}
+
 	return (true);
 }
 
@@ -113,9 +138,9 @@ void	Message::print() const
 	std::cout << "Command:		[" << _command				<< "]"	<< std::endl;
 	std::cout << "Parameters	(" << _parameters.size()	<< "):"	<< std::endl;
 
-	for (size_t i = 0; i < _parameters.size(); ++i)
+	for (size_t i = 0; i  < _parameters.size(); ++i)
 	{
-		std::cout << "  [" << _parameters[i] << "]" << std::endl;
+		std::cout << "[" << _parameters[i] << "]" << std::endl;
 	}
 
 	std::cout << "---------------" << std::endl;

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 12:38:38 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 17:45:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ void Client::ClearOutputBuffer()
 
 std::string Client::ExtractNextMessage()
 {
-	size_t		pos		= _input_buffer.find("\r\n");
+	size_t		pos		= _input_buffer.find	("\r\n");
 
 	if (pos == std::string::npos)
 		return ("");
 
-	std::string	message	= _input_buffer.substr(0, pos);
+	std::string	message	= _input_buffer.substr	(0, pos);
 
-	_input_buffer.erase(0, pos + 1);
+	_input_buffer.erase(0, pos + 2);
 
 	return (message);
 }

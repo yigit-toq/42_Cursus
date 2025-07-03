@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:54:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 18:39:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 15:10:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ std::string					Utils::trim (const std::string& str)
 	size_t	first	= str.find_first_not_of	(" \t\n\r\f\v");
 
 	if (std::string::npos == first)
-		return (str);
+		return ("");
 
 	size_t	last	= str.find_last_not_of	(" \t\n\r\f\v");
 
@@ -45,6 +45,7 @@ std::vector<std::string>	Utils::split(const std::string& str, char delimiter)
 
 		tokens.push_back(token);
 	}
+
 	tokens.push_back(str.substr(bgn));
 
 	return (tokens);

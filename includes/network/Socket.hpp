@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:47:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/30 16:29:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 19:23:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class Socket
 
 		void	Listen	(int backlog = 5);
 		void	Create	();
-		void	Bind	();
+		void	Binder	();
 
 		int 	Send	(int fd, char *buffer, size_t length);
 

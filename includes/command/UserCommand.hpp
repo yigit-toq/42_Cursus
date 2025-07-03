@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utils.hpp                                          :+:      :+:    :+:   */
+/*   UserCommand.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 15:12:30 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/03 18:05:21 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/03 19:08:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef USERCOMMAND_HPP
+#define USERCOMMAND_HPP
 
-#include <string>
-#include <vector>
+#include "CommandHandler.hpp"
 
-class Utils
+class UserCommand : public CommandHandler
 {
 	private:
+		UserCommand				(const UserCommand& other);
+		UserCommand& operator=	(const UserCommand& other);
 
 	public:
-		 Utils ();
+		 UserCommand();
+		~UserCommand();
 
-		~Utils ();
-
-		static std::string					trim	(const std::string& str);
-
-		static std::vector<std::string>		split	(const std::string& str, char delimiter);
+		void execute(Client* sender, const Message& msg);
 };
 
 #endif

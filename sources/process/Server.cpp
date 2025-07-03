@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 18:13:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 19:36:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,29 @@ Server::Server(int port, int pass) : _srvr_socket(port)
 	(void)pass;
 
 	_srvr_socket.Create		();
-	_srvr_socket.Bind		();
-
+	_srvr_socket.Binder		();
 	_srvr_socket.Listen		();
 
 	_poll_handlr.AddSocket	(_srvr_socket.GetSock(), POLLIN);
+
+	SetupCommandHandlers	(); 
 
 	std::cout << "Server started on port " << port << std::endl;
 }
 
 Server::~Server()
 {
-	for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
+	for (std::map<int, Client*>::iterator					it = _users.begin()			; it != _users.end()		; ++it)
 	{
 		delete (it->second);
 	}
 	_users.clear();
+
+	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handlr.begin()	; it != _cmds_handlr.end()	; ++it)
+	{
+		delete (it->second);
+	}
+	_cmds_handlr.clear();
 
 	_poll_handlr.RmvSocket(_srvr_socket.GetSock());
 
@@ -66,7 +73,7 @@ void Server::Start()
 			{
 				if (revents & POLLIN)
 				{
-					HandleNewConnection();
+					HandleNewConnection(  );
 				}
 			}
 			else
@@ -129,8 +136,7 @@ void	Server::HandleClientMessage(int client_fd)
 				{
 					msg.print();
 
-					// Şimdi 'msg' nesnesini kullanarak ilgili komut işleyicisine yönlendirebiliriz.
-					// Örneğin: processMessage(user, msg);
+					ProcessMessage(user, msg);
 				}
 				else
 				{
@@ -143,8 +149,6 @@ void	Server::HandleClientMessage(int client_fd)
 	}
 	else if (bytes_read ==  0)
 	{
-		std::cout << "Client FD" << client_fd << " disconnected." << std::endl;
-
 		HandleClientDisconnection(client_fd);
 	}
 	else if (bytes_read == -1)
@@ -157,11 +161,31 @@ void	Server::HandleClientMessage(int client_fd)
 
 void	Server::HandleClientDisconnection(int fd)
 {
-	std::cout << "Client FD " << fd << " disconnected." << std::endl;
+	std::cout << "Client FD"  << fd << " disconnected." << std::endl;
 
 	_poll_handlr.RmvSocket(fd);
 
 	delete (_users[fd]);
 
 	_users.erase(fd);
+}
+
+void	Server::SetupCommandHandlers()
+{
+	_cmds_handlr["NICK"] = new NickCommand();
+	_cmds_handlr["USER"] = new UserCommand();
+}
+
+void	Server::ProcessMessage(Client* sender, const Message& msg)
+{
+	std::map<std::string, CommandHandler*>::iterator it = _cmds_handlr.find(msg.getCommand());
+
+	if (it != _cmds_handlr.end())
+	{
+		it->second->execute(sender, msg);
+	}
+	else
+	{
+		std::cerr << "Unknown command: " << msg.getCommand() << " from FD " << sender->GetFd() << std::endl;
+	}
 }

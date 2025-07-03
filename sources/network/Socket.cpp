@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/02 15:04:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/03 19:23:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void Socket::Create	(void)
 	}
 }
 
-void Socket::Bind	(void)
+void Socket::Binder	(void)
 {
 	if (bind(_sock, (struct sockaddr *)&_address, sizeof(_address)) < 0)
 	{
