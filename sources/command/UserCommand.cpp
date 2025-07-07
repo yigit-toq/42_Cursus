@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 19:10:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/07 16:25:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ UserCommand::~UserCommand() {}
 
 void UserCommand::execute(Client* sender, const Message& msg)
 {
-	std::cout << "Executing USER command for user FD " << sender->GetFd() << std::endl;
+	std::cout << "Executing USER command for user FD " << sender->GetFD() << std::endl;
 
 	if (msg.getParameters().size() < 4)
 	{

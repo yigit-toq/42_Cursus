@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 19:36:49 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/07 16:25:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,14 +125,15 @@ void	Server::HandleClientMessage(int client_fd)
 
 			std::cout << "Received " << bytes_read << " bytes from FD " << client_fd << ": [" << buffer << "]" << std::endl;
 
-			std::string	message;
+			std::string	raw;
 
-			while ((message = user->ExtractNextMessage()) != "")
+			while ((raw = user->ExtractNextMessage()) != "")
 			{
-				std::cout << "Full message extracted: " << message << std::endl;
+				std::cout << "Full message extracted: " << raw << std::endl;
 
 				Message	msg;
-				if (msg.parse(message))
+
+				if (msg.parse(raw))
 				{
 					msg.print();
 
@@ -140,7 +141,7 @@ void	Server::HandleClientMessage(int client_fd)
 				}
 				else
 				{
-					std::cerr << "Failed to parse message from FD " << client_fd << ": " << message << std::endl;
+					std::cerr << "Failed to parse message from FD " << client_fd << ": " << raw << std::endl;
 
 					// Geçersiz mesaj durumunda istemciye hata yanıtı gönderme veya bağlantıyı kesme düşünülebilir.
 				}
@@ -186,6 +187,6 @@ void	Server::ProcessMessage(Client* sender, const Message& msg)
 	}
 	else
 	{
-		std::cerr << "Unknown command: " << msg.getCommand() << " from FD " << sender->GetFd() << std::endl;
+		std::cerr << "Unknown command: " << msg.getCommand() << " from FD " << sender->GetFD() << std::endl;
 	}
 }
