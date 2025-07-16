@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/07 18:25:55 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/16 17:38:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ class Client
 	private:
 		int											_fd;
 
+		UserStatus									_status;
+
 		std::string									_nickname;
 		std::string									_username;
 		std::string									_realname;
 		std::string									_hostname;
+		std::string									_password;
 
 		std::string									_input_buffer;
 		std::queue<std::string>						_ouput_buffer;

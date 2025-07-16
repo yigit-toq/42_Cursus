@@ -6,19 +6,26 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/07 18:27:35 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/16 17:40:16 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client:: Client	(int fd) : _fd(fd), _isAuthenticated(false) {}
+Client:: Client(int fd) : _fd(fd), _status(UNREGISTERED)
+{
+	_nickname = "*";
+	_username = "";
+	_realname = "";
+	_hostname = "";
+	_password = "";
+}
 
 Client::~Client	() {}
 
 int		Client::GetFD() const { return _fd; }
 
-void	Client::SetFD(int fd) { _fd = fd; }
+void	Client::SetFD(int fd) { _fd = fd;	}
 
 std::string Client::GetNickName					() const { return _nickname; }
 

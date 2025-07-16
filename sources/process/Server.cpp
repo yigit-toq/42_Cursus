@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/07 16:25:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/16 17:20:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ Server::Server(int port, int pass) : _srvr_socket(port)
 
 Server::~Server()
 {
-	for (std::map<int, Client*>::iterator					it = _users.begin()			; it != _users.end()		; ++it)
+	for (std::map<int, Client*>::iterator					it = _users			.begin()	; it != _users.end()		; ++it)
 	{
 		delete (it->second);
 	}
 	_users.clear();
 
-	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handlr.begin()	; it != _cmds_handlr.end()	; ++it)
+	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handlr	.begin()	; it != _cmds_handlr.end()	; ++it)
 	{
 		delete (it->second);
 	}

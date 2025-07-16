@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:58:33 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 18:14:21 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/16 17:33:11 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ class CommandHandler
 		CommandHandler& operator=	(const CommandHandler& other);
 
 	public:
-				 CommandHandler();
-		virtual ~CommandHandler();
+				 		 CommandHandler();
+		virtual 		~CommandHandler();
 
 		virtual void	execute(Client* sender, const Message& msg) = 0;
 };
