@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/07/03 18:56:41 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/20 17:01:11 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ PROTOCOL_DIR	=	${SOURCES_DIR}protocol/
 
 SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp		$(COMMAND_DIR)NickCommand.cpp	\
 											$(PROCESS_DIR)Client.cpp	$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp		$(COMMAND_DIR)UserCommand.cpp	\
-											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp																	\
+											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp									$(COMMAND_DIR)PassCommand.cpp	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

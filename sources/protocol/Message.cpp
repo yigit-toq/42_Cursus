@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:53:21 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 17:59:46 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 18:57:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ Message:: Message() {}
 
 Message::~Message() {}
 
-const std::string&					Message::getPrefix		() const { return _prefix;		}
-const std::string&					Message::getCommand		() const { return _command;		}
-const std::vector<std::string>&		Message::getParameters	() const { return _parameters;	}
+const std::string&					Message::GetPrefix		() const { return _prefix;		}
+const std::string&					Message::GetCommand		() const { return _command;		}
+const std::vector<std::string>&		Message::GetParameters	() const { return _parameters;	}
 
-bool Message::parse(const std::string& raw_message)
+bool Message::Parse(const std::string& raw_message)
 {
 	_prefix		.clear();
 	_command	.clear();
@@ -126,7 +126,7 @@ bool Message::parse(const std::string& raw_message)
 	return (true);
 }
 
-void	Message::print() const
+void	Message::Print() const
 {
 	std::cout << "--- Message ---" << std::endl;
 

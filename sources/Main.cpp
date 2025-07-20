@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 15:04:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 16:48:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 	}
 
 	int port = std::atoi(argv[1]);
-	int pass = std::atoi(argv[2]);
+	std::string pass = argv[2]; //
 
 	if (port <= 0 || port > 65535)
 	{

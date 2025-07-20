@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/16 17:38:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 18:45:45 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ class Client
 		std::string									_input_buffer;
 		std::queue<std::string>						_ouput_buffer;
 
-		bool										_isAuthenticated;
-
 	public:
 		 Client										(int fd);
 
@@ -49,29 +47,33 @@ class Client
 
 		int 					GetFD				() const;
 
+		UserStatus				GetStatus			() const;
+
 		std::string 			GetUserName			() const;
 		std::string 			GetNickName			() const;
 		std::string 			GetRealName			() const;
 		std::string				GetHostName			() const;
+		std::string				GetPassword			() const;
 
-		std::string 			GetInputBuffer		() const;
-		std::queue<std::string>	GetOuputBuffer		() const;
-
-		bool					GetAuthenticated	() const;
+		bool					IsRegistered		() const;
+		bool					HasOuputData		() const;
 
 		void 					SetFD				(int fd);
+
+		void					SetStatus			(UserStatus status);
 
 		void 					SetUserName			(const std::string &username);
 		void 					SetNickName			(const std::string &nickname);
 		void 					SetRealName			(const std::string &realname);
 		void 					SetHostName			(const std::string &hostname);
+		void 					SetPassword			(const std::string &password);
 
 		void 					AppendToInputBuffer	(const std::string &data);
 		void 					AppendToOuputBuffer	(const std::string &data);
 
-		void 					SetAuthenticated	(bool authenticated);
+		std::string				ExtrctNextMessage	();
 
-		std::string				ExtractNextMessage	();
+		std::string				NextOutputMessage	();
 };
 
 #endif

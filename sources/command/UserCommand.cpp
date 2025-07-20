@@ -6,36 +6,52 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/07 16:25:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 16:44:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "UserCommand.hpp"
+#include "Server.hpp"
 
-UserCommand:: UserCommand() {}
+UserCommand:: UserCommand(Server& server) : _server(server) {}
 
 UserCommand::~UserCommand() {}
 
-void UserCommand::execute(Client* sender, const Message& msg)
+void UserCommand::Execute(Client* sender, const Message& msg)
 {
-	std::cout << "Executing USER command for user FD " << sender->GetFD() << std::endl;
-
-	if (msg.getParameters().size() < 4)
+	if (sender->IsRegistered())
 	{
-		std::cout << "USER command requires 4 parameters: <username> <mode> <unused> :<realname> (Error: ERR_NEEDMOREPARAMS)" << std::endl;
-
-		return ;
+		_server.SendsNumericReply(sender, 462, "You may not reregister"); // ERR_ALREADYREGISTRED
+		return;
 	}
 
-	std::string username = msg.getParameters	()[0];
+	if (msg.GetParameters().size() < 4)
+	{
+		_server.SendsNumericReply(sender, 461, "USER :Not enough parameters"); // ERR_NEEDMOREPARAMS
+		return;
+	}
 
-	// int mode = std::atoi(msg.getParameters	()[1].c_str());
-	// std::string unused = msg.getParameters	()[2];
+	std::string username = msg.GetParameters()[0];
+	// Mod parametresi (msg.GetParameters()[1]) şimdilik kullanılmıyor, RFC'ye göre 0 veya 8 olmalı.
+	// unused parametresi (msg.GetParameters()[2]) şimdilik kullanılmıyor.
+	std::string realname = msg.GetParameters()[3]; // trailing parameter
 
-	std::string realname = msg.getParameters	()[3];
+	// Kullanıcı adının geçerliliğini kontrol et (örn: boş olamaz)
+	if (username.empty() || realname.empty())
+	{
+		_server.SendsNumericReply(sender, 461, "USER :Invalid username or realname");
+		return;
+	}
 
-	std::cout << "User " << sender->GetNickName	() << " wants to set username: " << username << ", realname: " << realname << std::endl;
+	sender->SetUserName(username);
+	sender->SetRealName(realname);
 
-	// sender->setUsername(username);
-	// sender->setRealname(realname);
+	if (sender->GetStatus() == UNREGISTERED || sender->GetStatus() == NICK_SET)
+	{
+		sender->SetStatus(USER_SET);
+	}
+	std::cout << "User FD " << sender->GetFD() << " username set to: " << username << ", realname: " << realname << std::endl;
+
+	// Kayıt kontrolünü tetikle
+	_server.CheckRegistration(sender);
 }

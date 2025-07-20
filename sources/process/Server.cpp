@@ -6,23 +6,24 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/16 17:20:23 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 18:57:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server(int port, int pass) : _srvr_socket(port)
+Server::Server(int port, std::string pass) : _password(pass), _srvr_socket(port)
 {
-	(void)pass;
-
 	_srvr_socket.Create		();
 	_srvr_socket.Binder		();
 	_srvr_socket.Listen		();
 
 	_poll_handlr.AddSocket	(_srvr_socket.GetSock(), POLLIN);
 
-	SetupCommandHandlers	(); 
+	SetupCommandHandlers	();
+
+	_server_name = "irc.example.com"; //
+	_network_name = "irc_network"; //
 
 	std::cout << "Server started on port " << port << std::endl;
 }
@@ -54,41 +55,61 @@ void Server::Start()
 
 		for (size_t i = 0; i < active_fds.size(); ++i)
 		{
-			int		fd		= active_fds[i].fd;
+			int		curr_fd	= active_fds[i].fd;
 
-			short	revents	= active_fds[i].revents;
-
-			if (revents & POLLERR || revents & POLLNVAL)
+			if (curr_fd == _srvr_socket.GetSock())
 			{
-				std::cerr << "Error or invalid FD: " << fd << std::endl;
-
-				if (_users.count(fd))
-					HandleClientDisconnection(fd);
-
-				_poll_handlr.RmvSocket(fd);
-				continue ;
-			}
-
-			if (fd == _srvr_socket.GetSock())
-			{
-				if (revents & POLLIN)
-				{
-					HandleNewConnection(  );
-				}
+				if (active_fds[i].revents & POLLIN)
+					HandleNewConnection();
 			}
 			else
 			{
-				if (revents & POLLIN)
-				{
-					HandleClientMessage(fd);
+				// Mevcut istemciden veri
+				Client* user = _users[curr_fd];
+				if (user) {
+					if (active_fds[i].revents & POLLIN)
+					{
+						HandleClientMessage(curr_fd);
+					}
+					if (active_fds[i].revents & POLLOUT && user->HasOuputData())
+					{
+						// Eğer istemcinin çıkış tamponunda gönderilecek veri varsa
+						// Bu kısımda sokete yazma işlemini gerçekleştireceğiz.
+						std::string msg_to_send = user->NextOutputMessage();
+						int bytes_sent = _srvr_socket.Send(user->GetFD(), (char*)msg_to_send.c_str(), msg_to_send.length());
+						if (bytes_sent == -1)
+						{
+							std::cerr << "Error sending data to FD " << user->GetFD() << std::endl;
+							HandleClientDisconnection(user->GetFD());
+						}
+						else
+						{
+							std::cout << "Sent " << bytes_sent << " bytes to FD " << user->GetFD() << ": [" << msg_to_send << "]" << std::endl;
+
+							// Eğer tamponda hala mesaj varsa POLLOUT'u açık tut
+							if (user->HasOuputData())
+							{
+								_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
+							}
+							else
+							{
+								// Tampon boşaldıysa sadece POLLIN'e dön
+								_poll_handlr.SetEvents(user->GetFD(), POLLIN);
+							}
+						}
+					}
+
+					if (user->HasOuputData() && !(active_fds[i].revents & POLLOUT))
+					{
+						_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
+					}
 				}
-				// Diğer olaylar (POLLOUT vb.) burada ele alınabilir
 			}
 		}
 	}
 }
 
-void Server::HandleNewConnection()
+void Server::HandleNewConnection() //
 {
 	int client_fd = _srvr_socket.Accept();
 
@@ -98,11 +119,10 @@ void Server::HandleNewConnection()
 		return ;
 	}
 
-	Client *new_user	= new Client(client_fd);
-
-	_users[client_fd]	= new_user;
-
-	_poll_handlr.AddSocket(client_fd, POLLIN);
+	Client* new_user = new Client(client_fd);
+	new_user->SetHostName("irc.example.com");
+	_users[client_fd] = new_user;
+	_poll_handlr.AddSocket(client_fd, POLLIN | POLLOUT);
 
 	std::cout << "New connection accepted: FD " << client_fd << std::endl;
 }
@@ -127,15 +147,15 @@ void	Server::HandleClientMessage(int client_fd)
 
 			std::string	raw;
 
-			while ((raw = user->ExtractNextMessage()) != "")
+			while ((raw = user->ExtrctNextMessage()) != "")
 			{
 				std::cout << "Full message extracted: " << raw << std::endl;
 
 				Message	msg;
 
-				if (msg.parse(raw))
+				if (msg.Parse(raw))
 				{
-					msg.print();
+					msg.Print();
 
 					ProcessMessage(user, msg);
 				}
@@ -173,20 +193,94 @@ void	Server::HandleClientDisconnection(int fd)
 
 void	Server::SetupCommandHandlers()
 {
-	_cmds_handlr["NICK"] = new NickCommand();
-	_cmds_handlr["USER"] = new UserCommand();
+	_cmds_handlr["NICK"] = new NickCommand(*this); // this bir IRCServer* olduğu için *this ile referansını al
+	_cmds_handlr["USER"] = new UserCommand(*this);
+	_cmds_handlr["PASS"] = new PassCommand(*this); // PassCommand'ı da ekle
 }
 
-void	Server::ProcessMessage(Client* sender, const Message& msg)
+void	Server::ProcessMessage(Client* sender, const Message& msg) //
 {
-	std::map<std::string, CommandHandler*>::iterator it = _cmds_handlr.find(msg.getCommand());
+	std::map<std::string, CommandHandler*>::iterator it = _cmds_handlr.find(msg.GetCommand());
 
 	if (it != _cmds_handlr.end())
 	{
-		it->second->execute(sender, msg);
+		it->second->Execute(sender, msg);
 	}
 	else
 	{
-		std::cerr << "Unknown command: " << msg.getCommand() << " from FD " << sender->GetFD() << std::endl;
+		std::cerr << "Unknown command: " << msg.GetCommand() << " from FD " << sender->GetFD() << std::endl;
 	}
+}
+
+void	Server::CheckRegistration(Client* client) //
+{
+	if (client->IsRegistered())
+	{
+		return ;
+	}
+
+	bool nick_set = (client->GetNickName() != "*"); // Varsayılan nick değişmişse
+	bool user_set = (!client->GetUserName().empty() && !client->GetRealName().empty());
+	bool password_ok = (_password.empty() || client->GetPassword() == _password); // Sunucu şifresi yoksa veya doğruysa
+
+	if (nick_set && user_set && password_ok) {
+		client->SetStatus(REGISTERED);
+		std::cout << "User FD " << client->GetFD() << " (" << client->GetNickName() << ") is now registered!" << std::endl;
+
+		SendsNumericReply(client, 001, "Welcome to the " + _network_name + " IRC Network " + client->GetNickName() + "!" + client->GetUserName() + "@" + client->GetHostName());
+		SendsNumericReply(client, 002, "Your host is " + _server_name + ", running version 1.0");
+		SendsNumericReply(client, 003, "This server was created 2024/01/01"); // Oluşturulma tarihi
+		SendsNumericReply(client, 004, _server_name + " 1.0 oiws O"); // Server adı, versiyon, kullanıcı modları, kanal modları
+	}
+}
+
+// Yeni: Genel numeric yanıt gönderme metodu
+void	Server::SendsNumericReply(Client* user, int numeric, const std::string& message) const
+{
+	std::stringstream ss;
+	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric
+	<< " " << user->GetNickName() << " :" << message << "\r\n";
+	user->AppendToOuputBuffer(ss.str());
+
+	// std::cout << "Sending reply to " << user->GetNickName() << ": " << ss.str() << std::endl; // Debug
+}
+
+// Yeni Getter'lar
+const std::string& Server::GetServerName() const { return _server_name; }
+const std::string& Server::GetNetworkName() const { return _network_name; }
+const std::string& Server::GetPassword() const { return _password; }
+
+// Yeni: Kullanıcı nickname'i ile bulma
+Client*	Server::FindUserByNickname(const std::string& nickname) const
+{
+	for (std::map<int, Client*>::const_iterator it = _users.begin(); it != _users.end(); ++it)
+	{
+		if (it->second->GetNickName() == nickname) 
+		{
+			return (it->second);
+		}
+	}
+	return NULL;
+}
+
+// Yeni: Nickname kullanılabilir mi kontrolü
+bool	Server::IsNicknameAvailable(const std::string& nickname) const
+{
+	// Geçici nickname'in ("*") özel durumu
+	if (nickname == "*") return false;
+
+	// Geçersiz karakterler kontrolü (RFC 2812, Bölüm 2.3.1)
+	// nick = letter { letter | digit | special }
+	// special = %x5B-60 / %x7B-7D ; "[", "]", "\", "`", "_", "^", "{", "|", "}"
+	// İlk karakter digit olamaz.
+	if (nickname.empty() || (!isalpha(nickname[0]) && nickname[0] != '[' && nickname[0] != ']' && nickname[0] != '\\' && nickname[0] != '`' && nickname[0] != '_' && nickname[0] != '^' && nickname[0] != '{' && nickname[0] != '|' && nickname[0] != '}')) {
+		return false; // Geçersiz ilk karakter
+	}
+	for (size_t i = 1; i < nickname.length(); ++i) {
+		if (!isalnum(nickname[i]) && nickname[i] != '[' && nickname[i] != ']' && nickname[i] != '\\' && nickname[i] != '`' && nickname[i] != '_' && nickname[i] != '^' && nickname[i] != '{' && nickname[i] != '|' && nickname[i] != '}') {
+			return false; // Geçersiz karakter
+		}
+	}
+
+	return FindUserByNickname(nickname) == NULL; // Nickname kullanılıyor mu
 }

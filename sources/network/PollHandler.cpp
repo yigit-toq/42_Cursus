@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 19:00:00 by ytop              #+#    #+#             */
-/*   Updated: 2025/06/30 16:19:08 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/20 18:36:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,18 @@ std::vector<struct pollfd>	PollHandler::WaitForEvents(int timeout_ms)
 		}
 	}
 	return (ready_fds);
+}
+
+void	PollHandler::SetEvents(int fd, short events) //
+{
+	for (size_t i = 0; i < _fds.size(); ++i)
+	{
+		if (_fds[i].fd == fd)
+		{
+			_fds[i].events = events;
+			std::cout << "Updated events for FD " << fd << " to " << events << std::endl;
+			return ;
+		}
+	}
+	std::cerr << "Warning: Attempted to set events for non-existent FD " << fd << std::endl;
 }

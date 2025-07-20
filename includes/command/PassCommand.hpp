@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   NickCommand.hpp                                    :+:      :+:    :+:   */
+/*   PassCommand.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 18:05:21 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:33:07 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/20 16:29:05 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/20 18:34:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NICKCOMMAND_HPP
-#define NICKCOMMAND_HPP
+#ifndef PASSCOMMAND_HPP
+#define PASSCOMMAND_HPP
 
 #include "CommandHandler.hpp"
 
-class Server;
+#include "Server.hpp"
+#include "Client.hpp"
 
-class NickCommand : public CommandHandler
+class PassCommand : public CommandHandler
 {
 	private:
 		Server&					_server;
 
 	private:
-		NickCommand				(const NickCommand& other);
-		NickCommand& operator=	(const NickCommand& other);
+		PassCommand				(const PassCommand& other);
+		PassCommand& operator=	(const PassCommand& other);
 
 	public:
-		 NickCommand			(Server& server);
-		~NickCommand			();
+		 PassCommand			(Server& server);
+		~PassCommand			();
 
 		void Execute			(Client* sender, const Message& msg);
 };
