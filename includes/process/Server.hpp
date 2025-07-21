@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:48:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/21 16:44:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,9 @@ class Server
 		//
 
 		// Kanal yönetimi için yeni getter/helper'lar
-		Channel* FindChannel				(const std::string& name) const;
-		void 	RemoveChannel				(const std::string& name); // Kanal boşaldığında silmek için
+		Channel*	FindChannel				(const std::string& name) const;
+		Channel*	CreateChannel			(const std::string& name);
+		void		RemoveChannel			(const std::string& name);
 };
 
 #endif

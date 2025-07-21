@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:57:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/21 16:51:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,33 @@ Server::Server(int port, std::string pass) : _password(pass), _srvr_socket(port)
 
 	_poll_handlr.AddSocket	(_srvr_socket.GetSock(), POLLIN);
 
-	SetupCommandHandlers	();
-
 	_server_name = "irc.example.com"; //
 	_network_name = "irc_network"; //
+
+	SetupCommandHandlers	();
 
 	std::cout << "Server started on port " << port << std::endl;
 }
 
 Server::~Server()
 {
-	for (std::map<int, Client*>::iterator					it = _users			.begin()	; it != _users.end()		; ++it)
+	for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
-		delete (it->second);
+		delete it->second;
 	}
 	_users.clear();
 
-	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handlr	.begin()	; it != _cmds_handlr.end()	; ++it)
+	for (std::map<std::string, CommandHandler*>::iterator it = _cmds_handlr.begin(); it != _cmds_handlr.end(); ++it)
 	{
-		delete (it->second);
+		delete it->second;
 	}
 	_cmds_handlr.clear();
 
-	_poll_handlr.RmvSocket(_srvr_socket.GetSock());
+	for (std::map<std::string, Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+	{
+		delete it->second;
+	}
+	_channels.clear();
 
 	std::cout << "Server shutting down." << std::endl;
 }
@@ -196,6 +200,39 @@ void	Server::SetupCommandHandlers()
 	_cmds_handlr["NICK"] = new NickCommand(*this); // this bir IRCServer* olduğu için *this ile referansını al
 	_cmds_handlr["USER"] = new UserCommand(*this);
 	_cmds_handlr["PASS"] = new PassCommand(*this); // PassCommand'ı da ekle
+
+	//     // DEBUG: Kanal oluşturma ve bulma testi
+    // std::cout << "--- DEBUG: Channel Test ---" << std::endl;
+    // Channel* testChannel1 = CreateChannel("#test");
+    // Channel* testChannel2 = CreateChannel("#another");
+    // Channel* foundChannel1 = FindChannel("#test");
+    // Channel* nonExistentChannel = FindChannel("#nonexistent");
+
+    // if (testChannel1 && foundChannel1 && testChannel1 == foundChannel1) {
+    //     std::cout << "SUCCESS: Channel #test created and found correctly." << std::endl;
+    //     testChannel1->setTopic("This is a test topic!");
+    // } else {
+    //     std::cout << "FAILURE: Channel #test creation/find failed." << std::endl;
+    // }
+
+    // if (testChannel2) {
+    //     std::cout << "SUCCESS: Channel #another created." << std::endl;
+    // }
+
+    // if (!nonExistentChannel) {
+    //     std::cout << "SUCCESS: Non-existent channel #nonexistent not found (as expected)." << std::endl;
+    // } else {
+    //     std::cout << "FAILURE: Non-existent channel #nonexistent found (unexpected)." << std::endl;
+    // }
+
+    // // DEBUG: Kanalı silme testi
+    // RemoveChannel("#another");
+    // if (!FindChannel("#another")) {
+    //     std::cout << "SUCCESS: Channel #another removed correctly." << std::endl;
+    // } else {
+    //     std::cout << "FAILURE: Channel #another not removed." << std::endl;
+    // }
+    // std::cout << "--- END DEBUG: Channel Test ---" << std::endl;
 }
 
 void	Server::ProcessMessage(Client* sender, const Message& msg) //
@@ -229,7 +266,7 @@ void	Server::CheckRegistration(Client* client) //
 
 		SendsNumericReply(client, 001, "Welcome to the " + _network_name + " IRC Network " + client->GetNickName() + "!" + client->GetUserName() + "@" + client->GetHostName());
 		SendsNumericReply(client, 002, "Your host is " + _server_name + ", running version 1.0");
-		SendsNumericReply(client, 003, "This server was created 2024/01/01"); // Oluşturulma tarihi
+		SendsNumericReply(client, 003, "This server was created 2025/07/20"); // Oluşturulma tarihi
 		SendsNumericReply(client, 004, _server_name + " 1.0 oiws O"); // Server adı, versiyon, kullanıcı modları, kanal modları
 	}
 }
@@ -283,4 +320,43 @@ bool	Server::IsNicknameAvailable(const std::string& nickname) const
 	}
 
 	return FindUserByNickname(nickname) == NULL; // Nickname kullanılıyor mu
+}
+
+// Yeni: Kanalı ismine göre bul
+Channel*	Server::FindChannel(const std::string& name) const
+{
+	std::map<std::string, Channel*>::const_iterator it = _channels.find(name);
+	if (it != _channels.end())
+	{
+		return it->second;
+	}
+	return NULL;
+}
+
+// Yeni: Kanal oluştur
+Channel*	Server::CreateChannel(const std::string& name)
+{
+	if (FindChannel(name) != NULL)
+	{
+		std::cerr << "Attempted to create already existing channel: " << name << std::endl;
+
+		return FindChannel(name);
+	}
+	Channel* new_channel = new Channel(name, *this);
+	_channels[name] = new_channel;
+	std::cout << "Created new channel: " << name << std::endl;
+
+	return new_channel;
+}
+
+// Yeni: Kanalı sil
+void Server::RemoveChannel(const std::string& name)
+{
+	std::map<std::string, Channel*>::iterator it = _channels.find(name);
+	if (it != _channels.end())
+	{
+		delete it->second;
+		_channels.erase(it);
+		std::cout << "Removed empty channel: " << name << std::endl;
+	}
 }
