@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/21 16:44:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:37:22 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 #include "NickCommand.hpp"
 #include "UserCommand.hpp"
 #include "PassCommand.hpp"
+#include "JoinCommand.hpp"
+#include "PrivCommand.hpp"
 #include "CommandHandler.hpp"
 
 #pragma endregion
@@ -82,6 +84,8 @@ class Server
 		Channel*	FindChannel				(const std::string& name) const;
 		Channel*	CreateChannel			(const std::string& name);
 		void		RemoveChannel			(const std::string& name);
+
+		PollHandler& GetPollHandler() { return _poll_handlr; }
 };
 
 #endif

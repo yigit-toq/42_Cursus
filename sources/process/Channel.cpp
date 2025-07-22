@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:37:33 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:36:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@ Channel::~Channel() {
 }
 
 // Getter Metotları
-const std::string& Channel::getName() const { return _name; }
-const std::string& Channel::getTopic() const { return _topic; }
-const std::string& Channel::getPassword() const { return _password; }
-size_t Channel::getUserLimit() const { return _user_limit; }
-bool Channel::isInviteOnly() const { return _invite_only; }
-bool Channel::isTopicSetByOp() const { return _topic_set_by_op; }
+const std::string& Channel::GetName() const { return _name; }
+const std::string& Channel::GetTopic() const { return _topic; }
+const std::string& Channel::GetPassword() const { return _password; }
+size_t Channel::GetUserLimit() const { return _user_limit; }
+bool Channel::IsInviteOnly() const { return _invite_only; }
+bool Channel::IsTopicSetByOp() const { return _topic_set_by_op; }
 
 // Kullanıcılar ve Operatörler için
-bool Channel::isUserInChannel(Client* user) const {
+bool Channel::IsUserInChannel(Client* user) const {
     if (!user) return false;
     return _users.count(user->GetFD()) > 0;
 }
 
-bool Channel::isOperator(Client* user) const {
+bool Channel::IsOperator(Client* user) const {
     if (!user) return false;
     return _operators.count(user->GetFD()) > 0;
 }
@@ -47,7 +47,7 @@ const std::map<int, Client*>& Channel::getUsers() const { return _users; }
 const std::map<int, Client*>& Channel::getOperators() const { return _operators; }
 
 // Setter Metotları (modlar için)
-void Channel::setTopic(const std::string& topic, Client* setter) {
+void Channel::SetTopic(const std::string& topic, Client* setter) {
     _topic = topic;
     std::cout << "Channel " << _name << " topic set to: '" << _topic << "'";
     if (setter) {
@@ -57,29 +57,29 @@ void Channel::setTopic(const std::string& topic, Client* setter) {
     // TOPIC komutunu implemente ettiğimizde buraya broadcast eklenecek.
 }
 
-void Channel::setPassword(const std::string& password) {
+void Channel::SetPassword(const std::string& password) {
     _password = password;
     std::cout << "Channel " << _name << " password set." << std::endl;
 }
 
-void Channel::setUserLimit(size_t limit) {
+void Channel::SetUserLimit(size_t limit) {
     _user_limit = limit;
     std::cout << "Channel " << _name << " user limit set to: " << _user_limit << std::endl;
 }
 
-void Channel::setInviteOnly(bool status) {
+void Channel::SetInviteOnly(bool status) {
     _invite_only = status;
     std::cout << "Channel " << _name << " invite-only status set to: " << (status ? "true" : "false") << std::endl;
 }
 
-void Channel::setTopicSetByOp(bool status) {
+void Channel::SetTopicSetByOp(bool status) {
     _topic_set_by_op = status;
     std::cout << "Channel " << _name << " topic-set-by-op status set to: " << (status ? "true" : "false") << std::endl;
 }
 
 // Kanal Üyeliği Metotları
-void Channel::addUser(Client* user) {
-    if (!user || isUserInChannel(user)) {
+void Channel::AddUser(Client* user) {
+    if (!user || IsUserInChannel(user)) {
         return; // Kullanıcı zaten kanalda veya geçersiz kullanıcı
     }
     _users[user->GetFD()] = user;
@@ -87,23 +87,23 @@ void Channel::addUser(Client* user) {
 
     // Kanala katılan ilk kullanıcıyı operatör yapabiliriz (isteğe bağlı)
     if (_users.size() == 1) {
-        addOperator(user);
+        AddOperator(user);
     }
     // Katılanlara JOIN mesajı broadcast edilecek (JOIN komutunda)
 }
 
-void Channel::removeUser(Client* user) {
-    if (!user || !isUserInChannel(user)) {
+void Channel::RemoveUser(Client* user) {
+    if (!user || !IsUserInChannel(user)) {
         return; // Kullanıcı kanalda değil veya geçersiz kullanıcı
     }
-    removeOperator(user); // Operatörlüğünü kaldır (eğer operatörse)
+    RemoveOperator(user); // Operatörlüğünü kaldır (eğer operatörse)
     _users.erase(user->GetFD());
     std::cout << "User " << user->GetNickName() << " removed from channel " << _name << std::endl;
     // Ayrılanlara PART mesajı broadcast edilecek (PART/QUIT komutunda)
 }
 
-void Channel::addOperator(Client* user) {
-    if (!user || !isUserInChannel(user) || isOperator(user)) {
+void Channel::AddOperator(Client* user) {
+    if (!user || !IsUserInChannel(user) || IsOperator(user)) {
         return; // Kullanıcı kanalda değil veya zaten operatör
     }
     _operators[user->GetFD()] = user;
@@ -111,8 +111,8 @@ void Channel::addOperator(Client* user) {
     // MOD +o komutunda bunu diğerlerine de bildireceğiz.
 }
 
-void Channel::removeOperator(Client* user) {
-    if (!user || !isOperator(user)) {
+void Channel::RemoveOperator(Client* user) {
+    if (!user || !IsOperator(user)) {
         return; // Kullanıcı operatör değil
     }
     _operators.erase(user->GetFD());
@@ -120,21 +120,35 @@ void Channel::removeOperator(Client* user) {
 }
 
 // Kanal İletişimi
-void Channel::broadcastMessage(const std::string& message, Client* exclude_user) {
+void Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
+{
+    // for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
+    // {
+    //     Client* target_user = it->second;
+    //     if (target_user != exclude_user)
+    //     {
+    //         target_user->AppendToOuputBuffer(message + "\r\n"); // Mesajın sonuna CRLF ekle
+    //     }
+    // }
+    // std::cout << "Broadcasted message to channel " << _name << ": [" << message << "]" << std::endl;
+
     for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it) {
         Client* target_user = it->second;
         if (target_user != exclude_user) {
-            target_user->AppendToOuputBuffer(message + "\r\n"); // Mesajın sonuna CRLF ekle
+            target_user->AppendToOuputBuffer(message + "\r\n"); // Tampona ekle
+            // KRİTİK: Bu kullanıcı için hemen POLLOUT'u ayarla
+            // Bunun için Channel sınıfının PollHandler'a erişimi olmalı (IRCServer referansı aracılığıyla)
+            _server.GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT); // GetPollHandler()'ın var olduğunu varsayarak
         }
     }
     std::cout << "Broadcasted message to channel " << _name << ": [" << message << "]" << std::endl;
 }
 
 // Kanal durumu kontrol metotları
-bool Channel::isFull() const {
+bool Channel::IsFull() const {
     return _user_limit > 0 && _users.size() >= _user_limit;
 }
 
-bool Channel::isEmpty() const {
+bool Channel::IsEmpty() const {
     return _users.empty();
 }

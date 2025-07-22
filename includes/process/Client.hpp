@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:45:45 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 17:01:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class Client
 		std::string									_password;
 
 		std::string									_input_buffer;
-		std::queue<std::string>						_ouput_buffer;
+		std::string									_ouput_buffer;
 
 	public:
 		 Client										(int fd);
@@ -73,7 +73,8 @@ class Client
 
 		std::string				ExtrctNextMessage	();
 
-		std::string				NextOutputMessage	();
+		const std::string& PeekOutputBuffer() const; // Kuyruğun başındaki mesajı döndürür (silmez)
+		void popOutputBuffer(size_t count); // Kuyruğun başındaki mesajı siler
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/21 16:51:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:41:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,64 +53,122 @@ Server::~Server()
 
 void Server::Start()
 {
-	while (true)
-	{
-		std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents();
+    while (true)
+    {
+        // 1. Olayları Bekle
+        std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents();
 
-		for (size_t i = 0; i < active_fds.size(); ++i)
-		{
-			int		curr_fd	= active_fds[i].fd;
+        // 2. Her Aktif Dosya Tanımlayıcısını İşle
+        for (size_t i = 0; i < active_fds.size(); ++i)
+        {
+            int curr_fd = active_fds[i].fd;
 
-			if (curr_fd == _srvr_socket.GetSock())
-			{
-				if (active_fds[i].revents & POLLIN)
-					HandleNewConnection();
-			}
-			else
-			{
-				// Mevcut istemciden veri
-				Client* user = _users[curr_fd];
-				if (user) {
-					if (active_fds[i].revents & POLLIN)
-					{
-						HandleClientMessage(curr_fd);
-					}
-					if (active_fds[i].revents & POLLOUT && user->HasOuputData())
-					{
-						// Eğer istemcinin çıkış tamponunda gönderilecek veri varsa
-						// Bu kısımda sokete yazma işlemini gerçekleştireceğiz.
-						std::string msg_to_send = user->NextOutputMessage();
-						int bytes_sent = _srvr_socket.Send(user->GetFD(), (char*)msg_to_send.c_str(), msg_to_send.length());
-						if (bytes_sent == -1)
-						{
-							std::cerr << "Error sending data to FD " << user->GetFD() << std::endl;
-							HandleClientDisconnection(user->GetFD());
-						}
-						else
-						{
-							std::cout << "Sent " << bytes_sent << " bytes to FD " << user->GetFD() << ": [" << msg_to_send << "]" << std::endl;
+            // 2.1. Sunucu Soketi (Yeni Bağlantılar)
+            if (curr_fd == _srvr_socket.GetSock())
+            {
+                if (active_fds[i].revents & POLLIN)
+                    HandleNewConnection();
+            }
+            // 2.2. İstemci Soketleri
+            else
+            {
+                // Kullanıcı nesnesini al
+                Client* user = _users[curr_fd];
+                if (!user) { // Kullanıcı bulunamazsa (örneğin az önce bağlantısı kesilmiştir)
+                    std::cerr << "Error: User not found for FD " << curr_fd << std::endl;
+                    _poll_handlr.RmvSocket(curr_fd); // Poll'dan da kaldır
+                    continue;
+                }
 
-							// Eğer tamponda hala mesaj varsa POLLOUT'u açık tut
-							if (user->HasOuputData())
-							{
-								_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
-							}
-							else
-							{
-								// Tampon boşaldıysa sadece POLLIN'e dön
-								_poll_handlr.SetEvents(user->GetFD(), POLLIN);
-							}
-						}
-					}
+                // Hata durumu kontrolü (bağlantı hatası veya kesilmesi)
+                if (active_fds[i].revents & (POLLERR | POLLHUP | POLLNVAL)) {
+                    std::cerr << "Client FD " << curr_fd << " error or hangup." << std::endl;
+                    HandleClientDisconnection(curr_fd);
+                    continue; // Sonraki FD'ye geç
+                }
 
-					if (user->HasOuputData() && !(active_fds[i].revents & POLLOUT))
-					{
-						_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
-					}
-				}
-			}
-		}
-	}
+                // 2.2.1. Okuma Olayı (POLLIN)
+                if (active_fds[i].revents & POLLIN)
+                {
+                    HandleClientMessage(curr_fd); // Mesajları al ve işle
+                }
+
+                // 2.2.2. Yazma Olayı (POLLOUT)
+                // Soket yazmaya hazırsa VE kullanıcının tamponunda gönderilecek veri varsa
+                if ((active_fds[i].revents & POLLOUT) && user->HasOuputData())
+                {
+                    // Döngü içinde kullanıcının output buffer'ındaki tüm veriyi göndermeye çalış
+                    // veya send() EAGAIN/EWOULDBLOCK döndürene kadar devam et
+                    while (user->HasOuputData())
+                    {
+                        const std::string& data_to_send = user->PeekOutputBuffer(); // Tamponun başındaki veriye eriş, ama silme
+                        if (data_to_send.empty()) {
+                            break; // Sanırım bu kontrol gereksiz, HasOutputData() kontrolü yeterli
+                        }
+
+                        // send() çağrısını yap
+                        // C++98'de `data_to_send.c_str()` kullanıyoruz.
+                        int bytes_sent = _srvr_socket.Send(user->GetFD(), (char *)data_to_send.c_str(), data_to_send.length());
+
+                        if (bytes_sent == -1)
+                        {
+                            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+                                // Tampon dolu, şu an daha fazla gönderilemiyor.
+                                // Daha sonra tekrar denemek için döngüden çık.
+                                std::cout << "Send buffer full for FD " << user->GetFD() << ", will try again next poll." << std::endl;
+                                break;
+                            } else {
+                                // Ciddi bir gönderme hatası (örneğin bağlantı koptu)
+                                std::cerr << "Error sending data to FD " << user->GetFD() << ": " << strerror(errno) << std::endl;
+                                HandleClientDisconnection(user->GetFD());
+                                // Bu kullanıcıdan sonraki FD'ye geçmek için iç ve dış döngüden çık.
+                                // Genellikle buradaki break sadece `while` döngüsünü kırar,
+                                // bu nedenle `continue` kullanarak `for` döngüsüne geçebiliriz.
+                                break; // while döngüsünden çık
+                            }
+                        }
+                        else if (bytes_sent == 0)
+                        {
+                            // 0 bayt gönderildi, ancak hata yok. Genellikle bir sorun var veya gönderecek bir şey kalmadı.
+                            // Güvenlik için bağlantıyı kesebiliriz veya bir sonraki döngüyü bekleyebiliriz.
+                            // Şimdilik break yapıp tekrar denemesine izin verelim.
+                            std::cout << "Sent 0 bytes for FD " << user->GetFD() << ", likely no more data or unexpected behavior. Breaking send loop." << std::endl;
+                            break; // while döngüsünden çık
+                        }
+                        else
+                        {
+                            // Başarıyla gönderilen baytları output buffer'dan sil
+                            user->popOutputBuffer(bytes_sent);
+                            std::cout << "Sent " << bytes_sent << " bytes to FD " << user->GetFD() << ". Remaining in buffer: " << user->PeekOutputBuffer().length() << " bytes." << std::endl;
+                        }
+                    }
+
+                    // Tüm veri gönderildiyse veya daha fazla gönderilemiyorsa,
+                    // POLLOUT olayını kapat (sadece POLLIN'i dinle)
+                    // NOT: Eğer partial send olduysa (errno == EAGAIN) ama hala veri varsa,
+                    // POLLOUT kapatılmaz. Sadece buffer tamamen boşaldığında kapatılır.
+                    if (!user->HasOuputData())
+                    {
+                        _poll_handlr.SetEvents(user->GetFD(), POLLIN);
+                        std::cout << "FD " << user->GetFD() << " output buffer empty. POLLOUT removed." << std::endl;
+                    }
+                }
+
+                // Eğer kullanıcının çıkış tamponunda hala veri varsa
+                // ve POLLOUT şu an dinlenmiyorsa (veya kaldırılmışsa),
+                // tekrar POLLOUT'u açmak için. Bu kısım önemli!
+                // Önceki döngüde POLLOUT aktif değildi ama yeni veri eklendi.
+                // Veya bir önceki POLLOUT iterasyonunda EAGAIN/EWOULDBLOCK nedeniyle
+                // tüm veri gönderilemediyse, POLLOUT'un açık kalması gerekiyor.
+                // Bu kontrol, tamponda veri varken POLLOUT'un etkin olduğundan emin olur.
+                if (user->HasOuputData() && !(_poll_handlr.GetEvents(user->GetFD()) & POLLOUT))
+                {
+                    _poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
+                    std::cout << "FD " << user->GetFD() << " has new output data, setting POLLIN | POLLOUT." << std::endl;
+                }
+            }
+        }
+    }
 }
 
 void Server::HandleNewConnection() //
@@ -200,6 +258,8 @@ void	Server::SetupCommandHandlers()
 	_cmds_handlr["NICK"] = new NickCommand(*this); // this bir IRCServer* olduğu için *this ile referansını al
 	_cmds_handlr["USER"] = new UserCommand(*this);
 	_cmds_handlr["PASS"] = new PassCommand(*this); // PassCommand'ı da ekle
+	_cmds_handlr["JOIN"] = new JoinCommand(*this); // JoinCommand'ı da ekle
+	_cmds_handlr["PRIVMSG"] = new PrivCommand(*this); // PrivCommand'ı da ekle
 
 	//     // DEBUG: Kanal oluşturma ve bulma testi
     // std::cout << "--- DEBUG: Channel Test ---" << std::endl;

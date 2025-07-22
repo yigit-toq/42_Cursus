@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/21 19:14:51 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 16:17:17 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
         // Yeni oluşturulan kanalın ilk üyesi otomatik olarak operatör olur (Channel sınıfında ayarlandı)
     } else {
         // Kanal varsa, mod kontrollerini yap
-        if (channel->IsInviteOnly() && !sender->IsOperator()) { // Basit bir kontrol, davet listesi yok
-            _server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)"); // ERR_INVITEONLYCHAN
-            return;
-        }
+		// Kanal davetiyeliyse (+i modu), kullanıcı kanala katılamaz.
+		// Şimdilik, davet mekanizmasını veya sunucu operatör bypass'ını implemente etmediğimiz için
+		// sadece invite-only olup olmadığını kontrol ediyoruz.
+        if (channel->IsInviteOnly()) {
+    		_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)"); // ERR_INVITEONLYCHAN
+    		return;
+		}
         if (!channel->GetPassword().empty() && channel->GetPassword() != channel_key) {
             _server.SendsNumericReply(sender, 475, channel_name + " :Cannot join channel (+k)"); // ERR_BADCHANNELKEY
             return;
@@ -80,43 +83,43 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
     }
 
     // 3. Kullanıcıyı Kanala Ekle
-    channel->addUser(sender);
+    channel->AddUser(sender);
 
     // 4. Katılma Mesajını Kanala Yayınla
     // Format: :<nickname>!<username>@<hostname> JOIN :<channelname>
     std::stringstream join_msg_ss;
-    join_msg_ss << ":" << sender->getNickname() << "!" << sender->getUsername() << "@" << sender->getHostname()
+    join_msg_ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName()
                 << " JOIN :" << channel_name;
-    channel->broadcastMessage(join_msg_ss.str()); // Mesajın sonuna CRLF eklemeyi broadcastMessage hallediyor
+    channel->BroadcastMessage(join_msg_ss.str()); // Mesajın sonuna CRLF eklemeyi broadcastMessage hallediyor
 
     // 5. Kanaldaki Kullanıcıya TOPIC ve NAMES Yanıtlarını Gönder
     // TOPIC (RPL_TOPIC 332)
-    if (!channel->getTopic().empty()) {
-        _server.sendNumericReply(sender, 332, channel_name + " :" + channel->getTopic());
+    if (!channel->GetTopic().empty()) {
+        _server.SendsNumericReply(sender, 332, channel_name + " :" + channel->GetTopic());
     } else {
-        _server.sendNumericReply(sender, 331, channel_name + " :No topic is set"); // RPL_NOTOPIC
+        _server.SendsNumericReply(sender, 331, channel_name + " :No topic is set"); // RPL_NOTOPIC
     }
 
     // NAMES (RPL_NAMREPLY 353 ve RPL_ENDOFNAMES 366)
     std::stringstream names_ss;
     names_ss << "= " << channel_name << " :"; // = public kanal, @ secret, * private
     
-    const std::map<int, User*>& users_in_channel = channel->getUsers();
-    const std::map<int, User*>& ops_in_channel = channel->getOperators();
+    const std::map<int, Client*>& users_in_channel = channel->getUsers();
+    const std::map<int, Client*>& ops_in_channel = channel->getOperators();
 
     bool first_user = true;
-    for (std::map<int, User*>::const_iterator it = users_in_channel.begin(); it != users_in_channel.end(); ++it) {
+    for (std::map<int, Client*>::const_iterator it = users_in_channel.begin(); it != users_in_channel.end(); ++it) {
         if (!first_user) {
             names_ss << " ";
         }
-        if (ops_in_channel.count(it->second->getSocketFd())) {
+        if (ops_in_channel.count(it->second->GetFD())) {
             names_ss << "@"; // Operatörler için prefix
         }
-        names_ss << it->second->getNickname();
+        names_ss << it->second->GetNickName();
         first_user = false;
     }
-    _server.sendNumericReply(sender, 353, names_ss.str()); // RPL_NAMREPLY
-    _server.sendNumericReply(sender, 366, channel_name + " :End of /NAMES list"); // RPL_ENDOFNAMES
+    _server.SendsNumericReply(sender, 353, names_ss.str()); // RPL_NAMREPLY
+    _server.SendsNumericReply(sender, 366, channel_name + " :End of /NAMES list"); // RPL_ENDOFNAMES
 
-    std::cout << "User " << sender->getNickname() << " successfully joined channel " << channel_name << std::endl;
+    std::cout << "User " << sender->GetNickName() << " successfully joined channel " << channel_name << std::endl;
 }

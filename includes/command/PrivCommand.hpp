@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   JoinCommand.hpp                                    :+:      :+:    :+:   */
+/*   PrivCommand.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 17:16:28 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:52:01 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/22 16:18:52 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/22 21:54:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef JOINCOMMAND_HPP
-#define JOINCOMMAND_HPP
+#ifndef PRIVCOMMAND_HPP
+#define PRIVCOMMAND_HPP
 
-#include "CommandHandler.hpp"
+# include "CommandHandler.hpp"
 
 class Server;
 
-class JoinCommand : public CommandHandler
+class PrivCommand : public CommandHandler
 {
 	private:
-		Server& 				_server;
-
-	private:
-		JoinCommand				(const JoinCommand& other);
-		JoinCommand& operator=	(const JoinCommand& other);
+		Server& _server; // Sunucuya referans
 
 	public:
-		 JoinCommand			(Server& server);
-		~JoinCommand			();
+		PrivCommand(Server& server);
+		~PrivCommand();
 
-		void Execute			(Client* sender, const Message& msg);
+		void Execute(Client* sender, const Message& msg);
+
+	private:
+		PrivCommand(const PrivCommand& other);
+		PrivCommand& operator=(const PrivCommand& other);
 };
 
 #endif

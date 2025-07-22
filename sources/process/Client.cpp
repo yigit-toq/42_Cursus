@@ -6,11 +6,12 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:44:29 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:16:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include <iostream> //
 
 Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
 {
@@ -53,7 +54,12 @@ void Client::SetStatus(UserStatus status)		{ _status = status; } //
 
 void Client::AppendToInputBuffer				(const std::string &data)		{ _input_buffer += data;	}
 
-void Client::AppendToOuputBuffer				(const std::string &data)		{ _ouput_buffer.push(data);	}
+void Client::AppendToOuputBuffer(const std::string& data)
+{
+    _ouput_buffer.append(data);
+    std::cout << "User " << GetNickName() << " appended " << data.length()
+              << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
+}
 
 std::string Client::ExtrctNextMessage()
 {
@@ -79,13 +85,19 @@ bool	Client::HasOuputData() const //
 	return (!_ouput_buffer.empty());
 }
 
-std::string Client::NextOutputMessage() //
+const std::string& Client::PeekOutputBuffer() const
 {
-	if (_ouput_buffer.empty())
-		return ("");
+    return _ouput_buffer; // Tamponun tamamını döndürüyor, `send` bunu kullanacak.
+}
 
-	std::string message = _ouput_buffer.front();
-	_ouput_buffer.pop();
-
-	return (message);
+void Client::popOutputBuffer(size_t count)
+{
+	if (count <= _ouput_buffer.length()) {
+		_ouput_buffer.erase(0, count);
+		std::cout << "User " << GetNickName() << " popped " << count << " bytes from output buffer. Remaining: "
+				<< _ouput_buffer.length() << std::endl;
+	} else {
+		_ouput_buffer.clear(); // Hata durumunda veya count fazla gelirse tümünü temizle
+		std::cout << "User " << GetNickName() << " output buffer cleared." << std::endl;
+	}
 }

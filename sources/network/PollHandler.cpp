@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 19:00:00 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:36:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 16:43:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,14 @@ void	PollHandler::SetEvents(int fd, short events) //
 		}
 	}
 	std::cerr << "Warning: Attempted to set events for non-existent FD " << fd << std::endl;
+}
+
+short PollHandler::GetEvents(int fd) const
+{
+    for (size_t i = 0; i < _fds.size(); ++i) {
+        if (_fds[i].fd == fd) {
+            return _fds[i].events;
+        }
+    }
+    return 0; // Bulunamazsa 0 döndür
 }

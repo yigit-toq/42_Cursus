@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:40:56 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 16:17:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,38 +45,38 @@ class Channel
 		~Channel();
 
 		// Getter Metotları
-		const std::string& getName() const;
-		const std::string& getTopic() const;
-		const std::string& getPassword() const;
-		size_t getUserLimit() const;
-		bool isInviteOnly() const;
-		bool isTopicSetByOp() const;
+		const std::string& GetName() const;
+		const std::string& GetTopic() const;
+		const std::string& GetPassword() const;
+		size_t GetUserLimit() const;
+		bool IsInviteOnly() const;
+		bool IsTopicSetByOp() const;
 
 		// Kullanıcılar ve Operatörler için
-		bool isUserInChannel(Client* user) const;
-		bool isOperator(Client* user) const;
+		bool IsUserInChannel(Client* user) const;
+		bool IsOperator(Client* user) const;
 		const std::map<int, Client*>& getUsers() const; // Kanaldaki tüm kullanıcıları döndürür
 		const std::map<int, Client*>& getOperators() const; // Kanal operatörlerini döndürür
 
 		// Setter Metotları (modlar için)
-		void setTopic(const std::string& topic, Client* setter = NULL); // setter null ise sunucu set etti
-		void setPassword(const std::string& password);
-		void setUserLimit(size_t limit);
-		void setInviteOnly(bool status);
-		void setTopicSetByOp(bool status);
+		void SetTopic(const std::string& topic, Client* setter = NULL); // setter null ise sunucu set etti
+		void SetPassword(const std::string& password);
+		void SetUserLimit(size_t limit);
+		void SetInviteOnly(bool status);
+		void SetTopicSetByOp(bool status);
 
 		// Kanal Üyeliği Metotları
-		void addUser(Client* user);
-		void removeUser(Client* user);
-		void addOperator(Client* user);
-		void removeOperator(Client* user); // Operatörlüğü kaldırır, kanalda kalabilir
+		void AddUser(Client* user);
+		void RemoveUser(Client* user);
+		void AddOperator(Client* user);
+		void RemoveOperator(Client* user); // Operatörlüğü kaldırır, kanalda kalabilir
 
 		// Kanal İletişimi
-		void broadcastMessage(const std::string& message, Client* exclude_user = NULL);
+		void BroadcastMessage(const std::string& message, Client* exclude_user = NULL);
 
 		// Kanal durumu kontrol metotları
-		bool isFull() const;
-		bool isEmpty() const;
+		bool IsFull() const;
+		bool IsEmpty() const;
 };
 
 #endif

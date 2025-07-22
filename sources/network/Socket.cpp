@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 17:48:35 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:25:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,30 @@ void Socket::Binder	(void)
 
 int	Socket::Send	(int fd, char *buffer, size_t length)
 {
-    // Make sure the buffer isn't null and length is positive, though send() handles this.
-    if (!buffer || length == 0) {
-        return 0; // Nothing to send or invalid buffer
-    }
+	// Make sure the buffer isn't null and length is positive, though send() handles this.
+	if (!buffer || length == 0)
+	{
+		return 0; // Nothing to send or invalid buffer
+	}
 
-    // Use the send() system call
-    ssize_t bytes_sent = send(fd, buffer, length, 0); // Last param is flags, usually 0
+	// Use the send() system call
+	ssize_t bytes_sent = send(fd, buffer, length, 0); // Last param is flags, usually 0
 
-    if (bytes_sent == -1) {
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            // This means the socket's send buffer is full,
-            // and we're in non-blocking mode.
-            // We'll try again later when POLLOUT indicates it's ready.
-            return 0; // Indicate no bytes were sent *this time* due to buffer full
-        }
-        // A real error occurred (e.g., connection reset by peer)
-        std::cerr << "Error sending data to FD " << fd << ": " << strerror(errno) << std::endl;
-        return -1; // Indicate a critical error
-    }
+	if (bytes_sent == -1)
+	{
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
+		{
+			// This means the socket's send buffer is full,
+			// and we're in non-blocking mode.
+			// We'll try again later when POLLOUT indicates it's ready.
+			return 0; // Indicate no bytes were sent *this time* due to buffer full
+		}
+		// A real error occurred (e.g., connection reset by peer)
+		std::cerr << "Error sending data to FD " << fd << ": " << strerror(errno) << std::endl;
+		return -1; // Indicate a critical error
+	}
 
-    return static_cast<int>(bytes_sent); 
+	return static_cast<int>(bytes_sent);
 }
 
 int	Socket::Receive(int fd, char *buffer, size_t length)
