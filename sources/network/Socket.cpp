@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:25:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 22:33:44 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 Socket:: Socket(int port) : _port(port), _sock(-1)
 {
-	_address.sin_port			= htons(port)	;
+	_addr.sin_port			= htons(port)	;
 
-	_address.sin_family			= AF_INET		;
+	_addr.sin_family			= AF_INET		;
 
-	_address.sin_addr.s_addr	= INADDR_ANY	;
+	_addr.sin_addr.s_addr	= INADDR_ANY	;
 }
 
 Socket::~Socket()
@@ -69,7 +69,7 @@ void Socket::Create	(void)
 
 void Socket::Binder	(void)
 {
-	if (bind(_sock, (struct sockaddr *)&_address, sizeof(_address)) < 0)
+	if (bind(_sock, (struct sockaddr *)&_addr, sizeof(_addr)) < 0)
 	{
 		close(_sock);
 
@@ -134,9 +134,9 @@ int	Socket::GetPort	() const
 
 int	Socket::Accept	()
 {
-	socklen_t	addrlen = sizeof(_address);
+	socklen_t	addrlen = sizeof(_addr);
 
-	int	client_fd = accept(_sock, (struct sockaddr *)&_address, &addrlen);
+	int	client_fd = accept(_sock, (struct sockaddr *)&_addr, &addrlen);
 
 	if (client_fd < 0)
 	{

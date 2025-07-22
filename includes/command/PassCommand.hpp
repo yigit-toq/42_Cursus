@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:29:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:34:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:57:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 #include "CommandHandler.hpp"
 
-#include "Server.hpp"
-#include "Client.hpp"
+class Server;
 
 class PassCommand : public CommandHandler
 {

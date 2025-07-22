@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 17:01:58 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 23:15:04 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,11 @@ class Client
 		void 					AppendToInputBuffer	(const std::string &data);
 		void 					AppendToOuputBuffer	(const std::string &data);
 
+		//bakılacak
 		std::string				ExtrctNextMessage	();
 
-		const std::string& PeekOutputBuffer() const; // Kuyruğun başındaki mesajı döndürür (silmez)
-		void popOutputBuffer(size_t count); // Kuyruğun başındaki mesajı siler
+		const std::string&		PeekOutputBuffer	() const;
+		void					popOutputBuffer		(size_t count);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:51:02 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 16:43:09 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 22:02:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ class PollHandler
 		std::vector<struct pollfd>					_fds;
 
 	public:
-		 PollHandler	();
-		~PollHandler	();
+		 PollHandler								();
+		~PollHandler								();
 
-		void RmvSocket								(int fd);
-		void AddSocket								(int fd, short events);
+		void						RmvSocket		(int fd);
+		void						AddSocket		(int fd, short events);
 
-		short		GetEvents				(int fd) const; //
+		void 						SetEvents		(int fd, short events);
 
-		void SetEvents								(int fd, short events);
+		short						GetEvents		(int fd) const;
 
 		std::vector<struct pollfd>	WaitForEvents	(int timeout_ms = -1);
 };

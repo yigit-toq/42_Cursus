@@ -6,11 +6,12 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:30:38 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 16:37:10 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 21:57:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PassCommand.hpp"
+#include "Server.hpp"
 
 PassCommand::PassCommand(Server& server) : _server(server) {}
 

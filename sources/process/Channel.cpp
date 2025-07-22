@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:36:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/22 22:37:27 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void Channel::AddUser(Client* user) {
     // Katılanlara JOIN mesajı broadcast edilecek (JOIN komutunda)
 }
 
-void Channel::RemoveUser(Client* user) {
+void Channel::RmvUser(Client* user) {
     if (!user || !IsUserInChannel(user)) {
         return; // Kullanıcı kanalda değil veya geçersiz kullanıcı
     }
-    RemoveOperator(user); // Operatörlüğünü kaldır (eğer operatörse)
+    RmvOperator(user); // Operatörlüğünü kaldır (eğer operatörse)
     _users.erase(user->GetFD());
     std::cout << "User " << user->GetNickName() << " removed from channel " << _name << std::endl;
     // Ayrılanlara PART mesajı broadcast edilecek (PART/QUIT komutunda)
@@ -111,7 +111,7 @@ void Channel::AddOperator(Client* user) {
     // MOD +o komutunda bunu diğerlerine de bildireceğiz.
 }
 
-void Channel::RemoveOperator(Client* user) {
+void Channel::RmvOperator(Client* user) {
     if (!user || !IsOperator(user)) {
         return; // Kullanıcı operatör değil
     }
