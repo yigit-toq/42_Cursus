@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 16:17:17 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 17:57:11 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
     		_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)"); // ERR_INVITEONLYCHAN
     		return;
 		}
-        if (!channel->GetPassword().empty() && channel->GetPassword() != channel_key) {
+        if (!channel->GetPass().empty() && channel->GetPass() != channel_key) {
             _server.SendsNumericReply(sender, 475, channel_name + " :Cannot join channel (+k)"); // ERR_BADCHANNELKEY
             return;
         }
@@ -84,6 +84,9 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
     // 3. Kullanıcıyı Kanala Ekle
     channel->AddUser(sender);
+
+    channel->AddUser(sender); // Kanalın kullanıcı listesine ekle
+    sender->AddChannel(channel); // Yeni: Kullanıcının kendi kanal listesine ekle
 
     // 4. Katılma Mesajını Kanala Yayınla
     // Format: :<nickname>!<username>@<hostname> JOIN :<channelname>

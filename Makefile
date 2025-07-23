@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/07/22 16:23:44 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/23 18:03:40 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.c
 											$(PROCESS_DIR)Channel.cpp	$(NETWORK_DIR)SelectHandler.cpp		$(PROTOCOL_DIR)SpecificCommand.cpp									$(COMMAND_DIR)PassCommand.cpp	\
 																																												$(COMMAND_DIR)JoinCommand.cpp	\
 																																												$(COMMAND_DIR)PrivCommand.cpp	\
+																																												$(COMMAND_DIR)PartCommand.cpp	\
+																																												$(COMMAND_DIR)QuitCommand.cpp	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

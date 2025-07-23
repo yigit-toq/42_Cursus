@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 22:37:27 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 15:01:19 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Channel::Channel(const std::string& name, Server& server)
     std::cout << "Channel " << _name << " created." << std::endl;
 }
 
+// Channel kapanınca seg alıyorum
 Channel::~Channel() {
     std::cout << "Channel " << _name << " destroyed." << std::endl;
 }
@@ -27,7 +28,7 @@ Channel::~Channel() {
 // Getter Metotları
 const std::string& Channel::GetName() const { return _name; }
 const std::string& Channel::GetTopic() const { return _topic; }
-const std::string& Channel::GetPassword() const { return _password; }
+const std::string& Channel::GetPass() const { return _pass; }
 size_t Channel::GetUserLimit() const { return _user_limit; }
 bool Channel::IsInviteOnly() const { return _invite_only; }
 bool Channel::IsTopicSetByOp() const { return _topic_set_by_op; }
@@ -57,8 +58,8 @@ void Channel::SetTopic(const std::string& topic, Client* setter) {
     // TOPIC komutunu implemente ettiğimizde buraya broadcast eklenecek.
 }
 
-void Channel::SetPassword(const std::string& password) {
-    _password = password;
+void Channel::SetPass(const std::string& password) {
+    _pass = password;
     std::cout << "Channel " << _name << " password set." << std::endl;
 }
 

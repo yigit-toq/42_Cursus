@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:47:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 22:34:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 18:21:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ class Socket
 
 		int 	GetSock	() const;
 		int 	GetPort	() const;
+
+		void 	RmvSock	(int fd);
 };
 
 #endif

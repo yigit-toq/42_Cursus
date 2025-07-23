@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 23:16:38 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 18:00:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 #include "PassCommand.hpp"
 #include "JoinCommand.hpp"
 #include "PrivCommand.hpp"
+#include "PartCommand.hpp"
+#include "QuitCommand.hpp"
 #include "CommandHandler.hpp"
 
 #pragma endregion

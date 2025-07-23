@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 22:33:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 18:20:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,4 +147,15 @@ int	Socket::Accept	()
 		return (-1);
 	}
 	return (client_fd);
+}
+
+void Socket::RmvSock(int client_fd)
+{
+	if (client_fd >= 0) { // Geçerli bir dosya tanımlayıcısı olduğundan emin olun
+		if (close(client_fd) == -1) {
+			std::cerr << "Error closing client socket FD " << client_fd << ": " << strerror(errno) << std::endl;
+		} else {
+			std::cout << "Client socket FD " << client_fd << " closed successfully." << std::endl;
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 23:15:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 17:54:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 #include <queue>
+#include "Channel.hpp"
 
 enum UserStatus
 {
@@ -39,6 +40,8 @@ class Client
 
 		std::string									_input_buffer;
 		std::string									_ouput_buffer;
+
+		std::vector<Channel*>						_joined_channels;
 
 	public:
 		 Client										(int fd);
@@ -72,10 +75,15 @@ class Client
 		void 					AppendToOuputBuffer	(const std::string &data);
 
 		//bakılacak
-		std::string				ExtrctNextMessage	();
+		std::string				ExtractNextMessage	();
 
 		const std::string&		PeekOutputBuffer	() const;
 		void					popOutputBuffer		(size_t count);
+
+		// Yeni: Kanalları yönetmek için metotlar
+		void							AddChannel			(Channel* channel);
+		void							RemoveChannel		(Channel* channel); // PART komutunda da kullanıldı, şimdi gerçek implementasyon gelecek
+		const std::vector<Channel*>&	GetJoinedChannels	() const; // Yeni getter
 };
 
 #endif

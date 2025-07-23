@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:16:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 17:55:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void Client::AppendToOuputBuffer(const std::string& data)
               << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
 }
 
-std::string Client::ExtrctNextMessage()
+std::string Client::ExtractNextMessage()
 {
 	size_t		pos		= _input_buffer.find	("\r\n");
 
@@ -100,4 +100,32 @@ void Client::popOutputBuffer(size_t count)
 		_ouput_buffer.clear(); // Hata durumunda veya count fazla gelirse tümünü temizle
 		std::cout << "User " << GetNickName() << " output buffer cleared." << std::endl;
 	}
+}
+
+void Client::AddChannel(Channel* channel)
+{
+	// Kanal zaten ekliyse tekrar ekleme
+	for (size_t i = 0; i < _joined_channels.size(); ++i) {
+		if (_joined_channels[i] == channel) {
+			return;
+		}
+	}
+	_joined_channels.push_back(channel);
+	std::cout << "Client " << _nickname << " added to joined channel list: " << channel->GetName() << std::endl;
+}
+
+void Client::RemoveChannel(Channel* channel)
+{
+	for (std::vector<Channel*>::iterator it = _joined_channels.begin(); it != _joined_channels.end(); ++it) {
+		if (*it == channel) {
+			_joined_channels.erase(it);
+			std::cout << "Client " << _nickname << " removed from joined channel list: " << channel->GetName() << std::endl;
+			return;
+		}
+	}
+}
+
+const std::vector<Channel*>& Client::GetJoinedChannels() const
+{
+	return _joined_channels;
 }

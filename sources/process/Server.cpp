@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:41:33 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/23 18:20:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void	Server::HandleClientMessage(int client_fd)
 
 			std::string	raw;
 
-			while ((raw = user->ExtrctNextMessage()) != "")
+			while ((raw = user->ExtractNextMessage()) != "")
 			{
 				std::cout << "Full message extracted: " << raw << std::endl;
 
@@ -244,13 +244,26 @@ void	Server::HandleClientMessage(int client_fd)
 
 void	Server::HandleClientDisconnection(int fd)
 {
-	std::cout << "Client FD"  << fd << " disconnected." << std::endl;
+    Client* client_to_disconnect = _users[fd];
 
-	_poll_handlr.RmvSocket(fd);
+    if (client_to_disconnect) {
+        // Kullanıcının bulunduğu tüm kanallardan çıkarıldığından emin olun (QUIT bunu zaten yapacak)
+        // Ancak DisconnectClient doğrudan çağrılırsa (örn. hata nedeniyle), bu temizlik önemlidir.
+        // Daha iyi bir yaklaşım, DisconnectClient'ı çağırmadan önce QUIT komutu mantığının çalıştırılmasıdır.
+        // Veya burada client_to_disconnect->GetJoinedChannels() üzerinden tüm kanallardan çıkarın.
 
-	delete (_users[fd]);
+        // PollHandler'dan FD'yi kaldır
+        _poll_handlr.RmvSocket(fd);
 
-	_users.erase(fd);
+        // Soketi kapat
+        _srvr_socket.RmvSock(fd);
+		
+        // Client nesnesini bellekten sil
+        delete client_to_disconnect;
+        _users.erase(fd); // Map'ten kaldır
+
+        std::cout << "Client FD " << fd << " disconnected and resources freed." << std::endl;
+    }
 }
 
 void	Server::SetupCommandHandlers()
@@ -260,6 +273,8 @@ void	Server::SetupCommandHandlers()
 	_cmds_handlr["PASS"] = new PassCommand(*this); // PassCommand'ı da ekle
 	_cmds_handlr["JOIN"] = new JoinCommand(*this); // JoinCommand'ı da ekle
 	_cmds_handlr["PRIVMSG"] = new PrivCommand(*this); // PrivCommand'ı da ekle
+	_cmds_handlr["PART"] = new PartCommand(*this); // PartCommand'ı da ekle
+	_cmds_handlr["QUIT"] = new QuitCommand(*this); // QuitCommand'ı da ekle
 
 	//     // DEBUG: Kanal oluşturma ve bulma testi
     // std::cout << "--- DEBUG: Channel Test ---" << std::endl;
