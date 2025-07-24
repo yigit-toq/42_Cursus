@@ -45,7 +45,7 @@ class Socket
 		void	Create	();
 		void	Binder	();
 
-		int 	Send	(int fd, char *buffer, size_t length);
+		int 	Sender	(int fd, char *buffer, size_t length);
 
 		int 	Receive	(int fd, char *buffer, size_t length);
 

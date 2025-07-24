@@ -13,9 +13,10 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include "Channel.hpp"
+
 #include <string>
 #include <queue>
-#include "Channel.hpp"
 
 enum UserStatus
 {
@@ -44,46 +45,45 @@ class Client
 		std::vector<Channel*>						_joined_channels;
 
 	public:
-		 Client										(int fd);
+		 Client												(int fd);
+		~Client												();
 
-		~Client										();
+		int 							GetFD				() const;
 
-		int 					GetFD				() const;
+		UserStatus						GetStatus			() const;
 
-		UserStatus				GetStatus			() const;
+		std::string 					GetUserName			() const;
+		std::string 					GetNickName			() const;
+		std::string 					GetRealName			() const;
+		std::string						GetHostName			() const;
+		std::string						GetPassword			() const;
 
-		std::string 			GetUserName			() const;
-		std::string 			GetNickName			() const;
-		std::string 			GetRealName			() const;
-		std::string				GetHostName			() const;
-		std::string				GetPassword			() const;
+		const std::string&				GetOutputBuffer		() const;
 
-		bool					IsRegistered		() const;
-		bool					HasOuputData		() const;
+		const std::vector<Channel*>&	GetJoinedChannels	() const;
 
-		void 					SetFD				(int fd);
+		bool							IsRegistered		() const;
+		bool							HasOuputData		() const;
 
-		void					SetStatus			(UserStatus status);
+		void 							SetFD				(int fd);
 
-		void 					SetUserName			(const std::string &username);
-		void 					SetNickName			(const std::string &nickname);
-		void 					SetRealName			(const std::string &realname);
-		void 					SetHostName			(const std::string &hostname);
-		void 					SetPassword			(const std::string &password);
+		void							SetStatus			(UserStatus status);
 
-		void 					AppendToInputBuffer	(const std::string &data);
-		void 					AppendToOuputBuffer	(const std::string &data);
+		void 							SetUserName			(const std::string &username);
+		void 							SetNickName			(const std::string &nickname);
+		void 							SetRealName			(const std::string &realname);
+		void 							SetHostName			(const std::string &hostname);
+		void 							SetPassword			(const std::string &password);
 
-		//bakılacak
-		std::string				ExtractNextMessage	();
+		void 							AppendToInputBuffer	(const std::string &data);
+		void 							AppendToOuputBuffer	(const std::string &data);
 
-		const std::string&		PeekOutputBuffer	() const;
-		void					popOutputBuffer		(size_t count);
-
-		// Yeni: Kanalları yönetmek için metotlar
 		void							AddChannel			(Channel* channel);
-		void							RemoveChannel		(Channel* channel); // PART komutunda da kullanıldı, şimdi gerçek implementasyon gelecek
-		const std::vector<Channel*>&	GetJoinedChannels	() const; // Yeni getter
+		void							RmvChannel			(Channel* channel);
+
+		void							PopOutputBuffer		(size_t count);
+
+		std::string						ExtractNextMessage	();
 };
 
 #endif

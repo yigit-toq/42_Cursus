@@ -19,6 +19,8 @@
 class Client;
 class Server;
 
+//bakilacak
+
 class Channel
 {
 	private:
@@ -31,7 +33,7 @@ class Channel
 		bool											_invite_only;
 		bool											_topic_set_by_op;
 
-		std::map<int, Client*>							_users;
+		std::map<int, Client*>							_clients;
 		std::map<int, Client*>							_operators;
 
 		Server&											_server;
@@ -52,7 +54,7 @@ class Channel
 		bool	IsInviteOnly							() const;
 		bool	IsTopicSetByOp							() const;
 
-		bool	IsUserInChannel							(Client* user) const;
+		bool	IsUser									(Client* user) const;
 		bool	IsOperator								(Client* user) const;
 
 		const	std::map<int, Client*>& getUsers		() const;
@@ -72,8 +74,8 @@ class Channel
 		bool	IsFull									() const;
 		bool	IsEmpty									() const;
 
-		void	AddUser									(Client* user);
-		void	RmvUser									(Client* user);
+		void	AddClient								(Client* user);
+		void	RmvClient								(Client* user);
 
 		void	AddOperator								(Client* user);
 		void	RmvOperator								(Client* user);

@@ -11,84 +11,74 @@
 /* ************************************************************************** */
 
 #include "PrivCommand.hpp"
-#include "Server.hpp" // IRCServer'ın tamamına erişmek için dahil et
+#include "Server.hpp"
 #include <iostream>
-#include <sstream> // Stringstream için
+#include <sstream>
 
-PrivCommand::PrivCommand(Server& server) : _server(server) {}
+PrivCommand:: PrivCommand(Server& server) : _server(server) {}
 
 PrivCommand::~PrivCommand() {}
 
-void PrivCommand::Execute(Client* sender, const Message& msg) {
-    // 1. Parametre Kontrolü: Mesajı göndermek için yeterli parametre var mı?
-    if (msg.GetParameters().size() < 2) {
-        _server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters"); // ERR_NEEDMOREPARAMS (461)
-        return;
-    }
+void	PrivCommand::Execute(Client* sender, const Message& msg)
+{
+	if (msg.GetParameters().size() < 2)
+	{
+		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters");
+		return ;
+	}
 
-    const std::string& target_name = msg.GetParameters()[0];    // Mesajın gideceği hedef (kanal veya nick)
-    const std::string& message_text = msg.GetParameters()[1];   // Mesajın içeriği
+	const std::string& tar_name = msg.GetParameters()[0];
+	const std::string& msg_text = msg.GetParameters()[1];
 
-    // Mesaj metni boş olamaz (RFC 2812, Bölüm 3.3.1)
-    if (message_text.empty()) {
-        _server.SendsNumericReply(sender, 412, ":No text to send"); // ERR_NOTEXTTOSEND (412)
-        return;
-    }
+	if (msg_text.empty())
+	{
+		_server.SendsNumericReply(sender, 412, ":No text to send");
+		return ;
+	}
 
-    // 2. Hedefin Türünü Belirle: Kanal mı, Kullanıcı mı?
-    if (target_name[0] == '#' || target_name[0] == '&') {
-        // Hedef bir kanal
-        Channel* target_channel = _server.FindChannel(target_name);
+	if (tar_name[0] == '#' || tar_name[0] == '&')
+	{
+		Channel* target_channel = _server.FinderChannel(tar_name);
 
-        // Kanal mevcut mu?
-        if (!target_channel) {
-            _server.SendsNumericReply(sender, 403, target_name + " :No such channel"); // ERR_NOSUCHCHANNEL (403)
-            return;
-        }
+		if (!target_channel)
+		{
+			_server.SendsNumericReply(sender, 403, tar_name + " :No such channel");
+			return ;
+		}
 
-        // Gönderen kullanıcı kanalda mı?
-        // IRC standartlarında bu zorunlu değildir, ancak iyi bir uygulamadır.
-        if (!target_channel->IsUserInChannel(sender)) {
-            _server.SendsNumericReply(sender, 404, target_name + " :Cannot send to channel"); // ERR_CANNOTSENDTOCHAN (404)
-            return;
-        }
+		if (!target_channel->IsUser(sender))
+		{
+			_server.SendsNumericReply(sender, 404, tar_name + " :Cannot send to channel");
+			return ;
+		}
 
-        // Mesajı oluştur: :<sender_nick>!<sender_user>@<sender_host> PRIVMSG <channel_name> :<message_text>
-        std::stringstream ss;
-        ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName()
-           << " PRIVMSG " << target_name << " :" << message_text;
+		std::stringstream ss;
 
-        // Mesajı kanaldaki tüm kullanıcılara yayınla (gönderen hariç)
-        // NOT: BroadcastMessage metodunun, her hedef kullanıcıya mesajı appendToOutputBuffer ile ekledikten sonra
-        // o kullanıcının soketi için POLLOUT olayını da etkinleştirdiğinden emin olun.
-        // (yani _server.GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT); çağrısı orada yapılmalı)
-        target_channel->BroadcastMessage(ss.str(), sender);
+		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << ": " << msg_text;
 
-        std::cout << "PRIVMSG to channel " << target_name << " from " << sender->GetNickName() << ": " << message_text << std::endl;
+		target_channel->BroadcastMessage(ss.str(), sender);
 
-    } else {
-        // Hedef bir kullanıcı (nickname)
-        Client* target_user = _server.FindUserByNickname(target_name);
+		std::cout << "PRIVMSG to channel " << tar_name << " from " << sender->GetNickName() << ": " << msg_text << std::endl;
 
-        // Hedef kullanıcı mevcut mu?
-        if (!target_user) {
-            _server.SendsNumericReply(sender, 401, target_name + " :No such nick/channel"); // ERR_NOSUCHNICK (401)
-            return;
-        }
+	}
+	else
+	{
+		Client* target_user = _server.FindUserByNickname(tar_name);
 
-        // Mesajı oluştur: :<sender_nick>!<sender_user>@<sender_host> PRIVMSG <target_nick> :<message_text>
-        std::stringstream ss;
-        ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName()
-           << " PRIVMSG " << target_name << " :" << message_text;
+		if (!target_user)
+		{
+			_server.SendsNumericReply(sender, 401, tar_name + " :No such nick/channel");
+			return ;
+		}
 
-        // Mesajı hedef kullanıcının çıkış tamponuna ekle
-        target_user->AppendToOuputBuffer(ss.str() + "\r\n"); // CRLF eklemeyi unutmayın
+		std::stringstream ss;
 
-        // KRİTİK: Hedef kullanıcının soketinde yazma olayını (POLLOUT) etkinleştir.
-        // Bu, sunucuya bu soketten veri göndermesi gerektiğini söyler.
-        // _server.GetPollHandler() metodunuzun olması gerekiyor.
-        _server.GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
+		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << ": " << msg_text;
 
-        std::cout << "PRIVMSG to user " << target_name << " from " << sender->GetNickName() << ": " << message_text << std::endl;
-    }
+		target_user->AppendToOuputBuffer(ss.str() + "\r\n");
+
+		_server.GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
+
+		std::cout << "PRIVMSG to user " << tar_name << " from " << sender->GetNickName() << ": " << msg_text << std::endl;
+	}
 }

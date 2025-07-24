@@ -20,7 +20,7 @@ class Server;
 class PartCommand : public CommandHandler
 {
 	private:
-		Server& _server;
+		Server&					_server;
 
 	private:
 		PartCommand				(const PartCommand& other);

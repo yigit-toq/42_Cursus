@@ -13,37 +13,37 @@
 #include "PassCommand.hpp"
 #include "Server.hpp"
 
-PassCommand::PassCommand(Server& server) : _server(server) {}
+PassCommand:: PassCommand(Server& server) : _server(server) {}
 
 PassCommand::~PassCommand() {}
 
-void PassCommand::Execute(Client* sender, const Message& msg)
+void	PassCommand::Execute(Client* sender, const Message& msg)
 {
 	if (sender->IsRegistered())
 	{
-		_server.SendsNumericReply(sender, 462, "You may not reregister"); // ERR_ALREADYREGISTRED
-		return;
+		_server.SendsNumericReply(sender, 462, "You may not reregister"		);
+		return ;
 	}
 	if (msg.GetParameters().empty())
 	{
-		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"); // ERR_NEEDMOREPARAMS
-		return;
+		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters");
+		return ;
 	}
 
 	std::string password = msg.GetParameters()[0];
 
-	// Sunucu şifresini kontrol et
 	if (password != _server.GetPassword())
 	{
-		_server.SendsNumericReply(sender, 464, "Password incorrect"); // ERR_PASSWDMISMATCH
-		// Yanlış şifre durumunda bağlantıyı kapatmak iyi bir güvenlik pratiğidir.
-		_server.HandleClientDisconnection(sender->GetFD());
-		return;
+		_server.SendsNumericReply	(sender, 464, "Password incorrect");
+
+		_server.ClientDisconnection	(sender->GetFD());
+
+		return ;
 	}
 
-	sender->SetPassword(password); // Şifreyi kullanıcı nesnesine kaydet
+	sender->SetPassword(password);
+
 	std::cout << "User FD " << sender->GetFD() << " provided correct password." << std::endl;
 
-	// Şifre doğruysa kayıt kontrolünü tetikle
 	_server.CheckRegistration(sender);
 }

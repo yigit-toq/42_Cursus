@@ -22,7 +22,6 @@ class Utils
 
 	public:
 		 Utils ();
-
 		~Utils ();
 
 		static std::string					trim	(const std::string& str);

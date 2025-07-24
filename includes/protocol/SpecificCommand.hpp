@@ -19,7 +19,6 @@ class SpecificCommand
 
 	public:
 		 SpecificCommand ();
-
 		~SpecificCommand ();
 };
 

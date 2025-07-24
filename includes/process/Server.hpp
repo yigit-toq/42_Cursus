@@ -38,56 +38,56 @@
 
 #define BUFFER_SIZE	512
 
+//bakilacak
+
 class Server
 {
 	private:
 		std::map<std::string, CommandHandler*>	_cmds_handlr;
 		PollHandler								_poll_handlr;
 
-		std::string								_password; //
-
 		Socket									_srvr_socket;
 
-		std::string								_server_name; //
-		std::string								_network_name; //
+		std::string								_server_name;
+		std::string								_netwrk_name;
 
-		std::map<int, Client*>					_users;
-		std::map<std::string, Channel*>			_channels; //
+		std::string								_password;
 
-		Server							(const Server&);
-		Server& operator=				(const Server&);
+		std::map<std::string, Channel*>			_channels;
+		std::map<int, Client*>					_clients;
 
-		void	SetupCommandHandlers	(); //
-		void	ProcessMessage			(Client* sender, const Message& msg); //
+		void	SetupCommands					();
+		void	ProcessMessage					(Client* sender, const Message& msg);
+
+		Server									(const Server&);
+		Server& operator=						(const Server&);
 
 	public:
-		 Server		(int port, std::string pass);
-		~Server		();
+		 Server								(int port, std::string pass);
+		~Server								();
 
-		void Start	();
+		void Start							();
 
-		const std::string&	GetServerName	() const; //
-		const std::string&	GetNetworkName	() const; //
-		const std::string&	GetPassword		() const; //
+		const std::string&	GetServerName	() const;
+		const std::string&	GetNetwrkName	() const;
 
-		Client*	FindUserByNickname			(const std::string& nickname) const; //
-		bool	IsNicknameAvailable			(const std::string& nickname) const; //
+		const std::string&	GetPassword		() const;
 
-		//private den taşındı
-		void 	CheckRegistration			(Client* user); //
-		void 	SendsNumericReply			(Client* user, int numeric, const std::string& data) const; //
+		Client*			FindUserByNickname			(const std::string& nickname) const;
+		bool			IsNicknameAvailable			(const std::string& nickname) const;
+
+		void 			CheckRegistration			(Client* user);
+		void 			SendsNumericReply			(Client* user, int numeric, const std::string& data) const;
 	
-		void 	HandleNewConnection			();
-		void 	HandleClientMessage			(int fd);
-		void 	HandleClientDisconnection	(int fd);
-		//
+		void 			HandleNewConnection			();
+		void 			HandleClientMessage			(int fd);
+		void 			ClientDisconnection			(int fd);
 
-		// Kanal yönetimi için yeni getter/helper'lar
-		Channel*	FindChannel				(const std::string& name) const;
-		Channel*	CreateChannel			(const std::string& name);
-		void		RemoveChannel			(const std::string& name);
+		Channel*		FinderChannel				(const std::string& name) const;
+		Channel*		CreateChannel				(const std::string& name);
+		void			RemoveChannel				(const std::string& name);
 
-		PollHandler& GetPollHandler() { return _poll_handlr; }
+		PollHandler&	GetPollHandler				();
 };
 
 #endif

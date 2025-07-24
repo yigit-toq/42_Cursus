@@ -16,7 +16,7 @@ Socket:: Socket(int port) : _port(port), _sock(-1)
 {
 	_addr.sin_port			= htons(port)	;
 
-	_addr.sin_family			= AF_INET		;
+	_addr.sin_family		= AF_INET		;
 
 	_addr.sin_addr.s_addr	= INADDR_ANY	;
 }
@@ -77,35 +77,31 @@ void Socket::Binder	(void)
 	}
 }
 
-int	Socket::Send	(int fd, char *buffer, size_t length)
+int	Socket::Sender	(int fd, char *buffer, size_t length)
 {
-	// Make sure the buffer isn't null and length is positive, though send() handles this.
 	if (!buffer || length == 0)
 	{
-		return 0; // Nothing to send or invalid buffer
+		return (0);
 	}
 
-	// Use the send() system call
-	ssize_t bytes_sent = send(fd, buffer, length, 0); // Last param is flags, usually 0
+	ssize_t bytes_sent = send(fd, buffer, length, 0);
 
 	if (bytes_sent == -1)
 	{
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
 		{
-			// This means the socket's send buffer is full,
-			// and we're in non-blocking mode.
-			// We'll try again later when POLLOUT indicates it's ready.
-			return 0; // Indicate no bytes were sent *this time* due to buffer full
+			return (0);
 		}
-		// A real error occurred (e.g., connection reset by peer)
+
 		std::cerr << "Error sending data to FD " << fd << ": " << strerror(errno) << std::endl;
-		return -1; // Indicate a critical error
+
+		return (-1);
 	}
 
 	return static_cast<int>(bytes_sent);
 }
 
-int	Socket::Receive(int fd, char *buffer, size_t length)
+int	Socket::Receive	(int fd, char *buffer, size_t length)
 {
 	memset(buffer, 0, length);
 
@@ -119,7 +115,8 @@ int	Socket::Receive(int fd, char *buffer, size_t length)
 		}
 		return (-1);
 	}
-	return (static_cast<int>(bytes_received));
+
+	return static_cast<int>(bytes_received);
 }
 
 int	Socket::GetSock	() const
@@ -146,16 +143,21 @@ int	Socket::Accept	()
 		}
 		return (-1);
 	}
+
 	return (client_fd);
 }
 
 void Socket::RmvSock(int client_fd)
 {
-	if (client_fd >= 0) { // Geçerli bir dosya tanımlayıcısı olduğundan emin olun
-		if (close(client_fd) == -1) {
-			std::cerr << "Error closing client socket FD " << client_fd << ": " << strerror(errno) << std::endl;
-		} else {
-			std::cout << "Client socket FD " << client_fd << " closed successfully." << std::endl;
+	if (client_fd >= 0)
+	{
+		if (close(client_fd) == -1)
+		{
+			std::cerr << "Error closing client socket FD "	<< client_fd << ": " << strerror(errno) << std::endl;
+		}
+		else
+		{
+			std::cout << "Client socket FD "				<< client_fd << " closed successfully." << std::endl;
 		}
 	}
 }

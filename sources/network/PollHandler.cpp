@@ -18,12 +18,12 @@ PollHandler::~PollHandler() {}
 
 void	PollHandler::AddSocket(int fd, short events)
 {
-	struct pollfd	pfd;
+	struct pollfd	pollFD;
 
-	pfd.events = events;
-	pfd.fd = fd;
+	pollFD.fd		= fd;
+	pollFD.events	= events;
 
-	_fds.push_back(pfd);
+	_fds.push_back(pollFD);
 }
 
 void	PollHandler::RmvSocket(int fd)
@@ -67,26 +67,30 @@ std::vector<struct pollfd>	PollHandler::WaitForEvents(int timeout_ms)
 	return (ready_fds);
 }
 
-void	PollHandler::SetEvents(int fd, short events) //
+void	PollHandler::SetEvents(int fd, short events)
 {
 	for (size_t i = 0; i < _fds.size(); ++i)
 	{
 		if (_fds[i].fd == fd)
 		{
 			_fds[i].events = events;
+
 			std::cout << "Updated events for FD " << fd << " to " << events << std::endl;
+
 			return ;
 		}
 	}
 	std::cerr << "Warning: Attempted to set events for non-existent FD " << fd << std::endl;
 }
 
-short PollHandler::GetEvents(int fd) const
+short	PollHandler::GetEvents(int fd) const
 {
-    for (size_t i = 0; i < _fds.size(); ++i) {
-        if (_fds[i].fd == fd) {
-            return _fds[i].events;
-        }
-    }
-    return 0; // Bulunamazsa 0 döndür
+	for (size_t i = 0; i < _fds.size(); ++i)
+	{
+		if (_fds[i].fd == fd)
+		{
+			return (_fds[i].events);
+		}
+	}
+	return (0);
 }

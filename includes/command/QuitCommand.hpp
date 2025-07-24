@@ -20,7 +20,7 @@ class Server;
 class QuitCommand : public CommandHandler
 {
 	private:
-		Server& _server;
+		Server&					_server;
 
 	private:
 		QuitCommand				(const QuitCommand& other);
