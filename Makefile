@@ -31,6 +31,7 @@ SRCS 			=	$(SOURCES_DIR)Main.cpp	$(PROCESS_DIR)Server.cpp	$(NETWORK_DIR)Socket.c
 																																												$(COMMAND_DIR)PrivCommand.cpp	\
 																																												$(COMMAND_DIR)PartCommand.cpp	\
 																																												$(COMMAND_DIR)QuitCommand.cpp	\
+																																												$(COMMAND_DIR)TopicCommand.cpp	\
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

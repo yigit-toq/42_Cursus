@@ -73,8 +73,6 @@ void	Channel::SetTopic	(const std::string& topic, Client* setter)
 	}
 
 	std::cout << std::endl;
-
-	// TOPIC komutunu implemente ettiğimizde buraya broadcast eklenecek.
 }
 
 void	Channel::SetUserLimit		(size_t limit)
@@ -106,12 +104,12 @@ void	Channel::AddClient(Client* user)
 	}
 	_clients[user->GetFD()] = user;
 
-	std::cout << "User " << user->GetNickName() << " added to channel " << _name << std::endl;
-
 	if (_clients.size() == 1)
 	{
 		AddOperator(user);
 	}
+
+	std::cout << "User " << user->GetNickName() << " added to channel "		<< _name << std::endl;
 }
 
 void	Channel::RmvClient(Client* user)
@@ -135,7 +133,7 @@ void	Channel::AddOperator(Client* user)
 	}
 	_operators[user->GetFD()] = user;
 
-	std::cout << "User " << user->GetNickName() << " is now an operator in " << _name << std::endl;
+	std::cout << "User " << user->GetNickName() << " is now an operator in "		<< _name << std::endl;
 }
 
 void	Channel::RmvOperator(Client* user)
@@ -146,7 +144,7 @@ void	Channel::RmvOperator(Client* user)
 	}
 	_operators.erase(user->GetFD());
 
-	std::cout << "User " << user->GetNickName() << " is no longer an operator in " << _name << std::endl;
+	std::cout << "User " << user->GetNickName() << " is no longer an operator in "	<< _name << std::endl;
 }
 
 void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)

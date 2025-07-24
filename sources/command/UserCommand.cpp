@@ -21,13 +21,13 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 {
 	if (sender->IsRegistered())
 	{
-		_server.SendsNumericReply(sender, 462, "USER :You may not reregister");
+		_server.SendsNumericReply(sender, 462, "USER :You may not reregister"	);
 		return ;
 	}
 
 	if (msg.GetParameters().size() < 4)
 	{
-		_server.SendsNumericReply(sender, 461, "USER :Not enough  parameters");
+		_server.SendsNumericReply(sender, 461, "USER :Not enough parameters"	);
 		return ;
 	}
 

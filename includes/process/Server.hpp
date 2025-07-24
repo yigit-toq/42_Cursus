@@ -32,6 +32,7 @@
 #include "PrivCommand.hpp"
 #include "PartCommand.hpp"
 #include "QuitCommand.hpp"
+#include "TopicCommand.hpp"
 #include "CommandHandler.hpp"
 
 #pragma endregion

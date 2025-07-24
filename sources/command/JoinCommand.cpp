@@ -100,7 +100,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 	std::stringstream names_ss;
 
-	names_ss << "= " << channel_name << ": ";
+	names_ss << "= " << channel_name << " :";
 	
 	const std::map<int, Client*>& users_in_channel		= channel->getUsers();
 	const std::map<int, Client*>& operators_in_channel	= channel->getOperators();

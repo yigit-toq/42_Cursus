@@ -12,8 +12,8 @@
 
 #include "QuitCommand.hpp"
 #include "Server.hpp"
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 QuitCommand:: QuitCommand(Server& server) : _server(server) {}
 

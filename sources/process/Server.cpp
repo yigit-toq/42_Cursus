@@ -99,11 +99,6 @@ void Server::Start()
 					{
 						const std::string& data_to_send = user->GetOutputBuffer();
 
-						if (data_to_send.empty())
-						{
-							break ; // Sanırım bu kontrol gereksiz
-						}
-
 						int bytes_sent = _srvr_socket.Sender(user->GetFD(), (char *)data_to_send.c_str(), data_to_send.length());
 
 						if (bytes_sent == -1)
@@ -144,12 +139,12 @@ void Server::Start()
 					}
 				}
 
-				if (user->HasOuputData() && !(_poll_handlr.GetEvents(user->GetFD()) & POLLOUT))
-				{
-					_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
-
-					std::cout << "FD " << user->GetFD() << " has new output data, setting POLLIN | POLLOUT." << std::endl;
-				}
+				// if (user->HasOuputData() && !(_poll_handlr.GetEvents(user->GetFD()) & POLLOUT))
+				// {
+				// 	_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
+				//
+				// 	std::cout << "FD " << user->GetFD() << " has new output data, setting POLLIN | POLLOUT." << std::endl;
+				// }
 			}
 		}
 	}
@@ -247,6 +242,7 @@ void	Server::ClientDisconnection(int fd)
 
 void	Server::SetupCommands()
 {
+	_cmds_handlr["TOPIC"]	= new TopicCommand(*this); // Yeni komut eklendi
 	_cmds_handlr["NICK"]	= new NickCommand(*this);
 	_cmds_handlr["USER"]	= new UserCommand(*this);
 	_cmds_handlr["PASS"]	= new PassCommand(*this);

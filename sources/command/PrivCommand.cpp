@@ -32,7 +32,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 	if (msg_text.empty())
 	{
-		_server.SendsNumericReply(sender, 412, ":No text to send");
+		_server.SendsNumericReply(sender, 412, " :No text to send");
 		return ;
 	}
 
@@ -54,7 +54,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		std::stringstream ss;
 
-		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << ": " << msg_text;
+		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << " :" << msg_text;
 
 		target_channel->BroadcastMessage(ss.str(), sender);
 
