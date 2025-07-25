@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 23:49:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/25 23:27:57 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 23:40:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int	main()
 
 	std::cout << "\033[33m" << std::endl << "RobotomyRequestForm"		<< "\033[0m" << std::endl;
 
-	RobotomyRequestForm Robotomy_form("I am a robotomy form");
+	RobotomyRequestForm Robotomy_form		("I am a robotomy form");
 
-	Bureaucrat Mr_Robotomy("Mr_Robotomy", 45);
+	Bureaucrat Mr_Robotomy					("Mr_Robotomy", 20);
 
 	Mr_Robotomy.executeForm	(Robotomy_form);
 	Mr_Robotomy.signForm	(Robotomy_form);
@@ -107,9 +107,9 @@ int	main()
 
 	std::cout << "\033[33m" << std::endl << "ShrubberyCreationForm"		<< "\033[0m" << std::endl;
 
-	ShrubberyCreationForm Shrubbery_form("I am a shrubbery form");
+	ShrubberyCreationForm Shrubbery_form	("I am a shrubbery form");
 
-	Bureaucrat Mr_Shrubbery("Mr_Shrubbery", 130);
+	Bureaucrat Mr_Shrubbery					("Mr_Shrubbery", 40);
 
 	std::cout << std::endl;
 
@@ -125,7 +125,7 @@ int	main()
 
 	PresidentialPardonForm Presidential_form("I am a presidential form");
 
-	Bureaucrat Mr_Presidential("Mr_Presidential", 5);
+	Bureaucrat Mr_Presidential				("Mr_Presidential", 60);
 
 	Mr_Robotomy.executeForm		(Presidential_form);
 	Mr_Robotomy.signForm		(Presidential_form);
