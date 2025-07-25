@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:53:57 by ytop              #+#    #+#             */
-/*   Updated: 2025/05/13 16:53:57 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:11:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ class Intern
 	private:
 
 	public:
-		Intern ();
-		Intern (const Intern &copy);
+		 Intern();
+
+		 Intern(const Intern &copy);
 
 		~Intern();
 

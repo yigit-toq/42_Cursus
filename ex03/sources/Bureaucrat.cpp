@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 23:52:32 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/18 23:52:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 17:04:59 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,33 +60,33 @@ const char  *Bureaucrat::GradeTooHighException::what() const throw()
 void	Bureaucrat::gradeControl(int grade)
 {
 	if (grade > 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException	();
 	if (grade < 001)
-		throw GradeTooHighException();
+		throw GradeTooHighException	();
 }
 
 void	Bureaucrat::incrementGrade()
-{
-	this->grade++;
-
-	gradeControl(grade);
-}
-
-void	Bureaucrat::decrementGrade()
 {
 	this->grade--;
 
 	gradeControl(grade);
 }
 
+void	Bureaucrat::decrementGrade()
+{
+	this->grade++;
+
+	gradeControl(grade);
+}
+
 std::string	Bureaucrat::getName () const
 {
-	return (this->name);
+	return (this->name	);
 }
 
 int			Bureaucrat::getGrade() const
 {
-	return (this->grade);
+	return (this->grade	);
 }
 
 std::ostream&	operator<<(std::ostream &os, const Bureaucrat &b)

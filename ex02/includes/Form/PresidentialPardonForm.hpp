@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 01:00:19 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/24 01:00:19 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:13:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ class PresidentialPardonForm : public AForm
 		std::string target;
 
 	public:
-		PresidentialPardonForm ();
+		 PresidentialPardonForm();
+		 PresidentialPardonForm(const std::string &target);
 
-		PresidentialPardonForm (const std::string &target);
-		PresidentialPardonForm (const PresidentialPardonForm &copy);
+		 PresidentialPardonForm(const PresidentialPardonForm &copy);
 
 		~PresidentialPardonForm();
 

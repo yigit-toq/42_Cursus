@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 00:56:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/19 00:56:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:16:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,20 @@ class Form
 		const int			recExec;
 
 	public:
-		Form ();
-		Form (const std::string &nName, int nRecSign, int nRecExec);
+		 Form();
+		 Form(const std::string &nName, int nRecSign, int nRecExec);
 
-		Form (const Form &other);
+		 Form(const Form &other);
 
 		~Form();
 
 		Form &operator = (const Form &other);
 
-		std::string	getName () const;
-		bool		getSign () const;
+		std::string	getName		() const;
+		bool		getSign		() const;
 
-		int			getRecSign () const;
-		int			getRecExec () const;
+		int			getRecSign	() const;
+		int			getRecExec	() const;
 
 		void		beSigned(Bureaucrat &b);
 

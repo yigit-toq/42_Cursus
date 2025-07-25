@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 00:57:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/19 00:57:08 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:29:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ const char *Form::FormSignedException::what() const throw()
 void	Form::gradeControl(int grade)
 {
 	if (grade > 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException	();
 	if (grade < 001)
-		throw GradeTooHighException();
+		throw GradeTooHighException	();
 }
 
 std::string	Form::getName() const

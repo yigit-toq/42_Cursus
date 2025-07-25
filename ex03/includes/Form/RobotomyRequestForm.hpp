@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 00:58:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/24 00:58:55 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:15:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ class RobotomyRequestForm : public AForm
 		std::string target;
 
 	public:
-		RobotomyRequestForm ();
+		 RobotomyRequestForm();
+		 RobotomyRequestForm(const std::string &target);
 
-		RobotomyRequestForm (const std::string &target);
-		RobotomyRequestForm (const RobotomyRequestForm &copy);
+		 RobotomyRequestForm(const RobotomyRequestForm &copy);
 
 		~RobotomyRequestForm();
 

@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 23:48:56 by ytop              #+#    #+#              #
-#    Updated: 2025/03/18 23:48:56 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/25 16:08:20 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,12 +43,12 @@ $(NAME)			:	$(OBJS)
 					@echo "\e[1m$(C_Y)EX03		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
-					$(RM) -rf $(OBJS)
+					$(RM) $(OBJS)
 					@echo "\e[1m$(C_Y)OBJECTS		$(C_R)[KO]\e[0m$(C_E)"
 			
 
 fclean			:	clean
-					@$(RM) $(NAME)
+					$(RM) $(NAME)
 					@echo "\e[1m$(C_Y)EXECUTE		$(C_R)[KO]\e[0m$(C_E)"
 
 re				:	fclean all

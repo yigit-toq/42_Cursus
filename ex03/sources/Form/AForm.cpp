@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.cpp                                           :+:      :+:    :+:   */
+/*   AForm.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 00:57:08 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/19 00:57:08 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:30:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	AForm::exectControl(Bureaucrat const &executor) const
 void	AForm::gradeControl(int grade)
 {
 	if (grade > 150)
-		throw GradeTooLowException();
+		throw GradeTooLowException	();
 	if (grade < 001)
-		throw GradeTooHighException();
+		throw GradeTooHighException	();
 }
 
 std::string	AForm::getName() const

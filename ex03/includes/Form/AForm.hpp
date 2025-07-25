@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.hpp                                           :+:      :+:    :+:   */
+/*   AForm.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 00:56:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/03/19 00:56:53 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 16:54:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,24 @@ class AForm
 		const int			recExec;
 
 	public:
-		AForm ();
-		AForm (const std::string &nName, int nRecSign, int nRecExec);
+		AForm();
+		AForm(const std::string &nName, int nRecSign, int nRecExec);
 
-		AForm (const AForm &other);
+		AForm(const AForm &other);
 
-		~AForm();
+		virtual ~AForm();
 
-		AForm &operator = (const AForm &other);
+		AForm &operator=(const AForm &other);
 
-		std::string	getName () const;
-		bool		getSign () const;
+		std::string	getName		() const;
+		bool		getSign		() const;
 
-		int			getRecSign () const;
-		int			getRecExec () const;
+		int			getRecSign	() const;
+		int			getRecExec	() const;
 
 		void		beSigned(Bureaucrat &b);
 
-		virtual void execute(Bureaucrat const & executor) const = 0; // new
+		virtual void execute(Bureaucrat const & executor) const = 0;
 
 		class GradeTooHighException : public std::exception
 		{
