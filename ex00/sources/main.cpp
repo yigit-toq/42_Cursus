@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 23:49:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/25 16:21:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/25 23:35:18 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(void)
 
 		for (int i = 0; i <= 70; i++)
 		{
-			bureaucrat.incrementGrade();
+			bureaucrat.incrementGrade	();
 		}
 	}
 	catch (std::exception &e)
@@ -40,7 +40,7 @@ int	main(void)
 
 		for (int i = 50; i >= 00; i--)
 		{
-			bureaucrat.decrementGrade();
+			bureaucrat.decrementGrade	();
 		}
 	}
 	catch (std::exception &e)
