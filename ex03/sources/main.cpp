@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 23:49:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/25 23:57:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 17:39:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,9 +177,9 @@ int	main()
 	Intern	Jr_Intern;
 	AForm*	Rb_Intern;
 
-	Rb_Intern = Jr_Intern.makeForm	("robotomy request"	, "World");
+	Rb_Intern = Jr_Intern.makeForm	("shrubbery creation"	, "World");
 
-	std::cout << Rb_Intern->getName	() << std::endl;
+	std::cout << std::endl;
 
 	delete (Rb_Intern);
 
