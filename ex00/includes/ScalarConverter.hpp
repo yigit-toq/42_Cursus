@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:16:52 by ytop              #+#    #+#             */
-/*   Updated: 2025/05/13 19:16:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 17:59:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,22 @@ class ScalarConverter
 	private:
 		double		_value;
 
+		e_type		_type;
+
 		int			_int;
 		char		_char;
 		float		_float;
 		double		_double;
 
-		e_type		_type;
-
-		bool		isInt(const std::string &literal);
-		bool		isChar(const std::string &literal);
-		bool		isFloat(const std::string &literal);
+		bool		isInt	(const std::string &literal);
+		bool		isChar	(const std::string &literal);
+		bool		isFloat	(const std::string &literal);
 		bool		isDouble(const std::string &literal);
 
-		ScalarConverter ();
+		 ScalarConverter	();
+		 ScalarConverter	(const ScalarConverter &other);
 
-		ScalarConverter (const ScalarConverter &other);
-
-		~ScalarConverter();
+		~ScalarConverter	();
 
 		ScalarConverter &operator=(const ScalarConverter &other);
 

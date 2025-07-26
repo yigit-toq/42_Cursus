@@ -6,11 +6,11 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/26 17:56:27 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/26 18:09:07 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	ex00
+NAME			=	ex01
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
