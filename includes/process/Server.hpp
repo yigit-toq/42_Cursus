@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:00:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 05:22:28 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ class Server
 		std::string								_server_name;
 		std::string								_netwrk_name;
 
+		std::map<std::string, Client*> _clients_by_nick; //
+
 		std::string								_password;
 
 		std::map<std::string, Channel*>			_channels;
@@ -89,6 +91,8 @@ class Server
 		void			RemoveChannel				(const std::string& name);
 
 		PollHandler&	GetPollHandler				();
+
+		Client* FindClient(const std::string& nickname);//
 };
 
 #endif

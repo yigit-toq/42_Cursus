@@ -6,15 +6,18 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:22:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 05:38:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
-#include <iostream>
+#include <string>
 #include <map>
+#include <vector>
+#include <ctime>
+#include <functional>
 
 class Client;
 class Server;
@@ -35,6 +38,14 @@ class Channel
 
 		std::map<int, Client*>							_clients;
 		std::map<int, Client*>							_operators;
+
+		std::map<char, bool>							_modes; //
+		long long										_creation_time; //
+		// *** YENİ: Mod işleyicilerini tutacak map ***
+		// İlk char: Mod karakteri (örn. 'i', 't', 'k')
+		// İkinci parametre: İşleyici fonksiyonun kendisi
+		// İmza: (Client* sender, char sign, const std::string& param, bool& changed, IRCServer& server)
+		std::map<char, std::function<void(Client*, char, const std::string&, bool&, Server&)> > _mode_handlers;
 
 		Server&											_server;
 
@@ -79,6 +90,19 @@ class Channel
 
 		void	AddOperator								(Client* user);
 		void	RmvOperator								(Client* user);
+
+		//
+		long long GetCreationTime() const;
+		bool IsModeSet(char mode_char) const;
+		void SetMode(char mode_char, bool status);
+
+		// Yeni MODE komutu için metotlar
+		std::string GetModeString() const; // Kanalın modlarını bir string olarak döndürür (örn. "+it")
+		std::string GetModeParams() const; // Kanalın mod parametrelerini döndürür (örn. "anahtar 10")
+		void ApplyModes(Client* sender, const std::string& mode_string, const std::vector<std::string>& mode_args, Server& server);
+
+	private:
+		static bool IsChannelModeWithParameter(char mode_char);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 15:01:19 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 05:28:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,143 @@
 #include "Server.hpp"
 #include "Client.hpp"
 
-Channel:: Channel(const std::string& name, Server& server) : _name(name), _user_limit(0), _invite_only(false), _topic_set_by_op(false), _server(server)
+Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(""), _topic(""), _user_limit(0), _server(server), _creation_time(time(NULL))
 {
+	_modes['i'] = false;
+	_modes['t'] = false;
+
+	_mode_handlers['i'] = [this](Client* sender, char sign, const std::string& param, bool& changed, Server& server)
+	{
+		(void)param;
+
+		bool current_status = IsModeSet('i');
+
+		if (sign == '+' && !current_status)
+		{
+			SetMode('i', true);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " +i :Channel is now invite-only.");
+		}
+		else if (sign == '-' && current_status)
+		{
+			SetMode('i', false);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " -i :Channel is no longer invite-only.");
+		}
+	};
+
+	_mode_handlers['t'] = [this](Client* sender, char sign, const std::string& param, bool& changed, Server& server)
+	{
+		(void)param;
+
+		bool current_status = IsModeSet('t');
+
+		if (sign == '+' && !current_status)
+		{
+			SetMode('t', true);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " +t :Topic can now only be set by operators.");
+		}
+		else if (sign == '-' && current_status)
+		{
+			SetMode('t', false);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " -t :Topic can now be set by anyone.");
+		}
+	};
+
+	_mode_handlers['k'] = [this](Client* sender, char sign, const std::string& param, bool& changed, Server& server)
+	{
+		if (sign == '+')
+		{
+			if (!_pass.empty())
+			{
+				server.SendsNumericReply(sender, 467, _name + " :Channel key already set"); // ERR_KEYSET (467)
+				return;
+			}
+			SetPass(param);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " +k " + param + " :Channel key set.");
+		}
+		else if (sign == '-')
+		{
+			if (_pass.empty())
+			{
+				return;
+			}
+			SetPass("");
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " -k :Channel key removed.");
+		}
+	};
+
+	_mode_handlers['o'] = [this](Client* sender, char sign, const std::string& param, bool& changed, Server& server)
+	{
+		if (param.empty())
+		{
+			server.SendsNumericReply(sender, 461, "MODE " + _name + " " + sign + "o :Not enough parameters");
+			return;
+		}
+		Client* target_user = server.FindClient(param);
+		if (!target_user || !IsUser(target_user))
+		{
+			server.SendsNumericReply(sender, 401, param + " :No such nick/They aren't on that channel"); // ERR_NOSUCHNICK (401)
+			return;
+		}
+
+		if (sign == '+')
+		{
+			if (!IsOperator(target_user))
+			{
+				AddOperator(target_user);
+				changed = true;
+				server.SendsNumericReply(sender, 0, _name + " +o " + target_user->GetNickName() + " :User is now a channel operator.");
+			}
+		}
+		else if (sign == '-')
+		{
+			if (IsOperator(target_user))
+			{
+				// Not: Son operatörün kendisini deoperatör yapmasını engellemek için daha fazla kontrol eklenebilir.
+				// Örneğin: if (_operators.size() == 1 && target_user->GetFD() == sender->GetFD()) { /* Hata */ }
+				RmvOperator(target_user);
+				changed = true;
+				server.SendsNumericReply(sender, 0, _name + " -o " + target_user->GetNickName() + " :User is no longer a channel operator.");
+			}
+		}
+	};
+
+	_mode_handlers['l'] = [this](Client* sender, char sign, const std::string& param, bool& changed, Server& server)
+	{
+		if (sign == '+')
+		{
+			if (param.empty())
+			{
+				server.SendsNumericReply(sender, 461, "MODE " + _name + " +l :Not enough parameters");
+				return;
+			}
+			std::istringstream iss(param);
+			size_t limit;
+			if (!(iss >> limit) || limit == 0)
+			{
+				server.SendsNumericReply(sender, 0, _name + " :Invalid limit value provided.");
+				return;
+			}
+			SetUserLimit(limit);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " +l " + param + " :User limit set to " + param + ".");
+		}
+		else if (sign == '-')
+		{
+			if (_user_limit == 0)
+			{
+				return;
+			}
+			SetUserLimit(0);
+			changed = true;
+			server.SendsNumericReply(sender, 0, _name + " -l :User limit removed.");
+		}
+	};
 	std::cout << "Channel " << _name << " created."		<< std::endl;
 }
 
@@ -163,12 +298,34 @@ void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 	std::cout << "Broadcasted message to channel " << _name << ": [" << message << "]" << std::endl;
 }
 
+bool	Channel::IsFull	() const
+{
+	return (_user_limit > 0 && _clients.size() >= _user_limit);
+}
+
 bool	Channel::IsEmpty() const
 {
 	return (_clients.empty());
 }
 
-bool	Channel::IsFull	() const
+bool	Channel::IsChannelModeWithParameter(char mode_char)
 {
-	return (_user_limit > 0 && _clients.size() >= _user_limit);
+	return (mode_char == 'o' || mode_char == 'l' || mode_char == 'k');
+}
+
+std::string Channel::GetModeString() const
+{
+	std::string mode_str = "+";
+	if (IsModeSet('i')) mode_str += "i";
+	if (IsModeSet('t')) mode_str += "t";
+	if (!_pass.empty()) mode_str += "k";
+	if (_user_limit > 0) mode_str += "l";
+
+	if (mode_str == "+")
+	{
+		return "";
+	}
+	std::string sorted_modes = mode_str.substr(1);
+	std::sort(sorted_modes.begin(), sorted_modes.end());
+	return ("+" + sorted_modes);
 }

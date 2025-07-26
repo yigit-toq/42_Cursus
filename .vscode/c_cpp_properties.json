@@ -9,7 +9,6 @@
             "cStandard": "c17",
             "cppStandard": "c++14",
             "intelliSenseMode": "linux-clang-x64",
-            "configurationProvider": "ms-vscode.makefile-tools",
             "compilerPath": "/usr/bin/g++"
         }
     ],

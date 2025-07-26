@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:20:59 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/26 05:21:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,3 +395,14 @@ PollHandler& Server::GetPollHandler()
 {
 	return (_poll_handlr);
 }
+
+Client* Server::FindClient(const std::string& nickname) //
+{
+    std::map<std::string, Client*>::iterator it = _clients_by_nick.find(nickname);
+    if (it != _clients_by_nick.end())
+	{
+        return it->second;
+    }
+    return NULL; // Client bulunamadı
+}
+
