@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/26 18:09:07 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/27 15:50:16 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ OBJS 			=	$(SRCS:.cpp=.o)
 
 RM				=	@rm -rf
 
-CC				=	@c++
-CFLAGS			=	-Wall -Wextra -Werror -I ./includes
+CXX				=	@c++
+CXXFLAGS		=	-Wall -Wextra -Werror -I ./includes
 
 STD				=	-std=c++98
 
@@ -32,12 +32,12 @@ C_R				=	\033[0;31m
 C_E				=	\033[0m
 
 %.o				:	%.cpp
-					@$(CC) $(CFLAGS) $(STD) -c $< -o $@
+					$(CXX) $(CXXFLAGS) $(STD) -c $< -o $@
 
 all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
-					$(CC) $(CFLAGS) $(STD) $^ -o $(NAME)
+					$(CXX) $(CXXFLAGS) $(STD) $^ -o $(NAME)
 					@echo "\e[1m$(C_Y)EX00		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
