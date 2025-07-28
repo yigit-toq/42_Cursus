@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/28 17:47:31 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/28 23:31:48 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CXX) $(CXXFLAGS) $(STD) $^ -o $(NAME)
-					@echo "\e[1m$(C_Y)EX00		$(C_G)[OK]\e[0m$(C_E)"
+					@echo "\e[1m$(C_Y)EX01		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RM) $(OBJS)
