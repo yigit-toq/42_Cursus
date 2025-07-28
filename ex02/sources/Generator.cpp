@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:28:42 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 14:40:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/28 17:38:54 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,32 +56,27 @@ void	identify(Base& p)
 {
 	try
 	{
-				(void)dynamic_cast<A&>(p);
+		(void)dynamic_cast<A&>(p);
 
-				std::cout << "A" << std::endl;
+		std::cout << "A" << std::endl;
 	}
-	catch(...)
+	catch(...) {}
+
+	try
 	{
-		try
-		{
-				(void)dynamic_cast<B&>(p);
+		(void)dynamic_cast<B&>(p);
 
-				std::cout << "B" << std::endl;
-		}
-		catch(...)
-		{
-			try
-			{
-				(void)dynamic_cast<C&>(p);
-
-				std::cout << "C" << std::endl;
-			}
-			catch(...)
-			{
-				std::cout << "Unknown type" << std::endl;
-			}
-		}
-		
+		std::cout << "B" << std::endl;
 	}
-	
+	catch(...) {}
+
+	try
+	{
+		(void)dynamic_cast<C&>(p);
+
+		std::cout << "C" << std::endl;
+	}
+	catch(...) {}
+
+	std::cout << "Unknown type" << std::endl;
 }

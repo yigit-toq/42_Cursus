@@ -6,14 +6,14 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 18:05:49 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 13:22:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/28 17:49:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include <cstdint>
+#include <stdint.h>
 
 #include "Data.hpp"
 

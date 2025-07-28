@@ -6,27 +6,28 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 18:08:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 13:27:13 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/28 17:42:12 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Serializer.hpp"
+
 #include <iostream>
 
 int	main()
 {
-	Data		data	= {42, "Yigit"};
+	Data		d		= {42, "Yigit"};
 
-	uintptr_t	raw		= Serializer::serialize		(&data);
+	uintptr_t	r		= Serializer::  serialize	(&d);
 
-	Data*		ptr		= Serializer::deserialize	(raw);
+	Data*		p		= Serializer::deserialize	( r);
 
-	if (ptr == &data)
+	if (p == &d)
 	{
 		std::cout << G_CLR << "Successfully deserialized!\n" << RESET << std::endl;
 
-		std::cout << "ID:	" << ptr->id	<< std::endl;
-		std::cout << "Name:	" << ptr->name	<< std::endl;
+		std::cout << "ID:	" << p->id		<< std::endl;
+		std::cout << "Name:	" << p->name	<< std::endl;
 	}
 	else
 	{

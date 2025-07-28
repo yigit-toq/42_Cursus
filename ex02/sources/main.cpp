@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 18:08:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 14:39:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/28 17:39:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main()
 	std::cout << "identify(Base&): ";
 	identify(*obj);
 
-	delete (obj);
+	delete	( obj);
 
-	return (0);
+	return	(0);
 }
