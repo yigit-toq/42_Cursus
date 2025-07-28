@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Base.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/26 18:08:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 14:39:44 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/28 14:26:22 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/28 14:40:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Generator.hpp"
+#ifndef BASE_HPP
+#define BASE_HPP
 
-int	main()
+#include <iostream>
+
+#include <cstdlib>
+#include <ctime>
+
+class Base
 {
-	Base* obj = generate();
+	public:
+		virtual ~Base() {}
+};
 
-	std::cout << "identify(Base*): ";
-	identify( obj);
-
-	std::cout << "identify(Base&): ";
-	identify(*obj);
-
-	delete (obj);
-
-	return (0);
-}
+#endif

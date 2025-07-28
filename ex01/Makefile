@@ -6,16 +6,16 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/27 15:50:16 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/28 13:21:29 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	ex01
+NAME			=	serializer
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Serializer.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
@@ -24,7 +24,7 @@ RM				=	@rm -rf
 CXX				=	@c++
 CXXFLAGS		=	-Wall -Wextra -Werror -I ./includes
 
-STD				=	-std=c++98
+# STD			=	-std=c++98
 
 C_Y				=	\033[0;33m
 C_G				=	\033[0;32m

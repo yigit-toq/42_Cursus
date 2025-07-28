@@ -6,7 +6,7 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/27 15:50:11 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/28 14:33:04 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			=	ex02
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Generator.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Data.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/26 18:08:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 14:39:44 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/28 12:58:44 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/28 13:20:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Generator.hpp"
+#ifndef DATA_HPP
+#define DATA_HPP
 
-int	main()
+#include <string>
+
+struct Data
 {
-	Base* obj = generate();
+	int			id;
 
-	std::cout << "identify(Base*): ";
-	identify( obj);
+	std::string	name;
+};
 
-	std::cout << "identify(Base&): ";
-	identify(*obj);
-
-	delete (obj);
-
-	return (0);
-}
+#endif
