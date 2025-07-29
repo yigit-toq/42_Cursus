@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:18:34 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/27 17:40:44 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/29 21:56:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,34 @@ static e_type	isType			(const std::string &literal)
 
 	char* end = 0;
 
-	std::strtol(literal.c_str(), &end, 10);
+	long l = std::strtol(literal.c_str(), &end, 10);
 
-	if (*end == 0)						return (INT);
+	if (*end == 0 && l >= std::numeric_limits<int>::min() && l <= std::numeric_limits<int>::max())
+	{
+		return (INT);
+	}
 
-	std::strtof(literal.c_str(), &end);
+	end = 0;
 
-	if (*end == 'f' && *(end + 1) == 0)	return (FLOAT);
+	if (literal.find('.') != std::string::npos)
+	{
+		std::strtof(literal.c_str(), &end);
+
+		if (*end == 'f' && *(end + 1) == 0)	return (FLOAT);
+	}
+
+	end = 0;
 
 	std::strtod(literal.c_str(), &end);
 
-	if (*end == 0)						return (DOUBLE);
+	if (*end == 0)							return (DOUBLE);
 
 	return (UNDEF);
 }
 
 static void	printInt	(double value)
 {
-	std::cout << "int: ";
+	std::cout << "int:    ";
 
 	if (std::isnan(value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
 	{
@@ -97,7 +107,7 @@ static void	printInt	(double value)
 
 static void	printChar	(double value)
 {
-	std::cout << "char: ";
+	std::cout << "char:   ";
 
 	if (std::isnan(value) || value < 0 || value > 127)
 	{
@@ -115,14 +125,14 @@ static void	printChar	(double value)
 
 static void	printFloat	(double value)
 {
-	std::cout << std::fixed << std::setprecision(1);
+	// std::cout << std::fixed << std::setprecision(1);
 
-	std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
+	std::cout << "float:  " << static_cast<float>(value) << "f" << std::endl;
 }
 
 static void	printDouble	(double value)
 {
-	std::cout << std::fixed << std::setprecision(1);
+	// std::cout << std::fixed << std::setprecision(1);
 
 	std::cout << "double: " << value << std::endl;
 }

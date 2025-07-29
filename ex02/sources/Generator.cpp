@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:28:42 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 17:38:54 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/29 21:36:15 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,4 @@ void	identify(Base& p)
 		std::cout << "C" << std::endl;
 	}
 	catch(...) {}
-
-	std::cout << "Unknown type" << std::endl;
 }
