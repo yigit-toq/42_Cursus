@@ -6,11 +6,11 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/07/28 23:33:31 by ytop             ###   ########.fr        #
+#    Updated: 2025/07/29 22:04:55 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	
+NAME			=	easyfind
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
