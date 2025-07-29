@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   easyfind.tpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/29 22:06:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/29 22:23:42 by ytop             ###   ########.fr       */
+/*   Created: 2025/07/29 22:13:27 by ytop              #+#    #+#             */
+/*   Updated: 2025/07/29 22:17:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef EASYFIND_TPP
+#define EASYFIND_TPP
+
 #include "easyfind.hpp"
 
-#include <iostream>
-
-int	main()
+template <typename T>
+typename T::const_iterator	easyfind(const T& container, int value)
 {
-	return (0);
+	typename T::const_iterator it = std::find(container.begin(), container.end(), value);
+
+	if (it == container.end())
+		throw NotFoundException();
+
+	return (it);
 }
+
+#endif
