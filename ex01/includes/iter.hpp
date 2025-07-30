@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 22:09:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 23:28:11 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/30 21:17:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,24 @@ template <typename T>
 void	increment	(T &value)
 {
 	++value;
+}
+
+template <typename T>
+void	decrement	(T &value)
+{
+	--value;
+}
+
+template <typename T>
+void	upperCase	(T &value)
+{
+	for (size_t i = 0; i < value.length(); ++i)
+	{
+		if (value[i] >= 'a' && value[i] <= 'z')
+		{
+			value[i] -= ('a' - 'A');
+		}
+	}
 }
 
 #endif

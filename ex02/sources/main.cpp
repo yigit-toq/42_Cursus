@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 21:01:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 23:20:17 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/30 21:27:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main()
 	{
 		Array<int> a; // Empty array
 
-		std::cout << B_CLR << "Empty array size: " << a.size() << std::endl;
+		std::cout << B_CLR << "Default array size: " << a.size() << std::endl;
 
 		std::cout << std::endl;
 
@@ -54,7 +54,7 @@ int	main()
 		c[0] = 999; // Change c and verify b is unaffected
 
 		std::cout << std::endl;
-		std::cout << "Modified c[0] = 999" << std::endl;
+		std::cout << "Modified c[0] = " << c[0] << std::endl;
 		std::cout << std::endl;
 
 		std::cout << Y_CLR << "Array b after c modified: 	" << B_CLR;
