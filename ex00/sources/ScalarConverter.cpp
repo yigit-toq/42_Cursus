@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 19:18:34 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/29 21:56:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/30 16:15:02 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,11 @@ static void	printChar	(double value)
 
 static void	printFloat	(double value)
 {
-	// std::cout << std::fixed << std::setprecision(1);
-
 	std::cout << "float:  " << static_cast<float>(value) << "f" << std::endl;
 }
 
 static void	printDouble	(double value)
 {
-	// std::cout << std::fixed << std::setprecision(1);
-
 	std::cout << "double: " << value << std::endl;
 }
 
