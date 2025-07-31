@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 22:34:16 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/31 15:40:55 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/31 16:00:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ template <typename T>
 Array<T>:: Array(unsigned int n) : _size(n)
 {
 	data = new T[n];
+
+	for (unsigned int i = 0; i < n; ++i)
+	{
+		data[i] = T();
+	}
 
 	std::cout << G_CLR << "Array of size " << n << " created."	<< RESET << std::endl;
 }
