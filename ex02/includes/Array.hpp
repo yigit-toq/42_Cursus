@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 22:34:16 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/28 22:52:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/07/31 15:40:55 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ T		&Array<T>::operator[](unsigned int index)
 {
 	if (index >= _size)
 	{
-		throw std::out_of_range("Index out of bounds");
+		throw std::out_of_range("Index is out of bounds");
 	}
 	return (data[index]);
 }
@@ -115,7 +115,7 @@ const T	&Array<T>::operator[](unsigned int index) const
 {
 	if (index >= _size)
 	{
-		throw std::out_of_range("Index out of bounds");
+		throw std::out_of_range("Index is out of bounds");
 	}
 	return (data[index]);
 }
