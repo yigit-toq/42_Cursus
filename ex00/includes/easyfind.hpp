@@ -6,15 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 22:05:37 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/29 22:22:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/02 11:43:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EASYFIND_HPP
 #define EASYFIND_HPP
 
-#include <exception>
 #include <algorithm>
+#include <exception>
 #include <iterator>
 
 class NotFoundException : public std::exception

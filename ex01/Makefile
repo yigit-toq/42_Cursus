@@ -6,16 +6,16 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/08/02 11:57:52 by ytop             ###   ########.fr        #
+#    Updated: 2025/08/02 12:07:38 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	easyfind
+NAME			=	span
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	$(SRCS_DIR)main.cpp
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)Span.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 
@@ -38,7 +38,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CXX) $(CXXFLAGS) $(STD) $^ -o $(NAME)
-					@echo "\e[1m$(C_Y)EX00		$(C_G)[OK]\e[0m$(C_E)"
+					@echo "\e[1m$(C_Y)EX01		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RM) $(OBJS)

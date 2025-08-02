@@ -6,11 +6,11 @@
 #    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 19:12:29 by ytop              #+#    #+#              #
-#    Updated: 2025/08/02 11:57:52 by ytop             ###   ########.fr        #
+#    Updated: 2025/08/02 13:15:36 by ytop             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	easyfind
+NAME			=	mutant
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
@@ -38,7 +38,7 @@ all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
 					$(CXX) $(CXXFLAGS) $(STD) $^ -o $(NAME)
-					@echo "\e[1m$(C_Y)EX00		$(C_G)[OK]\e[0m$(C_E)"
+					@echo "\e[1m$(C_Y)EX02		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RM) $(OBJS)
