@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:31:53 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 15:12:30 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 20:04:58 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,31 @@ class Utils
 		 Utils ();
 		~Utils ();
 
-		static std::string					trim	(const std::string& str);
+		static std::string							trim			(const std::string& str);
 
-		static std::vector<std::string>		split	(const std::string& str, char delimiter);
+		static std::vector<std::string>				split			(const std::string& str, char delimiter);
+
+		static std::vector<std::pair<char, char> >	ParseModeString	(const std::string& mode_string)
+		{
+			std::vector<std::pair<char, char> >	parsed_modes;
+
+			char current_sign = '+';
+
+			for (size_t i = 0; i < mode_string.length(); ++i)
+			{
+				char c = mode_string[i];
+
+				if (c == '+' || c == '-')
+				{
+					current_sign = c;
+				}
+				else
+				{
+					parsed_modes.push_back(std::make_pair(current_sign, c));
+				}
+			}
+			return (parsed_modes);
+		}
 };
 
 #endif

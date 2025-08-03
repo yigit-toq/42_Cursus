@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/26 05:21:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 23:25:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,9 @@ void	Server::SetupCommands()
 	_cmds_handlr["PASS"]	= new PassCommand(*this);
 	_cmds_handlr["JOIN"]	= new JoinCommand(*this);
 	_cmds_handlr["PART"]	= new PartCommand(*this);
+	_cmds_handlr["MODE"]	= new ModeCommand(*this);
 	_cmds_handlr["QUIT"]	= new QuitCommand(*this);
+	
 	_cmds_handlr["PRIVMSG"]	= new PrivCommand(*this);
 }
 
@@ -404,5 +406,29 @@ Client* Server::FindClient(const std::string& nickname) //
         return it->second;
     }
     return NULL; // Client bulunamadı
+}
+
+void Server::BroadcastChannelMessage(Channel* channel, Client* sender, const std::string& message)
+{
+	if (!channel)
+		return ;
+
+	const std::map<int, Client*>& users = channel->getUsers();
+	std::map<int, Client*>::const_iterator it;
+	
+	std::string full_message = ":" + sender->GetNickName() + " " + message + "\r\n";
+
+	for (it = users.begin(); it != users.end(); ++it)
+	{
+		// Mesajı gönderen kullanıcı hariç herkese gönder
+		if (it->second->GetFD() != sender->GetFD())
+		{
+			std::cout << "Broadcasting message to " << it->second->GetNickName() << ": " << full_message;
+			if (send(it->second->GetFD(), full_message.c_str(), full_message.length(), 0) < 0)
+			{
+				// Hata yönetimi burada yapılabilir
+			}
+		}
+	}
 }
 

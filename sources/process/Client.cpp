@@ -6,11 +6,12 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 17:55:18 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 21:21:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include "Server.hpp"
 #include <iostream>
 
 Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
@@ -20,6 +21,10 @@ Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
 	_realname = "";
 	_hostname = "";
 	_password = "";
+
+	_modes['i'] = false;
+	_modes['w'] = false;
+	_modes['o'] = false;
 }
 
 Client::~Client	() {}
@@ -129,3 +134,92 @@ std::string Client::ExtractNextMessage()
 void		Client::SetStatus(UserStatus status)	{ _status = status;	}
 
 UserStatus	Client::GetStatus() const				{ return (_status);	}
+
+// Yeni eklenen metotların implementasyonu
+bool Client::IsModeSet(char mode_char) const
+{
+	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
+
+	if (it != _modes.end())
+	{
+		return (it->second);
+	}
+	return (false);
+}
+
+std::string Client::GetModeString() const
+{
+	std::string mode_str = "+";
+
+	if (IsModeSet('i')) mode_str += "i";
+	if (IsModeSet('w')) mode_str += "w";
+	if (IsModeSet('o')) mode_str += "o";
+	
+	if (mode_str == "+")
+	{
+		return "";
+	}
+	return mode_str;
+}
+
+void Client::ApplyModes(Client* sender, const std::string& mode_string, Server& server)
+{
+	if (sender->GetFD() != GetFD())
+	{
+		server.SendsNumericReply(sender, 502, ":Cant change mode for other users");
+		return ;
+	}
+	
+	char sign = '+';
+
+	for (size_t i = 0; i < mode_string.length(); ++i)
+	{
+		char mode_char = mode_string[i];
+
+		if (mode_char == '+' || mode_char == '-')
+		{
+			sign = mode_char;
+			continue ;
+		}
+
+		switch (mode_char)
+		{
+			case 'i': handleInvisibleMode(sign, server); break;
+
+			case 'w': handleWallopsMode(sign, server); break;
+
+			case 'o':
+				// Kullanıcılar kendi operatör modlarını değiştiremez.
+				server.SendsNumericReply(sender, 481, ":Permission Denied - You're not an IRC operator");
+				break;
+			default:
+				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :is unknown mode char to me");
+				break;
+		}
+	}
+}
+
+// Yardımcı metotların implementasyonu
+void Client::handleInvisibleMode(char sign, Server& server)
+{
+	bool current_status = IsModeSet('i');
+	bool new_status = (sign == '+');
+	
+	if (current_status != new_status)
+	{
+		_modes['i'] = new_status;
+		server.SendsNumericReply(this, 0, ":MODE " + GetNickName() + " " + std::string(1, sign) + "i");
+	}
+}
+
+void Client::handleWallopsMode(char sign, Server& server)
+{
+	bool current_status = IsModeSet('w');
+	bool new_status = (sign == '+');
+
+	if (current_status != new_status)
+	{
+		_modes['w'] = new_status;
+		server.SendsNumericReply(this, 0, ":MODE " + GetNickName() + " " + std::string(1, sign) + "w");
+	}
+}

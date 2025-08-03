@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/26 05:22:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 21:36:34 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 #include "PartCommand.hpp"
 #include "QuitCommand.hpp"
 #include "TopicCommand.hpp"
+#include "KickCommand.hpp"
+#include "ModeCommand.hpp"
 #include "CommandHandler.hpp"
 
 #pragma endregion
@@ -93,6 +95,8 @@ class Server
 		PollHandler&	GetPollHandler				();
 
 		Client* FindClient(const std::string& nickname);//
+
+		void BroadcastChannelMessage(Channel* channel, Client* sender, const std::string& message); //
 };
 
 #endif

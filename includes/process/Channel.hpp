@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/26 05:38:24 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 20:17:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,10 @@ class Channel
 		std::map<int, Client*>							_clients;
 		std::map<int, Client*>							_operators;
 
+		Server&											_server;
+
 		std::map<char, bool>							_modes; //
 		long long										_creation_time; //
-		// *** YENİ: Mod işleyicilerini tutacak map ***
-		// İlk char: Mod karakteri (örn. 'i', 't', 'k')
-		// İkinci parametre: İşleyici fonksiyonun kendisi
-		// İmza: (Client* sender, char sign, const std::string& param, bool& changed, IRCServer& server)
-		std::map<char, std::function<void(Client*, char, const std::string&, bool&, Server&)> > _mode_handlers;
-
-		Server&											_server;
 
 		Channel											(const Channel& other);
 		Channel& operator=								(const Channel& other);
@@ -91,18 +86,21 @@ class Channel
 		void	AddOperator								(Client* user);
 		void	RmvOperator								(Client* user);
 
-		//
-		long long GetCreationTime() const;
-		bool IsModeSet(char mode_char) const;
-		void SetMode(char mode_char, bool status);
+		bool IsModeSet(char mode_char) const; //
 
 		// Yeni MODE komutu için metotlar
-		std::string GetModeString() const; // Kanalın modlarını bir string olarak döndürür (örn. "+it")
-		std::string GetModeParams() const; // Kanalın mod parametrelerini döndürür (örn. "anahtar 10")
-		void ApplyModes(Client* sender, const std::string& mode_string, const std::vector<std::string>& mode_args, Server& server);
+		std::string GetModeString	() const; // Kanalın modlarını bir string olarak döndürür (örn. "+it")
+		std::string GetModeParams	() const; // Kanalın mod parametrelerini döndürür (örn. "anahtar 10")
+		void ApplyModes				(Client* sender, const std::string& mode_string, const std::vector<std::string>& mode_args, Server& server);
 
 	private:
 		static bool IsChannelModeWithParameter(char mode_char);
+
+		void handleInviteOnlyMode	(Client* sender, char sign); //
+		void handleTopicMode		(Client* sender, char sign); //
+		void handleKeyMode			(Client* sender, char sign, const std::string& param); //
+		void handleLimitMode		(Client* sender, char sign, const std::string& param); //
+		void handleOperatorMode		(Client* sender, char sign, const std::string& param); //
 };
 
 #endif

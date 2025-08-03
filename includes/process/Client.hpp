@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 17:54:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/03 21:18:35 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 #include <string>
 #include <queue>
+#include <map>
 
 enum UserStatus
 {
@@ -43,6 +44,8 @@ class Client
 		std::string									_ouput_buffer;
 
 		std::vector<Channel*>						_joined_channels;
+
+		std::map<char, bool>						_modes; //
 
 	public:
 		 Client												(int fd);
@@ -84,6 +87,17 @@ class Client
 		void							PopOutputBuffer		(size_t count);
 
 		std::string						ExtractNextMessage	();
+
+		// Yeni eklenen metotlar
+		bool IsModeSet(char mode_char) const;
+		std::string GetModeString() const;
+		void ApplyModes(Client* sender, const std::string& mode_string, Server& server);
+
+	private:
+		// Her mod için özel işleyici metotlar
+		void handleInvisibleMode(char sign, Server& server);
+		void handleWallopsMode(char sign, Server& server);
+		// Diğer modlar için de benzer metotlar eklenebilir
 };
 
 #endif
