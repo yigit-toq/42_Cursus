@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 19:00:00 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 16:43:30 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:52:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 PollHandler:: PollHandler() {}
 
 PollHandler::~PollHandler() {}
+
+//bakılacak
 
 void	PollHandler::AddSocket(int fd, short events)
 {

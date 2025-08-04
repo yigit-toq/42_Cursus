@@ -6,12 +6,14 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 16:30:38 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:57:35 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:37:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PassCommand.hpp"
 #include "Server.hpp"
+
+//bakılacak
 
 PassCommand:: PassCommand(Server& server) : _server(server) {}
 
@@ -41,9 +43,9 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	sender->SetPassword(password);
+	sender->SetPassword				(password);
 
 	std::cout << "User FD " << sender->GetFD() << " provided correct password." << std::endl;
 
-	_server.CheckRegistration(sender);
+	_server.CheckRegistration		(sender);
 }

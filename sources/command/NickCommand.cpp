@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 18:21:01 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:30:30 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 {
 	if (sender->IsRegistered())
 	{
-		std::cout << "User " << sender->GetNickName() << " trying to change nick to: " << msg.GetParameters()[0] << std::endl;
+		std::cout << "User "					<< sender->GetNickname()	<< " trying to change nick to: "	<< msg.GetParameters()[0] << std::endl;
 	}
 	else
 	{
-		std::cout << "Unregistered user FD " << sender->GetFD() << " attempting to set nick." << std::endl;
+		std::cout << "Unregistered user FD "	<< sender->GetFD()			<< " attempting to set nick."		<< std::endl;
 	}
 
 	if (msg.GetParameters().empty())
@@ -41,17 +41,17 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 		new_nick = new_nick.substr(0, 9);
 	}
 
-	if (!_server.IsNicknameAvailable(new_nick) && new_nick != sender->GetNickName())
+	if (!_server.IsNicknameAvailable(new_nick) && new_nick != sender->GetNickname())
 	{
-		_server.SendsNumericReply(sender, 433, new_nick + " :Nickname is already in use");
+		_server.SendsNumericReply	(sender, 433, new_nick + " :Nickname is already in use");
 		return ;
 	}
 
-	sender->SetNickName(new_nick);
+	sender->SetNickName		(new_nick);
 
-	if (sender->GetStatus() == UNREGISTERED)
+	if (sender->GetStatus	() == UNREGISTERED)
 	{
-		sender->SetStatus(NICK_SET);
+		sender->SetStatus	(NICK_SET);
 	}
 
 	std::cout << "User FD " << sender->GetFD() << " nickname set to: " << new_nick << std::endl;

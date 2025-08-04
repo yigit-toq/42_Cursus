@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:42:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/24 21:49:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:45:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <iostream>
 #include <sstream>
 
-//Commandlerde Broadcast islemi ortak oldugu icin ayri bir fonksiyon yapilacak
-//ayni zamanda bakilacak
+//bakılacak
 
 TopicCommand:: TopicCommand(Server& server) : _server(server) {}
 
@@ -30,7 +29,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	std::string	channel_name	= msg.		GetParameters()[0];
+	std::string	channel_name	=  msg.		GetParameters()[0];
 
 	Channel*	channel_tar		= _server.	FinderChannel(channel_name);
 
@@ -67,14 +66,14 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 			return ;
 		}
 
-		channel_tar->SetTopic(new_topic);
+		channel_tar->SetTopic			(new_topic);
 
 		std::stringstream topic_ss;
 
-		topic_ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " TOPIC " << channel_name << " :" << new_topic;
+		topic_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
 
-		channel_tar->BroadcastMessage(topic_ss.str(), NULL);
+		channel_tar->BroadcastMessage	(topic_ss.str(), NULL);
 
-		std::cout << "Client " << sender->GetNickName() << " set topic for channel " << channel_name << " to: '" << new_topic << "'" << std::endl;
+		std::cout << "Client " << sender->GetNickname() << " set topic for channel " << channel_name << " to: '" << new_topic << "'" << std::endl;
 	}
 }

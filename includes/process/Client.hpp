@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/03 21:18:35 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:04:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ class Client
 	private:
 		int											_fd;
 
+		std::map<char, bool>						_modes;
+
 		UserStatus									_status;
 
 		std::string									_nickname;
@@ -45,8 +47,6 @@ class Client
 
 		std::vector<Channel*>						_joined_channels;
 
-		std::map<char, bool>						_modes; //
-
 	public:
 		 Client												(int fd);
 		~Client												();
@@ -55,15 +55,19 @@ class Client
 
 		UserStatus						GetStatus			() const;
 
-		std::string 					GetUserName			() const;
-		std::string 					GetNickName			() const;
-		std::string 					GetRealName			() const;
-		std::string						GetHostName			() const;
+		std::string 					GetUsername			() const;
+		std::string 					GetNickname			() const;
+		std::string 					GetRealname			() const;
+		std::string						GetHostname			() const;
 		std::string						GetPassword			() const;
+
+		std::string						GetModeString		() const;
 
 		const std::string&				GetOutputBuffer		() const;
 
 		const std::vector<Channel*>&	GetJoinedChannels	() const;
+
+		bool							IsModeSet			(char mode) const;
 
 		bool							IsRegistered		() const;
 		bool							HasOuputData		() const;
@@ -81,6 +85,8 @@ class Client
 		void 							AppendToInputBuffer	(const std::string &data);
 		void 							AppendToOuputBuffer	(const std::string &data);
 
+		void 							ApplyModes			(Client* sender, const std::string& mode_string, Server& server);
+
 		void							AddChannel			(Channel* channel);
 		void							RmvChannel			(Channel* channel);
 
@@ -88,16 +94,9 @@ class Client
 
 		std::string						ExtractNextMessage	();
 
-		// Yeni eklenen metotlar
-		bool IsModeSet(char mode_char) const;
-		std::string GetModeString() const;
-		void ApplyModes(Client* sender, const std::string& mode_string, Server& server);
-
 	private:
-		// Her mod için özel işleyici metotlar
-		void handleInvisibleMode(char sign, Server& server);
-		void handleWallopsMode(char sign, Server& server);
-		// Diğer modlar için de benzer metotlar eklenebilir
+		void							handle_I_Mode		(char sign, Server& server);
+		void							handle_W_Mode		(char sign, Server& server);
 };
 
 #endif

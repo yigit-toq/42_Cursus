@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 16:20:24 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 21:46:46 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:38:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,23 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		if (!target_channel)
 		{
-			_server.SendsNumericReply(sender, 403, tar_name + " :No such channel");
+			_server.SendsNumericReply	(sender, 403, tar_name + " :No such channel");
 			return ;
 		}
 
-		if (!target_channel->IsUser(sender))
+		if (!target_channel->IsUser		(sender))
 		{
-			_server.SendsNumericReply(sender, 404, tar_name + " :Cannot send to channel");
+			_server.SendsNumericReply	(sender, 404, tar_name + " :Cannot send to channel");
 			return ;
 		}
 
 		std::stringstream ss;
 
-		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << " :" << msg_text;
+		ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PRIVMSG " << tar_name << " :" << msg_text;
 
 		target_channel->BroadcastMessage(ss.str(), sender);
 
-		std::cout << "PRIVMSG to channel " << tar_name << " from " << sender->GetNickName() << ": " << msg_text << std::endl;
+		std::cout << "PRIVMSG to channel " << tar_name << " from " << sender->GetNickname() << ": " << msg_text << std::endl;
 
 	}
 	else
@@ -73,12 +73,12 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		std::stringstream ss;
 
-		ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PRIVMSG " << tar_name << ": " << msg_text;
+		ss << ":" << sender->GetNickname	() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PRIVMSG " << tar_name << ": " << msg_text;
 
-		target_user->AppendToOuputBuffer(ss.str() + "\r\n");
+		target_user->AppendToOuputBuffer	(ss.str() + "\r\n");
 
-		_server.GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
+		_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
 
-		std::cout << "PRIVMSG to user " << tar_name << " from " << sender->GetNickName() << ": " << msg_text << std::endl;
+		std::cout << "PRIVMSG to user " << tar_name << " from " << sender->GetNickname() << ": " << msg_text << std::endl;
 	}
 }

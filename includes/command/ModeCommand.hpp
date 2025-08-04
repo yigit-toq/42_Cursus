@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 22:09:44 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/03 20:11:06 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 21:46:20 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@ class ModeCommand : public CommandHandler
 
 		void HandleChannelMode	(Client* sender, const Message& msg);
 		void HandleClientsMode	(Client* sender, const Message& msg);
-
-		bool IsModeWithParameter(char mode)
-		{
-			return (mode == 'o' || mode == 'l' || mode == 'k');
-		}
 };
 
 #endif

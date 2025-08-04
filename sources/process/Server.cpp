@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/03 23:25:42 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:49:57 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+//bakılacak
 
 Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass)
 {
@@ -138,7 +140,6 @@ void Server::Start()
 						std::cout << "FD " << user->GetFD() << " output buffer empty. POLLOUT removed." << std::endl;
 					}
 				}
-
 				// if (user->HasOuputData() && !(_poll_handlr.GetEvents(user->GetFD()) & POLLOUT))
 				// {
 				// 	_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT);
@@ -242,7 +243,7 @@ void	Server::ClientDisconnection(int fd)
 
 void	Server::SetupCommands()
 {
-	_cmds_handlr["TOPIC"]	= new TopicCommand(*this); // Yeni komut eklendi
+	_cmds_handlr["TOPIC"]	= new TopicCommand(*this);
 	_cmds_handlr["NICK"]	= new NickCommand(*this);
 	_cmds_handlr["USER"]	= new UserCommand(*this);
 	_cmds_handlr["PASS"]	= new PassCommand(*this);
@@ -273,8 +274,8 @@ void	Server::CheckRegistration(Client* client)
 	if (client->IsRegistered())
 		return ;
 
-	bool nick_set	= ( client->GetNickName() != "*");
-	bool user_set	= (!client->GetUserName().empty() && !client->GetRealName().empty());
+	bool nick_set	= ( client->GetNickname() != "*");
+	bool user_set	= (!client->GetUsername().empty() && !client->GetRealname().empty());
 
 	bool pass_ok	= (_password.empty() || client->GetPassword() == _password);
 
@@ -282,9 +283,9 @@ void	Server::CheckRegistration(Client* client)
 	{
 		client->SetStatus(REGISTERED);
 
-		std::cout << "User FD " << client->GetFD() << " (" << client->GetNickName() << ") is now registered!" << std::endl;
+		std::cout << "User FD " << client->GetFD() << " (" << client->GetNickname() << ") is now registered!" << std::endl;
 
-		SendsNumericReply(client, 001, "Welcome to the "	+ _netwrk_name + " IRC Network " + client->GetNickName() + "!" + client->GetUserName() + "@" + client->GetHostName());
+		SendsNumericReply(client, 001, "Welcome to the "	+ _netwrk_name + " IRC Network " + client->GetNickname() + "!" + client->GetUsername() + "@" + client->GetHostname());
 
 		SendsNumericReply(client, 002, "Your host is "		+ _server_name + ", running version 1.0");
 
@@ -297,11 +298,9 @@ void	Server::SendsNumericReply(Client* user, int numeric, const std::string& mes
 {
 	std::stringstream ss;
 
-	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickName() << " :" << message << "\r\n";
+	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " :" << message << "\r\n";
 
 	user->AppendToOuputBuffer(ss.str());
-
-	// std::cout << "Sending reply to " << user->GetNickName() << ": " << ss.str() << std::endl; // Debug
 }
 
 const std::string& Server::GetServerName() const { return _server_name; }
@@ -313,7 +312,7 @@ Client*	Server::FindUserByNickname(const std::string& nickname) const
 {
 	for (std::map<int, Client*>::const_iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
-		if (it->second->GetNickName() == nickname) 
+		if (it->second->GetNickname() == nickname) 
 		{
 			return (it->second);
 		}
@@ -398,14 +397,15 @@ PollHandler& Server::GetPollHandler()
 	return (_poll_handlr);
 }
 
-Client* Server::FindClient(const std::string& nickname) //
+Client* Server::FindClient(const std::string& nick) //
 {
-    std::map<std::string, Client*>::iterator it = _clients_by_nick.find(nickname);
-    if (it != _clients_by_nick.end())
+	std::map<std::string, Client*>::iterator it = _clients_by_nick.find(nick);
+
+	if (it != _clients_by_nick.end())
 	{
-        return it->second;
-    }
-    return NULL; // Client bulunamadı
+		return it->second;
+	}
+	return NULL; // Client bulunamadı
 }
 
 void Server::BroadcastChannelMessage(Channel* channel, Client* sender, const std::string& message)
@@ -414,16 +414,17 @@ void Server::BroadcastChannelMessage(Channel* channel, Client* sender, const std
 		return ;
 
 	const std::map<int, Client*>& users = channel->getUsers();
+
 	std::map<int, Client*>::const_iterator it;
 	
-	std::string full_message = ":" + sender->GetNickName() + " " + message + "\r\n";
+	std::string full_message = ":" + sender->GetNickname() + " " + message + "\r\n";
 
 	for (it = users.begin(); it != users.end(); ++it)
 	{
 		// Mesajı gönderen kullanıcı hariç herkese gönder
 		if (it->second->GetFD() != sender->GetFD())
 		{
-			std::cout << "Broadcasting message to " << it->second->GetNickName() << ": " << full_message;
+			std::cout << "Broadcasting message to " << it->second->GetNickname() << ": " << full_message;
 			if (send(it->second->GetFD(), full_message.c_str(), full_message.length(), 0) < 0)
 			{
 				// Hata yönetimi burada yapılabilir

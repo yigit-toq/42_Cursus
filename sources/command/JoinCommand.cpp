@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 17:57:11 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:14:07 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,20 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 			_server.SendsNumericReply(sender, 475, channel_name + " :Cannot join channel (+k)");
 			return ;
 		}
-		if (channel->IsInviteOnly())
+		if (channel->IsInviteOnly	 ())
 		{
 			_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)");
 			return ;
 		}
-		if (channel->IsFull())
+		if (channel->IsFull			 ())
 		{
 			_server.SendsNumericReply(sender, 471, channel_name + " :Cannot join channel (+l)");
 			return ;
 		}
 
-		if (channel->IsUser(sender))
+		if (channel->IsUser			 (sender))
 		{
-			std::cout << "User " <<  sender->GetNickName() << " is already in channel " << channel_name << std::endl;
+			std::cout << "User " <<  sender->GetNickname() << " is already in channel " << channel_name << std::endl;
 			return ;
 		}
 	}
@@ -85,7 +85,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 	std::stringstream join_msg_ss;
 
-	join_msg_ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " JOIN :" << channel_name;
+	join_msg_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " JOIN :" << channel_name;
 
 	channel->BroadcastMessage(join_msg_ss.str());
 
@@ -118,7 +118,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 			names_ss << "@";
 		}
 
-		names_ss << it->second->GetNickName();
+		names_ss << it->second->GetNickname();
 
 		first_user = false;
 	}
@@ -126,5 +126,5 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 	_server.SendsNumericReply(sender, 353, names_ss.str());
 	_server.SendsNumericReply(sender, 366, channel_name + " :End of /NAMES list");
 
-	std::cout << "User " << sender->GetNickName() << " successfully joined channel " << channel_name << std::endl;
+	std::cout << "User " << sender->GetNickname() << " successfully joined channel " << channel_name << std::endl;
 }

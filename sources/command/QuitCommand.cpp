@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 15:49:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:13:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:43:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 		quit_message = msg.GetParameters()[0];
 	}
 
-	std::stringstream quit_ss;
+	std::stringstream	quit_ss;
 
-	quit_ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " QUIT: " << quit_message;
+	quit_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " QUIT: " << quit_message;
 
-	std::string full_quit_msg = quit_ss.str();
+	std::string			quit_ms = quit_ss.str();
 
 	const std::vector<Channel*>&	joined_channels = sender->GetJoinedChannels();
 
@@ -44,13 +44,13 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 		if (channel)
 		{
-			channel->BroadcastMessage	(full_quit_msg, sender);
+			channel->BroadcastMessage	(quit_ms, sender);
 
 			channel->RmvClient			(sender);
 
-			if (channel->IsEmpty())
+			if (channel->IsEmpty		())
 			{
-				_server.RemoveChannel(channel->GetName());
+				_server.RemoveChannel	(  channel->GetName());
 
 				std::cout << "Channel " << channel->GetName() << " is empty and removed." << std::endl;
 			}
@@ -59,5 +59,5 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 	_server.ClientDisconnection(sender->GetFD());
 
-	std::cout << "Client " << sender->GetNickName() << " (" << sender->GetFD() << ") has quit with message: '" << quit_message << "'" << std::endl;
+	std::cout << "Client " <<	sender->GetNickname() << " (" << sender->GetFD() << ") has quit with message: '" << quit_message << "'" << std::endl;
 }

@@ -6,13 +6,15 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/03 21:21:52 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:51:51 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 #include "Server.hpp"
 #include <iostream>
+
+//bakılacak
 
 Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
 {
@@ -33,10 +35,10 @@ int		Client::GetFD() const { return _fd; }
 
 void	Client::SetFD(int fd) { _fd = fd;	}
 
-std::string Client::GetNickName					() const { return _nickname; }
-std::string Client::GetUserName					() const { return _username; }
-std::string Client::GetRealName					() const { return _realname; }
-std::string Client::GetHostName					() const { return _hostname; }
+std::string Client::GetNickname					() const { return _nickname; }
+std::string Client::GetUsername					() const { return _username; }
+std::string Client::GetRealname					() const { return _realname; }
+std::string Client::GetHostname					() const { return _hostname; }
 std::string Client::GetPassword					() const { return _password; }
 
 void	Client::SetNickName						(const std::string &nickname)	{ _nickname = nickname; }
@@ -51,7 +53,7 @@ void	Client::AppendToOuputBuffer				(const std::string& data)
 {
 	_ouput_buffer.append(data);
 
-	std::cout << "User " << GetNickName() << " appended " << data.length() << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
+	std::cout << "User " << GetNickname() << " appended " << data.length() << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
 }
 
 bool	Client::IsRegistered() const
@@ -70,13 +72,13 @@ void	Client::PopOutputBuffer(size_t count)
 	{
 		_ouput_buffer.erase(0, count);
 
-		std::cout << "User " << GetNickName() << " popped " << count << " bytes from output buffer. Remaining: " << _ouput_buffer.length() << std::endl;
+		std::cout << "User " << GetNickname() << " popped " << count << " bytes from output buffer. Remaining: " << _ouput_buffer.length() << std::endl;
 	}
 	else
 	{
 		_ouput_buffer.clear();
 
-		std::cout << "User " << GetNickName() << " output buffer cleared." << std::endl;
+		std::cout << "User " << GetNickname() << " output buffer cleared." << std::endl;
 	}
 }
 
@@ -135,7 +137,6 @@ void		Client::SetStatus(UserStatus status)	{ _status = status;	}
 
 UserStatus	Client::GetStatus() const				{ return (_status);	}
 
-// Yeni eklenen metotların implementasyonu
 bool Client::IsModeSet(char mode_char) const
 {
 	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
@@ -184,14 +185,14 @@ void Client::ApplyModes(Client* sender, const std::string& mode_string, Server& 
 
 		switch (mode_char)
 		{
-			case 'i': handleInvisibleMode(sign, server); break;
+			case 'i': handle_I_Mode(sign, server); break;
 
-			case 'w': handleWallopsMode(sign, server); break;
+			case 'w': handle_W_Mode(sign, server); break;
 
 			case 'o':
-				// Kullanıcılar kendi operatör modlarını değiştiremez.
-				server.SendsNumericReply(sender, 481, ":Permission Denied - You're not an IRC operator");
+				server.SendsNumericReply(sender, 481, ":Permission Denied - You're not an IRC operator"			);
 				break;
+
 			default:
 				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :is unknown mode char to me");
 				break;
@@ -199,27 +200,26 @@ void Client::ApplyModes(Client* sender, const std::string& mode_string, Server& 
 	}
 }
 
-// Yardımcı metotların implementasyonu
-void Client::handleInvisibleMode(char sign, Server& server)
+void Client::handle_I_Mode(char sign, Server& server)
 {
-	bool current_status = IsModeSet('i');
-	bool new_status = (sign == '+');
+	bool cur_status = IsModeSet('i');
+	bool new_status = (sign ==  '+');
 	
-	if (current_status != new_status)
+	if (cur_status != new_status)
 	{
 		_modes['i'] = new_status;
-		server.SendsNumericReply(this, 0, ":MODE " + GetNickName() + " " + std::string(1, sign) + "i");
+		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "i");
 	}
 }
 
-void Client::handleWallopsMode(char sign, Server& server)
+void Client::handle_W_Mode(char sign, Server& server)
 {
-	bool current_status = IsModeSet('w');
-	bool new_status = (sign == '+');
+	bool cur_status = IsModeSet('w');
+	bool new_status = (sign ==  '+');
 
-	if (current_status != new_status)
+	if (cur_status != new_status)
 	{
 		_modes['w'] = new_status;
-		server.SendsNumericReply(this, 0, ":MODE " + GetNickName() + " " + std::string(1, sign) + "w");
+		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "w");
 	}
 }

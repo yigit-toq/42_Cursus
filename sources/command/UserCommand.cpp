@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/20 16:44:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:47:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	std::string username = msg.GetParameters()[0];
 
-	// Mod parametresi		(msg.GetParameters()[1]) şimdilik kullanılmıyor, RFC'ye göre 0 veya 8 olmalı.
-	// unused parametresi	(msg.GetParameters()[2]) şimdilik kullanılmıyor.
+	// Mod parametresi	  (msg.GetParameters()[1])
+	// Unu parametresi	  (msg.GetParameters()[2])
 
-	std::string realname = msg.GetParameters()[3]; // trailing parameter
+	std::string realname = msg.GetParameters()[3];
 
 	if (username.empty() || realname.empty())
 	{

@@ -6,11 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:20:59 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:52:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Socket.hpp"
+
+//bakılacak
 
 Socket:: Socket(int port) : _port(port), _sock(-1)
 {

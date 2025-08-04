@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/03 21:36:34 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:09:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 
 #include "Socket.hpp"
 #include "Client.hpp"
+
 #include "Channel.hpp"
 #include "Message.hpp"
+
 #include "PollHandler.hpp"
 #include "NickCommand.hpp"
 #include "UserCommand.hpp"
@@ -32,9 +34,10 @@
 #include "PrivCommand.hpp"
 #include "PartCommand.hpp"
 #include "QuitCommand.hpp"
-#include "TopicCommand.hpp"
 #include "KickCommand.hpp"
 #include "ModeCommand.hpp"
+#include "TopicCommand.hpp"
+
 #include "CommandHandler.hpp"
 
 #pragma endregion
@@ -46,37 +49,37 @@
 class Server
 {
 	private:
-		std::map<std::string, CommandHandler*>	_cmds_handlr;
-		PollHandler								_poll_handlr;
+		std::map<std::string, CommandHandler*>		_cmds_handlr;
+		PollHandler									_poll_handlr;
 
-		Socket									_srvr_socket;
+		Socket										_srvr_socket;
 
-		std::string								_server_name;
-		std::string								_netwrk_name;
+		std::string									_server_name;
+		std::string									_netwrk_name;
 
-		std::map<std::string, Client*> _clients_by_nick; //
+		std::map<std::string, Client*>				_clients_by_nick;
 
-		std::string								_password;
+		std::string									_password;
 
-		std::map<std::string, Channel*>			_channels;
-		std::map<int, Client*>					_clients;
+		std::map<std::string, Channel*>				_channels;
+		std::map<int, Client*>						_clients;
 
-		void	SetupCommands					();
-		void	ProcessMessage					(Client* sender, const Message& msg);
+		void	SetupCommands						();
+		void	ProcessMessage						(Client* sender, const Message& msg);
 
-		Server									(const Server&);
-		Server& operator=						(const Server&);
+		Server										(const Server&);
+		Server& operator=							(const Server&);
 
 	public:
-		 Server								(int port, std::string pass);
-		~Server								();
+		 Server										(int port, std::string pass);
+		~Server										();
 
-		void Start							();
+		void Start									();
 
-		const std::string&	GetServerName	() const;
-		const std::string&	GetNetwrkName	() const;
+		const std::string&	GetPassword				() const;
 
-		const std::string&	GetPassword		() const;
+		const std::string&	GetServerName			() const;
+		const std::string&	GetNetwrkName			() const;
 
 		Client*			FindUserByNickname			(const std::string& nickname) const;
 		bool			IsNicknameAvailable			(const std::string& nickname) const;
@@ -88,15 +91,16 @@ class Server
 		void 			HandleClientMessage			(int fd);
 		void 			ClientDisconnection			(int fd);
 
+		Client*			FindClient					(const std::string& nick);
+
 		Channel*		FinderChannel				(const std::string& name) const;
 		Channel*		CreateChannel				(const std::string& name);
+
 		void			RemoveChannel				(const std::string& name);
 
 		PollHandler&	GetPollHandler				();
 
-		Client* FindClient(const std::string& nickname);//
-
-		void BroadcastChannelMessage(Channel* channel, Client* sender, const std::string& message); //
+		void			BroadcastChannelMessage		(Channel* channel, Client* sender, const std::string& message);
 };
 
 #endif

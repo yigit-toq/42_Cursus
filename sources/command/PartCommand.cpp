@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:47:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:13:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/04 22:34:29 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 	std::string channel_name_str	= msg.GetParameters()[0];
 
-	std::string part_message		= ""; // Ayrılma mesajı (isteğe bağlı)
+	std::string part_message		= "";
 
 	if (msg.GetParameters().size() > 1)
 	{
@@ -41,9 +41,9 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 	while (std::getline(ss, channel_name, ','))
 	{
-		if (channel_name.empty() || (channel_name[0] != '#' && channel_name[0] != '&'))
+		if (channel_name.empty() ||		(channel_name[0] != '#' && channel_name[0] != '&'))
 		{
-			_server.SendsNumericReply(sender, 403, channel_name + " :No such channel");
+			_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel");
 			continue ;
 		}
 
@@ -51,19 +51,19 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 		if (!target_channel)
 		{
-			_server.SendsNumericReply(sender, 403, channel_name + " :No such channel");
+			_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel");
 			continue ;
 		}
 
-		if (!target_channel->IsUser(sender))
+		if (!target_channel->IsUser		(sender))
 		{
-			_server.SendsNumericReply(sender, 442, channel_name + " :You're not on that channel");
+			_server.SendsNumericReply	(sender, 442, channel_name + " :You're not on that channel");
 			continue ;
 		}
 
 		std::stringstream part_ss;
 
-		part_ss << ":" << sender->GetNickName() << "!" << sender->GetUserName() << "@" << sender->GetHostName() << " PART " << channel_name;
+		part_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PART " << channel_name;
 
 		if (!part_message.empty())
 		{
@@ -72,13 +72,13 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 		target_channel->BroadcastMessage(part_ss.str(), NULL);
 
-		target_channel->RmvClient(sender);
+		target_channel->RmvClient		(sender);
 
-		std::cout << "Client " << sender->GetNickName() << " parted from channel " << channel_name << std::endl;
+		std::cout << "Client " << sender->GetNickname() << " parted from channel " << channel_name << std::endl;
 
-		if (target_channel->IsEmpty())
+		if (target_channel->IsEmpty	())
 		{
-			_server.RemoveChannel(target_channel->GetName());
+			_server.RemoveChannel	(target_channel->GetName());
 
 			std::cout << "Channel " << channel_name << " is empty and removed." << std::endl;
 		}
