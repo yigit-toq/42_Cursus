@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:52:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:13:26 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ bool	Channel::IsOperator	(Client* user) const
 	return (_operators.count(user->GetFD()) > 0);
 }
 
-const std::map<int, Client*>& Channel::getUsers		() const { return _clients;		}
-const std::map<int, Client*>& Channel::getOperators	() const { return _operators;	}
+const std::map<int, Client*>& Channel::GetUsers		() const { return _clients;		}
+const std::map<int, Client*>& Channel::GetOperators	() const { return _operators;	}
 
 void	Channel::SetName	(const std::string& name)
 {

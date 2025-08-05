@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:14:07 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:10:36 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 	names_ss << "= " << channel_name << " :";
 	
-	const std::map<int, Client*>& users_in_channel		= channel->getUsers();
-	const std::map<int, Client*>& operators_in_channel	= channel->getOperators();
+	const std::map<int, Client*>& users_in_channel		= channel->GetUsers();
+	const std::map<int, Client*>& operators_in_channel	= channel->GetOperators();
 
 	bool first_user = true;
 

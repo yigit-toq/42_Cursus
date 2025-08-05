@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:54:05 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/03 15:10:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 22:09:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Utils:: Utils() {}
 
 Utils::~Utils() {}
 
-std::string					Utils::trim (const std::string& str)
+std::string					Utils::trim	(const std::string& str)
 {
 	size_t	first	= str.find_first_not_of	(" \t\n\r\f\v");
 
@@ -49,4 +49,31 @@ std::vector<std::string>	Utils::split(const std::string& str, char delimiter)
 	tokens.push_back(str.substr(bgn));
 
 	return (tokens);
+}
+
+std::vector<std::pair<char, char> >	Utils::ParseModeString(const std::string& mode_string)
+{
+	std::vector<std::pair<char, char> >	parsed_modes;
+
+	char current_sign = '+';
+
+	for (size_t i = 0; i < mode_string.length(); ++i)
+	{
+		char c = mode_string[i];
+
+		if (c == '+' || c == '-')
+		{
+			current_sign = c;
+		}
+		else
+		{
+			parsed_modes.push_back(std::make_pair(current_sign, c));
+		}
+	}
+	return (parsed_modes);
+}
+
+bool	Utils::IsModeWithParameter(char mode)
+{
+	return (mode == 'o' || mode == 'l' || mode == 'k');
 }

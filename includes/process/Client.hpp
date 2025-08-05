@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:04:13 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:17:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ class Client
 
 		void							SetStatus			(UserStatus status);
 
-		void 							SetUserName			(const std::string &username);
-		void 							SetNickName			(const std::string &nickname);
-		void 							SetRealName			(const std::string &realname);
-		void 							SetHostName			(const std::string &hostname);
+		void 							SetUsername			(const std::string &username);
+		void 							SetNickname			(const std::string &nickname);
+		void 							SetRealname			(const std::string &realname);
+		void 							SetHostname			(const std::string &hostname);
 		void 							SetPassword			(const std::string &password);
 
 		void 							AppendToInputBuffer	(const std::string &data);

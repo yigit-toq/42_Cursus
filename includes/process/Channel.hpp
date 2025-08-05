@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 21:47:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:59:24 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ class Channel
 
 		bool	IsModeSet								(char mode)		const;
 
-		const	std::map<int, Client*>& getUsers		() const;
-		const	std::map<int, Client*>& getOperators	() const;
+		const	std::map<int, Client*>& GetUsers		() const;
+		const	std::map<int, Client*>& GetOperators	() const;
 
 		void	SetName									(const std::string& name);
 		void	SetPass									(const std::string& pass);
@@ -91,11 +91,11 @@ class Channel
 		void	ApplyModes								(Client* sender, const std::string& mode_strs, const std::vector<std::string>& mode_args, Server& server);
 
 	private:
-		void		handle_I_Mode	(Client* sender, char sign);
-		void		handle_T_Mode	(Client* sender, char sign);
-		void		handle_K_Mode	(Client* sender, char sign, const std::string& param);
-		void		handle_L_Mode	(Client* sender, char sign, const std::string& param);
-		void		handle_O_Mode	(Client* sender, char sign, const std::string& param);
+		void	handle_I_Mode							(Client* sender, char sign);
+		void	handle_T_Mode							(Client* sender, char sign);
+		void	handle_K_Mode							(Client* sender, char sign, const std::string& param);
+		void	handle_L_Mode							(Client* sender, char sign, const std::string& param);
+		void	handle_O_Mode							(Client* sender, char sign, const std::string& param);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:51:51 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:17:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ std::string Client::GetRealname					() const { return _realname; }
 std::string Client::GetHostname					() const { return _hostname; }
 std::string Client::GetPassword					() const { return _password; }
 
-void	Client::SetNickName						(const std::string &nickname)	{ _nickname = nickname; }
-void	Client::SetUserName						(const std::string &username)	{ _username = username; }
-void	Client::SetRealName						(const std::string &realname)	{ _realname = realname; }
-void	Client::SetHostName						(const std::string &hostname)	{ _hostname = hostname; }
+void	Client::SetNickname						(const std::string &nickname)	{ _nickname = nickname; }
+void	Client::SetUsername						(const std::string &username)	{ _username = username; }
+void	Client::SetRealname						(const std::string &realname)	{ _realname = realname; }
+void	Client::SetHostname						(const std::string &hostname)	{ _hostname = hostname; }
 void	Client::SetPassword						(const std::string &password)	{ _password = password; }
 
 void	Client::AppendToInputBuffer				(const std::string &data)		{ _input_buffer += data; }

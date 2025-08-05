@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:47:39 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:18:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	sender->SetUserName(username);
-	sender->SetRealName(realname);
+	sender->SetUsername(username);
+	sender->SetRealname(realname);
 
 	if (sender->GetStatus() == UNREGISTERED || sender->GetStatus() == NICK_SET)
 	{

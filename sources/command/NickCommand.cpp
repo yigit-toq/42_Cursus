@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:30:30 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/05 21:57:26 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@ NickCommand::~NickCommand() {}
 
 void	NickCommand::Execute(Client* sender, const Message& msg)
 {
-	if (sender->IsRegistered())
-	{
-		std::cout << "User "					<< sender->GetNickname()	<< " trying to change nick to: "	<< msg.GetParameters()[0] << std::endl;
-	}
-	else
-	{
-		std::cout << "Unregistered user FD "	<< sender->GetFD()			<< " attempting to set nick."		<< std::endl;
-	}
-
 	if (msg.GetParameters().empty())
 	{
 		_server.SendsNumericReply(sender, 431, "No nickname given");
@@ -47,14 +38,21 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	sender->SetNickName		(new_nick);
-
-	if (sender->GetStatus	() == UNREGISTERED)
+	if (sender->IsRegistered() && !sender->GetNickname().empty())
 	{
-		sender->SetStatus	(NICK_SET);
+		_server.RmvClient	(sender);
 	}
 
-	std::cout << "User FD " << sender->GetFD() << " nickname set to: " << new_nick << std::endl;
+	sender->SetNickname				(new_nick);
+	
+	_server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
+
+	_server.AddClient				(sender);
+
+	if (sender->GetStatus() == UNREGISTERED)
+	{
+		sender->SetStatus(NICK_SET);
+	}
 
 	_server.CheckRegistration(sender);
 }
