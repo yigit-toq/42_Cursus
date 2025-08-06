@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:47:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/23 18:21:12 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 23:41:37 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ class Socket
 		 Socket			(int port);
 		~Socket			();
 
-		int		Accept	();
+		int		Accept	(void);
 
 		void	Listen	(int backlog = 5);
-		void	Create	();
-		void	Binder	();
+		void	Create	(void);
+		void	Binder	(void);
 
 		int 	Sender	(int fd, char *buffer, size_t length);
 
 		int 	Receive	(int fd, char *buffer, size_t length);
 
-		int 	GetSock	() const;
-		int 	GetPort	() const;
+		int 	GetSock	(void) const;
+		int 	GetPort	(void) const;
 
 		void 	RmvSock	(int fd);
 };

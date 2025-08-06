@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:42:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:45:48 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:28:56 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 #include <iostream>
 #include <sstream>
 
-//bakılacak
+TopicCommand:: TopicCommand	 (Server& server) : _server(server) {}
 
-TopicCommand:: TopicCommand(Server& server) : _server(server) {}
-
-TopicCommand::~TopicCommand() {}
+TopicCommand::~TopicCommand	 () {}
 
 void	TopicCommand::Execute(Client* sender, const Message& msg)
 {
@@ -60,7 +58,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string new_topic = msg.GetParameters()[1];
 
-		if (channel_tar->IsTopicSetByOp() && !channel_tar->IsOperator(sender))
+		if (channel_tar->IsTopicSetOp() && !channel_tar->IsOperator(sender))
 		{
 			_server.SendsNumericReply(sender, 482, channel_name + " :You're not channel operator");
 			return ;

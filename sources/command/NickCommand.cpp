@@ -6,16 +6,16 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:57:26 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:12:25 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "NickCommand.hpp"
 #include "Server.hpp"
 
-NickCommand:: NickCommand(Server& server) : _server(server) {}
+NickCommand:: NickCommand	(Server& server) : _server(server) {}
 
-NickCommand::~NickCommand() {}
+NickCommand::~NickCommand	() {}
 
 void	NickCommand::Execute(Client* sender, const Message& msg)
 {
@@ -44,10 +44,10 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 	}
 
 	sender->SetNickname				(new_nick);
-	
-	_server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
 
 	_server.AddClient				(sender);
+
+	_server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
 
 	if (sender->GetStatus() == UNREGISTERED)
 	{

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:47:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:34:29 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:17:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <iostream>
 #include <sstream>
 
-PartCommand:: PartCommand(Server& server) : _server(server) {}
+PartCommand:: PartCommand	(Server& server) : _server(server) {}
 
-PartCommand::~PartCommand() {}
+PartCommand::~PartCommand	() {}
 
 void	PartCommand::Execute(Client* sender, const Message& msg)
 {
@@ -27,16 +27,16 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	std::string channel_name_str	= msg.GetParameters()[0];
+	std::string name_strings	= msg.GetParameters()[0];
 
-	std::string part_message		= "";
+	std::string part_message	= "";
 
 	if (msg.GetParameters().size() > 1)
 	{
 		part_message = msg.GetParameters()[1];
 	}
 
-	std::stringstream	ss(channel_name_str);
+	std::stringstream	ss(name_strings);
 	std::string			channel_name;
 
 	while (std::getline(ss, channel_name, ','))

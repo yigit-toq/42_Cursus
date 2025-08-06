@@ -6,16 +6,16 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:18:05 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:29:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "UserCommand.hpp"
 #include "Server.hpp"
 
-UserCommand:: UserCommand(Server& server) : _server(server) {}
+UserCommand:: UserCommand	(Server& server) : _server(server) {}
 
-UserCommand::~UserCommand() {}
+UserCommand::~UserCommand	() {}
 
 void	UserCommand::Execute(Client* sender, const Message& msg)
 {

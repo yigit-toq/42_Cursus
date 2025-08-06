@@ -6,13 +6,11 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:52:41 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 23:42:33 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Socket.hpp"
-
-//bakılacak
 
 Socket:: Socket(int port) : _port(port), _sock(-1)
 {
@@ -31,7 +29,7 @@ Socket::~Socket()
 	}
 }
 
-void Socket::Listen	(int backlog)
+void	Socket::Listen	(int backlog)
 {
 	if (listen(_sock, backlog) < 0)
 	{
@@ -43,7 +41,7 @@ void Socket::Listen	(int backlog)
 	std::cout << "Socket is listening on port " << _port << std::endl;
 }
 
-void Socket::Create	(void)
+void	Socket::Create	(void)
 {
 	_sock = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -69,9 +67,9 @@ void Socket::Create	(void)
 	}
 }
 
-void Socket::Binder	(void)
+void	Socket::Binder	(void)
 {
-	if (bind(_sock, (struct sockaddr *)&_addr, sizeof(_addr)) < 0)
+	if (bind (_sock, (struct sockaddr *)&_addr, sizeof(_addr)) < 0)
 	{
 		close(_sock);
 
@@ -79,7 +77,7 @@ void Socket::Binder	(void)
 	}
 }
 
-int	Socket::Sender	(int fd, char *buffer, size_t length)
+int		Socket::Sender	(int fd, char *buffer, size_t length)
 {
 	if (!buffer || length == 0)
 	{
@@ -103,35 +101,7 @@ int	Socket::Sender	(int fd, char *buffer, size_t length)
 	return static_cast<int>(bytes_sent);
 }
 
-int	Socket::Receive	(int fd, char *buffer, size_t length)
-{
-	memset(buffer, 0, length);
-
-	ssize_t	bytes_received = recv(fd, buffer, length, 0);
-
-	if (bytes_received < 0)
-	{
-		if (errno != EWOULDBLOCK && errno != EAGAIN)
-		{
-			throw std::runtime_error("Failed to receive data");
-		}
-		return (-1);
-	}
-
-	return static_cast<int>(bytes_received);
-}
-
-int	Socket::GetSock	() const
-{
-	return (_sock);
-}
-
-int	Socket::GetPort	() const
-{
-	return (_port);
-}
-
-int	Socket::Accept	()
+int		Socket::Accept	(void)
 {
 	socklen_t	addrlen = sizeof(_addr);
 
@@ -149,7 +119,35 @@ int	Socket::Accept	()
 	return (client_fd);
 }
 
-void Socket::RmvSock(int client_fd)
+int		Socket::Receive	(int fd, char *buffer, size_t length)
+{
+	memset(buffer, 0, length);
+
+	ssize_t	bytes_received = recv(fd, buffer, length, 0);
+
+	if (bytes_received < 0)
+	{
+		if (errno != EWOULDBLOCK && errno != EAGAIN)
+		{
+			throw std::runtime_error("Failed to receive data");
+		}
+		return (-1);
+	}
+
+	return static_cast<int>(bytes_received);
+}
+
+int		Socket::GetSock	(void) const
+{
+	return (_sock);
+}
+
+int		Socket::GetPort	(void) const
+{
+	return (_port);
+}
+
+void	Socket::RmvSock(int client_fd)
 {
 	if (client_fd >= 0)
 	{

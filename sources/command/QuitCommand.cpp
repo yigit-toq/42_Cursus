@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 15:49:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:43:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:25:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <iostream>
 #include <sstream>
 
-QuitCommand:: QuitCommand(Server& server) : _server(server) {}
+//bakılacak
 
-QuitCommand::~QuitCommand() {}
+QuitCommand:: QuitCommand	(Server& server) : _server(server) {}
+
+QuitCommand::~QuitCommand	() {}
 
 void	QuitCommand::Execute(Client* sender, const Message& msg)
 {
@@ -34,7 +36,7 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 	std::string			quit_ms = quit_ss.str();
 
-	const std::vector<Channel*>&	joined_channels = sender->GetJoinedChannels();
+	const std::vector<Channel*>&	joined_channels = sender->GetJoinChannels();
 
 	std::vector<Channel*>			channel_to_part = joined_channels;
 

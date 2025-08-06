@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:10:36 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:03:50 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 #include <iostream>
 #include <sstream>
 
-JoinCommand:: JoinCommand(Server& server) : _server(server) {}
+//bakılacak
 
-JoinCommand::~JoinCommand() {}
+JoinCommand:: JoinCommand	(Server& server) : _server(server) {}
+
+JoinCommand::~JoinCommand	() {}
 
 void	JoinCommand::Execute(Client* sender, const Message& msg)
 {
@@ -35,7 +37,6 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 	if (channel_name.empty() || (channel_name[0] != '#' && channel_name[0] != '&'))
 	{
 		_server.SendsNumericReply(sender, 403, channel_name + " :No such channel");
-
 		return ;
 	}
 
@@ -43,7 +44,6 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 		channel_name.find(',') != std::string::npos || channel_name.find(7) != std::string::npos)
 	{
 		_server.SendsNumericReply(sender, 403, channel_name + " :No such channel");
-
 		return ;
 	}
 
@@ -80,7 +80,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 		}
 	}
 
-	channel	->AddClient	(sender);
+	channel	->AddClient	(sender	);
 	sender	->AddChannel(channel);
 
 	std::stringstream join_msg_ss;
@@ -102,8 +102,8 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 	names_ss << "= " << channel_name << " :";
 	
-	const std::map<int, Client*>& users_in_channel		= channel->GetUsers();
-	const std::map<int, Client*>& operators_in_channel	= channel->GetOperators();
+	const std::map<int, Client*>& users_in_channel		= channel->GetUsers		();
+	const std::map<int, Client*>& operators_in_channel	= channel->GetOperators	();
 
 	bool first_user = true;
 

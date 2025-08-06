@@ -6,15 +6,13 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:17:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 18:36:45 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 #include "Server.hpp"
 #include <iostream>
-
-//bakılacak
 
 Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
 {
@@ -31,42 +29,59 @@ Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
 
 Client::~Client	() {}
 
-int		Client::GetFD() const { return _fd; }
+//--------------------   Getter Methods   --------------------
 
-void	Client::SetFD(int fd) { _fd = fd;	}
+int			Client::GetFD						(void) const					{ return _fd; }
 
-std::string Client::GetNickname					() const { return _nickname; }
-std::string Client::GetUsername					() const { return _username; }
-std::string Client::GetRealname					() const { return _realname; }
-std::string Client::GetHostname					() const { return _hostname; }
-std::string Client::GetPassword					() const { return _password; }
+UserStatus	Client::GetStatus					() const						{ return (_status);	}
 
-void	Client::SetNickname						(const std::string &nickname)	{ _nickname = nickname; }
-void	Client::SetUsername						(const std::string &username)	{ _username = username; }
-void	Client::SetRealname						(const std::string &realname)	{ _realname = realname; }
-void	Client::SetHostname						(const std::string &hostname)	{ _hostname = hostname; }
-void	Client::SetPassword						(const std::string &password)	{ _password = password; }
+std::string Client::GetNickname					() const						{ return _nickname; }
+std::string Client::GetUsername					() const						{ return _username; }
+std::string Client::GetRealname					() const						{ return _realname; }
+std::string Client::GetHostname					() const						{ return _hostname; }
+std::string Client::GetPassword					() const						{ return _password; }
 
-void	Client::AppendToInputBuffer				(const std::string &data)		{ _input_buffer += data; }
+const std::string&				Client::GetOutputBuffer	() const
+{
+	return (_ouput_buffer	);
+}
 
-void	Client::AppendToOuputBuffer				(const std::string& data)
+const std::vector<Channel*>&	Client::GetJoinChannels	() const
+{
+	return (_join_channels	);
+}
+
+//------------------------------------------------------------
+
+//--------------------   Setter Methods   --------------------
+
+void		Client::SetFD						(int fd)						{ _fd	= fd; }
+
+void		Client::SetStatus					(UserStatus status)				{ _status = status;	}
+
+void		Client::SetNickname					(const std::string &nickname)	{ _nickname = nickname; }
+void		Client::SetUsername					(const std::string &username)	{ _username = username; }
+void		Client::SetRealname					(const std::string &realname)	{ _realname = realname; }
+void		Client::SetHostname					(const std::string &hostname)	{ _hostname = hostname; }
+void		Client::SetPassword					(const std::string &password)	{ _password = password; }
+
+//------------------------------------------------------------
+
+//--------------------    Input/Output    --------------------
+
+void	Client::AppendToInputBuffer	(const std::string &data)
+{
+	_input_buffer += data;
+}
+
+void	Client::AppendToOuputBuffer	(const std::string& data)
 {
 	_ouput_buffer.append(data);
 
 	std::cout << "User " << GetNickname() << " appended " << data.length() << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
 }
 
-bool	Client::IsRegistered() const
-{
-	return (_status == REGISTERED);
-}
-
-bool	Client::HasOuputData() const
-{
-	return (!_ouput_buffer.empty());
-}
-
-void	Client::PopOutputBuffer(size_t count)
+void	Client::PopOutputBuffer		(size_t count)
 {
 	if (count <= _ouput_buffer.length())
 	{
@@ -82,25 +97,43 @@ void	Client::PopOutputBuffer(size_t count)
 	}
 }
 
+//------------------------------------------------------------
+
+//--------------------  Register  Status  --------------------
+
+bool	Client::IsRegistered() const
+{
+	return (_status == REGISTERED );
+}
+
+bool	Client::HasOuputData() const
+{
+	return (!_ouput_buffer.empty());
+}
+
+//------------------------------------------------------------
+
+//-------------------- Channel Management --------------------
+
 void	Client::AddChannel(Channel* channel)
 {
-	for (size_t i = 0; i < _joined_channels.size(); ++i)
+	for (size_t i = 0; i < _join_channels.size(); ++i)
 	{
-		if (_joined_channels[i] == channel)
+		if (_join_channels[i] == channel)
 			return ;
 	}
-	_joined_channels.push_back(channel);
+	_join_channels.push_back(channel);
 
 	std::cout << "Client " << _nickname << " added to joined channel list: " << channel->GetName() << std::endl;
 }
 
 void	Client::RmvChannel(Channel* channel)
 {
-	for (std::vector<Channel*>::iterator it = _joined_channels.begin(); it != _joined_channels.end(); ++it)
+	for (std::vector<Channel*>::iterator it = _join_channels.begin(); it != _join_channels.end(); ++it)
 	{
 		if (*it == channel)
 		{
-			_joined_channels.erase(it);
+			_join_channels.erase(it);
 
 			std::cout << "Client " << _nickname << " removed from joined channel list: " << channel->GetName() << std::endl;
 
@@ -109,61 +142,11 @@ void	Client::RmvChannel(Channel* channel)
 	}
 }
 
-const std::vector<Channel*>&	Client::GetJoinedChannels	() const
-{
-	return (_joined_channels);
-}
+//------------------------------------------------------------
 
-const std::string&				Client::GetOutputBuffer		() const
-{
-	return (_ouput_buffer);
-}
+//--------------------   Mode  Handling   --------------------
 
-std::string Client::ExtractNextMessage()
-{
-	size_t		pos		= _input_buffer.find	("\r\n");
-
-	if (pos == std::string::npos)
-		return ("");
-
-	std::string	message	= _input_buffer.substr	(0, pos);
-
-	_input_buffer.erase(0, pos + 2);
-
-	return (message);
-}
-
-void		Client::SetStatus(UserStatus status)	{ _status = status;	}
-
-UserStatus	Client::GetStatus() const				{ return (_status);	}
-
-bool Client::IsModeSet(char mode_char) const
-{
-	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
-
-	if (it != _modes.end())
-	{
-		return (it->second);
-	}
-	return (false);
-}
-
-std::string Client::GetModeString() const
-{
-	std::string mode_str = "+";
-
-	if (IsModeSet('i')) mode_str += "i";
-	if (IsModeSet('w')) mode_str += "w";
-	if (IsModeSet('o')) mode_str += "o";
-	
-	if (mode_str == "+")
-	{
-		return "";
-	}
-	return mode_str;
-}
-
-void Client::ApplyModes(Client* sender, const std::string& mode_string, Server& server)
+void	Client::ApplyModes			(Client* sender, const std::string& mode_string, Server& server)
 {
 	if (sender->GetFD() != GetFD())
 	{
@@ -185,22 +168,26 @@ void Client::ApplyModes(Client* sender, const std::string& mode_string, Server& 
 
 		switch (mode_char)
 		{
-			case 'i': handle_I_Mode(sign, server); break;
+			case 'i':
+				handle_I_Mode(sign, server);
+				break ;
 
-			case 'w': handle_W_Mode(sign, server); break;
+			case 'w':
+				handle_W_Mode(sign, server);
+				break ;
 
 			case 'o':
 				server.SendsNumericReply(sender, 481, ":Permission Denied - You're not an IRC operator"			);
-				break;
+				break ;
 
 			default:
 				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :is unknown mode char to me");
-				break;
+				break ;
 		}
 	}
 }
 
-void Client::handle_I_Mode(char sign, Server& server)
+void	Client::handle_I_Mode		(char sign, Server& server)
 {
 	bool cur_status = IsModeSet('i');
 	bool new_status = (sign ==  '+');
@@ -212,7 +199,7 @@ void Client::handle_I_Mode(char sign, Server& server)
 	}
 }
 
-void Client::handle_W_Mode(char sign, Server& server)
+void	Client::handle_W_Mode		(char sign, Server& server)
 {
 	bool cur_status = IsModeSet('w');
 	bool new_status = (sign ==  '+');
@@ -223,3 +210,47 @@ void Client::handle_W_Mode(char sign, Server& server)
 		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "w");
 	}
 }
+
+std::string	Client::GetModeString	() const
+{
+	std::string mode_str = "+";
+
+	if (IsModeSet('i')) mode_str += "i";
+	if (IsModeSet('w')) mode_str += "w";
+	if (IsModeSet('o')) mode_str += "o";
+	
+	if (mode_str == "+")
+	{
+		return ("");
+	}
+	return (mode_str);
+}
+
+bool		Client::IsModeSet		(char mode_char) const
+{
+	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
+
+	if (it != _modes.end())
+	{
+		return (it->second);
+	}
+	return (false);
+}
+
+//------------------------------------------------------------
+
+std::string Client::ExtractNextMessage()
+{
+	size_t		pos		= _input_buffer.find	("\r\n");
+
+	if (pos == std::string::npos)
+		return ("");
+
+	std::string	message	= _input_buffer.substr	(0, pos);
+
+	_input_buffer.erase(0, pos + 2);
+
+	return (message);
+}
+
+//------------------------------------------------------------

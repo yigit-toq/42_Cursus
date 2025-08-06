@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 22:09:59 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:28:40 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:11:01 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <iostream>
 #include <sstream>
 
-ModeCommand:: ModeCommand(Server& server) : _server(server) {}
+ModeCommand:: ModeCommand	(Server& server) : _server(server) {}
 
-ModeCommand::~ModeCommand() {}
+ModeCommand::~ModeCommand	() {}
 
 void	ModeCommand::Execute(Client* sender, const Message& msg)
 {
@@ -40,29 +40,28 @@ void	ModeCommand::Execute(Client* sender, const Message& msg)
 	}
 }
 
-//bakılacak
-
 void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 {
-	std::string	channel_name	= msg.GetParameters()[0];
-	Channel*	channel_target	= _server.FinderChannel(channel_name);
+	std::string	channel_name	=  msg.		GetParameters()[0];
 
-	if (!channel_target)
+	Channel*	channel_tar		= _server.	FinderChannel(channel_name);
+
+	if (!channel_tar)
 	{
-		_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel");
+		_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel"			);
 		return ;
 	}
 
-	if (!channel_target->IsUser		(sender))
+	if (!channel_tar->IsUser		(sender))
 	{
-		_server.SendsNumericReply	(sender, 442, channel_name + " :You're not on that channel");
+		_server.SendsNumericReply	(sender, 442, channel_name + " :You're not on that channel"	);
 		return ;
 	}
 
 	if (msg.GetParameters().size() == 1)
 	{
-		std::string mode_string = channel_target->GetModeString();
-		std::string mode_params = channel_target->GetModeParams();
+		std::string mode_string = channel_tar->GetModeString();
+		std::string mode_params = channel_tar->GetModeParams();
 
 		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params));
 
@@ -72,12 +71,12 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 	std::string					mode_strs = msg.GetParameters()[1];
 	std::vector<std::string>	mode_args;
 
-	for (size_t i = 2; i < msg.GetParameters().size(); ++i)
+	for (size_t i = 2; i <  msg.GetParameters().size(); ++i)
 	{
 		mode_args.push_back(msg.GetParameters()[i]);
 	}
 
-	channel_target->ApplyModes(sender, mode_strs, mode_args, _server);
+	channel_tar->ApplyModes(sender, mode_strs, mode_args, _server);
 
 	std::cout << "Channel MODE command processed for " << channel_name << std::endl;
 }
@@ -90,19 +89,19 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 
 	if (!target_user)
 	{
-		_server.SendsNumericReply(sender, 401, target_nick + " :No such nick");
+		_server.SendsNumericReply(sender, 401, target_nick + " :No such nick"		);
 		return ;
 	}
 
 	if (msg.GetParameters().size() == 1)
 	{
-		_server.SendsNumericReply(sender, 221, target_user->GetModeString());
+		_server.SendsNumericReply(sender, 221, target_user->GetModeString()			);
 		return ;
 	}
 
 	if (sender->GetFD() != target_user->GetFD())
 	{
-		_server.SendsNumericReply(sender, 502, ":Cant change mode for other users");
+		_server.SendsNumericReply(sender, 502, ":Cant change mode for other users"	);
 		return ;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:17:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 18:28:47 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Client
 		std::string									_input_buffer;
 		std::string									_ouput_buffer;
 
-		std::vector<Channel*>						_joined_channels;
+		std::vector<Channel*>						_join_channels;
 
 	public:
 		 Client												(int fd);
@@ -65,7 +65,7 @@ class Client
 
 		const std::string&				GetOutputBuffer		() const;
 
-		const std::vector<Channel*>&	GetJoinedChannels	() const;
+		const std::vector<Channel*>&	GetJoinChannels		() const;
 
 		bool							IsModeSet			(char mode) const;
 

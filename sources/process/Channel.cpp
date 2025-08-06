@@ -6,17 +6,14 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:13:26 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 22:05:26 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
-
 #include "Server.hpp"
 #include "Client.hpp"
 #include "Utils.hpp"
-
-//bakılacak
 
 Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(""), _topic(""), _user_limit(0), _server(server)
 {
@@ -24,7 +21,7 @@ Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(
 	_modes['t'] = false;
 
 
-	std::cout << "Channel " << _name << " created.	"	<< std::endl;
+	std::cout << "Channel " << _name << " created.  "	<< std::endl;
 }
 
 Channel::~Channel()
@@ -32,48 +29,53 @@ Channel::~Channel()
 	std::cout << "Channel " << _name << " destroyed."	<< std::endl;
 }
 
-const std::string&	Channel::GetName		() const { return _name;	}
-const std::string&	Channel::GetPass		() const { return _pass;	}
-const std::string&	Channel::GetTopic		() const { return _topic;	}
+//--------------------   Getter Methods   --------------------
 
-size_t				Channel::GetUserLimit	() const { return _user_limit;		}
+const std::string&				Channel::GetName		() const { return _name;	}
+const std::string&				Channel::GetPass		() const { return _pass;	}
+const std::string&				Channel::GetTopic		() const { return _topic;	}
 
-bool 				Channel::IsInviteOnly	() const { return _invite_only;		}
+const std::map<int, Client*>&	Channel::GetUsers		() const { return _users;		}
+const std::map<int, Client*>&	Channel::GetOperators	() const { return _operators;	}
 
-bool 				Channel::IsTopicSetByOp	() const { return _topic_by_op;	}
+size_t							Channel::GetUserLimit	() const { return _user_limit;	}
+
+bool 							Channel::IsInviteOnly	() const { return _invite_only;	}
+bool 							Channel::IsTopicSetOp	() const { return _topic_by_op;	}
 
 bool	Channel::IsUser		(Client* user) const
 {
 	if (!user) return (false);
 
-	return (_clients.count(user->GetFD()) > 0);
+	return (_users.		count(user->GetFD()) > 0);
 }
 
 bool	Channel::IsOperator	(Client* user) const
 {
 	if (!user) return (false);
 
-	return (_operators.count(user->GetFD()) > 0);
+	return (_operators.	count(user->GetFD()) > 0);
 }
 
-const std::map<int, Client*>& Channel::GetUsers		() const { return _clients;		}
-const std::map<int, Client*>& Channel::GetOperators	() const { return _operators;	}
+//------------------------------------------------------------
 
-void	Channel::SetName	(const std::string& name)
+//--------------------   Setter Methods   --------------------
+
+void	Channel::SetName		(const std::string& name)
 {
 	_name = name;
 
-	std::cout << "Channel " << _name << " name set.      " << std::endl;
+	std::cout << "Channel " << _name << " name set." << std::endl;
 }
 
-void	Channel::SetPass	(const std::string& pass)
+void	Channel::SetPass		(const std::string& pass)
 {
 	_pass = pass;
 
-	std::cout << "Channel " << _name << " password set.  " << std::endl;
+	std::cout << "Channel " << _name << " pass set." << std::endl;
 }
 
-void	Channel::SetTopic	(const std::string& topic, Client* setter)
+void	Channel::SetTopic		(const std::string& topic, Client* setter)
 {
 	_topic = topic;
 
@@ -87,26 +89,30 @@ void	Channel::SetTopic	(const std::string& topic, Client* setter)
 	std::cout << std::endl;
 }
 
-void	Channel::SetUserLimit		(size_t limit)
+void	Channel::SetUserLimit	(size_t limit)
 {
-	_user_limit = limit;
+	_user_limit  = limit;
 
-	std::cout << "Channel " << _name << " user limit set to            : "	<< _user_limit					<< std::endl;
+	std::cout << "Channel " << _name << " user             limit set to: "	<< _user_limit					<< std::endl;
 }
 
-void	Channel::SetInviteOnly		(bool status)
+void	Channel::SetInviteOnly	(bool status)
 {
 	_invite_only = status;
 
-	std::cout << "Channel " << _name << " invite-only status set to    : "	<< (status ? "true" : "false")	<< std::endl;
+	std::cout << "Channel " << _name << " invite-only     status set to: "	<< (status ? "true" : "false")	<< std::endl;
 }
 
-void	Channel::SetTopicSetByOp	(bool status)
+void	Channel::SetTopicSetOp	(bool status)
 {
 	_topic_by_op = status;
 
 	std::cout << "Channel " << _name << " topic-set-by-op status set to: "	<< (status ? "true" : "false")	<< std::endl;
 }
+
+//------------------------------------------------------------
+
+//--------------------  User  Management  --------------------
 
 void	Channel::AddClient(Client* user)
 {
@@ -115,14 +121,14 @@ void	Channel::AddClient(Client* user)
 		return ;
 	}
 
-	_clients[user->GetFD()] = user;
+	_users[user->GetFD()] = user;
 
-	if (_clients.size() == 1)
+	if (_users.size() == 1)
 	{
 		AddOperator(user);
 	}
 
-	std::cout << "User " << user->GetNickname() << " added to channel     " << _name << std::endl;
+	std::cout << "User " << user->GetNickname() << " added     to channel " << _name << std::endl;
 }
 
 void	Channel::RmvClient(Client* user)
@@ -134,7 +140,7 @@ void	Channel::RmvClient(Client* user)
 
 	RmvOperator		(user);
 
-	_clients.erase	(user->GetFD());
+	_users.erase	(user->GetFD());
 
 	std::cout << "User " << user->GetNickname() << " removed from channel " << _name << std::endl;
 }
@@ -148,7 +154,7 @@ void	Channel::AddOperator(Client* user)
 
 	_operators[user->GetFD()] = user;
 
-	std::cout << "User " << user->GetNickname() << " is now an operator in       " << _name << std::endl;
+	std::cout << "User " << user->GetNickname() << " is now       an operator in " << _name << std::endl;
 }
 
 void	Channel::RmvOperator(Client* user)
@@ -163,9 +169,11 @@ void	Channel::RmvOperator(Client* user)
 	std::cout << "User " << user->GetNickname() << " is no longer an operator in " << _name << std::endl;
 }
 
+//------------------------------------------------------------
+
 void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 {
-	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+	for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
 		Client* target_user = it->second;
 
@@ -181,12 +189,12 @@ void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 
 bool	Channel::IsFull		()			const
 {
-	return (_user_limit > 0 && _clients.size() >= _user_limit);
+	return (_user_limit > 0 && _users.size() >= _user_limit);
 }
 
 bool	Channel::IsEmpty	()			const
 {
-	return (_clients.empty());
+	return (_users.empty());
 }
 
 bool	Channel::IsModeSet	(char mode)	const
@@ -200,6 +208,8 @@ bool	Channel::IsModeSet	(char mode)	const
 
 	return (false);
 }
+
+//--------------------  Mode Management   --------------------
 
 std::string	Channel::GetModeString() const
 {
@@ -337,6 +347,8 @@ void	Channel::handle_K_Mode	(Client* sender, char sign, const std::string& param
 		_modes['k'] = 1	;
 
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " +k " + _pass	);
+
+		return ;
 	}
 	if (sign == '-')
 	{
@@ -344,7 +356,9 @@ void	Channel::handle_K_Mode	(Client* sender, char sign, const std::string& param
 
 		_modes['k'] = 0	;
 
-		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " -k"			);
+		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " -k "			);
+
+		return ;
 	}
 }
 
@@ -373,6 +387,7 @@ void	Channel::handle_O_Mode	(Client* sender, char sign, const std::string& param
 		if (IsOperator	(target_user) != 0)
 		{
 			RmvOperator	(target_user);
+
 			_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " -o " + target_user->GetNickname());
 		}
 		return ;
@@ -391,7 +406,7 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 		{
 			_user_limit = limit	;
 
-			_modes['l'] = true	;
+			_modes['l'] = 1		;
 
 			_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " +l " + param);
 		}
@@ -403,10 +418,12 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 	}
 	if (sign == '-')
 	{
-		_user_limit = 0		;
+		_user_limit = 0	;
 
-		_modes['l'] = false	;
+		_modes['l'] = 0	;
 
-			_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " -l");
+		_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " -l");
 	}
 }
+
+//------------------------------------------------------------

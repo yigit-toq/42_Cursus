@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 16:20:24 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:38:20 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/07 00:22:53 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <iostream>
 #include <sstream>
 
-PrivCommand:: PrivCommand(Server& server) : _server(server) {}
+PrivCommand:: PrivCommand	(Server& server) : _server(server) {}
 
-PrivCommand::~PrivCommand() {}
+PrivCommand::~PrivCommand	() {}
 
 void	PrivCommand::Execute(Client* sender, const Message& msg)
 {
@@ -42,13 +42,13 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		if (!target_channel)
 		{
-			_server.SendsNumericReply	(sender, 403, tar_name + " :No such channel");
+			_server.SendsNumericReply	(sender, 403, tar_name + " :No such channel"		);
 			return ;
 		}
 
 		if (!target_channel->IsUser		(sender))
 		{
-			_server.SendsNumericReply	(sender, 404, tar_name + " :Cannot send to channel");
+			_server.SendsNumericReply	(sender, 404, tar_name + " :Cannot send to channel"	);
 			return ;
 		}
 

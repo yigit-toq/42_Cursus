@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:35 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 21:59:24 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/06 21:50:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class Channel
 		bool											_invite_only;
 		bool											_topic_by_op;
 
-		std::map<int, Client*>							_clients;
+		std::map<int, Client*>							_users;
 		std::map<int, Client*>							_operators;
 
 		Server&											_server;
@@ -58,7 +58,7 @@ class Channel
 		size_t	GetUserLimit							() const;
 
 		bool	IsInviteOnly							() const;
-		bool	IsTopicSetByOp							() const;
+		bool	IsTopicSetOp							() const;
 
 		bool	IsUser									(Client* user)	const;
 		bool	IsOperator								(Client* user)	const;
@@ -75,7 +75,7 @@ class Channel
 		void	SetUserLimit							(size_t limit);
 
 		void	SetInviteOnly							(bool status);
-		void	SetTopicSetByOp							(bool status);
+		void	SetTopicSetOp							(bool status);
 
 		void	BroadcastMessage						(const std::string& message, Client* exclude_user = NULL);
 
