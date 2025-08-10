@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:53:21 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/04 22:49:31 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 06:03:39 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ void	Message::Print() const
 		std::cout << "Prefix: [" << _prefix << "]" << std::endl;
 	}
 
-	std::cout << "Command:		[" << _command				<< "]"	<< std::endl;
-	std::cout << "Parameters	(" << _parameters.size()	<< "):"	<< std::endl;
+	std::cout << "Command:\n[" << _command				<< "]"	<< std::endl;
+	std::cout << "Parameters(" << _parameters.size()	<< "):"	<< std::endl;
 
 	for (size_t i = 0; i  < _parameters.size(); ++i)
 	{

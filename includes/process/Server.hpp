@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:02:48 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 22:46:14 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 08:15:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ class Server
 		void	HandleClientReadEvent	(int client_fd, Client* user); //
 		void	HandleClientWriteEvent	(int client_fd, Client* user); //
 
+		void	CheckForTimeouts(); //
+
 	public:
 		 Server										(int port, std::string pass);
 		~Server										();
@@ -91,7 +93,7 @@ class Server
 		bool			IsNicknameAvailable			(const std::string& nickname) const;
 
 		void 			CheckRegistration			(Client* user);
-		void 			SendsNumericReply			(Client* user, int numeric, const std::string& data) const;
+		void 			SendsNumericReply			(Client* user, int numeric, const std::string& data);
 	
 		void 			HandleNewConnection			();
 		void 			HandleClientMessage			(int fd);
@@ -110,6 +112,21 @@ class Server
 
 		void			AddClient					(Client* user); //
 		void			RmvClient					(Client* user); //
+
+		void			BroadcastNicknameChange(Client* client, const std::string& old_nick, const std::string& new_nick)
+		{
+			for (std::map<std::string, Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+			{
+				Channel* channel = it->second;
+
+				if (channel->IsUser(client))
+				{
+					std::stringstream ss;
+					ss << ":" << old_nick << " NICK " << new_nick << "\r\n";
+					channel->BroadcastMessage(ss.str(), NULL);
+				}
+			}
+		}
 };
 
 #endif

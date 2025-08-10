@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/06 18:28:47 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 06:12:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <string>
 #include <queue>
 #include <map>
+
+#include <ctime> //
 
 enum UserStatus
 {
@@ -47,6 +49,10 @@ class Client
 
 		std::vector<Channel*>						_join_channels;
 
+		bool										_authenticated;
+
+		time_t										_connection_time;
+
 	public:
 		 Client												(int fd);
 		~Client												();
@@ -66,6 +72,10 @@ class Client
 		const std::string&				GetOutputBuffer		() const;
 
 		const std::vector<Channel*>&	GetJoinChannels		() const;
+
+		bool							IsAuthenticated		() const { return _authenticated; } //
+		void							SetAuthenticated	(bool status) { _authenticated = status; } //
+		time_t							GetConnectionTime	() const { return _connection_time; } //
 
 		bool							IsModeSet			(char mode) const;
 

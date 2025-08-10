@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 18:15:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:12:25 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 08:13:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
+	if (sender->IsAuthenticated() == false) //
+	{
+		_server.SendsNumericReply(sender, 451, "NICK: You have not authenticated yet"			);
+		return ;
+	}
+
 	std::string new_nick = msg.GetParameters()[0];
 
 	if (new_nick.length() > 9)
@@ -38,21 +44,41 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (sender->IsRegistered() && !sender->GetNickname().empty())
+	if (sender->IsRegistered())
 	{
-		_server.RmvClient	(sender);
+		std::string old_nick = sender->GetNickname();
+
+		_server.RmvClient(sender);
+
+		sender->SetNickname(new_nick);
+
+		_server.AddClient(sender); //UpdateClientNick olarak fonksiyonlaştırılabilir
+
+		_server.BroadcastNicknameChange(sender, old_nick, new_nick);
+
+		_server.SendsNumericReply(sender, 001, "Your nickname has been changed to " + new_nick);
+	}
+	else
+	{
+		sender->SetNickname(new_nick);
+
+		_server.SendsNumericReply(sender, 001, "Your nickname has been set to " + new_nick);
+
+		_server.CheckRegistration(sender);
 	}
 
-	sender->SetNickname				(new_nick);
+	// if (sender->IsRegistered() && !sender->GetNickname().empty())
+	// {
+	// 	_server.RmvClient	(sender);
+	// }
 
-	_server.AddClient				(sender);
+	// sender->SetNickname				(new_nick);
 
-	_server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
+	// _server.AddClient				(sender);
 
-	if (sender->GetStatus() == UNREGISTERED)
-	{
-		sender->SetStatus(NICK_SET);
-	}
+	// _server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
 
-	_server.CheckRegistration(sender);
+	// sender->SetStatus				(NICK_SET); //
+
+	// _server.CheckRegistration		(sender);
 }

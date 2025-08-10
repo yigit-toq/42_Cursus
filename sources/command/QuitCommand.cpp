@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 15:49:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:25:41 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 05:56:09 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 		}
 	}
 
-	_server.ClientDisconnection(sender->GetFD());
-
 	std::cout << "Client " <<	sender->GetNickname() << " (" << sender->GetFD() << ") has quit with message: '" << quit_message << "'" << std::endl;
+
+	_server.ClientDisconnection(sender->GetFD());
 }

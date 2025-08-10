@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 20:42:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:28:56 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 21:48:49 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string new_topic = msg.GetParameters()[1];
 
+		std::cout << "is set topic" << channel_tar->IsTopicSetOp() << " " << "is operator" << channel_tar->IsOperator(sender) << std::endl;
+
 		if (channel_tar->IsTopicSetOp() && !channel_tar->IsOperator(sender))
 		{
 			_server.SendsNumericReply(sender, 482, channel_name + " :You're not channel operator");
@@ -68,10 +70,10 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 
 		std::stringstream topic_ss;
 
-		topic_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
+		topic_ss << ":"			<< sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
 
 		channel_tar->BroadcastMessage	(topic_ss.str(), NULL);
 
-		std::cout << "Client " << sender->GetNickname() << " set topic for channel " << channel_name << " to: '" << new_topic << "'" << std::endl;
+		std::cout << "Client "	<< sender->GetNickname() << " set topic for channel " << channel_name << " to: '" << new_topic << "'" << std::endl;
 	}
 }

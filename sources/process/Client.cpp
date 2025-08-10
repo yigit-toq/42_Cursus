@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/06 18:36:45 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 06:13:38 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 #include "Server.hpp"
 #include <iostream>
 
-Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED)
+Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED), _connection_time(time(NULL))
 {
-	_nickname = "*";
-	_username = "";
-	_realname = "";
-	_hostname = "";
-	_password = "";
+	_nickname		= "*";
+	_username		= "";
+	_realname		= "";
+	_hostname		= "";
+	_password		= "";
 
-	_modes['i'] = false;
-	_modes['w'] = false;
-	_modes['o'] = false;
+	_modes['i']		= false;
+	_modes['w']		= false;
+	_modes['o']		= false;
+
+	_authenticated	= false;
+
+	std::cout << "Client created with FD: " << _fd << std::endl;
 }
 
 Client::~Client	() {}

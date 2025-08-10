@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/06 22:05:26 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 21:43:41 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,7 +298,7 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 				break ;
 
 			default:
-				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :is unknown mode char to me");
+				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :unknown mod character");
 				break ;
 		}
 
@@ -333,6 +333,8 @@ void	Channel::handle_T_Mode	(Client* sender, char sign)
 	if (cur_status != new_status)
 	{
 		_modes['t'] = new_status;
+
+		_topic_by_op = new_status; //
 
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " " + std::string(1, sign) + "t");
 	}

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 17:21:11 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:03:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 05:05:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ JoinCommand::~JoinCommand	() {}
 
 void	JoinCommand::Execute(Client* sender, const Message& msg)
 {
+	if (sender->IsRegistered() == false) //
+	{
+		_server.SendsNumericReply(sender, 451, "JOIN :You have not registered yet");
+		return ;
+	}
 	if (msg.GetParameters().empty())
 	{
 		_server.SendsNumericReply(sender, 461, "JOIN :Not enough parameters");

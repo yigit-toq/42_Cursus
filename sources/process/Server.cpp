@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/06 18:09:00 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/10 07:46:06 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ void	Server::Start()
 {
 	while (true)
 	{
-		std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents();
+		std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents(1000);
 
 		HandleEvents(active_fds);
+
+		CheckForTimeouts(); //
 	}
 }
 
@@ -428,17 +430,21 @@ void	Server::ProcessMessage			(Client* sender, const Message& msg)
 	}
 }
 
-void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& message) const
+void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& message)
 {
 	std::stringstream ss;
 
 	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " :" << message << "\r\n";
 
 	user->AppendToOuputBuffer(ss.str());
+
+	_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT); //
 }
 
 void	Server::CheckRegistration		(Client* user)
 {
+
+
 	if (user->IsRegistered())
 		return ;
 
@@ -449,16 +455,17 @@ void	Server::CheckRegistration		(Client* user)
 
 	if (nick_set && user_set && pass_ok)
 	{
-		user->SetStatus(REGISTERED);
+		user->SetStatus		(REGISTERED);
+
+		std::cout << "is registered two: " << user->IsRegistered() << std::endl;
 
 		std::cout << "User FD " << user->GetFD() << " (" << user->GetNickname() << ") is now registered!" << std::endl;
 
-		SendsNumericReply(user, 001, "Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
+		SendsNumericReply	(user, 001, "Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
 
-		SendsNumericReply(user, 002, "Your host is "	+ _server_name + ", running version 1.0");
+		SendsNumericReply	(user, 002, "Your host is "		+ _server_name + ", running version 1.0");
 
-		SendsNumericReply(user, 003, "This server was created 2025/07/20");
-		SendsNumericReply(user, 004, _server_name		+	" 1.0 oiws O");
+		SendsNumericReply	(user, 003, "This server was created 2025/07/20");
 	}
 }
 
@@ -485,3 +492,33 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 }
 
 //------------------------------------------------------------
+
+#include <ctime>
+
+void	Server::CheckForTimeouts() //
+{
+	time_t current_time = time(NULL);
+	std::map<int, Client*>::iterator it = _clients.begin();
+
+	const int TIMEOUT_DURATION = 10;
+
+	while (it != _clients.end())
+	{
+		Client* user = it->second;
+
+		if (!user->IsAuthenticated() && (current_time - user->GetConnectionTime() > TIMEOUT_DURATION))
+		{
+			std::cerr << "Client FD " << user->GetFD() << " timed out due to no password." << std::endl;
+
+			int fd_to_remove = user->GetFD();
+
+			it++;
+
+			ClientDisconnection(fd_to_remove);
+		} 
+		else
+		{
+			it++;
+		}
+	}
+}
