@@ -24,19 +24,15 @@
 |05| [cpp09](https://github.com/yigit-toq/42_Cursus/tree/05-cpp09) | C++ | CPP exercise | 100%
 |05| [ft_irc](https://github.com/yigit-toq/42_Cursus/tree/05-ft_irc) | C++ | IRC Server | 100%
 
-# Cub3D
-
-## 📽️ Demo
-
-![cub3D](https://github.com/user-attachments/assets/e2914311-8c13-48ea-a9d4-c2c7e7994c40)
-
-=======
-
 # cub3d
 
 A simple 3D raycasting game engine inspired by Wolfenstein 3D, written in C using the MiniLibX graphics library. This project is part of the 42 School curriculum and aims to teach the basics of raycasting, graphics, and game engine architecture.
 
 ---
+
+## 📽️ Demo
+
+![cub3D](https://github.com/user-attachments/assets/e2914311-8c13-48ea-a9d4-c2c7e7994c40)
 
 ## Table of Contents
 
@@ -187,6 +183,7 @@ make norminette
 ## Author
 
 - [ytop](mailto:ytop@student.42kocaeli.com.tr)
+- [doerkova](doerkova@student.42kocaeli.com.tr)
 
 ---
 
@@ -198,4 +195,3 @@ make norminette
 - Respect the [subject PDF](https://github.com/42Paris/minilibx-linux) and 42's evaluation rules
 
 ---
->>>>>>> Stashed changes
