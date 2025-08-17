@@ -39,6 +39,8 @@ class Channel
 		std::map<int, Client*>							_users;
 		std::map<int, Client*>							_operators;
 
+		std::vector<std::string>						_invited_users; //
+
 		Server&											_server;
 
 		Channel											(const Channel& other);
@@ -81,6 +83,10 @@ class Channel
 
 		bool	IsFull									() const;
 		bool	IsEmpty									() const;
+
+		void	AddInvitedUser							(const std::string& nickname); //
+		void	RemoveInvitedUser						(const std::string& nickname); //
+		bool	IsUserInvited							(const std::string& nickname) const; //
 
 		void	AddClient								(Client* user);
 		void	RmvClient								(Client* user);

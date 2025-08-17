@@ -25,12 +25,12 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 {
 	if (sender->IsRegistered() == false) //
 	{
-		_server.SendsNumericReply(sender, 451, "JOIN :You have not registered yet");
+		_server.SendsNumericReply(sender, 451, ":You have not registered yet");
 		return ;
 	}
-	if (msg.GetParameters().empty())
+	if (msg.GetParameters().empty()) //
 	{
-		_server.SendsNumericReply(sender, 461, "JOIN :Not enough parameters");
+		_server.SendsNumericReply(sender, 461, "JOIN :Not enough parameters" );
 
 		return ;
 	}
@@ -67,10 +67,14 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 			_server.SendsNumericReply(sender, 475, channel_name + " :Cannot join channel (+k)");
 			return ;
 		}
-		if (channel->IsInviteOnly	 ())
+		if (channel->IsModeSet('i')) //
 		{
-			_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)");
-			return ;
+			if (channel->IsUserInvited(sender->GetNickname()) == false)
+			{
+				_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)");
+				return ;
+			}
+			channel->RemoveInvitedUser(sender->GetNickname());
 		}
 		if (channel->IsFull			 ())
 		{

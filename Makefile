@@ -34,6 +34,7 @@ SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)NickCommand.cpp		$(PROCESS_DIR)Serv
 											$(COMMAND_DIR)KickCommand.cpp																																			\
 											${COMMAND_DIR}ModeCommand.cpp																																			\
 											${COMMAND_DIR}TopicCommand.cpp																																			\
+											${COMMAND_DIR}InviteCommand.cpp																																			\
 
 OBJS 			=	$(patsubst $(SRCS_DIR)%.cpp,$(OBJS_DIR)%.o,$(SRCS))
 

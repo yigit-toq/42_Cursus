@@ -16,6 +16,7 @@
 #pragma region header
 
 #include <map>
+#include <ctime>
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
@@ -37,6 +38,7 @@
 #include "KickCommand.hpp"
 #include "ModeCommand.hpp"
 #include "TopicCommand.hpp"
+#include "InviteCommand.hpp"
 
 #include "CommandHandler.hpp"
 

@@ -23,7 +23,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 {
 	if (msg.GetParameters().empty())
 	{
-		_server.SendsNumericReply(sender, 461, "TOPIC :Not enough parameters");
+		_server.SendsNumericReply(sender, 461, "TOPIC :Not enough parameters"); //
 		return ;
 	}
 

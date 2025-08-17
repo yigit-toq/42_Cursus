@@ -63,7 +63,7 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 		std::string mode_string = channel_tar->GetModeString();
 		std::string mode_params = channel_tar->GetModeParams();
 
-		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params));
+		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params)); //
 
 		return ;
 	}
@@ -93,7 +93,7 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (msg.GetParameters().size() == 1)
+	if (msg.GetParameters().size() == 1) //
 	{
 		_server.SendsNumericReply(sender, 221, target_user->GetModeString()			);
 		return ;

@@ -217,17 +217,17 @@ void	Client::handle_W_Mode		(char sign, Server& server)
 
 std::string	Client::GetModeString	() const
 {
-	std::string mode_str = "+";
+	std::string mode = "+";
 
-	if (IsModeSet('i')) mode_str += "i";
-	if (IsModeSet('w')) mode_str += "w";
-	if (IsModeSet('o')) mode_str += "o";
+	if (IsModeSet('i')) mode += "i";
+	if (IsModeSet('w')) mode += "w";
+	if (IsModeSet('o')) mode += "o";
 	
-	if (mode_str == "+")
+	if (mode == "+")
 	{
-		return ("");
+		return  ("");
 	}
-	return (mode_str);
+	return (mode);
 }
 
 bool		Client::IsModeSet		(char mode_char) const

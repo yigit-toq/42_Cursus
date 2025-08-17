@@ -19,9 +19,9 @@ NickCommand::~NickCommand	() {}
 
 void	NickCommand::Execute(Client* sender, const Message& msg)
 {
-	if (msg.GetParameters().empty())
+	if (msg.GetParameters().empty()) //
 	{
-		_server.SendsNumericReply(sender, 431, "No nickname given");
+		_server.SendsNumericReply(sender, 431, ":No nickname given");
 		return ;
 	}
 
@@ -52,33 +52,20 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 
 		sender->SetNickname(new_nick);
 
-		_server.AddClient(sender); //UpdateClientNick olarak fonksiyonlaştırılabilir
+		_server.AddClient(sender);
 
 		_server.BroadcastNicknameChange(sender, old_nick, new_nick);
 
-		_server.SendsNumericReply(sender, 001, "Your nickname has been changed to " + new_nick);
+		_server.SendsNumericReply(sender, 001, ":Your nickname has been changed to " + new_nick);
 	}
 	else
 	{
 		sender->SetNickname(new_nick);
 
-		_server.SendsNumericReply(sender, 001, "Your nickname has been set to " + new_nick);
+		_server.AddClient(sender);
+
+		_server.SendsNumericReply(sender, 001, ":Your nickname has been set to " + new_nick);
 
 		_server.CheckRegistration(sender);
 	}
-
-	// if (sender->IsRegistered() && !sender->GetNickname().empty())
-	// {
-	// 	_server.RmvClient	(sender);
-	// }
-
-	// sender->SetNickname				(new_nick);
-
-	// _server.AddClient				(sender);
-
-	// _server.SendsNumericReply		(sender, 001, "Your nickname has been set to " + new_nick);
-
-	// sender->SetStatus				(NICK_SET); //
-
-	// _server.CheckRegistration		(sender);
 }

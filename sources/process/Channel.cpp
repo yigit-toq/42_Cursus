@@ -321,6 +321,8 @@ void	Channel::handle_I_Mode	(Client* sender, char sign)
 	{
 		_modes['i'] = new_status;
 
+		_invite_only = new_status;
+
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " " + std::string(1, sign) + "i");
 	}
 }
@@ -429,3 +431,18 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 }
 
 //------------------------------------------------------------
+
+void	Channel::AddInvitedUser(const std::string& nickname)
+{
+	_invited_users.push_back(nickname);
+}
+
+void	Channel::RemoveInvitedUser(const std::string& nickname)
+{
+	_invited_users.erase(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
+}
+
+bool	Channel::IsUserInvited(const std::string& nickname) const
+{
+	return std::find(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
+}

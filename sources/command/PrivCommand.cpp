@@ -23,7 +23,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 {
 	if (msg.GetParameters().size() < 2)
 	{
-		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters");
+		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters"); //
 		return ;
 	}
 
@@ -32,7 +32,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 	if (msg_text.empty())
 	{
-		_server.SendsNumericReply(sender, 412, " :No text to send");
+		_server.SendsNumericReply(sender, 412, ":No text to send");
 		return ;
 	}
 
@@ -67,7 +67,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		if (!target_user)
 		{
-			_server.SendsNumericReply(sender, 401, tar_name + " :No such nick/channel");
+			_server.SendsNumericReply(sender, 401, tar_name + " :No such nick/channel"); //
 			return ;
 		}
 

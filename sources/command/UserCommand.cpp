@@ -25,13 +25,13 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (sender->IsRegistered())
+	if (sender->IsRegistered()) //
 	{
 		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already registered)");
 		return ;
 	}
 
-	if (msg.GetParameters().size() < 4)
+	if (msg.GetParameters().size() < 4) //
 	{
 		_server.SendsNumericReply(sender, 461, "USER :Not enough parameters"					);
 		return ;
@@ -44,7 +44,7 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	std::string realname = msg.GetParameters()[3];
 
-	if (username.empty() || realname.empty())
+	if (username.empty() || realname.empty()) //
 	{
 		_server.SendsNumericReply(sender, 461, "USER :Invalid username or realname");
 		return ;

@@ -316,6 +316,13 @@ Client*	Server::FindClient	(const std::string& nick)
 {
 	std::map<std::string, Client*>::iterator  it = _clients_by_nick.find(nick);
 
+	// std::cout << "server users: ";
+	// for (const auto& pair : _clients_by_nick)
+	// {
+	// 	std::cout << pair.first << " ";
+	// }
+	// std::cout << std::endl;
+
 	if (it != _clients_by_nick.end())
 	{
 		return (it->second);
@@ -395,6 +402,8 @@ PollHandler&		Server::GetPollHandler	()			{ return _poll_handlr;	}
 
 void	Server::SetupCommands()
 {
+	_cmds_handlr["INVITE"]	= new InviteCommand	(*this);
+
 	_cmds_handlr["TOPIC"]	= new TopicCommand	(*this);
 
 	_cmds_handlr["JOIN"]	= new JoinCommand	(*this);
@@ -434,20 +443,15 @@ void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& m
 {
 	std::stringstream ss;
 
-	if (numeric != 332 && numeric != 331)
-		ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " :" << message << "\r\n";
-	else
-		ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() <<  " " << message << "\r\n";
+	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " " << message << "\r\n";
 
-	user->AppendToOuputBuffer(ss.str());
+	user->AppendToOuputBuffer	(ss.str());
 
-	_poll_handlr.SetEvents(user->GetFD(), POLLIN | POLLOUT); //
+	_poll_handlr.SetEvents		(user->GetFD(), POLLIN | POLLOUT); //
 }
 
 void	Server::CheckRegistration		(Client* user)
 {
-
-
 	if (user->IsRegistered())
 		return ;
 
@@ -464,11 +468,9 @@ void	Server::CheckRegistration		(Client* user)
 
 		std::cout << "User FD " << user->GetFD() << " (" << user->GetNickname() << ") is now registered!" << std::endl;
 
-		SendsNumericReply	(user, 001, "Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
+		SendsNumericReply	(user, 001, ":Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
 
-		SendsNumericReply	(user, 002, "Your host is "		+ _server_name + ", running version 1.0");
-
-		SendsNumericReply	(user, 003, "This server was created 2025/07/20");
+		SendsNumericReply	(user, 002, ":Your host is "		+ _server_name + ", running version 1.0");
 	}
 }
 
@@ -479,9 +481,9 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 	if (!channel)
 		return ;
 
-	const std::map<int, Client*>& users = channel->GetUsers();
+	const std::map<int, Client*>&	 users = channel->GetUsers();
 	
-	std::string full_message = ":" + sender->GetNickname() + " " + message + "\r\n";
+	std::string	full_message = ":" + sender->GetNickname() + " " + message + "\r\n";
 
 	for (it = users.begin(); it != users.end();  ++it)
 	{
@@ -496,32 +498,26 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 
 //------------------------------------------------------------
 
-#include <ctime>
-
-void	Server::CheckForTimeouts() //
+void	Server::CheckForTimeouts()
 {
-	time_t current_time = time(NULL);
-	std::map<int, Client*>::iterator it = _clients.begin();
+	std::map<int, Client*>::iterator	it = _clients.begin();
+
+	time_t	curr_time =  time(NULL);
 
 	const int TIMEOUT_DURATION = 10;
 
 	while (it != _clients.end())
 	{
-		Client* user = it->second;
+		Client*	user = it->second;
 
-		if (!user->IsAuthenticated() && (current_time - user->GetConnectionTime() > TIMEOUT_DURATION))
+		if (!user->IsAuthenticated() && (curr_time - user->GetConnectionTime() > TIMEOUT_DURATION))
 		{
 			std::cerr << "Client FD " << user->GetFD() << " timed out due to no password." << std::endl;
 
-			int fd_to_remove = user->GetFD();
-
-			it++;
+			int fd_to_remove =  user->GetFD();
 
 			ClientDisconnection(fd_to_remove);
-		} 
-		else
-		{
-			it++;
 		}
+		it++;
 	}
 }

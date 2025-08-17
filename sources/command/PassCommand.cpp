@@ -23,13 +23,13 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 {
 	if (sender->IsRegistered()		)
 	{
-		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already registered)");
+		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already registered)"); //
 		return ;
 	}
 
 	if (msg.GetParameters().empty()	)
 	{
-		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"					);
+		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"					); //
 		return ;
 	}
 
@@ -37,7 +37,7 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 
 	if (password != _server.GetPassword())
 	{
-		_server.SendsNumericReply	(sender, 464, "Password incorrect");
+		_server.SendsNumericReply	(sender, 464, ":Password incorrect"); //
 
 		return ;
 	}
