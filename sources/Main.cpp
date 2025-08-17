@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/05 22:04:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/12 16:52:00 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 		return			(EXIT_FAILURE);
 	}
 
-	int port = std::atoi(argv[1]);
+	int port =  std::atoi(argv[1]);
 
 	if (port <= 0 || port > 65535)
 	{

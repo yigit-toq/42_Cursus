@@ -6,11 +6,12 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:53:54 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:48:28 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/12 17:19:48 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Logger.hpp"
+
 #include <ctime>
 
 Logger:: Logger() {}
@@ -22,6 +23,8 @@ typedef struct tm tm;
 void	Logger::Log(LogLevel level, const std::string& message)
 {
 	std::string	level_str;
+
+	char		timestamp_str[80];
 
 	switch (level)
 	{
@@ -45,8 +48,6 @@ void	Logger::Log(LogLevel level, const std::string& message)
 	time_t	 now = time			(0);
 
 	tm*		 ltm = localtime	(&now);
-	
-	char	 timestamp_str[80];
 
 	strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%d %H:%M:%S", ltm);
 

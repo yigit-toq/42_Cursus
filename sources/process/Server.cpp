@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 07:46:06 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/11 12:43:05 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,7 +434,10 @@ void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& m
 {
 	std::stringstream ss;
 
-	ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " :" << message << "\r\n";
+	if (numeric != 332 && numeric != 331)
+		ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() << " :" << message << "\r\n";
+	else
+		ss << ":" << _server_name << " " << std::setw(3) << std::setfill('0') << numeric << " " << user->GetNickname() <<  " " << message << "\r\n";
 
 	user->AppendToOuputBuffer(ss.str());
 

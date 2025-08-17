@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 21:43:41 by ytop             ###   ########.fr       */
+/*   Updated: 2025/08/17 01:21:13 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ bool	Channel::IsOperator	(Client* user) const
 
 //--------------------   Setter Methods   --------------------
 
-void	Channel::SetName		(const std::string& name)
-{
-	_name = name;
-
-	std::cout << "Channel " << _name << " name set." << std::endl;
-}
-
 void	Channel::SetPass		(const std::string& pass)
 {
 	_pass = pass;
 
 	std::cout << "Channel " << _name << " pass set." << std::endl;
+}
+
+void	Channel::SetName		(const std::string& name)
+{
+	_name = name;
+
+	std::cout << "Channel " << _name << " name set." << std::endl;
 }
 
 void	Channel::SetTopic		(const std::string& topic, Client* setter)
@@ -194,14 +194,14 @@ bool	Channel::IsFull		()			const
 
 bool	Channel::IsEmpty	()			const
 {
-	return (_users.empty());
+	return (_users.empty ());
 }
 
 bool	Channel::IsModeSet	(char mode)	const
 {
 	std::map<char, bool>::const_iterator it = _modes.find(mode);
 
-	if (it != _modes.end())
+	if (it != _modes.end ())
 	{
 		return (it->second);
 	}
@@ -332,9 +332,9 @@ void	Channel::handle_T_Mode	(Client* sender, char sign)
 
 	if (cur_status != new_status)
 	{
-		_modes['t'] = new_status;
+		_modes['t']		= new_status;
 
-		_topic_by_op = new_status; //
+		_topic_by_op	= new_status;
 
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " " + std::string(1, sign) + "t");
 	}
@@ -404,7 +404,11 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 
 		size_t				limit = 0	;
 
-		if (iss >> limit)
+		if (!(iss >> limit))
+		{
+			_server.SendsNumericReply		(sender, 461 , "MODE " + _name + " :Invalid limit parameter");
+		}
+		else
 		{
 			_user_limit = limit	;
 
@@ -412,19 +416,15 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 
 			_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " +l " + param);
 		}
-		else
-		{
-			_server.SendsNumericReply		(sender, 461 , "MODE " + _name + " :Invalid limit parameter");
-		}
 		return ;
 	}
 	if (sign == '-')
 	{
-		_user_limit = 0	;
+			_user_limit = 0	;
 
-		_modes['l'] = 0	;
+			_modes['l'] = 0	;
 
-		_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " -l");
+			_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " -l");
 	}
 }
 
