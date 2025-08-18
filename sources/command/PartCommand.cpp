@@ -81,6 +81,6 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 			_server.RemoveChannel	(target_channel->GetName());
 
 			std::cout << "Channel " << channel_name << " is empty and removed." << std::endl;
-		}
+		} //burada bir problem olabilir
 	}
 }

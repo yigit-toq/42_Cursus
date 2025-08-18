@@ -58,9 +58,9 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string new_topic = msg.GetParameters()[1];
 
-		std::cout << "is set topic" << channel_tar->IsTopicSetOp() << " " << "is operator" << channel_tar->IsOperator(sender) << std::endl;
+		std::cout << "is set topic" << channel_tar->IsModeSet('t') << " " << "is operator" << channel_tar->IsOperator(sender) << std::endl;
 
-		if (channel_tar->IsTopicSetOp() && !channel_tar->IsOperator(sender))
+		if (channel_tar->IsModeSet('t') && !channel_tar->IsOperator(sender))
 		{
 			_server.SendsNumericReply(sender, 482, channel_name + " :You're not channel operator");
 			return ;

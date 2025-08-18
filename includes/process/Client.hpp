@@ -106,7 +106,6 @@ class Client
 
 	private:
 		void							handle_I_Mode		(char sign, Server& server);
-		void							handle_W_Mode		(char sign, Server& server);
 };
 
 #endif

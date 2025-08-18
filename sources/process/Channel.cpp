@@ -38,11 +38,6 @@ const std::string&				Channel::GetTopic		() const { return _topic;	}
 const std::map<int, Client*>&	Channel::GetUsers		() const { return _users;		}
 const std::map<int, Client*>&	Channel::GetOperators	() const { return _operators;	}
 
-size_t							Channel::GetUserLimit	() const { return _user_limit;	}
-
-bool 							Channel::IsInviteOnly	() const { return _invite_only;	}
-bool 							Channel::IsTopicSetOp	() const { return _topic_by_op;	}
-
 bool	Channel::IsUser		(Client* user) const
 {
 	if (!user) return (false);
@@ -87,27 +82,6 @@ void	Channel::SetTopic		(const std::string& topic, Client* setter)
 	}
 
 	std::cout << std::endl;
-}
-
-void	Channel::SetUserLimit	(size_t limit)
-{
-	_user_limit  = limit;
-
-	std::cout << "Channel " << _name << " user             limit set to: "	<< _user_limit					<< std::endl;
-}
-
-void	Channel::SetInviteOnly	(bool status)
-{
-	_invite_only = status;
-
-	std::cout << "Channel " << _name << " invite-only     status set to: "	<< (status ? "true" : "false")	<< std::endl;
-}
-
-void	Channel::SetTopicSetOp	(bool status)
-{
-	_topic_by_op = status;
-
-	std::cout << "Channel " << _name << " topic-set-by-op status set to: "	<< (status ? "true" : "false")	<< std::endl;
 }
 
 //------------------------------------------------------------
@@ -321,8 +295,6 @@ void	Channel::handle_I_Mode	(Client* sender, char sign)
 	{
 		_modes['i'] = new_status;
 
-		_invite_only = new_status;
-
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " " + std::string(1, sign) + "i");
 	}
 }
@@ -334,9 +306,7 @@ void	Channel::handle_T_Mode	(Client* sender, char sign)
 
 	if (cur_status != new_status)
 	{
-		_modes['t']		= new_status;
-
-		_topic_by_op	= new_status;
+		_modes['t']	= new_status;
 
 		_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " " + std::string(1, sign) + "t");
 	}
@@ -437,7 +407,7 @@ void	Channel::AddInvitedUser(const std::string& nickname)
 	_invited_users.push_back(nickname);
 }
 
-void	Channel::RemoveInvitedUser(const std::string& nickname)
+void	Channel::RmvInvitedUser(const std::string& nickname)
 {
 	_invited_users.erase(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
 }

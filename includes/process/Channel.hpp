@@ -33,9 +33,6 @@ class Channel
 
 		size_t											_user_limit;
 
-		bool											_invite_only;
-		bool											_topic_by_op;
-
 		std::map<int, Client*>							_users;
 		std::map<int, Client*>							_operators;
 
@@ -57,11 +54,6 @@ class Channel
 		std::string	GetModeString						() const;
 		std::string	GetModeParams						() const;
 
-		size_t	GetUserLimit							() const;
-
-		bool	IsInviteOnly							() const;
-		bool	IsTopicSetOp							() const;
-
 		bool	IsUser									(Client* user)	const;
 		bool	IsOperator								(Client* user)	const;
 
@@ -74,18 +66,13 @@ class Channel
 		void	SetPass									(const std::string& pass);
 		void	SetTopic								(const std::string& topic, Client* setter = NULL);
 
-		void	SetUserLimit							(size_t limit);
-
-		void	SetInviteOnly							(bool status);
-		void	SetTopicSetOp							(bool status);
-
 		void	BroadcastMessage						(const std::string& message, Client* exclude_user = NULL);
 
 		bool	IsFull									() const;
 		bool	IsEmpty									() const;
 
 		void	AddInvitedUser							(const std::string& nickname); //
-		void	RemoveInvitedUser						(const std::string& nickname); //
+		void	RmvInvitedUser							(const std::string& nickname); //
 		bool	IsUserInvited							(const std::string& nickname) const; //
 
 		void	AddClient								(Client* user);

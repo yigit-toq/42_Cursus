@@ -23,7 +23,6 @@ Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED), _connection_time(time
 	_password		= "";
 
 	_modes['i']		= false;
-	_modes['w']		= false;
 	_modes['o']		= false;
 
 	_authenticated	= false;
@@ -176,10 +175,6 @@ void	Client::ApplyModes			(Client* sender, const std::string& mode_string, Serve
 				handle_I_Mode(sign, server);
 				break ;
 
-			case 'w':
-				handle_W_Mode(sign, server);
-				break ;
-
 			case 'o':
 				server.SendsNumericReply(sender, 481, ":Permission Denied - You're not an IRC operator"			);
 				break ;
@@ -203,24 +198,11 @@ void	Client::handle_I_Mode		(char sign, Server& server)
 	}
 }
 
-void	Client::handle_W_Mode		(char sign, Server& server)
-{
-	bool cur_status = IsModeSet('w');
-	bool new_status = (sign ==  '+');
-
-	if (cur_status != new_status)
-	{
-		_modes['w'] = new_status;
-		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "w");
-	}
-}
-
 std::string	Client::GetModeString	() const
 {
 	std::string mode = "+";
 
 	if (IsModeSet('i')) mode += "i";
-	if (IsModeSet('w')) mode += "w";
 	if (IsModeSet('o')) mode += "o";
 	
 	if (mode == "+")

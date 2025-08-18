@@ -74,7 +74,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 				_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)");
 				return ;
 			}
-			channel->RemoveInvitedUser(sender->GetNickname());
+			channel->RmvInvitedUser(sender->GetNickname());
 		}
 		if (channel->IsFull			 ())
 		{

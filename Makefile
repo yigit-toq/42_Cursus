@@ -42,12 +42,12 @@ RM				=	@rm -rf
 
 CC				=	@c++
 
-CFLAGS			=	-Wall  -Wextra -Werror	\
-					-I ./includes/protocol	\
-					-I ./includes/command	\
-					-I ./includes/network	\
-					-I ./includes/process	\
-					-I ./includes/utils		\
+CFLAGS			=	-Wall  -Wextra -Werror -g	\
+					-I ./includes/protocol		\
+					-I ./includes/command		\
+					-I ./includes/network		\
+					-I ./includes/process		\
+					-I ./includes/utils			\
 
 STD				=	-std=c++98
 
