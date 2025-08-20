@@ -27,7 +27,7 @@ Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED), _connection_time(time
 
 	_authenticated	= false;
 
-	std::cout << "Client created with FD: " << _fd << std::endl;
+	Logger::getInstance().Log(INFO, "Client created with FD: " + ft_to_string(_fd));
 }
 
 Client::~Client	() {}
@@ -81,7 +81,7 @@ void	Client::AppendToOuputBuffer	(const std::string& data)
 {
 	_ouput_buffer.append(data);
 
-	std::cout << "User " << GetNickname() << " appended " << data.length() << " bytes to output buffer. Total size: " << _ouput_buffer.length() << std::endl;
+	Logger::getInstance().Log(INFO, "User " + _nickname + " appended " + ft_to_string(data.length()) + " bytes to output buffer. Total size: " + ft_to_string(_ouput_buffer.length()));
 }
 
 void	Client::PopOutputBuffer		(size_t count)
@@ -90,13 +90,13 @@ void	Client::PopOutputBuffer		(size_t count)
 	{
 		_ouput_buffer.erase(0, count);
 
-		std::cout << "User " << GetNickname() << " popped " << count << " bytes from output buffer. Remaining: " << _ouput_buffer.length() << std::endl;
+		Logger::getInstance().Log(INFO, "User " + _nickname + " popped " + ft_to_string(count) + " bytes from output buffer. Remaining size: " + ft_to_string(_ouput_buffer.length()));
 	}
 	else
 	{
 		_ouput_buffer.clear();
 
-		std::cout << "User " << GetNickname() << " output buffer cleared." << std::endl;
+		Logger::getInstance().Log(INFO, "User " + _nickname + " output buffer cleared.");
 	}
 }
 
@@ -127,7 +127,7 @@ void	Client::AddChannel(Channel* channel)
 	}
 	_join_channels.push_back(channel);
 
-	std::cout << "Client " << _nickname << " added to joined channel list: " << channel->GetName() << std::endl;
+	Logger::getInstance().Log(INFO, "Client " + _nickname + " added to joined channel list: " + channel->GetName());
 }
 
 void	Client::RmvChannel(Channel* channel)
@@ -138,7 +138,7 @@ void	Client::RmvChannel(Channel* channel)
 		{
 			_join_channels.erase(it);
 
-			std::cout << "Client " << _nickname << " removed from joined channel list: " << channel->GetName() << std::endl;
+			Logger::getInstance().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
 
 			return ;
 		}

@@ -14,24 +14,32 @@
 #define LOGGER_HPP
 
 #include <string>
+#include <fstream>
 #include <iostream>
+
+enum LogLevel
+{
+	INFO,
+	DEBUG,
+	ERROR,
+	WARNING,
+};
 
 class Logger
 {
 	private:
-		 Logger 		();
+		 Logger			(const std::string& filename);
 		~Logger			();
 
-	public:
-		enum LogLevel
-		{
-			INFO,
-			DEBUG,
-			ERROR,
-			WARNING,
-		};
+		static Logger*	_instance;
+		std::ofstream	_file;
 
-		static void	Log	(LogLevel level, const std::string& message);
+	public:
+		static Logger& getInstance(const std::string& filename = "irc_server.log"); //
+
+		static void destroyInstance(); //
+
+		void	Log		(LogLevel level, const std::string& message); //
 };
 
 #endif

@@ -46,7 +46,7 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 
 	sender->SetPassword			(password);
 
-	std::cout << "User FD " << sender->GetFD() << " provided correct password." << std::endl;
+	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " provided correct password.");
 
 	_server.CheckRegistration	(sender);
 }

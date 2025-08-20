@@ -18,6 +18,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "Logger.hpp"
+
 class Message
 {
 	private:

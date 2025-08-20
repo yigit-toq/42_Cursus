@@ -17,6 +17,8 @@
 #include <vector>
 #include <map>
 
+#include "Utils.hpp"
+
 class Client;
 class Server;
 
@@ -31,7 +33,7 @@ class Channel
 
 		std::map<char, bool>							_modes;
 
-		size_t											_user_limit;
+		int												_user_limit;
 
 		std::map<int, Client*>							_users;
 		std::map<int, Client*>							_operators;

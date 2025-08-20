@@ -38,7 +38,7 @@ void	Socket::Listen	(int backlog)
 		throw std::runtime_error("Failed to listen on socket");
 	}
 
-	std::cout << "Socket is listening on port " << _port << std::endl;
+	Logger::getInstance().Log(INFO, "Socket is listening on port " + ft_to_string(_port));
 }
 
 void	Socket::Create	(void)
@@ -93,7 +93,7 @@ int		Socket::Sender	(int fd, char *buffer, size_t length)
 			return (0);
 		}
 
-		std::cerr << "Error sending data to FD " << fd << ": " << strerror(errno) << std::endl;
+		Logger::getInstance().Log(ERROR, "Failed to send data on socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 
 		return (-1);
 	}
@@ -147,17 +147,17 @@ int		Socket::GetPort	(void) const
 	return (_port);
 }
 
-void	Socket::RmvSock(int client_fd)
+void	Socket::RmvSock(int fd)
 {
-	if (client_fd >= 0)
+	if (fd >= 0)
 	{
-		if (close(client_fd) == -1)
+		if (close(fd) == -1)
 		{
-			std::cerr << "Error closing client socket FD "	<< client_fd << ": " << strerror(errno) << std::endl;
+			Logger::getInstance().Log(ERROR,	"Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 		else
 		{
-			std::cout << "Client socket FD "				<< client_fd << " closed successfully." << std::endl;
+			Logger::getInstance().Log(INFO,	"Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 	}
 }

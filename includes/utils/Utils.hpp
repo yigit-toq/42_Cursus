@@ -15,6 +15,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 class Utils
 {
@@ -31,6 +32,19 @@ class Utils
 		static	std::vector<std::pair<char, char> >	ParseModeString		(const std::string& mode_string);
 
 		static bool									IsModeWithParameter	(char mode);
+
+		template <typename T>
+		static std::string							ft_to_string		(T value); //
 };
+
+template <typename T>
+std::string ft_to_string(T value)
+{
+	std::stringstream ss;
+
+	ss << value;
+
+	return ss.str();
+}
 
 #endif

@@ -54,12 +54,12 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 			{
 				_server.RemoveChannel	(  channel->GetName());
 
-				std::cout << "Channel " << channel->GetName() << " is empty and removed." << std::endl;
+				Logger::getInstance().Log(INFO, "Channel " + channel->GetName() + " is empty and removed.");
 			}
 		}
 	}
 
-	std::cout << "Client " <<	sender->GetNickname() << " (" << sender->GetFD() << ") has quit with message: '" << quit_message << "'" << std::endl;
+	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " (" + ft_to_string(sender->GetFD()) + ") has quit with message: '" + quit_message + "'");
 
 	_server.ClientDisconnection(sender->GetFD());
 }

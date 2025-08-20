@@ -32,6 +32,8 @@ int main(int argc, char **argv)
 			throw std::runtime_error(ss.str());
 		}
 
+		Logger::getInstance("irc_server.log");
+
 		int port =  std::atoi(argv[1]);
 
 		if (port <= 0 || port > 65535)
@@ -39,18 +41,22 @@ int main(int argc, char **argv)
 			throw std::runtime_error("Invalid port number.");
 		}
 
-		signal(SIGINT, handleSignals); //test için
-		signal(SIGTERM, handleSignals);
-		signal(SIGQUIT, handleSignals);
-		signal(SIGPIPE, SIG_IGN);
+		signal(SIGINT,	handleSignals); //test için
+		signal(SIGTERM,	handleSignals);
+		signal(SIGQUIT,	handleSignals);
+		signal(SIGPIPE,	SIG_IGN);
 	
 		Server server	(port, argv[2]);
 
 		server.Start	();
+
+		Logger::destroyInstance(); //
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << "Error: " << e.what() << std::endl;
+		Logger::getInstance().Log(ERROR, e.what());
+
+		Logger::destroyInstance(); //
 
 		return			(EXIT_FAILURE);
 	}

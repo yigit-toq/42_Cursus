@@ -23,6 +23,9 @@
 #include <cstring>
 #include <cerrno>
 
+#include "Logger.hpp"
+#include "Utils.hpp"
+
 #pragma endregion
 
 typedef struct sockaddr_in sockaddr_in;

@@ -42,7 +42,7 @@ bool Message::Parse(const std::string& raw_message)
 	{
 		if ((next_space = ms_content.find(' ', 1)) == std::string::npos)
 		{
-			std::cerr << "Error: Malformed message with only prefix or empty command part." << std::endl;
+			Logger::getInstance().Log(ERROR, "Malformed message: no command part after prefix.");
 
 			return (false);
 		}
@@ -54,7 +54,7 @@ bool Message::Parse(const std::string& raw_message)
 
 	if ((curr_posit = ms_content.find_first_not_of(' ', curr_posit)) == std::string::npos)
 	{
-		std::cerr << "Error: No command found after prefix or leading spaces." << std::endl;
+		Logger::getInstance().Log(ERROR, "Malformed message: no command part after prefix or leading spaces.");
 
 		return (false);
 	}

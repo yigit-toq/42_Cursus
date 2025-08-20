@@ -33,11 +33,6 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 
 	std::string new_nick = msg.GetParameters()[0];
 
-	if (new_nick.length() > 9)
-	{
-		new_nick = new_nick.substr(0, 9);
-	}
-
 	if (!_server.IsNicknameAvailable(new_nick) && new_nick != sender->GetNickname())
 	{
 		_server.SendsNumericReply	(sender, 433, new_nick + " :Nickname is already in use");

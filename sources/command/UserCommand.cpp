@@ -55,7 +55,7 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	sender->SetStatus	(USER_SET);
 
-	std::cout << "User FD " << sender->GetFD() << " username set to: " << username << ", realname: " << realname << std::endl;
+	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " set username to: " + username + ", realname: " + realname);
 
 	_server.CheckRegistration(sender);
 }

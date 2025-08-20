@@ -21,8 +21,12 @@
 #include <iomanip>
 #include <sstream>
 
+#include "Utils.hpp"
+
 #include "Socket.hpp"
 #include "Client.hpp"
+
+#include "Logger.hpp"
 
 #include "Channel.hpp"
 #include "Message.hpp"
@@ -79,6 +83,12 @@ class Server
 		void	HandleClientWriteEvent	(int client_fd, Client* user); //
 
 		void	CheckForTimeouts(); //
+
+		std::vector<int>			_fdsToDelete; //
+		std::vector<std::string>	_channelsToDelete; //
+
+		void cleanupClients(); //
+		void cleanupChannels(); //
 
 	public:
 		 Server										(int port, std::string pass);

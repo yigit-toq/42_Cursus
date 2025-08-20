@@ -25,7 +25,7 @@ Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass
 	_netwrk_name = "irc_network"	;
 	_server_name = "irc.example.com";
 
-	std::cout << "Server started on port " << port << std::endl;
+	Logger::getInstance().Log(INFO, "Server initialized on port " + ft_to_string(port) + " with password: " + pass);
 }
 
 Server::~Server()
@@ -48,7 +48,7 @@ Server::~Server()
 	}
 	_cmds_handlr.	clear();
 
-	std::cout << "Server shutting down." << std::endl;
+	Logger::getInstance().Log(INFO, "Server shutting down.");
 }
 
 //-------------------- Server Main Loop --------------------
@@ -62,6 +62,9 @@ void	Server::Start()
 		HandleEvents(active_fds);
 
 		CheckForTimeouts(); //
+
+		cleanupClients();
+		cleanupChannels();
 	}
 }
 
@@ -98,7 +101,7 @@ void	Server::HandleClientSocketEvent(const struct pollfd& client_fd)
 
 	if (!user)
 	{
-		std::cerr << "Error: User not found for FD " <<		fd	<< std::endl;
+		Logger::getInstance().Log(ERROR, "User not found for FD " + ft_to_string(fd));
 
 		_poll_handlr.RmvSocket	(fd);
 
@@ -107,7 +110,7 @@ void	Server::HandleClientSocketEvent(const struct pollfd& client_fd)
 
 	if (client_fd.revents & (POLLERR | POLLHUP | POLLNVAL))
 	{
-		std::cerr << "Client FD " << fd << " error or hangup."	<< std::endl;
+		Logger::getInstance().Log(ERROR, "Client FD " + ft_to_string(fd) + " error or hangup.");
 
 		ClientDisconnection		(fd);
 
@@ -144,11 +147,11 @@ void	Server::HandleClientWriteEvent(int client_fd, Client* user)
 		{
 			if (bytes_sent == -1 && (errno == EAGAIN || errno == EWOULDBLOCK))
 			{
-				std::cout << "Send  buffer full for FD " << user->GetFD() << ", will try again next poll."	<< std::endl;
+				Logger::getInstance().Log(WARNING, "Send buffer full for FD " + ft_to_string(user->GetFD()) + ", will try again next poll.");
 			}
 			else
 			{
-				std::cerr << "Error sending data to FD " << user->GetFD() << ": " << strerror(errno)		<< std::endl;
+				Logger::getInstance().Log(ERROR, "Error sending data to FD " + ft_to_string(user->GetFD()) + ": " + strerror(errno));
 
 				ClientDisconnection(user->GetFD());
 			}
@@ -157,14 +160,14 @@ void	Server::HandleClientWriteEvent(int client_fd, Client* user)
 	
 		user->PopOutputBuffer	(bytes_sent);
 
-		std::cout << "Sent " <<  bytes_sent << " bytes to FD " << user->GetFD() << ". Remaining: " << user->GetOutputBuffer().length() << " bytes." << std::endl;
+		Logger::getInstance().Log(INFO, "Sent " + ft_to_string(bytes_sent) + " bytes to FD " + ft_to_string(user->GetFD()) + ". Remaining: " + ft_to_string(user->GetOutputBuffer().length()) + " bytes.");
 	}
 
 	if (!user->HasOuputData())
 	{
 		_poll_handlr.SetEvents(user->GetFD(), POLLIN);
 
-		std::cout  << "FD " << user->GetFD() << " output buffer empty. POLLOUT removed." << std::endl;
+		Logger::getInstance().Log(INFO, "FD " + ft_to_string(user->GetFD()) + " output buffer empty. POLLOUT removed.");
 	}
 
 	(void)client_fd;
@@ -176,7 +179,7 @@ void	Server::HandleNewConnection()
 
 	if (client_fd < 0)
 	{
-		std::cerr << "Failed to accept new connection: " << strerror(errno) << std::endl;
+		Logger::getInstance().Log(ERROR, "Failed to accept new connection: " + std::string(strerror(errno)));
 		return ;
 	}
 
@@ -187,7 +190,7 @@ void	Server::HandleNewConnection()
 
 	_poll_handlr.AddSocket(client_fd, POLLIN | POLLOUT);
 
-	std::cout << "New connection accepted: FD " << client_fd << std::endl;
+	Logger::getInstance().Log(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
 }
 
 void	Server::HandleClientMessage(int fd)
@@ -206,13 +209,13 @@ void	Server::HandleClientMessage(int fd)
 		{
 			user->AppendToInputBuffer(buffer);
 
-			std::cout << "Received " << bytes_read << " bytes from FD " << fd << ": [" << buffer << "]" << std::endl;
+			Logger::getInstance().Log(INFO, "Received " + ft_to_string(bytes_read) + " bytes from FD " + ft_to_string(fd) + ": [" + buffer + "]");
 
 			std::string	raw;
 
 			while ((raw = user->ExtractNextMessage()) != "")
 			{
-				std::cout << "Full message extracted: " << raw << std::endl;
+				Logger::getInstance().Log(INFO, "Full message extracted: " + raw);
 
 				Message	msg;
 
@@ -224,7 +227,7 @@ void	Server::HandleClientMessage(int fd)
 				}
 				else
 				{
-					std::cerr << "Failed to parse message from FD " << fd << ": " << raw << std::endl;
+					Logger::getInstance().Log(ERROR, "Failed to parse message from FD " + ft_to_string(fd) + ": " + raw);
 
 					// Geçersiz mesaj durumunda istemciye hata yanıtı gönderme veya bağlantıyı kesme düşünülebilir.
 				}
@@ -237,7 +240,7 @@ void	Server::HandleClientMessage(int fd)
 	}
 	else if (bytes_read == -1)
 	{
-		std::cerr << "Error reading from client FD " << fd << std::endl;
+		Logger::getInstance().Log(ERROR, "Error reading from client FD " + ft_to_string(fd) + ": " + strerror(errno));
 
 		ClientDisconnection(fd);
 	}
@@ -245,19 +248,30 @@ void	Server::HandleClientMessage(int fd)
 
 void	Server::ClientDisconnection(int fd)
 {
-	Client* client_to_disconnect = _clients[fd];
+	std::map<int, Client*>::iterator it = _clients.find(fd);
 
-	if (client_to_disconnect)
+	if (it == _clients.end())
 	{
-		_poll_handlr.RmvSocket	(fd);
-		_srvr_socket.RmvSock	(fd);
-		
-		delete(client_to_disconnect);
-
-		_clients.erase(fd);
-
-		std::cout << "Client FD " << fd << " disconnected and resources freed." << std::endl;
+		return;
 	}
+	
+	Client* client_ptr = it->second;
+
+	std::vector<Channel *> joined_channels = client_ptr->GetJoinChannels(); 
+
+	for (size_t i = 0; i < joined_channels.size(); ++i)
+	{
+		Channel *channel_ptr = joined_channels[i];
+		
+		if (channel_ptr)
+		{
+			channel_ptr->RmvClient(client_ptr);
+		}
+	}
+
+	_fdsToDelete.push_back(fd);
+
+	Logger::getInstance().Log(INFO, "Client FD " + ft_to_string(fd) + " disconnected. Removing from server.");
 }
 
 //------------------------------------------------------------
@@ -280,7 +294,7 @@ Channel*	Server::CreateChannel(const std::string& name)
 {
 	if (FinderChannel(name) != NULL)
 	{
-		std::cerr << "Attempted to create already existing channel: " << name << std::endl;
+		Logger::getInstance().Log(WARNING, "Attempted to create already existing channel: " + name);
 
 		return (FinderChannel(name));
 	}
@@ -289,23 +303,23 @@ Channel*	Server::CreateChannel(const std::string& name)
 
 	_channels[name]			= new_channel;
 
-	std::cout << "Created new channel: " << name << std::endl;
+	Logger::getInstance().Log(INFO, "Created new channel: " + name);
 
 	return (new_channel);
 }
 
-void		Server::RemoveChannel(const std::string& name)
+void	Server::RemoveChannel(const std::string& name)
 {
 	std::map<std::string, Channel*>::iterator it = _channels.find(name);
 
-	if (it != _channels.end())
+	if (it == _channels.end())
 	{
-		delete (it->second);
-
-		_channels.erase(it);
-
-		std::cout << "Removed empty channel: " << name << std::endl;
+		return;
 	}
+
+	_channelsToDelete.push_back(name);
+
+	Logger::getInstance().Log(INFO, "Channel " + name + " marked for deletion.");
 }
 
 //------------------------------------------------------------
@@ -435,7 +449,7 @@ void	Server::ProcessMessage			(Client* sender, const Message& msg)
 	}
 	else
 	{
-		std::cerr << "Unknown command: " << msg.GetCommand() << " from FD " << sender->GetFD() << std::endl;
+		Logger::getInstance().Log(WARNING, "Unknown command: " + msg.GetCommand() + " from FD " + ft_to_string(sender->GetFD()));
 	}
 }
 
@@ -464,13 +478,13 @@ void	Server::CheckRegistration		(Client* user)
 	{
 		user->SetStatus		(REGISTERED);
 
-		std::cout << "is registered two: " << user->IsRegistered() << std::endl;
+		Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " is now registered.");
 
-		std::cout << "User FD " << user->GetFD() << " (" << user->GetNickname() << ") is now registered!" << std::endl;
+		Logger::getInstance().Log(INFO, "User FD " + ft_to_string(user->GetFD()) + " (" + user->GetNickname() + ") is now registered!");
 
 		SendsNumericReply	(user, 001, ":Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
 
-		SendsNumericReply	(user, 002, ":Your host is "		+ _server_name + ", running version 1.0");
+		SendsNumericReply	(user, 002, ":Your host is "	+ _server_name + ", running version 1.0");
 	}
 }
 
@@ -491,7 +505,9 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 
 		if (send(it->second->GetFD(), full_message.c_str(), full_message.length(), 0) < 0)
 		{
-			// Hata yönetimi burada yapılabilir.
+			Logger::getInstance().Log(ERROR, "Sending message to client " + it->second->GetNickname() + ": " + strerror(errno));
+
+            ClientDisconnection(it->second->GetFD());
 		}
 	}
 }
@@ -512,7 +528,7 @@ void	Server::CheckForTimeouts()
 
 		if (!user->IsAuthenticated() && (curr_time - user->GetConnectionTime() > TIMEOUT_DURATION))
 		{
-			std::cerr << "Client FD " << user->GetFD() << " timed out due to no password." << std::endl;
+			Logger::getInstance().Log(WARNING, "Client FD " + ft_to_string(user->GetFD()) + " timed out due to no password.");
 
 			int fd_to_remove =  user->GetFD();
 
@@ -520,4 +536,46 @@ void	Server::CheckForTimeouts()
 		}
 		it++;
 	}
+}
+
+void	Server::cleanupClients()
+{
+	for (std::vector<int>::iterator it = _fdsToDelete.begin(); it != _fdsToDelete.end(); ++it)
+	{
+		int fd = *it;
+		
+		std::map<int, Client*>::iterator client_it = _clients.find(fd);
+
+		if (client_it != _clients.end())
+		{
+			Client* client_ptr = client_it->second;
+
+			delete client_ptr;
+			_clients.erase(client_it);
+		}
+
+		_poll_handlr.RmvSocket(fd);
+		
+		close(fd);
+	}
+	_fdsToDelete.clear();
+}
+
+void	Server::cleanupChannels()
+{
+	for (std::vector<std::string>::iterator it = _channelsToDelete.begin(); it != _channelsToDelete.end(); ++it)
+	{
+		std::string channel_name = *it;
+
+		std::map<std::string, Channel*>::iterator channel_it = _channels.find(channel_name);
+
+		if (channel_it != _channels.end())
+		{
+			Channel* channel_ptr = channel_it->second;
+			
+			delete channel_ptr;
+			_channels.erase(channel_it);
+		}
+	}
+	_channelsToDelete.clear();
 }

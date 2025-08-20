@@ -15,6 +15,8 @@
 
 #include "Channel.hpp"
 
+#include "Utils.hpp"
+
 #include <string>
 #include <queue>
 #include <map>

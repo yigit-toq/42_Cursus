@@ -74,13 +74,13 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 		target_channel->RmvClient		(sender);
 
-		std::cout << "Client " << sender->GetNickname() << " parted from channel " << channel_name << std::endl;
+		Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
 
 		if (target_channel->IsEmpty	())
 		{
 			_server.RemoveChannel	(target_channel->GetName());
 
-			std::cout << "Channel " << channel_name << " is empty and removed." << std::endl;
-		} //burada bir problem olabilir
+			Logger::getInstance().Log(INFO, "Channel " + channel_name + " is empty and removed.");
+		}
 	}
 }

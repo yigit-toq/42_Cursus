@@ -46,12 +46,12 @@ void	PollHandler::SetEvents(int fd, short events)
 		{
 			_fds[i].events = events;
 
-			std::cout << "Updated events for FD " << fd << " to " <<	events	<< std::endl;
+			Logger::getInstance().Log(INFO, "Updated events for FD " + ft_to_string(fd) + " to " + ft_to_string(events));
 
 			return ;
 		}
 	}
-	std::cerr << "Warning: Attempted to set events for non-existent FD " << fd	<< std::endl;
+	Logger::getInstance().Log(WARNING, "Attempted to set events for non-existent FD " + ft_to_string(fd));
 }
 
 short	PollHandler::GetEvents(int fd) const

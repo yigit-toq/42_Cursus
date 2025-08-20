@@ -20,6 +20,9 @@
 #include <cerrno>
 #include <poll.h>
 
+#include "Logger.hpp"
+#include "Utils.hpp"
+
 #pragma endregion
 
 class PollHandler

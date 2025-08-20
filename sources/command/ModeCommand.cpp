@@ -78,7 +78,7 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 
 	channel_tar->ApplyModes(sender, mode_strs, mode_args, _server);
 
-	std::cout << "Channel MODE command processed for " << channel_name << std::endl;
+	Logger::getInstance().Log(INFO, "Channel MODE command processed for " + channel_name);
 }
 
 void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
@@ -109,5 +109,5 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 
 	target_user->ApplyModes(sender, mode_string, _server);
 
-	std::cout << "User MODE command processed for " << target_nick << std::endl;
+	Logger::getInstance().Log(INFO, "User MODE command processed for " + target_nick);
 }

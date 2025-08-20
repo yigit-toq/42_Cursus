@@ -20,13 +20,12 @@ Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(
 	_modes['i'] = false;
 	_modes['t'] = false;
 
-
-	std::cout << "Channel " << _name << " created.  "	<< std::endl;
+	Logger::getInstance().Log(INFO, "Channel " + _name + " created.");
 }
 
 Channel::~Channel()
 {
-	std::cout << "Channel " << _name << " destroyed."	<< std::endl;
+	Logger::getInstance().Log(INFO, "Channel " + _name + " destroyed.");
 }
 
 //--------------------   Getter Methods   --------------------
@@ -60,14 +59,14 @@ void	Channel::SetPass		(const std::string& pass)
 {
 	_pass = pass;
 
-	std::cout << "Channel " << _name << " pass set." << std::endl;
+	Logger::getInstance().Log(INFO, "Channel " + _name + " pass set to: '" + _pass + "'");
 }
 
 void	Channel::SetName		(const std::string& name)
 {
 	_name = name;
 
-	std::cout << "Channel " << _name << " name set." << std::endl;
+	Logger::getInstance().Log(INFO, "Channel " + _name + " name set to: '" + _name + "'");
 }
 
 void	Channel::SetTopic		(const std::string& topic, Client* setter)
@@ -102,7 +101,7 @@ void	Channel::AddClient(Client* user)
 		AddOperator(user);
 	}
 
-	std::cout << "User " << user->GetNickname() << " added     to channel " << _name << std::endl;
+	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " added to channel " + _name);
 }
 
 void	Channel::RmvClient(Client* user)
@@ -116,7 +115,7 @@ void	Channel::RmvClient(Client* user)
 
 	_users.erase	(user->GetFD());
 
-	std::cout << "User " << user->GetNickname() << " removed from channel " << _name << std::endl;
+	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
 }
 
 void	Channel::AddOperator(Client* user)
@@ -128,7 +127,7 @@ void	Channel::AddOperator(Client* user)
 
 	_operators[user->GetFD()] = user;
 
-	std::cout << "User " << user->GetNickname() << " is now       an operator in " << _name << std::endl;
+	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " is now an operator in channel " + _name);
 }
 
 void	Channel::RmvOperator(Client* user)
@@ -140,7 +139,7 @@ void	Channel::RmvOperator(Client* user)
 
 	_operators.erase(user->GetFD());
 
-	std::cout << "User " << user->GetNickname() << " is no longer an operator in " << _name << std::endl;
+	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " removed as operator from channel " + _name);
 }
 
 //------------------------------------------------------------
@@ -158,12 +157,12 @@ void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 			_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
 		}
 	}
-	std::cout << "Broadcasted message to channel " << _name << ": [" << message << "]" << std::endl;
+	Logger::getInstance().Log(INFO, "Broadcasted message to channel " + _name + ": [" + message + "]");
 }
 
 bool	Channel::IsFull		()			const
 {
-	return (_user_limit > 0 && _users.size() >= _user_limit);
+	return (_user_limit > 0 && (int)_users.size() >= _user_limit);
 }
 
 bool	Channel::IsEmpty	()			const
@@ -205,7 +204,7 @@ std::string	Channel::GetModeParams() const
 {
 	std::string	params = "";
 
-	if (IsModeSet('k')) params += " " + _pass;
+	if (IsModeSet('k')) params += _pass;
 
 	if (_user_limit > 0)
 	{
@@ -226,21 +225,26 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 		return ;
 	}
 
-	char	sign = '+';
+	char	sign = 0;
 
 	std::vector<std::string>::const_iterator arg_it = mode_args.begin();
 
 	for (size_t i = 0; i < mode_strs.length(); ++i)
 	{
-		char mode_char = mode_strs[i];
+		char mode = mode_strs[i];
 
-		if (mode_char == '+' || mode_char == '-')
+		if (mode == '+' || mode == '-')
 		{
-			sign = mode_char;
+			sign =  mode;
 			continue ;
 		}
+		if (sign == 0)
+		{
+			server.SendsNumericReply(sender, 472, std::string(1, mode) + " :unknown mod character");
+			return ;
+		}
 
-		switch (mode_char)
+		switch (mode)
 		{
 			case 'i':
 				handle_I_Mode		(sender, sign);
@@ -255,12 +259,20 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 				{
 					handle_K_Mode	(sender, sign, *(arg_it++));
 				}
+				else
+				{
+					handle_K_Mode	(sender, sign, "");
+				}
 				break ;
 
 			case 'l':
 				if (arg_it != mode_args.end())
 				{
 					handle_L_Mode	(sender, sign, *(arg_it++));
+				}
+				else
+				{
+					handle_L_Mode	(sender, sign, "");
 				}
 				break ;
 
@@ -272,15 +284,15 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 				break ;
 
 			default:
-				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :unknown mod character");
+				server.SendsNumericReply(sender, 472, std::string(1, mode) + " :unknown mod character");
 				break ;
 		}
 
-		if (Utils::IsModeWithParameter	(mode_char))
+		if (Utils::IsModeWithParameter	(mode))
 		{
 			if (arg_it == mode_args.end())
 			{
-				server.SendsNumericReply(sender, 461, "MODE " + _name + " :Not enough parameters for mode " + std::string(1, mode_char));
+				server.SendsNumericReply(sender, 461, "MODE " + _name + " :Not enough parameters for mode " + std::string(1, mode));
 			}
 		}
 	}
@@ -316,6 +328,11 @@ void	Channel::handle_K_Mode	(Client* sender, char sign, const std::string& param
 {
 	if (sign == '+')
 	{
+		if (param.empty())
+		{
+			return ;
+		}
+
 		_pass = param	;
 
 		_modes['k'] = 1	;
@@ -374,9 +391,9 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 	{
 		std::istringstream	iss(param)	;
 
-		size_t				limit = 0	;
+		int					limit =  0	;
 
-		if (!(iss >> limit))
+		if (!(iss >> limit) || limit <= 0)
 		{
 			_server.SendsNumericReply		(sender, 461 , "MODE " + _name + " :Invalid limit parameter");
 		}

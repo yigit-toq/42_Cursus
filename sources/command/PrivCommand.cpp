@@ -58,8 +58,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		target_channel->BroadcastMessage(ss.str(), sender);
 
-		std::cout << "PRIVMSG to channel " << tar_name << " from " << sender->GetNickname() << ": " << msg_text << std::endl;
-
+		Logger::getInstance().Log(INFO, "PRIVMSG to channel " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
 	}
 	else
 	{
@@ -79,6 +78,6 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
 
-		std::cout << "PRIVMSG to user " << tar_name << " from " << sender->GetNickname() << ": " << msg_text << std::endl;
+		Logger::getInstance().Log(INFO, "PRIVMSG to user " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
 	}
 }

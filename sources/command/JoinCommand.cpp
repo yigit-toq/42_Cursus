@@ -84,7 +84,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 		if (channel->IsUser			 (sender))
 		{
-			std::cout << "User " <<  sender->GetNickname() << " is already in channel " << channel_name << std::endl;
+			Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " is already in channel " + channel_name);
 			return ;
 		}
 	}
@@ -135,5 +135,5 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 	_server.SendsNumericReply(sender, 353, names_ss.str());
 	_server.SendsNumericReply(sender, 366, channel_name + " :End of /NAMES list");
 
-	std::cout << "User " << sender->GetNickname() << " successfully joined channel " << channel_name << std::endl;
+	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " joined channel " + channel_name);
 }
