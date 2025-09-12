@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/30 17:07:12 by ytop              #+#    #+#              #
-#    Updated: 2025/08/09 21:33:03 by ytop             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME			=	ircserv
 
 SRCS_DIR		=	./sources/
@@ -19,35 +7,34 @@ UTILS_DIR		=	${SRCS_DIR}utils/
 
 PROCESS_DIR		=	${SRCS_DIR}process/
 NETWORK_DIR		=	${SRCS_DIR}network/
-
 COMMAND_DIR		=	${SRCS_DIR}command/
 
 PROTOCOL_DIR	=	${SRCS_DIR}protocol/
 
-SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)NickCommand.cpp		$(PROCESS_DIR)Server.cpp		$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp	\
-											$(COMMAND_DIR)UserCommand.cpp		$(PROCESS_DIR)Client.cpp		$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp	\
-											$(COMMAND_DIR)PassCommand.cpp		$(PROCESS_DIR)Channel.cpp																											\
-											$(COMMAND_DIR)JoinCommand.cpp																																			\
-											$(COMMAND_DIR)PrivCommand.cpp																																			\
+SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)UserCommand.cpp		$(PROCESS_DIR)Server.cpp		$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp	\
+											$(COMMAND_DIR)QuitCommand.cpp		$(PROCESS_DIR)Client.cpp		$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp	\
+											$(COMMAND_DIR)PrivCommand.cpp		$(PROCESS_DIR)Channel.cpp																											\
+											$(COMMAND_DIR)PassCommand.cpp																																			\
 											$(COMMAND_DIR)PartCommand.cpp																																			\
-											$(COMMAND_DIR)QuitCommand.cpp																																			\
-											$(COMMAND_DIR)KickCommand.cpp																																			\
+											$(COMMAND_DIR)NickCommand.cpp																																			\
 											${COMMAND_DIR}ModeCommand.cpp																																			\
+											$(COMMAND_DIR)KickCommand.cpp																																			\
+											$(COMMAND_DIR)JoinCommand.cpp																																			\
 											${COMMAND_DIR}TopicCommand.cpp																																			\
 											${COMMAND_DIR}InviteCommand.cpp																																			\
 
 OBJS 			=	$(patsubst $(SRCS_DIR)%.cpp,$(OBJS_DIR)%.o,$(SRCS))
 
-RM				=	@rm -rf
+RMRF				=	@rm -rf
 
-CC				=	@c++
+CXX				=	@c++
 
-CFLAGS			=	-Wall  -Wextra -Werror -g	\
-					-I ./includes/protocol		\
-					-I ./includes/command		\
-					-I ./includes/network		\
-					-I ./includes/process		\
-					-I ./includes/utils			\
+CXXFLAGS		=	-Wall  -Wextra -Werror	\
+					-I ./includes/protocol	\
+					-I ./includes/command	\
+					-I ./includes/network	\
+					-I ./includes/process	\
+					-I ./includes/utils		\
 
 STD				=	-std=c++98
 
@@ -57,22 +44,22 @@ C_R				=	\033[0;31m
 C_E				=	\033[0m
 
 $(OBJS_DIR)%.o	:	$(SRCS_DIR)%.cpp
-					@mkdir -p $(dir $@)
-					$(CC)	$(CFLAGS) $(STD) -c $< -o $@
+					@mkdir -p	$(dir $@)
+					$(CXX)		$(CXXFLAGS) $(STD) -c	$< -o $@
 
 all				:	$(NAME)
 
 $(NAME)			:	$(OBJS)
-					$(CC)	$(CFLAGS) $(STD)	$^ -o $(NAME)
+					$(CXX)		$(CXXFLAGS) $(STD)		$^ -o $(NAME)
 					@echo "\e[1m$(C_Y)IRCSERV		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
-					$(RM)	$(OBJS_DIR)
+					$(RMRF)		$(OBJS_DIR)
 					@echo "\e[1m$(C_Y)OBJECTS		$(C_R)[KO]\e[0m$(C_E)"
 			
 
 fclean			:	clean
-					$(RM)	$(NAME)
+					$(RMRF)		$(NAME)
 					@echo "\e[1m$(C_Y)EXECUTE		$(C_R)[KO]\e[0m$(C_E)"
 
 re				:	fclean all

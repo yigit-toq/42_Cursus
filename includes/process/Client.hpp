@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 12:27:03 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 06:12:38 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
@@ -17,11 +5,8 @@
 
 #include "Utils.hpp"
 
-#include <string>
 #include <queue>
-#include <map>
-
-#include <ctime> //
+#include <ctime>
 
 enum UserStatus
 {
@@ -75,14 +60,15 @@ class Client
 
 		const std::vector<Channel*>&	GetJoinChannels		() const;
 
-		bool							IsAuthenticated		() const { return _authenticated; } //
-		void							SetAuthenticated	(bool status) { _authenticated = status; } //
-		time_t							GetConnectionTime	() const { return _connection_time; } //
-
-		bool							IsModeSet			(char mode) const;
+		time_t							GetConnectionTime	() const;
 
 		bool							IsRegistered		() const;
 		bool							HasOuputData		() const;
+
+		bool							IsModeSet			(char mode) const;
+
+		bool							GetAuth				(void) const ;
+		void							SetAuth				(bool status);
 
 		void 							SetFD				(int fd);
 
@@ -104,10 +90,11 @@ class Client
 
 		void							PopOutputBuffer		(size_t count);
 
-		std::string						ExtractNextMessage	();
+		std::string						ExtractNextMessage	(void);
 
 	private:
 		void							handle_I_Mode		(char sign, Server& server);
+
 };
 
 #endif

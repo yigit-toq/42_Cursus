@@ -1,29 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PollHandler.hpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 13:51:02 by ytop              #+#    #+#             */
-/*   Updated: 2025/07/22 22:02:07 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef POLLHANDLER_HPP
 #define POLLHANDLER_HPP
 
-#pragma region header
-
-#include <iostream>
-#include <vector>
-#include <cerrno>
-#include <poll.h>
-
 #include "Logger.hpp"
+
 #include "Utils.hpp"
 
-#pragma endregion
+#include <cerrno>
+#include <poll.h>
 
 class PollHandler
 {

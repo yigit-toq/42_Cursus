@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   TopicCommand.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 20:42:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/11 12:37:30 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "TopicCommand.hpp"
 #include "Server.hpp"
-#include <iostream>
-#include <sstream>
 
 TopicCommand:: TopicCommand	 (Server& server) : _server(server) {}
 
@@ -23,7 +8,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 {
 	if (msg.GetParameters().empty())
 	{
-		_server.SendsNumericReply(sender, 461, "TOPIC :Not enough parameters"); //
+		_server.SendsNumericReply(sender, 461, "TOPIC :Not enough parameters");
 		return ;
 	}
 
@@ -58,9 +43,9 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string new_topic = msg.GetParameters()[1];
 
-		Logger::getInstance().Log(INFO, "is set topic" + ft_to_string(channel_tar->IsModeSet('t')) + " is operator" + ft_to_string(channel_tar->IsOperator(sender)));
+		Logger::GetInstance().Log(INFO, "is set topic" + ft_to_string(channel_tar->IsModeSet('t')) + " is operator" + ft_to_string(channel_tar->IsOprt(sender)));
 
-		if (channel_tar->IsModeSet('t') && !channel_tar->IsOperator(sender))
+		if (channel_tar->IsModeSet('t') && !channel_tar->IsOprt(sender))
 		{
 			_server.SendsNumericReply(sender, 482, channel_name + " :You're not channel operator");
 			return ;
@@ -70,10 +55,10 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 
 		std::stringstream topic_ss;
 
-		topic_ss << ":"			<< sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
+		topic_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
 
 		channel_tar->BroadcastMessage	(topic_ss.str(), NULL);
 
-		Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " set topic for channel " + channel_name + " to: '" + new_topic + "'");
+		Logger::GetInstance().Log		(INFO, "User " + sender->GetNickname() + " set topic for channel " + channel_name + " to: '" + new_topic + "'");
 	}
 }

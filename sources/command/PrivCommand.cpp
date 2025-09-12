@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PrivCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 16:20:24 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:22:53 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "PrivCommand.hpp"
 #include "Server.hpp"
-#include <iostream>
-#include <sstream>
 
 PrivCommand:: PrivCommand	(Server& server) : _server(server) {}
 
@@ -23,7 +8,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 {
 	if (msg.GetParameters().size() < 2)
 	{
-		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters"); //
+		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters");
 		return ;
 	}
 
@@ -58,7 +43,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		target_channel->BroadcastMessage(ss.str(), sender);
 
-		Logger::getInstance().Log(INFO, "PRIVMSG to channel " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
+		Logger::GetInstance().Log		(INFO, "PRIVMSG to channel " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
 	}
 	else
 	{
@@ -66,7 +51,7 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		if (!target_user)
 		{
-			_server.SendsNumericReply(sender, 401, tar_name + " :No such nick/channel"); //
+			_server.SendsNumericReply(sender, 401, tar_name + " :No such nick/channel");
 			return ;
 		}
 
@@ -76,8 +61,8 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		target_user->AppendToOuputBuffer	(ss.str() + "\r\n");
 
-		_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
+		_server.GetPollHandler	().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
 
-		Logger::getInstance().Log(INFO, "PRIVMSG to user " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
+		Logger::GetInstance		().Log		(INFO, "PRIVMSG to user " + tar_name + " from " + sender->GetNickname() + ": " + msg_text); //
 	}
 }

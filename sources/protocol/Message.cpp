@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Message.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 16:53:21 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 06:03:39 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Message.hpp"
 
 #include "Utils.hpp"
@@ -22,7 +10,7 @@ const std::string&					Message::GetPrefix		() const { return _prefix;		}
 const std::string&					Message::GetCommand		() const { return _command;		}
 const std::vector<std::string>&		Message::GetParameters	() const { return _parameters;	}
 
-bool Message::Parse(const std::string& raw_message)
+bool	Message::Parse(const std::string& raw_message)
 {
 	_prefix		.clear();
 	_command	.clear();
@@ -42,7 +30,7 @@ bool Message::Parse(const std::string& raw_message)
 	{
 		if ((next_space = ms_content.find(' ', 1)) == std::string::npos)
 		{
-			Logger::getInstance().Log(ERROR, "Malformed message: no command part after prefix.");
+			Logger::GetInstance().Log(ERROR, "Malformed message: no command part after prefix.");
 
 			return (false);
 		}
@@ -54,20 +42,20 @@ bool Message::Parse(const std::string& raw_message)
 
 	if ((curr_posit = ms_content.find_first_not_of(' ', curr_posit)) == std::string::npos)
 	{
-		Logger::getInstance().Log(ERROR, "Malformed message: no command part after prefix or leading spaces.");
+		Logger::GetInstance().Log(ERROR, "Malformed message: no command part after prefix or leading spaces.");
 
 		return (false);
 	}
 
-	next_space		= ms_content.find(' ',	curr_posit);
+	next_space		= ms_content.find	(' ',	curr_posit);
 
 	if (next_space == std::string::npos)
 	{
-		_command	= ms_content.substr(	curr_posit);
+		_command	= ms_content.substr	(curr_posit);
 	}
 	else
 	{
-		_command	= ms_content.substr(	curr_posit, next_space - curr_posit);
+		_command	= ms_content.substr	(curr_posit, next_space - curr_posit);
 
 		curr_posit	= next_space + 1;
 	}
@@ -86,7 +74,7 @@ bool Message::Parse(const std::string& raw_message)
 		{
 			std::string				remaning_param_str	= ms_content.substr(curr_posit);
 
-			std::string::size_type	trailing_colon_pos	= remaning_param_str.find(':');
+			std::string::size_type	trailing_colon_pos	= remaning_param_str.find (':');
 
 			if (trailing_colon_pos != std::string::npos)
 			{
@@ -112,7 +100,7 @@ bool Message::Parse(const std::string& raw_message)
 
 				for (size_t i = 0; i <		temp_params.size(); ++i)
 				{
-					std::string trimmed_param = Utils::trim(temp_params[i]);
+					std::string trimmed_param = Utils::trim (temp_params[i]);
 
 					if (!trimmed_param.empty ())
 					{

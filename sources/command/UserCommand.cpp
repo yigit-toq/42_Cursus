@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   UserCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/03 18:15:31 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 07:48:45 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "UserCommand.hpp"
 #include "Server.hpp"
 
 UserCommand:: UserCommand	(Server& server) : _server(server) {}
@@ -19,21 +6,21 @@ UserCommand::~UserCommand	() {}
 
 void	UserCommand::Execute(Client* sender, const Message& msg)
 {
-	if (!sender->IsAuthenticated()) //
+	if (!sender->GetAuth())
 	{
-		_server.SendsNumericReply(sender, 462, "USER :You have not authenticated yet");
+		_server.SendsNumericReply(sender, 462, "USER :You have not authenticated yet"	);
 		return ;
 	}
 
-	if (sender->IsRegistered()) //
+	if (sender->IsRegistered())
 	{
-		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already registered)");
+		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already)"	);
 		return ;
 	}
 
-	if (msg.GetParameters().size() < 4) //
+	if (msg.GetParameters().size() < 4)
 	{
-		_server.SendsNumericReply(sender, 461, "USER :Not enough parameters"					);
+		_server.SendsNumericReply(sender, 461, "USER :Not enough parameters"			);
 		return ;
 	}
 
@@ -44,7 +31,7 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	std::string realname = msg.GetParameters()[3];
 
-	if (username.empty() || realname.empty()) //
+	if (username.empty() || realname.empty())
 	{
 		_server.SendsNumericReply(sender, 461, "USER :Invalid username or realname");
 		return ;
@@ -55,7 +42,7 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	sender->SetStatus	(USER_SET);
 
-	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " set username to: " + username + ", realname: " + realname);
+	Logger::GetInstance	().Log(INFO, "User " + sender->GetNickname() + " set username to: " + username + ", realname: " + realname);
 
 	_server.CheckRegistration(sender);
 }

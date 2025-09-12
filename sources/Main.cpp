@@ -1,25 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 15:30:58 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/12 16:52:00 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
+
 #include <csignal>
 
-void handleSignals(int signal) //test için
+void  HandleSignals(int signal)
 {
 	if (signal == SIGINT || signal == SIGTERM || signal == SIGQUIT)
+	{
 		throw std::runtime_error("Server terminated by signal");
+	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char *argv[])
 {
 	try
 	{
@@ -32,7 +23,7 @@ int main(int argc, char **argv)
 			throw std::runtime_error(ss.str());
 		}
 
-		Logger::getInstance("irc_server.log");
+		Logger::GetInstance	("irc_server.log");
 
 		int port =  std::atoi(argv[1]);
 
@@ -41,23 +32,23 @@ int main(int argc, char **argv)
 			throw std::runtime_error("Invalid port number.");
 		}
 
-		signal(SIGINT,	handleSignals); //test için
-		signal(SIGTERM,	handleSignals);
-		signal(SIGQUIT,	handleSignals);
-		signal(SIGPIPE,	SIG_IGN);
-	
-		Server server	(port, argv[2]);
+		signal(SIGINT ,	HandleSignals);
 
-		server.Start	();
+		signal(SIGQUIT,	HandleSignals);
+		signal(SIGTERM,	HandleSignals);
 
-		Logger::destroyInstance(); //
+		Server server		(port, argv[2]);
+
+		server.Start		();
+
+		Logger::RmvInstance	();
 	}
 	catch (const std::exception &e)
 	{
-		Logger::getInstance().Log(ERROR, e.what());
+		Logger::GetInstance	().Log(ERROR, e.what());
 
-		Logger::destroyInstance(); //
+		Logger::RmvInstance	();
 
-		return			(EXIT_FAILURE);
+		return				(EXIT_FAILURE);
 	}
 }

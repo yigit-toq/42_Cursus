@@ -1,16 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Socket.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 15:30:20 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/17 01:29:44 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "Server.hpp"
 
-#include "Socket.hpp"
+#include <fcntl.h>
 
 Socket:: Socket(int port) : _port(port), _sock(-1)
 {
@@ -38,7 +28,7 @@ void	Socket::Listen	(int backlog)
 		throw std::runtime_error("Failed to listen on socket");
 	}
 
-	Logger::getInstance().Log(INFO, "Socket is listening on port " + ft_to_string(_port));
+	Logger::GetInstance().Log	(INFO, "Socket is listening on port " + ft_to_string(_port));
 }
 
 void	Socket::Create	(void)
@@ -93,7 +83,7 @@ int		Socket::Sender	(int fd, char *buffer, size_t length)
 			return (0);
 		}
 
-		Logger::getInstance().Log(ERROR, "Failed to send data on socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+		Logger::GetInstance().Log(ERROR, "Failed to send data on socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 
 		return (-1);
 	}
@@ -147,17 +137,17 @@ int		Socket::GetPort	(void) const
 	return (_port);
 }
 
-void	Socket::RmvSock(int fd)
+void	Socket::RmvSock	(int fd)
 {
 	if (fd >= 0)
 	{
 		if (close(fd) == -1)
 		{
-			Logger::getInstance().Log(ERROR,	"Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+			Logger::GetInstance().Log(ERROR, "Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 		else
 		{
-			Logger::getInstance().Log(INFO,	"Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+			Logger::GetInstance().Log(INFO , "Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 	}
 }

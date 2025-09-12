@@ -1,20 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ModeCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 22:09:59 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:11:01 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "ModeCommand.hpp"
-#include "Channel.hpp"
 #include "Server.hpp"
-#include <iostream>
-#include <sstream>
 
 ModeCommand:: ModeCommand	(Server& server) : _server(server) {}
 
@@ -63,7 +47,7 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 		std::string mode_string = channel_tar->GetModeString();
 		std::string mode_params = channel_tar->GetModeParams();
 
-		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params)); //
+		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params));
 
 		return ;
 	}
@@ -76,16 +60,16 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 		mode_args.push_back(msg.GetParameters()[i]);
 	}
 
-	channel_tar->ApplyModes(sender, mode_strs, mode_args, _server);
+	channel_tar->ApplyModes		(sender, mode_strs, mode_args, _server);
 
-	Logger::getInstance().Log(INFO, "Channel MODE command processed for " + channel_name);
+	Logger::GetInstance().Log	(INFO, "Channel MODE command processed for " + channel_name);
 }
 
 void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 {
-	std::string	target_nick =  msg.GetParameters()[0];
+	std::string	target_nick =  msg.		GetParameters	()[0];
 
-	Client*		target_user = _server.FindClient(target_nick);
+	Client*		target_user = _server.	FindUser		(target_nick);
 
 	if (!target_user)
 	{
@@ -93,7 +77,7 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (msg.GetParameters().size() == 1) //
+	if (msg.GetParameters().size() == 1)
 	{
 		_server.SendsNumericReply(sender, 221, target_user->GetModeString()			);
 		return ;
@@ -107,7 +91,7 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 
 	std::string	mode_string = msg.GetParameters()[1];
 
-	target_user->ApplyModes(sender, mode_string, _server);
+	target_user->ApplyModes		(sender, mode_string, _server);
 
-	Logger::getInstance().Log(INFO, "User MODE command processed for " + target_nick);
+	Logger::GetInstance().Log	(INFO, "User MODE command processed for " + target_nick);
 }

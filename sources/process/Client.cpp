@@ -1,18 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Client.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 12:26:27 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/17 01:32:44 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "Client.hpp"
 #include "Server.hpp"
-#include <iostream>
 
 Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED), _connection_time(time(NULL))
 {
@@ -27,7 +13,7 @@ Client:: Client	(int fd) : _fd(fd), _status(UNREGISTERED), _connection_time(time
 
 	_authenticated	= false;
 
-	Logger::getInstance().Log(INFO, "Client created with FD: " + ft_to_string(_fd));
+	Logger::GetInstance().Log(INFO, "Client created with FD: " + ft_to_string(_fd));
 }
 
 Client::~Client	() {}
@@ -44,14 +30,19 @@ std::string Client::GetRealname					() const						{ return _realname; }
 std::string Client::GetHostname					() const						{ return _hostname; }
 std::string Client::GetPassword					() const						{ return _password; }
 
-const std::string&				Client::GetOutputBuffer	() const
+const std::string&				Client::GetOutputBuffer		() const
 {
 	return (_ouput_buffer	);
 }
 
-const std::vector<Channel*>&	Client::GetJoinChannels	() const
+const std::vector<Channel*>&	Client::GetJoinChannels		() const
 {
 	return (_join_channels	);
+}
+
+time_t							Client::GetConnectionTime	(void) const
+{
+	return (_connection_time);
 }
 
 //------------------------------------------------------------
@@ -81,7 +72,7 @@ void	Client::AppendToOuputBuffer	(const std::string& data)
 {
 	_ouput_buffer.append(data);
 
-	Logger::getInstance().Log(INFO, "User " + _nickname + " appended " + ft_to_string(data.length()) + " bytes to output buffer. Total size: " + ft_to_string(_ouput_buffer.length()));
+	Logger::GetInstance().Log(INFO, "User " + _nickname + " appended " + ft_to_string(data.length()) + " bytes to output buffer. Total size: " + ft_to_string(_ouput_buffer.length()));
 }
 
 void	Client::PopOutputBuffer		(size_t count)
@@ -90,13 +81,13 @@ void	Client::PopOutputBuffer		(size_t count)
 	{
 		_ouput_buffer.erase(0, count);
 
-		Logger::getInstance().Log(INFO, "User " + _nickname + " popped " + ft_to_string(count) + " bytes from output buffer. Remaining size: " + ft_to_string(_ouput_buffer.length()));
+		Logger::GetInstance().Log(INFO, "User " + _nickname + " popped " + ft_to_string(count) + " bytes from output buffer. Remaining size: " + ft_to_string(_ouput_buffer.length()));
 	}
 	else
 	{
 		_ouput_buffer.clear();
 
-		Logger::getInstance().Log(INFO, "User " + _nickname + " output buffer cleared.");
+		Logger::GetInstance().Log(INFO, "User " + _nickname + " output buffer cleared.");
 	}
 }
 
@@ -125,9 +116,9 @@ void	Client::AddChannel(Channel* channel)
 		if (_join_channels[i] == channel)
 			return ;
 	}
-	_join_channels.push_back(channel);
+	_join_channels.push_back (channel);
 
-	Logger::getInstance().Log(INFO, "Client " + _nickname + " added to joined channel list: " + channel->GetName());
+	Logger::GetInstance().Log(INFO, "Client " + _nickname + " added to joined channel list: " + channel->GetName());
 }
 
 void	Client::RmvChannel(Channel* channel)
@@ -138,7 +129,7 @@ void	Client::RmvChannel(Channel* channel)
 		{
 			_join_channels.erase(it);
 
-			Logger::getInstance().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
+			Logger::GetInstance ().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
 
 			return ;
 		}
@@ -149,7 +140,7 @@ void	Client::RmvChannel(Channel* channel)
 
 //--------------------   Mode  Handling   --------------------
 
-void	Client::ApplyModes			(Client* sender, const std::string& mode_string, Server& server)
+void		Client::ApplyModes		(Client* sender, const std::string& mode_string, Server& server)
 {
 	if (sender->GetFD() != GetFD())
 	{
@@ -186,7 +177,7 @@ void	Client::ApplyModes			(Client* sender, const std::string& mode_string, Serve
 	}
 }
 
-void	Client::handle_I_Mode		(char sign, Server& server)
+void		Client::handle_I_Mode	(char sign, Server& server)
 {
 	bool cur_status = IsModeSet('i');
 	bool new_status = (sign ==  '+');
@@ -194,8 +185,20 @@ void	Client::handle_I_Mode		(char sign, Server& server)
 	if (cur_status != new_status)
 	{
 		_modes['i'] = new_status;
+
 		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "i");
 	}
+}
+
+bool		Client::IsModeSet		(char mode_char) const
+{
+	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
+
+	if (it != _modes.end())
+	{
+		return (it->second);
+	}
+	return (false);
 }
 
 std::string	Client::GetModeString	() const
@@ -212,20 +215,9 @@ std::string	Client::GetModeString	() const
 	return (mode);
 }
 
-bool		Client::IsModeSet		(char mode_char) const
-{
-	std::map<char, bool>::const_iterator it = _modes.find(mode_char);
-
-	if (it != _modes.end())
-	{
-		return (it->second);
-	}
-	return (false);
-}
-
 //------------------------------------------------------------
 
-std::string Client::ExtractNextMessage()
+std::string Client::ExtractNextMessage(void)
 {
 	size_t		pos		= _input_buffer.find	("\r\n");
 
@@ -237,6 +229,18 @@ std::string Client::ExtractNextMessage()
 	_input_buffer.erase(0, pos + 2);
 
 	return (message);
+}
+
+//------------------------------------------------------------
+
+void	Client::SetAuth				(bool status)
+{
+	_authenticated = status;
+}
+
+bool	Client::GetAuth				(void) const
+{
+	return (_authenticated);
 }
 
 //------------------------------------------------------------

@@ -1,21 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   QuitCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 15:49:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 05:56:09 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "QuitCommand.hpp"
 #include "Server.hpp"
-#include <iostream>
-#include <sstream>
-
-//bakılacak
 
 QuitCommand:: QuitCommand	(Server& server) : _server(server) {}
 
@@ -23,7 +6,7 @@ QuitCommand::~QuitCommand	() {}
 
 void	QuitCommand::Execute(Client* sender, const Message& msg)
 {
-	std::string quit_message = "Client Quit";
+	std::string quit_message = "Client Quit" ;
 
 	if (!msg.GetParameters().empty())
 	{
@@ -34,11 +17,11 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 	quit_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " QUIT: " << quit_message;
 
-	std::string			quit_ms = quit_ss.str();
-
 	const std::vector<Channel*>&	joined_channels = sender->GetJoinChannels();
 
 	std::vector<Channel*>			channel_to_part = joined_channels;
+
+	std::string						quit_ms			= quit_ss.str  ();
 
 	for (size_t i = 0; i < channel_to_part.size(); ++i)
 	{
@@ -46,20 +29,20 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 		if (channel)
 		{
-			channel->BroadcastMessage	(quit_ms, sender);
+			channel->BroadcastMessage		(quit_ms, sender);
 
-			channel->RmvClient			(sender);
+			channel->RmvUser				(sender);
 
-			if (channel->IsEmpty		())
+			if (channel->IsFree		())
 			{
-				_server.RemoveChannel	(  channel->GetName());
+				_server.RemoveChannel		(channel->GetName());
 
-				Logger::getInstance().Log(INFO, "Channel " + channel->GetName() + " is empty and removed.");
+				Logger::GetInstance	().Log	(INFO, "Channel " + channel->GetName() + " is empty and removed.");
 			}
 		}
 	}
 
-	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " (" + ft_to_string(sender->GetFD()) + ") has quit with message: '" + quit_message + "'");
+	Logger::GetInstance().Log	(INFO, "User " + sender->GetNickname() + " (" + ft_to_string(sender->GetFD()) + ") has quit with message: '" + quit_message + "'");
 
-	_server.ClientDisconnection(sender->GetFD());
+	_server.ClientDisconnection	(sender->GetFD());
 }

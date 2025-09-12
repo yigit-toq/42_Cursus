@@ -1,31 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Channel.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/27 16:52:55 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/17 01:21:13 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "Channel.hpp"
 #include "Server.hpp"
-#include "Client.hpp"
-#include "Utils.hpp"
 
 Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(""), _topic(""), _user_limit(0), _server(server)
 {
 	_modes['i'] = false;
 	_modes['t'] = false;
 
-	Logger::getInstance().Log(INFO, "Channel " + _name + " created.");
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " created."	);
 }
 
 Channel::~Channel()
 {
-	Logger::getInstance().Log(INFO, "Channel " + _name + " destroyed.");
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " destroyed."	);
 }
 
 //--------------------   Getter Methods   --------------------
@@ -34,21 +19,21 @@ const std::string&				Channel::GetName		() const { return _name;	}
 const std::string&				Channel::GetPass		() const { return _pass;	}
 const std::string&				Channel::GetTopic		() const { return _topic;	}
 
-const std::map<int, Client*>&	Channel::GetUsers		() const { return _users;		}
-const std::map<int, Client*>&	Channel::GetOperators	() const { return _operators;	}
+const std::map<int, Client*>&	Channel::GetUsers		() const { return _users;	}
+const std::map<int, Client*>&	Channel::GetOprts		() const { return _oprts;	}
 
-bool	Channel::IsUser		(Client* user) const
+bool	Channel::IsUser	(Client* user) const
 {
 	if (!user) return (false);
 
-	return (_users.		count(user->GetFD()) > 0);
+	return (_users.count(user->GetFD()) > 0);
 }
 
-bool	Channel::IsOperator	(Client* user) const
+bool	Channel::IsOprt	(Client* user) const
 {
 	if (!user) return (false);
 
-	return (_operators.	count(user->GetFD()) > 0);
+	return (_oprts.count(user->GetFD()) > 0);
 }
 
 //------------------------------------------------------------
@@ -59,14 +44,14 @@ void	Channel::SetPass		(const std::string& pass)
 {
 	_pass = pass;
 
-	Logger::getInstance().Log(INFO, "Channel " + _name + " pass set to: '" + _pass + "'");
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " pass set to: '" + _pass + "'");
 }
 
 void	Channel::SetName		(const std::string& name)
 {
 	_name = name;
 
-	Logger::getInstance().Log(INFO, "Channel " + _name + " name set to: '" + _name + "'");
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " name set to: '" + _name + "'");
 }
 
 void	Channel::SetTopic		(const std::string& topic, Client* setter)
@@ -87,7 +72,7 @@ void	Channel::SetTopic		(const std::string& topic, Client* setter)
 
 //--------------------  User  Management  --------------------
 
-void	Channel::AddClient(Client* user)
+void	Channel::AddUser(Client* user)
 {
 	if (!user || IsUser(user))
 	{
@@ -98,48 +83,48 @@ void	Channel::AddClient(Client* user)
 
 	if (_users.size() == 1)
 	{
-		AddOperator(user);
+		AddOprt(user);
 	}
 
-	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " added to channel " + _name);
+	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " added   to   channel " + _name);
 }
 
-void	Channel::RmvClient(Client* user)
+void	Channel::RmvUser(Client* user)
 {
 	if (!user || !IsUser(user))
 	{
 		return ;
 	}
 
-	RmvOperator		(user);
+	RmvOprt		(user);
 
 	_users.erase	(user->GetFD());
 
-	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
+	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
 }
 
-void	Channel::AddOperator(Client* user)
+void	Channel::AddOprt(Client* user)
 {
-	if (!user || !IsUser(user) || IsOperator(user))
+	if (!user || !IsUser(user) || IsOprt(user))
 	{
 		return ;
 	}
 
-	_operators[user->GetFD()] = user;
+	_oprts[user->GetFD()] = user;
 
-	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " is now an operator in channel " + _name);
+	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " is now  an operator in   channel " + _name);
 }
 
-void	Channel::RmvOperator(Client* user)
+void	Channel::RmvOprt(Client* user)
 {
-	if (!user || !IsOperator(user))
+	if (!user || !IsOprt(user))
 	{
 		return ;
 	}
 
-	_operators.erase(user->GetFD());
+	_oprts.erase(user->GetFD());
 
-	Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " removed as operator from channel " + _name);
+	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " removed as operator from channel " + _name);
 }
 
 //------------------------------------------------------------
@@ -157,15 +142,16 @@ void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 			_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
 		}
 	}
-	Logger::getInstance().Log(INFO, "Broadcasted message to channel " + _name + ": [" + message + "]");
+
+	Logger::GetInstance().Log(INFO, "Broadcasted message to channel " + _name + ": [" + message + "]");
 }
 
 bool	Channel::IsFull		()			const
 {
-	return (_user_limit > 0 && (int)_users.size() >= _user_limit);
+	return (_user_limit > 0 && _users.size() >= _user_limit);
 }
 
-bool	Channel::IsEmpty	()			const
+bool	Channel::IsFree		()			const
 {
 	return (_users.empty ());
 }
@@ -204,7 +190,7 @@ std::string	Channel::GetModeParams() const
 {
 	std::string	params = "";
 
-	if (IsModeSet('k')) params += _pass;
+	if (IsModeSet('k') ) params += _pass;
 
 	if (_user_limit > 0)
 	{
@@ -219,7 +205,7 @@ std::string	Channel::GetModeParams() const
 
 void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std::vector<std::string>& mode_args, Server& server)
 {
-	if (!IsOperator(sender))
+	if (!IsOprt(sender))
 	{
 		server.SendsNumericReply(sender, 482, _name + " :You're not channel operator");
 		return ;
@@ -355,7 +341,7 @@ void	Channel::handle_K_Mode	(Client* sender, char sign, const std::string& param
 
 void	Channel::handle_O_Mode	(Client* sender, char sign, const std::string& param)
 {
-	Client* target_user = _server.FindClient(param);
+	Client* target_user = _server.FindUser(param);
 
 	if (!target_user)
 	{
@@ -365,9 +351,9 @@ void	Channel::handle_O_Mode	(Client* sender, char sign, const std::string& param
 
 	if (sign == '+')
 	{
-		if (IsOperator	(target_user) == 0)
+		if (IsOprt	(target_user) == 0)
 		{
-			AddOperator	(target_user);
+			AddOprt	(target_user);
 
 			_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " +o " + target_user->GetNickname());
 		}
@@ -375,9 +361,9 @@ void	Channel::handle_O_Mode	(Client* sender, char sign, const std::string& param
 	}
 	if (sign == '-')
 	{
-		if (IsOperator	(target_user) != 0)
+		if (IsOprt	(target_user) != 0)
 		{
-			RmvOperator	(target_user);
+			RmvOprt	(target_user);
 
 			_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " -o " + target_user->GetNickname());
 		}
@@ -426,10 +412,12 @@ void	Channel::AddInvitedUser(const std::string& nickname)
 
 void	Channel::RmvInvitedUser(const std::string& nickname)
 {
-	_invited_users.erase(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
+	_invited_users.erase(std::remove (_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
 }
 
-bool	Channel::IsUserInvited(const std::string& nickname) const
+bool	Channel::GetUserInvited(const std::string& nickname)
 {
 	return std::find(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
 }
+
+//------------------------------------------------------------

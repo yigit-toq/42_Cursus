@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PassCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/20 16:30:38 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/10 05:01:45 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "PassCommand.hpp"
 #include "Server.hpp"
-
-//bakılacak
 
 PassCommand:: PassCommand	(Server& server) : _server(server) {}
 
@@ -21,15 +6,15 @@ PassCommand::~PassCommand	() {}
 
 void	PassCommand::Execute(Client* sender, const Message& msg)
 {
-	if (sender->IsRegistered()		)
+	if (sender->IsRegistered()			)
 	{
-		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already registered)"); //
+		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already)"	);
 		return ;
 	}
 
-	if (msg.GetParameters().empty()	)
+	if (msg.GetParameters	().empty()	)
 	{
-		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"					); //
+		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"			);
 		return ;
 	}
 
@@ -37,16 +22,16 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 
 	if (password != _server.GetPassword())
 	{
-		_server.SendsNumericReply	(sender, 464, ":Password incorrect"); //
+		_server.SendsNumericReply	(sender, 464, ":Password incorrect");
 
 		return ;
 	}
 
-	sender->SetAuthenticated(true); //
+	sender->SetAuth				(true);
 
 	sender->SetPassword			(password);
 
-	Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " provided correct password.");
+	Logger::GetInstance().Log	(INFO, "User " + sender->GetNickname() + " provided correct password.");
 
-	_server.CheckRegistration	(sender);
+	_server.CheckRegistration	(sender  );
 }

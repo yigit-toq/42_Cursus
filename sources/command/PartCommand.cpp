@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PartCommand.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 14:47:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/07 00:17:39 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "PartCommand.hpp"
 #include "Server.hpp"
-#include <iostream>
-#include <sstream>
 
 PartCommand:: PartCommand	(Server& server) : _server(server) {}
 
@@ -36,8 +21,8 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 		part_message = msg.GetParameters()[1];
 	}
 
-	std::stringstream	ss(name_strings);
-	std::string			channel_name;
+	std::stringstream	 ss(name_strings);
+	std::string				channel_name;
 
 	while (std::getline(ss, channel_name, ','))
 	{
@@ -70,17 +55,17 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 			part_ss << " :" << part_message;
 		}
 
-		target_channel->BroadcastMessage(part_ss.str(), NULL);
+		target_channel->BroadcastMessage(part_ss.str(), NULL); //
 
-		target_channel->RmvClient		(sender);
+		target_channel->RmvUser			(sender);
 
-		Logger::getInstance().Log(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
+		Logger::GetInstance().Log		(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
 
-		if (target_channel->IsEmpty	())
+		if (target_channel->IsFree		())
 		{
-			_server.RemoveChannel	(target_channel->GetName());
+			_server.RemoveChannel		(target_channel->GetName());
 
-			Logger::getInstance().Log(INFO, "Channel " + channel_name + " is empty and removed.");
+			Logger::GetInstance().Log	(INFO, "Channel " + channel_name + " is empty and removed.");
 		}
 	}
 }

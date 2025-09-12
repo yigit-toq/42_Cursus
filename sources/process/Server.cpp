@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/24 17:37:26 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/11 12:43:05 by ytop             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
 
 Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass)
@@ -18,14 +6,14 @@ Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass
 	_srvr_socket.Binder		();
 	_srvr_socket.Listen		();
 
-	_poll_handlr.AddSocket	(_srvr_socket.GetSock(), POLLIN);
+	_poll_handler.AddSocket	(_srvr_socket.GetSock(), POLLIN);
 
 	SetupCommands			();
 
 	_netwrk_name = "irc_network"	;
 	_server_name = "irc.example.com";
 
-	Logger::getInstance().Log(INFO, "Server initialized on port " + ft_to_string(port) + " with password: " + pass);
+	Logger::GetInstance().Log(INFO, "Server initialized on port " + ft_to_string(port) + " with password: " + pass);
 }
 
 Server::~Server()
@@ -42,29 +30,29 @@ Server::~Server()
 	}
 	_channels.		clear();
 
-	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handlr.	begin(); it != _cmds_handlr.end(); ++it)
+	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handler.	begin(); it != _cmds_handler.end(); ++it)
 	{
 		delete (it->second);
 	}
-	_cmds_handlr.	clear();
+	_cmds_handler.	clear();
 
-	Logger::getInstance().Log(INFO, "Server shutting down.");
+	Logger::GetInstance().Log(INFO, "Server shutting down.");
 }
 
 //-------------------- Server Main Loop --------------------
 
-void	Server::Start()
+void	Server::Start(void)
 {
 	while (true)
 	{
-		std::vector<struct pollfd> active_fds = _poll_handlr.WaitForEvents(1000);
+		std::vector<struct pollfd> active_fds = _poll_handler.WaitForEvents(1000);
 
-		HandleEvents(active_fds);
+		HandleEvents	(active_fds);
 
-		CheckForTimeouts(); //
+		CleanupUsers	();
+		CleanupChnls	();
 
-		cleanupClients();
-		cleanupChannels();
+		CheckForTimeout	();
 	}
 }
 
@@ -101,41 +89,41 @@ void	Server::HandleClientSocketEvent(const struct pollfd& client_fd)
 
 	if (!user)
 	{
-		Logger::getInstance().Log(ERROR, "User not found for FD " + ft_to_string(fd));
+		Logger::GetInstance().Log(ERROR, "User not found for FD " + ft_to_string(fd));
 
-		_poll_handlr.RmvSocket	(fd);
+		_poll_handler.RmvSocket	(fd);
 
 		return ;
 	}
 
 	if (client_fd.revents & (POLLERR | POLLHUP | POLLNVAL))
 	{
-		Logger::getInstance().Log(ERROR, "Client FD " + ft_to_string(fd) + " error or hangup.");
+		Logger::GetInstance().Log	(ERROR, "Client FD " + ft_to_string(fd) + " error or hangup.");
 
-		ClientDisconnection		(fd);
+		ClientDisconnection			(fd);
 
 		return ;
 	}
 
 	if ( client_fd.revents & POLLIN )
 	{
-		HandleClientReadEvent	(fd, user);
+		HandleClientREvent	(fd, user);
 	}
 
 	if ((client_fd.revents & POLLOUT) && user->HasOuputData())
 	{
-		HandleClientWriteEvent	(fd, user);
+		HandleClientWEvent	(fd, user);
 	}
 }
 
-void	Server::HandleClientReadEvent(int client_fd, Client* user)
+void	Server::HandleClientREvent(int fd, Client* user)
 {
-	HandleClientMessage(client_fd);
+	HandleClientMessage(fd);
 
 	(void)user;
 }
 
-void	Server::HandleClientWriteEvent(int client_fd, Client* user)
+void	Server::HandleClientWEvent(int fd, Client* user)
 {
 	while (user->HasOuputData())
 	{
@@ -147,30 +135,30 @@ void	Server::HandleClientWriteEvent(int client_fd, Client* user)
 		{
 			if (bytes_sent == -1 && (errno == EAGAIN || errno == EWOULDBLOCK))
 			{
-				Logger::getInstance().Log(WARNING, "Send buffer full for FD " + ft_to_string(user->GetFD()) + ", will try again next poll.");
+				Logger::GetInstance().Log(WARNING, "Send  buffer full for FD " + ft_to_string(user->GetFD()) + ", will try again next poll.");
 			}
 			else
 			{
-				Logger::getInstance().Log(ERROR, "Error sending data to FD " + ft_to_string(user->GetFD()) + ": " + strerror(errno));
+				Logger::GetInstance().Log(ERROR  , "Error sending data to FD " + ft_to_string(user->GetFD()) + ": " + strerror(errno));
 
 				ClientDisconnection(user->GetFD());
 			}
 			break ;
 		}
 	
-		user->PopOutputBuffer	(bytes_sent);
+		user->PopOutputBuffer		(bytes_sent);
 
-		Logger::getInstance().Log(INFO, "Sent " + ft_to_string(bytes_sent) + " bytes to FD " + ft_to_string(user->GetFD()) + ". Remaining: " + ft_to_string(user->GetOutputBuffer().length()) + " bytes.");
+		Logger::GetInstance().Log	(INFO, "Sent " + ft_to_string(bytes_sent) + " bytes to FD " + ft_to_string(user->GetFD()) + ". Remaining: " + ft_to_string(user->GetOutputBuffer().length()) + " bytes.");
 	}
 
 	if (!user->HasOuputData())
 	{
-		_poll_handlr.SetEvents(user->GetFD(), POLLIN);
+		_poll_handler.SetEvents		(user->GetFD(), POLLIN);
 
-		Logger::getInstance().Log(INFO, "FD " + ft_to_string(user->GetFD()) + " output buffer empty. POLLOUT removed.");
+		Logger::GetInstance().Log	(INFO, "FD   " + ft_to_string(user->GetFD()) + " output buffer empty. POLLOUT removed.");
 	}
 
-	(void)client_fd;
+	(void)fd;
 }
 
 void	Server::HandleNewConnection()
@@ -179,18 +167,19 @@ void	Server::HandleNewConnection()
 
 	if (client_fd < 0)
 	{
-		Logger::getInstance().Log(ERROR, "Failed to accept new connection: " + std::string(strerror(errno)));
+		Logger::GetInstance().Log(ERROR, "Failed to accept new connection: " + std::string(strerror(errno)));
 		return ;
 	}
 
 	Client* new_user = new Client(client_fd);
+
 	new_user->SetHostname("irc.example.com");
 
 	_clients[client_fd] = new_user;
 
-	_poll_handlr.AddSocket(client_fd, POLLIN | POLLOUT);
+	_poll_handler.AddSocket		(client_fd, POLLIN | POLLOUT);
 
-	Logger::getInstance().Log(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
+	Logger::GetInstance().Log	(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
 }
 
 void	Server::HandleClientMessage(int fd)
@@ -209,13 +198,13 @@ void	Server::HandleClientMessage(int fd)
 		{
 			user->AppendToInputBuffer(buffer);
 
-			Logger::getInstance().Log(INFO, "Received " + ft_to_string(bytes_read) + " bytes from FD " + ft_to_string(fd) + ": [" + buffer + "]");
+			Logger::GetInstance().Log(INFO, "Received " + ft_to_string(bytes_read) + " bytes from FD " + ft_to_string(fd) + ": [" + buffer + "]");
 
 			std::string	raw;
 
 			while ((raw = user->ExtractNextMessage()) != "")
 			{
-				Logger::getInstance().Log(INFO, "Full message extracted: " + raw);
+				Logger::GetInstance().Log(INFO, "Full message extracted: " + raw);
 
 				Message	msg;
 
@@ -227,9 +216,9 @@ void	Server::HandleClientMessage(int fd)
 				}
 				else
 				{
-					Logger::getInstance().Log(ERROR, "Failed to parse message from FD " + ft_to_string(fd) + ": " + raw);
+					Logger::GetInstance ().Log(ERROR, "Failed to parse message from FD " + ft_to_string(fd) + ": " + raw);
 
-					// Geçersiz mesaj durumunda istemciye hata yanıtı gönderme veya bağlantıyı kesme düşünülebilir.
+					SendsNumericReply	(user, 421, msg.GetCommand() + " :Unknown command"); //
 				}
 			}
 		}
@@ -240,7 +229,7 @@ void	Server::HandleClientMessage(int fd)
 	}
 	else if (bytes_read == -1)
 	{
-		Logger::getInstance().Log(ERROR, "Error reading from client FD " + ft_to_string(fd) + ": " + strerror(errno));
+		Logger::GetInstance().Log(ERROR, "Error reading from client FD " + ft_to_string(fd) + ": " + strerror(errno));
 
 		ClientDisconnection(fd);
 	}
@@ -252,9 +241,9 @@ void	Server::ClientDisconnection(int fd)
 
 	if (it == _clients.end())
 	{
-		return;
+		return ;
 	}
-	
+
 	Client* client_ptr = it->second;
 
 	std::vector<Channel *> joined_channels = client_ptr->GetJoinChannels(); 
@@ -265,13 +254,13 @@ void	Server::ClientDisconnection(int fd)
 		
 		if (channel_ptr)
 		{
-			channel_ptr->RmvClient(client_ptr);
+			channel_ptr->RmvUser(client_ptr);
 		}
 	}
 
-	_fdsToDelete.push_back(fd);
+	_usersToDelete.push_back(fd);
 
-	Logger::getInstance().Log(INFO, "Client FD " + ft_to_string(fd) + " disconnected. Removing from server.");
+	Logger::GetInstance().Log(INFO, "Client FD " + ft_to_string(fd) + " disconnected. Removing from server.");
 }
 
 //------------------------------------------------------------
@@ -294,7 +283,7 @@ Channel*	Server::CreateChannel(const std::string& name)
 {
 	if (FinderChannel(name) != NULL)
 	{
-		Logger::getInstance().Log(WARNING, "Attempted to create already existing channel: " + name);
+		Logger::GetInstance().Log(WARNING, "Attempted to create already existing channel: " + name);
 
 		return (FinderChannel(name));
 	}
@@ -303,7 +292,7 @@ Channel*	Server::CreateChannel(const std::string& name)
 
 	_channels[name]			= new_channel;
 
-	Logger::getInstance().Log(INFO, "Created new channel: " + name);
+	Logger::GetInstance().Log(INFO, "Created new channel: " + name);
 
 	return (new_channel);
 }
@@ -317,40 +306,35 @@ void	Server::RemoveChannel(const std::string& name)
 		return;
 	}
 
-	_channelsToDelete.push_back(name);
+	_chnlsToDelete.push_back (name);
 
-	Logger::getInstance().Log(INFO, "Channel " + name + " marked for deletion.");
+	Logger::GetInstance().Log	(INFO, "Channel " + name + " marked for deletion.");
 }
 
 //------------------------------------------------------------
 
 //-------------------- Client  Management --------------------
 
-Client*	Server::FindClient	(const std::string& nick)
+Client*	Server::FindUser	(const std::string& nick)
 {
 	std::map<std::string, Client*>::iterator  it = _clients_by_nick.find(nick);
-
-	// std::cout << "server users: ";
-	// for (const auto& pair : _clients_by_nick)
-	// {
-	// 	std::cout << pair.first << " ";
-	// }
-	// std::cout << std::endl;
 
 	if (it != _clients_by_nick.end())
 	{
 		return (it->second);
 	}
 	else
+	{
 		return (NULL);
+	}
 }
 
-void	Server::AddClient	(Client* client)
+void	Server::AddUser		(Client* client)
 {
 	_clients_by_nick		[client->GetNickname()] = client;
 }
 
-void	Server::RmvClient	(Client* client)
+void	Server::RmvUser		(Client* client)
 {
 	_clients_by_nick.erase	(client->GetNickname());
 }
@@ -408,7 +392,7 @@ const std::string&	Server::GetPassword		() const	{ return _password;		}
 const std::string&	Server::GetServerName	() const	{ return _server_name;	}
 const std::string&	Server::GetNetwrkName	() const	{ return _netwrk_name;	}
 
-PollHandler&		Server::GetPollHandler	()			{ return _poll_handlr;	}
+PollHandler&		Server::GetPollHandler	()			{ return _poll_handler;	}
 
 //------------------------------------------------------------
 
@@ -416,23 +400,23 @@ PollHandler&		Server::GetPollHandler	()			{ return _poll_handlr;	}
 
 void	Server::SetupCommands()
 {
-	_cmds_handlr["INVITE"]	= new InviteCommand	(*this);
+	_cmds_handler["INVITE"]	= new InviteCommand	(*this);
 
-	_cmds_handlr["TOPIC"]	= new TopicCommand	(*this);
+	_cmds_handler["TOPIC"]	= new TopicCommand	(*this);
 
-	_cmds_handlr["JOIN"]	= new JoinCommand	(*this);
-	_cmds_handlr["MODE"]	= new ModeCommand	(*this);
+	_cmds_handler["JOIN"]	= new JoinCommand	(*this);
+	_cmds_handler["MODE"]	= new ModeCommand	(*this);
 
-	_cmds_handlr["PART"]	= new PartCommand	(*this);
-	_cmds_handlr["KICK"]	= new KickCommand	(*this);
+	_cmds_handler["PART"]	= new PartCommand	(*this);
+	_cmds_handler["KICK"]	= new KickCommand	(*this);
 
-	_cmds_handlr["USER"]	= new UserCommand	(*this);
-	_cmds_handlr["NICK"]	= new NickCommand	(*this);
-	_cmds_handlr["PASS"]	= new PassCommand	(*this);
+	_cmds_handler["USER"]	= new UserCommand	(*this);
+	_cmds_handler["NICK"]	= new NickCommand	(*this);
+	_cmds_handler["PASS"]	= new PassCommand	(*this);
 
-	_cmds_handlr["QUIT"]	= new QuitCommand	(*this);
+	_cmds_handler["QUIT"]	= new QuitCommand	(*this);
 	
-	_cmds_handlr["PRIVMSG"]	= new PrivCommand	(*this);
+	_cmds_handler["PRIVMSG"]	= new PrivCommand	(*this);
 }
 
 //------------------------------------------------------------
@@ -441,15 +425,15 @@ void	Server::SetupCommands()
 
 void	Server::ProcessMessage			(Client* sender, const Message& msg)
 {
-	std::map<std::string, CommandHandler*>::iterator it = _cmds_handlr.find(msg.GetCommand());
+	std::map<std::string, CommandHandler*>::iterator it = _cmds_handler.find(msg.GetCommand());
 
-	if (it != _cmds_handlr.end())
+	if (it != _cmds_handler.end())
 	{
 		it->second->Execute(sender, msg);
 	}
 	else
 	{
-		Logger::getInstance().Log(WARNING, "Unknown command: " + msg.GetCommand() + " from FD " + ft_to_string(sender->GetFD()));
+		Logger::GetInstance().Log(WARNING, "Unknown command: " + msg.GetCommand() + " from FD " + ft_to_string(sender->GetFD()));
 	}
 }
 
@@ -461,7 +445,7 @@ void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& m
 
 	user->AppendToOuputBuffer	(ss.str());
 
-	_poll_handlr.SetEvents		(user->GetFD(), POLLIN | POLLOUT); //
+	_poll_handler.SetEvents		(user->GetFD(), POLLIN | POLLOUT);
 }
 
 void	Server::CheckRegistration		(Client* user)
@@ -478,9 +462,9 @@ void	Server::CheckRegistration		(Client* user)
 	{
 		user->SetStatus		(REGISTERED);
 
-		Logger::getInstance().Log(INFO, "User " + user->GetNickname() + " is now registered.");
+		Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " is now registered.");
 
-		Logger::getInstance().Log(INFO, "User FD " + ft_to_string(user->GetFD()) + " (" + user->GetNickname() + ") is now registered!");
+		Logger::GetInstance().Log(INFO, "User FD " + ft_to_string(user->GetFD()) + " (" + user->GetNickname() + ") is now registered!");
 
 		SendsNumericReply	(user, 001, ":Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
 
@@ -501,20 +485,37 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 
 	for (it = users.begin(); it != users.end();  ++it)
 	{
-		std::cout << "Broadcasting message to " << it->second->GetNickname() << full_message;
+		Logger::GetInstance().Log (INFO, "Broadcasting message to " + it->second->GetNickname() + ": " + full_message);
 
 		if (send(it->second->GetFD(), full_message.c_str(), full_message.length(), 0) < 0)
 		{
-			Logger::getInstance().Log(ERROR, "Sending message to client " + it->second->GetNickname() + ": " + strerror(errno));
+			Logger::GetInstance().Log(ERROR, "Sending message to client " + it->second->GetNickname() + ": " + strerror(errno));
 
             ClientDisconnection(it->second->GetFD());
 		}
 	}
 }
 
+void	Server::BroadcastNicknameChange	(Client* client, const std::string& old_nick, const std::string& new_nick)
+{
+	for (std::map<std::string, Channel*>::iterator it = _channels.begin(); it != _channels.end(); ++it)
+	{
+		Channel* channel = it->second;
+
+		if (channel->IsUser(client))
+		{
+			std::stringstream ss;
+
+			ss << ":" << old_nick << " NICK " << new_nick << "\r\n";
+
+			channel->BroadcastMessage(ss.str(), NULL);
+		}
+	}
+}
+
 //------------------------------------------------------------
 
-void	Server::CheckForTimeouts()
+void	Server::CheckForTimeout	()
 {
 	std::map<int, Client*>::iterator	it = _clients.begin();
 
@@ -526,9 +527,9 @@ void	Server::CheckForTimeouts()
 	{
 		Client*	user = it->second;
 
-		if (!user->IsAuthenticated() && (curr_time - user->GetConnectionTime() > TIMEOUT_DURATION))
+		if (!user->GetAuth() && (curr_time - user->GetConnectionTime() > TIMEOUT_DURATION))
 		{
-			Logger::getInstance().Log(WARNING, "Client FD " + ft_to_string(user->GetFD()) + " timed out due to no password.");
+			Logger::GetInstance().Log(WARNING, "Client FD " + ft_to_string(user->GetFD()) + " timed out due to no password.");
 
 			int fd_to_remove =  user->GetFD();
 
@@ -538,32 +539,9 @@ void	Server::CheckForTimeouts()
 	}
 }
 
-void	Server::cleanupClients()
+void	Server::CleanupChnls()
 {
-	for (std::vector<int>::iterator it = _fdsToDelete.begin(); it != _fdsToDelete.end(); ++it)
-	{
-		int fd = *it;
-		
-		std::map<int, Client*>::iterator client_it = _clients.find(fd);
-
-		if (client_it != _clients.end())
-		{
-			Client* client_ptr = client_it->second;
-
-			delete client_ptr;
-			_clients.erase(client_it);
-		}
-
-		_poll_handlr.RmvSocket(fd);
-		
-		close(fd);
-	}
-	_fdsToDelete.clear();
-}
-
-void	Server::cleanupChannels()
-{
-	for (std::vector<std::string>::iterator it = _channelsToDelete.begin(); it != _channelsToDelete.end(); ++it)
+	for (std::vector<std::string>::iterator it = _chnlsToDelete.begin(); it != _chnlsToDelete.end(); ++it)
 	{
 		std::string channel_name = *it;
 
@@ -573,9 +551,36 @@ void	Server::cleanupChannels()
 		{
 			Channel* channel_ptr = channel_it->second;
 			
-			delete channel_ptr;
-			_channels.erase(channel_it);
+			delete			(channel_ptr);
+
+			_channels.erase	(channel_it );
 		}
 	}
-	_channelsToDelete.clear();
+	_chnlsToDelete.clear();
 }
+
+void	Server::CleanupUsers()
+{
+	for (std::vector<int>::iterator it = _usersToDelete.begin(); it != _usersToDelete.end(); ++it)
+	{
+		int fd = *it;
+		
+		std::map<int, Client*>::iterator client_it = _clients.find(fd);
+
+		if (client_it != _clients.end())
+		{
+			Client* client_ptr = client_it->second;
+
+			delete			(client_ptr);
+
+			_clients.erase	(client_it );
+		}
+
+		_poll_handler.RmvSocket(fd);
+		
+		close(fd);
+	}
+	_usersToDelete.clear();
+}
+
+//------------------------------------------------------------
