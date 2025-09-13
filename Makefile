@@ -3,6 +3,7 @@ NAME			=	ircserv
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
+BONUS_DIR		=	${SRCS_DIR}bonus/
 UTILS_DIR		=	${SRCS_DIR}utils/
 
 PROCESS_DIR		=	${SRCS_DIR}process/
@@ -11,7 +12,7 @@ COMMAND_DIR		=	${SRCS_DIR}command/
 
 PROTOCOL_DIR	=	${SRCS_DIR}protocol/
 
-SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)UserCommand.cpp		$(PROCESS_DIR)Server.cpp		$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp	\
+M_SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)UserCommand.cpp		$(PROCESS_DIR)Server.cpp		$(NETWORK_DIR)Socket.cpp			$(PROTOCOL_DIR)Message.cpp				$(UTILS_DIR)Utils.cpp	\
 											$(COMMAND_DIR)QuitCommand.cpp		$(PROCESS_DIR)Client.cpp		$(NETWORK_DIR)PollHandler.cpp		$(PROTOCOL_DIR)CommandHandler.cpp		$(UTILS_DIR)Logger.cpp	\
 											$(COMMAND_DIR)PrivCommand.cpp		$(PROCESS_DIR)Channel.cpp																											\
 											$(COMMAND_DIR)PassCommand.cpp																																			\
@@ -23,9 +24,9 @@ SRCS 			=	$(SRCS_DIR)Main.cpp		$(COMMAND_DIR)UserCommand.cpp		$(PROCESS_DIR)Serv
 											${COMMAND_DIR}TopicCommand.cpp																																			\
 											${COMMAND_DIR}InviteCommand.cpp																																			\
 
-OBJS 			=	$(patsubst $(SRCS_DIR)%.cpp,$(OBJS_DIR)%.o,$(SRCS))
+M_OBJS 			=	$(patsubst $(SRCS_DIR)%.cpp,$(OBJS_DIR)%.o,$(M_SRCS))
 
-RMRF				=	@rm -rf
+RMRF			=	@rm -rf
 
 CXX				=	@c++
 
@@ -38,6 +39,18 @@ CXXFLAGS		=	-Wall  -Wextra -Werror	\
 
 STD				=	-std=c++98
 
+LOG				=	./irc_server.log
+
+## BONUS
+
+B_SRCS			= $(BONUS_DIR)Assistant.cpp $(BONUS_DIR)Main.cpp
+
+B_OBJS			= $(patsubst $(SRCS_DIR)%,$(OBJS_DIR)%,$(B_SRCS:.cpp=.o))
+
+ASST			= assistant
+
+## COLOR
+
 C_Y				=	\033[0;33m
 C_G				=	\033[0;32m
 C_R				=	\033[0;31m
@@ -49,9 +62,15 @@ $(OBJS_DIR)%.o	:	$(SRCS_DIR)%.cpp
 
 all				:	$(NAME)
 
-$(NAME)			:	$(OBJS)
+bonus			:	$(ASST)
+
+$(NAME)			:	$(M_OBJS)
 					$(CXX)		$(CXXFLAGS) $(STD)		$^ -o $(NAME)
 					@echo "\e[1m$(C_Y)IRCSERV		$(C_G)[OK]\e[0m$(C_E)"
+
+$(ASST)			:	$(B_OBJS)
+					$(CXX)		$(CXXFLAGS) $(STD)		$^ -o $(ASST)
+					@echo "\e[1m$(C_Y)IRCASST		$(C_G)[OK]\e[0m$(C_E)"
 
 clean			:
 					$(RMRF)		$(OBJS_DIR)
@@ -59,7 +78,9 @@ clean			:
 			
 
 fclean			:	clean
+					$(RMRF)		$(LOG)
 					$(RMRF)		$(NAME)
+					$(RMRF)		$(ASST)
 					@echo "\e[1m$(C_Y)EXECUTE		$(C_R)[KO]\e[0m$(C_E)"
 
 re				:	fclean all

@@ -11,10 +11,9 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 		_server.SendsNumericReply(sender, 451, ":You have not registered yet");
 		return ;
 	}
-	if (msg.GetParameters().empty())
+	if (msg.	GetParameters().empty())
 	{
 		_server.SendsNumericReply(sender, 461, "JOIN :Not enough parameters" );
-
 		return ;
 	}
 
@@ -35,7 +34,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	Channel* channel;
+	Channel*	channel;
 
 	channel		= _server.FinderChannel(channel_name);
 

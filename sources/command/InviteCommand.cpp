@@ -15,28 +15,28 @@ void	InviteCommand::Execute	(Client* sender, const Message& msg)
 	std::string tar_nick = msg.GetParameters()[0];
 	std::string chn_name = msg.GetParameters()[1];
 
-	Channel*	channel_tar		= _server.FinderChannel	(chn_name);
-	Client*		target_client	= _server.FindUser		(tar_nick);
+	Channel*	tar_chnl = _server.FinderChannel	(chn_name);
+	Client*		tar_user = _server.FindUser			(tar_nick);
 
-	if (!channel_tar)
+	if (!tar_user)
 	{
-		_server.SendsNumericReply(sender, 403, chn_name + " :No such channel");
+		_server.SendsNumericReply(sender, 401, tar_nick + " :No such nick"		);
 		return ;
 	}
 
-	if (!channel_tar->IsUser(sender))
+	if (!tar_chnl)
 	{
-		_server.SendsNumericReply(sender, 442, chn_name + " :You're not on that channel");
+		_server.SendsNumericReply(sender, 403, chn_name + " :No such channel"	);
 		return ;
 	}
 
-	if (!target_client)
+	if (!tar_chnl->IsUser(sender))
 	{
-		_server.SendsNumericReply(sender, 401, tar_nick + " :No such nick/channel"); //
+		_server.SendsNumericReply(sender, 442, chn_name + " :You're not on that channel" );
 		return ;
 	}
 
-	if (channel_tar->IsModeSet('i') && !channel_tar->IsOprt(sender))
+	if (tar_chnl->IsModeSet('i') && !tar_chnl->IsOprt(sender))
 	{
 		_server.SendsNumericReply(sender, 482, chn_name + " :You're not channel operator");
 		return ;
@@ -46,9 +46,9 @@ void	InviteCommand::Execute	(Client* sender, const Message& msg)
 
 	std::string invite_msg = ":" + sender->GetNickname() + " INVITE " + tar_nick + " :" + chn_name + "\r\n";
 
-	channel_tar->AddInvitedUser(tar_nick);
+	tar_chnl->AddInvitedUser			(tar_nick);
 	
-	target_client->AppendToOuputBuffer(invite_msg);
+	tar_user->AppendToOuputBuffer		(invite_msg);
 
-	_server.GetPollHandler().SetEvents(target_client->GetFD(), POLLIN | POLLOUT);
+	_server.GetPollHandler().SetEvents	(tar_user->GetFD(), POLLIN | POLLOUT);
 }

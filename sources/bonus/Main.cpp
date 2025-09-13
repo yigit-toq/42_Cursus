@@ -2,7 +2,7 @@
 
 void	SignalHandler(int signum)
 {
-	std::cout << "Caught signal " << signum << ". Shutting down gracefully..." << std::endl;
+	(void)signum;
 
 	if (bot_instance)
 	{
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 
 	std::string server_addr	= argv[1];
 
-	int			server_port	= std::stoi(argv[2]);
+	int			server_port	= std::atoi(argv[2]);
 
 	std::string password	= argv[3];
 	std::string nickname	= argv[4];

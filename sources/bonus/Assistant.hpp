@@ -3,17 +3,19 @@
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include <unistd.h>
+
 #include <iostream>
+
 #include <sstream>
+
 #include <cstdlib>
+#include <cstring>
 #include <csignal>
-#include <string>
-#include <vector>
 #include <cerrno>
 #include <ctime>
 
-#include "../../includes/utils/Utils.hpp"
+#include <vector>
+#include <string>
 
 const int	BUFFER_SIZE = 1024;
 
@@ -41,20 +43,22 @@ class Assistant
 
 		std::vector<std::string>	_quotes		;
 
-		std::string	GetCurrTime		();
+		std::string					GetCurrTime		();
 
-		void		SendMessage		(const std::string& message);
+		void						SendMessage		(const std::string& message);
 
-		void		ConnectToServer	();
-		void		AuthAndRegister	();
+		void						ConnectToServer	();
+		void						AuthAndRegister	();
 
-		void		ProcessMessage	(const std::string& full_message);
+		void						ProcessMessage	(const std::string& full_message);
 
-		void		HandlerCommand	(const std::string& sender_nick, const std::string& target_channel, const std::string& message_content);
+		void						HandlerCommand	(const std::string& sender_nick, const std::string& target_channel, const std::string& message_content);
 
-		void		MainLoop		();
+		void						MainLoop		();
+
+		std::vector<std::string>	Split			(const std::string& str, char delimiter);
 };
 
-static Assistant*	bot_instance = nullptr;
+static Assistant*	bot_instance = NULL;
 
 #endif
