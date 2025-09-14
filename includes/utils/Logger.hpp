@@ -27,12 +27,12 @@ class Logger
 		~Logger			();
 
 	public:
-		static Logger&	GetInstance	(const std::string& filename = "irc_server.log");
+		static	Logger&	GetInstance	(const std::string& filename = "irc_server.log");
 
-		static void		RmvInstance	();
+		static	void	RmvInstance	();
 
 	public:
-		void			Log			(LogLevel level, const std::string& message);
+				void	Log			(LogLevel level, const std::string& message);
 };
 
 #endif

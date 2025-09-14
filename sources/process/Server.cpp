@@ -281,11 +281,11 @@ Channel*	Server::FinderChannel(const std::string& name) const
 
 Channel*	Server::CreateChannel(const std::string& name)
 {
-	if (FinderChannel(name) != NULL)
+	if (FinderChannel			(name) != NULL)
 	{
-		Logger::GetInstance().Log(WARNING, "Attempted to create already existing channel: " + name);
+		Logger::GetInstance		().Log(WARNING, "Attempted to create already existing channel: " + name);
 
-		return (FinderChannel(name));
+		return (FinderChannel	(name));
 	}
 
 	Channel* new_channel	= new Channel(name, *this);
@@ -308,7 +308,7 @@ void	Server::RemoveChannel(const std::string& name)
 
 	_chnlsToDelete.push_back (name);
 
-	Logger::GetInstance().Log	(INFO, "Channel " + name + " marked for deletion.");
+	Logger::GetInstance().Log(INFO, "Channel " + name + " marked for deletion.");
 }
 
 //------------------------------------------------------------
@@ -343,7 +343,7 @@ void	Server::RmvUser		(Client* client)
 
 //-------------------- Utility  Functions --------------------
 
-bool	Server::IsNicknameAvailable	(const std::string& nickname) const
+bool	Server::IsNicknameAval	(const std::string& nickname) const
 {
 	if (nickname == "*") return (false);
 
@@ -368,10 +368,10 @@ bool	Server::IsNicknameAvailable	(const std::string& nickname) const
 		}
 	}
 
-	return (FindUserByNickname(nickname) == NULL);
+	return (FindUserByNick(nickname) == NULL);
 }
 
-Client*	Server::FindUserByNickname	(const std::string& nickname) const
+Client*	Server::FindUserByNick	(const std::string& nickname) const
 {
 	for (std::map<int, Client*>::const_iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
@@ -427,13 +427,13 @@ void	Server::ProcessMessage			(Client* sender, const Message& msg)
 {
 	std::map<std::string, CommandHandler*>::iterator it = _cmds_handler.find(msg.GetCommand());
 
-	if (it != _cmds_handler.end())
+	if (it != _cmds_handler.end	())
 	{
-		it->second->Execute(sender, msg);
+		it->second->Execute		(sender, msg);
 	}
 	else
 	{
-		Logger::GetInstance().Log(WARNING, "Unknown command: " + msg.GetCommand() + " from FD " + ft_to_string(sender->GetFD()));
+		Logger::GetInstance		().Log(WARNING, "Unknown command: " + msg.GetCommand() + " from FD " + ft_to_string(sender->GetFD()));
 	}
 }
 
@@ -462,13 +462,9 @@ void	Server::CheckRegistration		(Client* user)
 	{
 		user->SetStatus		(REGISTERED);
 
-		Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " is now registered.");
+		SendsNumericReply	(user,  001, ":Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
 
-		Logger::GetInstance().Log(INFO, "User FD " + ft_to_string(user->GetFD()) + " (" + user->GetNickname() + ") is now registered!");
-
-		SendsNumericReply	(user, 001, ":Welcome to the "	+ _netwrk_name + " IRC Network " + user->GetNickname() + "!" + user->GetUsername() + "@" + user->GetHostname());
-
-		SendsNumericReply	(user, 002, ":Your host is "	+ _server_name + ", running version 1.0");
+		Logger::GetInstance	().Log(INFO, "User " + user->GetNickname() + " is now registered.");
 	}
 }
 
@@ -508,7 +504,7 @@ void	Server::BroadcastNicknameChange	(Client* client, const std::string& old_nic
 
 			ss << ":" << old_nick << " NICK " << new_nick << "\r\n";
 
-			channel->BroadcastMessage(ss.str(), NULL);
+			channel->BroadcastMsg(ss.str(), NULL);
 		}
 	}
 }

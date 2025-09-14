@@ -20,33 +20,33 @@ void	InviteCommand::Execute	(Client* sender, const Message& msg)
 
 	if (!tar_user)
 	{
-		_server.SendsNumericReply(sender, 401, tar_nick + " :No such nick"		);
+		_server.SendsNumericReply		(sender, 401, tar_nick + " :No such nick"	);
 		return ;
 	}
 
 	if (!tar_chnl)
 	{
-		_server.SendsNumericReply(sender, 403, chn_name + " :No such channel"	);
+		_server.SendsNumericReply		(sender, 403, chn_name + " :No such channel");
 		return ;
 	}
 
 	if (!tar_chnl->IsUser(sender))
 	{
-		_server.SendsNumericReply(sender, 442, chn_name + " :You're not on that channel" );
+		_server.SendsNumericReply		(sender, 442, chn_name + " :You're not on that channel"	);
 		return ;
 	}
 
 	if (tar_chnl->IsModeSet('i') && !tar_chnl->IsOprt(sender))
 	{
-		_server.SendsNumericReply(sender, 482, chn_name + " :You're not channel operator");
+		_server.SendsNumericReply		(sender, 482, chn_name + " :You're not channel operator");
 		return ;
 	}
 
-	_server.SendsNumericReply(sender, 341, ":" + tar_nick + " " + chn_name);
+	_server.SendsNumericReply			(sender, 341, ":" + tar_nick + " " + chn_name);
 
 	std::string invite_msg = ":" + sender->GetNickname() + " INVITE " + tar_nick + " :" + chn_name + "\r\n";
 
-	tar_chnl->AddInvitedUser			(tar_nick);
+	tar_chnl->AddInvitedUser			( tar_nick );
 	
 	tar_user->AppendToOuputBuffer		(invite_msg);
 

@@ -6,12 +6,12 @@ JoinCommand::~JoinCommand	() {}
 
 void	JoinCommand::Execute(Client* sender, const Message& msg)
 {
-	if (sender->IsRegistered() == false)
+	if (sender->IsRegistered () == false)
 	{
 		_server.SendsNumericReply(sender, 451, ":You have not registered yet");
 		return ;
 	}
-	if (msg.	GetParameters().empty())
+	if (msg.	GetParameters(). empty())
 	{
 		_server.SendsNumericReply(sender, 461, "JOIN :Not enough parameters" );
 		return ;
@@ -21,7 +21,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 	std::string channel_key		= (msg.GetParameters().size() > 1) ? msg.GetParameters()[1] : "";
 
 
-	if (channel_name.empty() || (channel_name[0] != '#' && channel_name[0] != '&'))
+	if (channel_name.empty() || channel_name[0] != '#')
 	{
 		_server.SendsNumericReply(sender, 403, channel_name + " :No such channel");
 		return ;
@@ -44,26 +44,26 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 	}
 	else
 	{
-		if (!channel->GetPass().empty() && channel->GetPass() != channel_key)
+		if (channel->GetPass	().empty() == false && channel->GetPass() != channel_key)
 		{
 				_server.SendsNumericReply(sender, 475, channel_name + " :Cannot join channel (+k)");
 				return ;
 		}
-		if (channel->IsModeSet('i'))
+		if (channel->IsModeSet	('i')	)
 		{
-			if (channel->GetUserInvited  (sender->GetNickname()) == false)
+			if (channel->GetInvitedUser  (sender->GetNickname()) == false)
 			{
 				_server.SendsNumericReply(sender, 473, channel_name + " :Cannot join channel (+i)");
 				return ;
 			}
 			channel->RmvInvitedUser(sender->GetNickname());
 		}
-		if (channel->IsFull())
+		if (channel->IsFull()			)
 		{
 				_server.SendsNumericReply(sender, 471, channel_name + " :Cannot join channel (+l)");
 				return ;
 		}
-		if (channel->IsUser(sender))
+		if (channel->IsUser(sender)		)
 		{
 				Logger::GetInstance().Log(INFO, "User " + sender->GetNickname() + " is already in channel " + channel_name);
 				return ;
@@ -77,7 +77,7 @@ void	JoinCommand::Execute(Client* sender, const Message& msg)
 
 	join_msg_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " JOIN :" << channel_name;
 
-	channel->BroadcastMessage(join_msg_ss.str());
+	channel->BroadcastMsg (join_msg_ss.str());
 
 	if (!channel->GetTopic().empty())
 	{

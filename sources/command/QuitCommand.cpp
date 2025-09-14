@@ -13,7 +13,7 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 		quit_message = msg.GetParameters()[0];
 	}
 
-	std::stringstream	quit_ss;
+	std::stringstream quit_ss;
 
 	quit_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " QUIT: " << quit_message;
 
@@ -29,9 +29,9 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 		if (channel)
 		{
-			channel->BroadcastMessage		(quit_ms, sender);
+				channel->BroadcastMsg		(quit_ms, sender);
 
-			channel->RmvUser				(sender);
+				channel->RmvUser			(sender);
 
 			if (channel->IsFree		())
 			{
@@ -42,7 +42,7 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 		}
 	}
 
-	Logger::GetInstance().Log	(INFO, "User " + sender->GetNickname() + " (" + ft_to_string(sender->GetFD()) + ") has quit with message: '" + quit_message + "'");
+	Logger::GetInstance().	Log (INFO, "User " + sender->GetNickname() + " (" + ft_to_string(sender->GetFD()) + ") has quit with message: '" + quit_message + "'");
 
 	_server.ClientDisconnection	(sender->GetFD());
 }

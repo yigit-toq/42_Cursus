@@ -43,7 +43,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string new_topic = msg.GetParameters()[1];
 
-		Logger::GetInstance().Log(INFO, "is set topic" + ft_to_string(channel_tar->IsModeSet('t')) + " is operator" + ft_to_string(channel_tar->IsOprt(sender)));
+		Logger::GetInstance().Log (INFO, "is set topic" + ft_to_string (channel_tar->IsModeSet('t')) + " is operator" + ft_to_string(channel_tar->IsOprt(sender)));
 
 		if (channel_tar->IsModeSet('t') && !channel_tar->IsOprt(sender))
 		{
@@ -57,7 +57,7 @@ void	TopicCommand::Execute(Client* sender, const Message& msg)
 
 		topic_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " TOPIC " << channel_name << " :" << new_topic;
 
-		channel_tar->BroadcastMessage	(topic_ss.str(), NULL);
+		channel_tar->BroadcastMsg		(topic_ss.str(), NULL);
 
 		Logger::GetInstance().Log		(INFO, "User " + sender->GetNickname() + " set topic for channel " + channel_name + " to: '" + new_topic + "'");
 	}

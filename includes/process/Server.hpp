@@ -6,15 +6,8 @@
 
 #include <unistd.h>
 
-#include "Utils.hpp"
-
-#include "Logger.hpp"
-
 #include "Socket.hpp"
 #include "Client.hpp"
-
-#include "Channel.hpp"
-#include "Message.hpp"
 
 #include "PollHandler.hpp"
 
@@ -38,10 +31,10 @@ class Server
 		std::map<std::string, CommandHandler*>		_cmds_handler;
 		PollHandler									_poll_handler;
 
-		Socket										_srvr_socket;
+		Socket										_srvr_socket ;
 
-		std::string									_server_name;
-		std::string									_netwrk_name;
+		std::string									_server_name ;
+		std::string									_netwrk_name ;
 
 		std::map<std::string, Client*>				_clients_by_nick;
 
@@ -86,8 +79,8 @@ class Server
 
 		PollHandler&		GetPollHandler				();
 
-		Client*				FindUserByNickname			(const std::string& nickname) const;
-		bool				IsNicknameAvailable			(const std::string& nickname) const;
+		Client*				FindUserByNick				(const std::string& nickname) const;
+		bool				IsNicknameAval				(const std::string& nickname) const;
 
 		void 				CheckRegistration			(Client* user);
 		void 				SendsNumericReply			(Client* user, int numeric, const std::string& data);

@@ -36,18 +36,19 @@ CXXFLAGS		=	-Wall  -Wextra -Werror	\
 					-I ./includes/network	\
 					-I ./includes/process	\
 					-I ./includes/utils		\
+					-I ./includes/bonus		\
 
 STD				=	-std=c++98
 
-LOG				=	./irc_server.log
-
 ## BONUS
 
-B_SRCS			= $(BONUS_DIR)Assistant.cpp $(BONUS_DIR)Main.cpp
+B_SRCS			=	$(BONUS_DIR)Assistant.cpp $(BONUS_DIR)Main.cpp
 
-B_OBJS			= $(patsubst $(SRCS_DIR)%,$(OBJS_DIR)%,$(B_SRCS:.cpp=.o))
+B_OBJS			=	$(patsubst $(SRCS_DIR)%,$(OBJS_DIR)%,$(B_SRCS:.cpp=.o))
 
-ASST			= assistant
+ASST			=	assistant
+
+LOGS			=	./irc_server.log
 
 ## COLOR
 
@@ -78,11 +79,11 @@ clean			:
 			
 
 fclean			:	clean
-					$(RMRF)		$(LOG)
+					$(RMRF)		$(LOGS)
 					$(RMRF)		$(NAME)
 					$(RMRF)		$(ASST)
 					@echo "\e[1m$(C_Y)EXECUTE		$(C_R)[KO]\e[0m$(C_E)"
 
 re				:	fclean all
 
-.PHONY			:	all clean fclean re
+.PHONY			:	all bonus clean fclean re

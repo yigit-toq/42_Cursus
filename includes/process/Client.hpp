@@ -3,8 +3,6 @@
 
 #include "Channel.hpp"
 
-#include "Utils.hpp"
-
 #include <queue>
 #include <ctime>
 
@@ -34,7 +32,7 @@ class Client
 		std::string									_input_buffer;
 		std::string									_ouput_buffer;
 
-		std::vector<Channel*>						_join_channels;
+		std::vector<Channel*>						_join_channel;
 
 		bool										_authenticated;
 
@@ -93,7 +91,7 @@ class Client
 		std::string						ExtractNextMessage	(void);
 
 	private:
-		void							handle_I_Mode		(char sign, Server& server);
+		void							Handle_I_Mode		(char sign, Server& server);
 
 };
 

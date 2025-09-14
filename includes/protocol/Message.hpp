@@ -10,9 +10,9 @@
 class Message
 {
 	private:
-		std::string					_prefix;
-		std::string					_command;
-		std::vector<std::string>	_parameters;
+		std::string											_prefix;
+		std::string											_command;
+		std::vector<std::string>							_parameters;
 
 	private:
 		Message												(const Message& other);

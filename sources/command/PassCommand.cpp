@@ -12,7 +12,7 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (msg.GetParameters	().empty()	)
+	if (msg.   GetParameters().empty()	)
 	{
 		_server.SendsNumericReply(sender, 461, "PASS :Not enough parameters"			);
 		return ;
@@ -20,9 +20,9 @@ void	PassCommand::Execute(Client* sender, const Message& msg)
 
 	std::string	password = msg.GetParameters()[0];
 
-	if (password != _server.GetPassword())
+	if (password != _server.GetPassword ())
 	{
-		_server.SendsNumericReply	(sender, 464, ":Password incorrect");
+		_server.SendsNumericReply		(sender, 464, ":Password incorrect");
 
 		return ;
 	}

@@ -5,7 +5,7 @@ Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(
 	_modes['i'] = false;
 	_modes['t'] = false;
 
-	Logger::GetInstance().Log(INFO, "Channel " + _name + " created."	);
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " created.  "	);
 }
 
 Channel::~Channel()
@@ -98,7 +98,7 @@ void	Channel::RmvUser(Client* user)
 
 	RmvOprt		(user);
 
-	_users.erase	(user->GetFD());
+	_users.erase(user->GetFD());
 
 	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
 }
@@ -129,7 +129,7 @@ void	Channel::RmvOprt(Client* user)
 
 //------------------------------------------------------------
 
-void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
+void	Channel::BroadcastMsg		(const std::string& message, Client* exclude_user)
 {
 	for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
 	{
@@ -137,26 +137,26 @@ void	Channel::BroadcastMessage(const std::string& message, Client* exclude_user)
 
 		if (target_user != exclude_user)
 		{
-			target_user->AppendToOuputBuffer	(message + "\r\n");
+			target_user->	AppendToOuputBuffer(message + "\r\n");
 
-			_server.GetPollHandler().SetEvents	(target_user->GetFD(), POLLIN | POLLOUT);
+			_server.GetPollHandler(). SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
 		}
 	}
 
 	Logger::GetInstance().Log(INFO, "Broadcasted message to channel " + _name + ": [" + message + "]");
 }
 
-bool	Channel::IsFull		()			const
+bool	Channel::IsFull				()			const
 {
 	return (_user_limit > 0 && _users.size() >= _user_limit);
 }
 
-bool	Channel::IsFree		()			const
+bool	Channel::IsFree				()			const
 {
 	return (_users.empty ());
 }
 
-bool	Channel::IsModeSet	(char mode)	const
+bool	Channel::IsModeSet			(char mode)	const
 {
 	std::map<char, bool>::const_iterator it = _modes.find(mode);
 
@@ -233,7 +233,7 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 		switch (mode)
 		{
 			case 'i':
-				handle_I_Mode		(sender, sign);
+				Handle_I_Mode		(sender, sign);
 				break ;
 
 			case 't':
@@ -284,7 +284,7 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 	}
 }
 
-void	Channel::handle_I_Mode	(Client* sender, char sign)
+void	Channel::Handle_I_Mode	(Client* sender, char sign)
 {
 	bool cur_status = IsModeSet('i');
 	bool new_status = (sign ==  '+');
@@ -395,9 +395,9 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 	}
 	if (sign == '-')
 	{
-			_user_limit = 0	;
+			_user_limit = 0		;
 
-			_modes['l'] = 0	;
+			_modes['l'] = 0		;
 
 			_server.BroadcastChannelMessage	(this, sender, "MODE " + _name + " -l");
 	}
@@ -405,19 +405,19 @@ void	Channel::handle_L_Mode	(Client* sender, char sign, const std::string& param
 
 //------------------------------------------------------------
 
-void	Channel::AddInvitedUser(const std::string& nickname)
+void	Channel::AddInvitedUser	(const std::string& nickname)
 {
-	_invited_users.push_back(nickname);
+	_invited_users.	push_back	(nickname);
 }
 
-void	Channel::RmvInvitedUser(const std::string& nickname)
+void	Channel::RmvInvitedUser	(const std::string& nickname)
 {
-	_invited_users.erase(std::remove (_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
+	_invited_users.	erase		(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
 }
 
-bool	Channel::GetUserInvited(const std::string& nickname)
+bool	Channel::GetInvitedUser	(const std::string& nickname)
 {
-	return std::find(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
+	return		std::find		(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
 }
 
 //------------------------------------------------------------

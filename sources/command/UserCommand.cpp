@@ -6,13 +6,13 @@ UserCommand::~UserCommand	() {}
 
 void	UserCommand::Execute(Client* sender, const Message& msg)
 {
-	if (!sender->GetAuth())
+	if (sender->GetAuth() == false)
 	{
 		_server.SendsNumericReply(sender, 462, "USER :You have not authenticated yet"	);
 		return ;
 	}
 
-	if (sender->IsRegistered())
+	if (sender->IsRegistered() == true)
 	{
 		_server.SendsNumericReply(sender, 462, "USER :Unauthorized command (already)"	);
 		return ;
@@ -42,7 +42,7 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	sender->SetStatus	(USER_SET);
 
-	Logger::GetInstance	().Log(INFO, "User " + sender->GetNickname() + " set username to: " + username + ", realname: " + realname);
+	Logger::GetInstance	().Log	(INFO, "User " + sender->GetNickname() + " set username to: " + username + ", realname: " + realname);
 
-	_server.CheckRegistration(sender);
+	_server.CheckRegistration	(sender);
 }

@@ -35,9 +35,9 @@ Logger::Logger(const std::string& filename)
 
 Logger::~Logger()
 {
-	if (_file.is_open())
+	if (_file.is_open	())
 	{
-		_file.close();
+		_file.close		();
 	}
 }
 
@@ -76,7 +76,7 @@ void	Logger::Log(LogLevel level, const std::string& message)
 	time_t	now = time		(0);
 	tm* 	ltm = localtime	(&now);
 
-	strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%d %H:%M:%S", ltm);
+	strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%d %H:%M:%S",  ltm);
 
 	_file << timestamp_str << " " << level_str << " " << message << std::endl;
 

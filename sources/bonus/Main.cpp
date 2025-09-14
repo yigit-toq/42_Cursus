@@ -1,5 +1,7 @@
 #include "Assistant.hpp"
 
+#include <csignal>
+
 void	SignalHandler(int signum)
 {
 	(void)signum;

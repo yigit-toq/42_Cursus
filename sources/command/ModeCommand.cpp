@@ -14,7 +14,7 @@ void	ModeCommand::Execute(Client* sender, const Message& msg)
 
 	std::string target_name = msg.GetParameters()[0];
 
-	if (target_name[0] == '#' || target_name[0] == '&')
+	if (target_name[0] == '#')
 	{
 		HandleChannelMode(sender, msg);
 	}
@@ -26,17 +26,17 @@ void	ModeCommand::Execute(Client* sender, const Message& msg)
 
 void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 {
-	std::string	channel_name	=  msg.		GetParameters()[0];
+	std::string	channel_name	=  msg		.GetParameters()[0];
 
-	Channel*	channel_tar		= _server.	FinderChannel(channel_name);
+	Channel*	channel_targ	= _server	.FinderChannel(channel_name);
 
-	if (!channel_tar)
+	if (!channel_targ)
 	{
 		_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel"			);
 		return ;
 	}
 
-	if (!channel_tar->IsUser		(sender))
+	if (!channel_targ->IsUser		(sender))
 	{
 		_server.SendsNumericReply	(sender, 442, channel_name + " :You're not on that channel"	);
 		return ;
@@ -44,8 +44,8 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 
 	if (msg.GetParameters().size() == 1)
 	{
-		std::string mode_string = channel_tar->GetModeString();
-		std::string mode_params = channel_tar->GetModeParams();
+		std::string mode_string = channel_targ->GetModeString();
+		std::string mode_params = channel_targ->GetModeParams();
 
 		_server.SendsNumericReply	(sender, 324, channel_name + " " + mode_string + (mode_params.empty() ? "" : " " + mode_params));
 
@@ -60,7 +60,7 @@ void	ModeCommand::HandleChannelMode(Client* sender, const Message& msg)
 		mode_args.push_back(msg.GetParameters()[i]);
 	}
 
-	channel_tar->ApplyModes		(sender, mode_strs, mode_args, _server);
+	channel_targ->ApplyModes		(sender, mode_strs, mode_args, _server);
 
 	Logger::GetInstance().Log	(INFO, "Channel MODE command processed for " + channel_name);
 }
@@ -77,9 +77,9 @@ void	ModeCommand::HandleClientsMode(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (msg.GetParameters().size() == 1)
+	if (msg.	GetParameters().size() == 1)
 	{
-		_server.SendsNumericReply(sender, 221, target_user->GetModeString()			);
+		_server.SendsNumericReply(sender, 221, target_user	->GetModeString()		);
 		return ;
 	}
 

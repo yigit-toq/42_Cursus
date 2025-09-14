@@ -37,7 +37,7 @@ const std::string&				Client::GetOutputBuffer		() const
 
 const std::vector<Channel*>&	Client::GetJoinChannels		() const
 {
-	return (_join_channels	);
+	return (_join_channel	);
 }
 
 time_t							Client::GetConnectionTime	(void) const
@@ -72,22 +72,22 @@ void	Client::AppendToOuputBuffer	(const std::string& data)
 {
 	_ouput_buffer.append(data);
 
-	Logger::GetInstance().Log(INFO, "User " + _nickname + " appended " + ft_to_string(data.length()) + " bytes to output buffer. Total size: " + ft_to_string(_ouput_buffer.length()));
+	Logger::GetInstance	().Log(INFO, "User " + _nickname + " appended " + ft_to_string(data.length()) + " bytes to output buffer. Total size: " + ft_to_string(_ouput_buffer.length()));
 }
 
 void	Client::PopOutputBuffer		(size_t count)
 {
 	if (count <= _ouput_buffer.length())
 	{
-		_ouput_buffer.erase(0, count);
+		_ouput_buffer.erase	(0, count);
 
-		Logger::GetInstance().Log(INFO, "User " + _nickname + " popped " + ft_to_string(count) + " bytes from output buffer. Remaining size: " + ft_to_string(_ouput_buffer.length()));
+		Logger::GetInstance	().Log(INFO, "User " + _nickname + " popped " + ft_to_string(count) + " bytes from output buffer. Remaining size: " + ft_to_string(_ouput_buffer.length()));
 	}
 	else
 	{
-		_ouput_buffer.clear();
+		_ouput_buffer.clear	();
 
-		Logger::GetInstance().Log(INFO, "User " + _nickname + " output buffer cleared.");
+		Logger::GetInstance	().Log(INFO, "User " + _nickname + " output buffer cleared.");
 	}
 }
 
@@ -111,23 +111,23 @@ bool	Client::HasOuputData() const
 
 void	Client::AddChannel(Channel* channel)
 {
-	for (size_t i = 0; i < _join_channels.size(); ++i)
+	for (size_t i = 0; i < _join_channel.size(); ++i)
 	{
-		if (_join_channels[i] == channel)
+		if (_join_channel[i] == channel)
 			return ;
 	}
-	_join_channels.push_back (channel);
+	_join_channel.push_back (channel);
 
 	Logger::GetInstance().Log(INFO, "Client " + _nickname + " added to joined channel list: " + channel->GetName());
 }
 
 void	Client::RmvChannel(Channel* channel)
 {
-	for (std::vector<Channel*>::iterator it = _join_channels.begin(); it != _join_channels.end(); ++it)
+	for (std::vector<Channel*>::iterator it = _join_channel.begin(); it != _join_channel.end(); ++it)
 	{
 		if (*it == channel)
 		{
-			_join_channels.erase(it);
+			_join_channel.erase(it);
 
 			Logger::GetInstance ().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
 
@@ -163,7 +163,7 @@ void		Client::ApplyModes		(Client* sender, const std::string& mode_string, Serve
 		switch (mode_char)
 		{
 			case 'i':
-				handle_I_Mode(sign, server);
+				Handle_I_Mode			(sign, server);
 				break ;
 
 			case 'o':
@@ -174,19 +174,6 @@ void		Client::ApplyModes		(Client* sender, const std::string& mode_string, Serve
 				server.SendsNumericReply(sender, 472, std::string(1, mode_char) + " :is unknown mode char to me");
 				break ;
 		}
-	}
-}
-
-void		Client::handle_I_Mode	(char sign, Server& server)
-{
-	bool cur_status = IsModeSet('i');
-	bool new_status = (sign ==  '+');
-	
-	if (cur_status != new_status)
-	{
-		_modes['i'] = new_status;
-
-		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "i");
 	}
 }
 
@@ -213,6 +200,19 @@ std::string	Client::GetModeString	() const
 		return  ("");
 	}
 	return (mode);
+}
+
+void		Client::Handle_I_Mode	(char sign, Server& server)
+{
+	bool cur_status = IsModeSet('i');
+	bool new_status = (sign ==  '+');
+	
+	if (cur_status != new_status)
+	{
+		_modes['i'] = new_status;
+
+		server.SendsNumericReply(this, 0, ":MODE " + GetNickname() + " " + std::string(1, sign) + "i");
+	}
 }
 
 //------------------------------------------------------------

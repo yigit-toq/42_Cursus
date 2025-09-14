@@ -6,7 +6,7 @@ NickCommand::~NickCommand	() {}
 
 void	NickCommand::Execute(Client* sender, const Message& msg)
 {
-	if (msg.GetParameters().empty() )
+	if (msg.GetParameters(). empty())
 	{
 		_server.SendsNumericReply(sender, 431, ":No nickname given");
 		return ;
@@ -20,9 +20,9 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 
 	std::string new_nick = msg.GetParameters()[0];
 
-	if (!_server.IsNicknameAvailable(new_nick) && new_nick != sender->GetNickname())
+	if (_server.   IsNicknameAval(new_nick) == false && new_nick != sender->GetNickname())
 	{
-		_server.SendsNumericReply	(sender, 433, new_nick + " :Nickname is already in use");
+		_server.SendsNumericReply(sender, 433, new_nick + " :Nickname is already in use");
 		return ;
 	}
 
@@ -30,11 +30,11 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 	{
 		std::string old_nick = sender->GetNickname();
 
-		_server.RmvUser		(sender  );
+		_server.RmvUser					( sender );
 
-		sender->SetNickname	(new_nick);
+		sender->SetNickname				(new_nick);
 
-		_server.AddUser		(sender  );
+		_server.AddUser					( sender );
 
 		_server.BroadcastNicknameChange	(sender, old_nick, new_nick);
 
@@ -44,10 +44,10 @@ void	NickCommand::Execute(Client* sender, const Message& msg)
 	{
 		sender->SetNickname				(new_nick);
 
-		_server.AddUser					(sender);
+		_server.AddUser					( sender );
 
-		_server.SendsNumericReply		(sender, 001, ":Your nickname has been set to "		+ new_nick);
+		_server.SendsNumericReply		( sender , 001, ":Your nickname has been set to "	+ new_nick);
 
-		_server.CheckRegistration		(sender);
+		_server.CheckRegistration		( sender );
 	}
 }

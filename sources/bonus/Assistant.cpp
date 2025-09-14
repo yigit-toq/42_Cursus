@@ -1,5 +1,7 @@
 #include "Assistant.hpp"
 
+#include <arpa/inet.h>
+
 Assistant::Assistant(const std::string& server_addr, int server_port, const std::string& password, const std::string& nickname)
 			: _server_addr(server_addr), _server_port(server_port), _bot_socket(-1), _password(password), _nickname(nickname)
 {
@@ -127,24 +129,28 @@ void	Assistant::HandlerCommand(const std::string& sender_nick, const std::string
 {
 	std::string	reply = "PRIVMSG " + tar_channel + " :";
 
-	if (msg_content.find("!time") == 0)
+	if (msg_content.find( "!help" ) == 0)
+	{
+		reply += "Available commands: !time, !text, !whoami, !help";
+	}
+
+	if (msg_content.find( "!time" ) == 0)
 	{
 		reply += "Current time and date: " + GetCurrTime();
 	}
-	else if (msg_content.find("!quote" ) == 0)
+
+	if (msg_content.find( "!text" ) == 0)
 	{
 		int	rand_index = std::rand() % _quotes.size		();
 
 		reply += _quotes[rand_index];
 	}
-	else if (msg_content.find("!whoami") == 0)
+
+	if (msg_content.find("!whoami") == 0)
 	{
 		reply += "You are " + sender_nick + ".";
 	}
-	else if (msg_content.find(_nickname) == 0)
-	{
-		reply += sender_nick + ", did you call me? What would you like to ask?"	;
-	}
+
 
 	if (reply != "PRIVMSG " + tar_channel + " :")
 	{

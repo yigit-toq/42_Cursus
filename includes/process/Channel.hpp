@@ -28,7 +28,7 @@ class Channel
 		Channel& operator=								(const Channel& other);
 
 	private:
-		void	handle_I_Mode							(Client* sender, char sign);
+		void	Handle_I_Mode							(Client* sender, char sign);
 		void	handle_T_Mode							(Client* sender, char sign);
 		void	handle_K_Mode							(Client* sender, char sign, const std::string& param);
 		void	handle_L_Mode							(Client* sender, char sign, const std::string& param);
@@ -60,11 +60,11 @@ class Channel
 
 		void	SetName									(const std::string& name);
 		void	SetPass									(const std::string& pass);
-		void	SetTopic								(const std::string& topic	, Client* setter = NULL);
+		void	SetTopic								(const std::string& topic	, Client* setter		= NULL);
 
-		void	BroadcastMessage						(const std::string& message	, Client* exclude_user = NULL);
+		void	BroadcastMsg							(const std::string& message	, Client* exclude_user	= NULL);
 
-		bool	GetUserInvited							(const std::string& nickname);
+		bool	GetInvitedUser							(const std::string& nickname);
 
 		void	AddInvitedUser							(const std::string& nickname);
 		void	RmvInvitedUser							(const std::string& nickname);

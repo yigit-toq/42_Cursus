@@ -20,14 +20,15 @@ void	KickCommand::Execute(Client* sender, const Message& msg)
 	Channel*	chnl;
 	Client*		user;
 
-	if (!(chnl = _server.FinderChannel	(chnl_name)))
-	{
-		_server.SendsNumericReply(sender, 403, chnl_name + " :No such channel"	);
-		return ;
-	}
 	if (!(user = _server.FindUser		(user_name)))
 	{
 		_server.SendsNumericReply(sender, 401, user_name + " :No such nick"		);
+		return ;
+	}
+
+	if (!(chnl = _server.FinderChannel	(chnl_name)))
+	{
+		_server.SendsNumericReply(sender, 403, chnl_name + " :No such channel"	);
 		return ;
 	}
 
@@ -37,7 +38,7 @@ void	KickCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (!chnl->IsUser	(user)	)
+	if (!chnl->IsUser	( user ))
 	{
 		_server.SendsNumericReply(sender, 441, user_name + " " + chnl_name + " :They are not on that channel");
 		return ;

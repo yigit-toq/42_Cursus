@@ -6,7 +6,7 @@ PrivCommand::~PrivCommand	() {}
 
 void	PrivCommand::Execute(Client* sender, const Message& msg)
 {
-	if (msg.GetParameters().size() < 2)
+	if (msg.GetParameters().size () < 2)
 	{
 		_server.SendsNumericReply(sender, 461, "PRIVMSG :Not enough parameters");
 		return ;
@@ -21,19 +21,19 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 		return ;
 	}
 
-	if (tar_name[0] == '#' || tar_name[0] == '&')
+	if (tar_name[0] == '#')
 	{
-		Channel* target_channel = _server.FinderChannel(tar_name);
+		Channel* target_channel = _server.FinderChannel (tar_name);
 
 		if (!target_channel)
 		{
-			_server.SendsNumericReply	(sender, 403, tar_name + " :No such channel"		);
+			_server. SendsNumericReply	(sender, 403, tar_name + " :No such channel"		);
 			return ;
 		}
 
-		if (!target_channel->IsUser		(sender))
+		if (!target_channel->	IsUser	(sender))
 		{
-			_server.SendsNumericReply	(sender, 404, tar_name + " :Cannot send to channel"	);
+			_server. SendsNumericReply	(sender, 404, tar_name + " :Cannot send to channel"	);
 			return ;
 		}
 
@@ -41,13 +41,13 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PRIVMSG " << tar_name << " :" << msg_text;
 
-		target_channel->BroadcastMessage(ss.str(), sender);
+		target_channel->BroadcastMsg	(ss.str(),	 sender);
 
-		Logger::GetInstance().Log		(INFO, "PRIVMSG to channel " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
+		Logger::GetInstance()	.Log	(INFO, "PRIVMSG to channel " + tar_name + " from " + sender->GetNickname() + ": " + msg_text);
 	}
 	else
 	{
-		Client* target_user = _server.FindUserByNickname(tar_name);
+		Client* target_user = _server.FindUserByNick(tar_name);
 
 		if (!target_user)
 		{
@@ -57,12 +57,10 @@ void	PrivCommand::Execute(Client* sender, const Message& msg)
 
 		std::stringstream ss;
 
-		ss << ":" << sender->GetNickname	() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PRIVMSG " << tar_name << ": " << msg_text;
+		ss << ":" << sender->	GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " PRIVMSG " << tar_name << ": " << msg_text;
 
-		target_user->AppendToOuputBuffer	(ss.str() + "\r\n");
+		target_user->	AppendToOuputBuffer(ss.str() + "\r\n");
 
-		_server.GetPollHandler	().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
-
-		Logger::GetInstance		().Log		(INFO, "PRIVMSG to user " + tar_name + " from " + sender->GetNickname() + ": " + msg_text); //
+		_server. GetPollHandler().SetEvents(target_user->GetFD(), POLLIN | POLLOUT);
 	}
 }

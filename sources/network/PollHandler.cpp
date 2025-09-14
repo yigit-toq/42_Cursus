@@ -37,12 +37,12 @@ void	PollHandler::SetEvents(int fd, short events)
 		{
 			_fds[i].events = events;
 
-			Logger::GetInstance().Log(INFO, "Updated events for FD " + ft_to_string(fd) + " to " + ft_to_string(events));
+			Logger::GetInstance().Log	(INFO	, "Updated events for FD " + ft_to_string(fd) + " to " + ft_to_string(events));
 
 			return ;
 		}
 	}
-	Logger::GetInstance().Log(WARNING, "Attempted to set events for non-existent FD " + ft_to_string(fd));
+	Logger::GetInstance().Log			(WARNING, "Attempted to set events for non-existent FD " + ft_to_string(fd));
 }
 
 short	PollHandler::GetEvents(int fd) const

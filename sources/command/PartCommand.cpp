@@ -26,7 +26,7 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 	while (std::getline(ss, channel_name, ','))
 	{
-		if (channel_name.empty() ||		(channel_name[0] != '#' && channel_name[0] != '&'))
+		if (channel_name.empty() || channel_name[0] != '#')
 		{
 			_server.SendsNumericReply	(sender, 403, channel_name + " :No such channel");
 			continue ;
@@ -55,17 +55,17 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 			part_ss << " :" << part_message;
 		}
 
-		target_channel->BroadcastMessage(part_ss.str(), NULL); //
+		target_channel->BroadcastMsg	(part_ss.str(), NULL);
 
 		target_channel->RmvUser			(sender);
 
-		Logger::GetInstance().Log		(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
+		Logger:: GetInstance().Log		(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
 
 		if (target_channel->IsFree		())
 		{
-			_server.RemoveChannel		(target_channel->GetName());
+			_server. RemoveChannel		(target_channel->GetName());
 
-			Logger::GetInstance().Log	(INFO, "Channel " + channel_name + " is empty and removed.");
+			Logger:: GetInstance().Log	(INFO, "Channel " + channel_name + " is empty and removed.");
 		}
 	}
 }

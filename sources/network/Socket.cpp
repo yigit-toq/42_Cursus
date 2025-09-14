@@ -40,7 +40,7 @@ void	Socket::Create	(void)
 		throw std::runtime_error("Failed to create socket");
 	}
 
-	int optval = 1;
+	int	optval = 1;
 
 	if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0)
 	{
@@ -93,7 +93,7 @@ int		Socket::Sender	(int fd, char *buffer, size_t length)
 
 int		Socket::Accept	(void)
 {
-	socklen_t	addrlen = sizeof(_addr);
+	socklen_t	addrlen = sizeof  (_addr);
 
 	int	client_fd = accept(_sock, (struct sockaddr *)&_addr, &addrlen);
 
@@ -113,7 +113,7 @@ int		Socket::Receive	(int fd, char *buffer, size_t length)
 {
 	memset(buffer, 0, length);
 
-	ssize_t	bytes_received = recv(fd, buffer, length, 0);
+	ssize_t	bytes_received = recv	(fd, buffer, length, 0);
 
 	if (bytes_received < 0)
 	{
@@ -141,13 +141,13 @@ void	Socket::RmvSock	(int fd)
 {
 	if (fd >= 0)
 	{
-		if (close(fd) == -1)
+		if (close(fd) != -1)
 		{
-			Logger::GetInstance().Log(ERROR, "Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+			Logger::GetInstance().Log(INFO , "Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 		else
 		{
-			Logger::GetInstance().Log(INFO , "Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+			Logger::GetInstance().Log(ERROR, "Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 	}
 }

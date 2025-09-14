@@ -1,26 +1,10 @@
 #ifndef ASSISTANT_HPP
 #define ASSISTANT_HPP
 
-#include <sys/socket.h>
-#include <arpa/inet.h>
+#include "Server.hpp"
 
-#include <iostream>
-
-#include <sstream>
-
-#include <cstdlib>
-#include <cstring>
-#include <csignal>
-#include <cerrno>
-#include <ctime>
-
-#include <vector>
-#include <string>
-
-const int	BUFFER_SIZE = 1024;
-
-typedef struct sockaddr		sockaddr;
 typedef struct sockaddr_in	sockaddr_in;
+typedef struct sockaddr		sockaddr;
 
 class Assistant
 {
