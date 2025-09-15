@@ -15,7 +15,7 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 	std::stringstream quit_ss;
 
-	quit_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " QUIT: " << quit_message;
+	quit_ss << ":" << sender->GetNickname() << "!" << sender->GetUsername() << "@" << sender->GetHostname() << " QUIT :" << quit_message;
 
 	const std::vector<Channel*>&	joined_channels = sender->GetJoinChannels();
 
@@ -29,9 +29,11 @@ void	QuitCommand::Execute(Client* sender, const Message& msg)
 
 		if (channel)
 		{
-				channel->BroadcastMsg		(quit_ms, sender);
+			channel->BroadcastMsg	(quit_ms, sender);
 
-				channel->RmvUser			(sender);
+			channel->TransOprts		(sender);
+
+			channel->RmvUser		(sender);
 
 			if (channel->IsFree		())
 			{

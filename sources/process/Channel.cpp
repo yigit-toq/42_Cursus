@@ -54,18 +54,9 @@ void	Channel::SetName		(const std::string& name)
 	Logger::GetInstance().Log(INFO, "Channel " + _name + " name set to: '" + _name + "'");
 }
 
-void	Channel::SetTopic		(const std::string& topic, Client* setter)
+void	Channel::SetTopic		(const std::string& topic)
 {
 	_topic = topic;
-
-	std::cout << "Channel " << _name << " topic set to: '" << _topic << "'";
-
-	if (setter)
-	{
-		std::cout << " by " << setter->GetNickname();
-	}
-
-	std::cout << std::endl;
 }
 
 //------------------------------------------------------------
@@ -99,6 +90,8 @@ void	Channel::RmvUser(Client* user)
 	RmvOprt		(user);
 
 	_users.erase(user->GetFD());
+
+	user->RmvChannel(this);//
 
 	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
 }
@@ -230,6 +223,15 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 			return ;
 		}
 
+		if (Utils::IsModeWithParameter(mode))
+		{
+			if (arg_it == mode_args.end())
+			{
+				server.SendsNumericReply(sender, 461, "MODE " + _name + " :Not enough parameters for mode " + std::string(1, mode));
+				continue;
+			}
+		}
+
 		switch (mode)
 		{
 			case 'i':
@@ -272,14 +274,6 @@ void	Channel::ApplyModes(Client* sender, const std::string& mode_strs, const std
 			default:
 				server.SendsNumericReply(sender, 472, std::string(1, mode) + " :unknown mod character");
 				break ;
-		}
-
-		if (Utils::IsModeWithParameter	(mode))
-		{
-			if (arg_it == mode_args.end())
-			{
-				server.SendsNumericReply(sender, 461, "MODE " + _name + " :Not enough parameters for mode " + std::string(1, mode));
-			}
 		}
 	}
 }
@@ -418,6 +412,49 @@ void	Channel::RmvInvitedUser	(const std::string& nickname)
 bool	Channel::GetInvitedUser	(const std::string& nickname)
 {
 	return		std::find		(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
+}
+
+//------------------------------------------------------------
+
+void	Channel::TransOprts		(Client* user)
+{
+	if (!user || !IsOprt(user))
+	{
+		return;
+	}
+
+	int	aval_ops = 0;
+
+	for (std::map<int, Client*>::iterator it = _oprts.begin(); it != _oprts.end(); ++it)
+	{
+		if (it->second != user)
+		{
+			aval_ops++;
+		}
+	}
+
+	if (!aval_ops && _users.size() > 1)
+	{
+		for (std::map<int, Client*>::iterator it = _users.begin(); it != _users.end(); ++it)
+		{
+			Client*	candidate = it->second;
+
+			if (candidate != user)
+			{
+				AddOprt(candidate);
+				
+				std::stringstream  mode_ss;
+
+				mode_ss << ":" << "irc.server" << " MODE " << _name << " +o " << candidate->GetNickname();
+				
+				BroadcastMsg				(mode_ss.str(), NULL);
+				
+				Logger::GetInstance().Log	(INFO, "User " + candidate->GetNickname() + " is now an operator in channel " + _name + " by transfer.");
+
+				break ;
+			}
+		}
+	}
 }
 
 //------------------------------------------------------------

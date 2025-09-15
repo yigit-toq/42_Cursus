@@ -57,7 +57,10 @@ void	PartCommand::Execute(Client* sender, const Message& msg)
 
 		target_channel->BroadcastMsg	(part_ss.str(), NULL);
 
+		target_channel->TransOprts		(sender);
+
 		target_channel->RmvUser			(sender);
+		target_channel->RmvOprt			(sender);
 
 		Logger:: GetInstance().Log		(INFO, "User " + sender->GetNickname() + " parted from channel " + channel_name);
 

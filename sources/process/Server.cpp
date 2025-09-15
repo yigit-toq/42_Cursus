@@ -210,7 +210,7 @@ void	Server::HandleClientMessage(int fd)
 
 				if (msg.Parse(raw))
 				{
-					msg.Print();
+					// msg.Print();
 
 					ProcessMessage(user, msg);
 				}
@@ -552,7 +552,8 @@ void	Server::CleanupChnls()
 			_channels.erase	(channel_it );
 		}
 	}
-	_chnlsToDelete.clear();
+
+	_chnlsToDelete.clear	();
 }
 
 void	Server::CleanupUsers()

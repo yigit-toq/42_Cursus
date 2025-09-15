@@ -60,7 +60,7 @@ class Channel
 
 		void	SetName									(const std::string& name);
 		void	SetPass									(const std::string& pass);
-		void	SetTopic								(const std::string& topic	, Client* setter		= NULL);
+		void	SetTopic								(const std::string& topic);
 
 		void	BroadcastMsg							(const std::string& message	, Client* exclude_user	= NULL);
 
@@ -75,8 +75,9 @@ class Channel
 		void	AddOprt									(Client* user);
 		void	RmvOprt									(Client* user);
 
-		void	ApplyModes								(Client* sender, const std::string& mode_strs, const std::vector<std::string>& mode_args, Server& server);
+		void	TransOprts								(Client* user);
 
+		void	ApplyModes								(Client* sender, const std::string& mode_strs, const std::vector<std::string>& mode_args, Server& server);
 };
 
 #endif
