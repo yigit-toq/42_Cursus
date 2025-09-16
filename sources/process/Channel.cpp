@@ -5,12 +5,12 @@ Channel:: Channel(const std::string& name, Server& server) : _name(name), _pass(
 	_modes['i'] = false;
 	_modes['t'] = false;
 
-	Logger::GetInstance().Log(INFO, "Channel " + _name + " created.  "	);
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " created.");
 }
 
 Channel::~Channel()
 {
-	Logger::GetInstance().Log(INFO, "Channel " + _name + " destroyed."	);
+	Logger::GetInstance().Log(INFO, "Channel " + _name + " destroy.");
 }
 
 //--------------------   Getter Methods   --------------------
@@ -77,7 +77,7 @@ void	Channel::AddUser(Client* user)
 		AddOprt(user);
 	}
 
-	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " added   to   channel " + _name);
+	Logger::GetInstance	().Log(INFO, "User " + user->GetNickname() + " added   to   channel " + _name);
 }
 
 void	Channel::RmvUser(Client* user)
@@ -87,13 +87,13 @@ void	Channel::RmvUser(Client* user)
 		return ;
 	}
 
-	RmvOprt		(user);
+	RmvOprt				(user);
 
-	_users.erase(user->GetFD());
+	_users.erase		(user->GetFD());
 
-	user->RmvChannel(this);//
+	 user->RmvChannel	(this);
 
-	Logger::GetInstance().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
+	Logger::GetInstance	().Log(INFO, "User " + user->GetNickname() + " removed from channel " + _name);
 }
 
 void	Channel::AddOprt(Client* user)

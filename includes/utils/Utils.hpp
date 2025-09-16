@@ -10,13 +10,13 @@
 class Utils
 {
 	private:
-		Utils																(const Utils& other);
-		Utils& operator=													(const Utils& other);
+		 Utils																();
+		~Utils																();
+
+		 Utils																(const Utils& other);
+		 Utils& operator=													(const Utils& other);
 
 	public:
-		 Utils ();
-		~Utils ();
-
 		static	std::string							trim					(const std::string& str);
 
 		static	std::vector<std::string>			split					(const std::string& str, char delimiter);

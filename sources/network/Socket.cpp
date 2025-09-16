@@ -141,13 +141,9 @@ void	Socket::RmvSock	(int fd)
 {
 	if (fd >= 0)
 	{
-		if (close(fd) != -1)
+		if (close(fd) != 0)
 		{
-			Logger::GetInstance().Log(INFO , "Closed  client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
-		}
-		else
-		{
-			Logger::GetInstance().Log(ERROR, "Closing client socket FD " + ft_to_string(fd) + ": " + strerror(errno));
+			Logger::GetInstance().Log(ERROR, "Failed to close socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 		}
 	}
 }

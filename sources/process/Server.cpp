@@ -2,9 +2,9 @@
 
 Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass)
 {
-	_srvr_socket.Create		();
-	_srvr_socket.Binder		();
-	_srvr_socket.Listen		();
+	_srvr_socket .Create	();
+	_srvr_socket .Binder	();
+	_srvr_socket .Listen	();
 
 	_poll_handler.AddSocket	(_srvr_socket.GetSock(), POLLIN);
 
@@ -18,19 +18,19 @@ Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass
 
 Server::~Server()
 {
-	for (std::map<int, Client*>::iterator					it = _clients.		begin(); it != _clients.	end(); ++it)
+	for (std::map<int, Client*>::iterator					it = _clients.		begin(); it != _clients.		end(); ++it)
 	{
 		delete (it->second);
 	}
 	_clients.		clear();
 
-	for (std::map<std::string, Channel*>::iterator			it = _channels.		begin(); it != _channels.	end(); ++it)
+	for (std::map<std::string, Channel*>::iterator			it = _channels.		begin(); it != _channels.		end(); ++it)
 	{
 		delete (it->second);
 	}
 	_channels.		clear();
 
-	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handler.	begin(); it != _cmds_handler.end(); ++it)
+	for (std::map<std::string, CommandHandler*>::iterator	it = _cmds_handler.	begin(); it != _cmds_handler.	end(); ++it)
 	{
 		delete (it->second);
 	}
@@ -218,7 +218,7 @@ void	Server::HandleClientMessage(int fd)
 				{
 					Logger::GetInstance ().Log(ERROR, "Failed to parse message from FD " + ft_to_string(fd) + ": " + raw);
 
-					SendsNumericReply	(user, 421, msg.GetCommand() + " :Unknown command"); //
+					SendsNumericReply	(user, 421, msg.GetCommand() + " :Unknown command");
 				}
 			}
 		}
@@ -400,21 +400,20 @@ PollHandler&		Server::GetPollHandler	()			{ return _poll_handler;	}
 
 void	Server::SetupCommands()
 {
-	_cmds_handler["INVITE"]	= new InviteCommand	(*this);
+	_cmds_handler["INVITE"]		= new InviteCommand	(*this);
 
-	_cmds_handler["TOPIC"]	= new TopicCommand	(*this);
+	_cmds_handler["TOPIC"]		= new TopicCommand	(*this);
 
-	_cmds_handler["JOIN"]	= new JoinCommand	(*this);
-	_cmds_handler["MODE"]	= new ModeCommand	(*this);
+	_cmds_handler["USER"]		= new UserCommand	(*this);
+	_cmds_handler["NICK"]		= new NickCommand	(*this);
+	_cmds_handler["PASS"]		= new PassCommand	(*this);
 
-	_cmds_handler["PART"]	= new PartCommand	(*this);
-	_cmds_handler["KICK"]	= new KickCommand	(*this);
+	_cmds_handler["JOIN"]		= new JoinCommand	(*this);
+	_cmds_handler["MODE"]		= new ModeCommand	(*this);
 
-	_cmds_handler["USER"]	= new UserCommand	(*this);
-	_cmds_handler["NICK"]	= new NickCommand	(*this);
-	_cmds_handler["PASS"]	= new PassCommand	(*this);
-
-	_cmds_handler["QUIT"]	= new QuitCommand	(*this);
+	_cmds_handler["PART"]		= new PartCommand	(*this);
+	_cmds_handler["KICK"]		= new KickCommand	(*this);
+	_cmds_handler["QUIT"]		= new QuitCommand	(*this);
 	
 	_cmds_handler["PRIVMSG"]	= new PrivCommand	(*this);
 }
@@ -445,7 +444,7 @@ void	Server::SendsNumericReply		(Client* user, int numeric, const std::string& m
 
 	user->AppendToOuputBuffer	(ss.str());
 
-	_poll_handler.SetEvents		(user->GetFD(), POLLIN | POLLOUT);
+	_poll_handler.	SetEvents	(user->GetFD(), POLLIN | POLLOUT);
 }
 
 void	Server::CheckRegistration		(Client* user)
@@ -479,15 +478,15 @@ void	Server::BroadcastChannelMessage	(Channel* channel, Client* sender, const st
 	
 	std::string	full_message = ":" + sender->GetNickname() + " " + message + "\r\n";
 
-	for (it = users.begin(); it != users.end();  ++it)
+	for (it = users.begin(); it != users.end(); ++it)
 	{
-		Logger::GetInstance().Log (INFO, "Broadcasting message to " + it->second->GetNickname() + ": " + full_message);
+			Logger::GetInstance().Log(INFO , "Broadcasting message to " + it->second->GetNickname() + ": " + full_message	);
 
 		if (send(it->second->GetFD(), full_message.c_str(), full_message.length(), 0) < 0)
 		{
-			Logger::GetInstance().Log(ERROR, "Sending message to client " + it->second->GetNickname() + ": " + strerror(errno));
+			Logger::GetInstance().Log(ERROR, "Send message to  client " + it->second->GetNickname() + ": " + strerror(errno));
 
-            ClientDisconnection(it->second->GetFD());
+			ClientDisconnection(it->second->GetFD());
 		}
 	}
 }

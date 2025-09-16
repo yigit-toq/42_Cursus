@@ -36,15 +36,15 @@ class Server
 		std::string									_server_name ;
 		std::string									_netwrk_name ;
 
-		std::map<std::string, Client*>				_clients_by_nick;
-
 		std::string									_password;
 
-		std::map<std::string, Channel*>				_channels;
-		std::map<int, Client*>						_clients;
+		std::map	<std::string, Channel*>			_channels;
+		std::map	<int, Client*>					_clients;
 
-		std::vector<int>							_usersToDelete;
-		std::vector<std::string>					_chnlsToDelete;
+		std::vector	<int>							_usersToDelete;
+		std::vector	<std::string>					_chnlsToDelete;
+
+		std::map	<std::string, Client*>			_clients_by_nick;
 
 	private:
 		Server											(const Server&);

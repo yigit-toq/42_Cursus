@@ -35,16 +35,16 @@ bool	Message::Parse(const std::string& raw_message)
 			return (false);
 		}
 
-		_prefix		= ms_content.substr(1, next_space - 1);
+			_prefix		= ms_content.substr(1, next_space - 1);
 
-		 curr_posit	= next_space + 1;
+			curr_posit	= next_space + 1;
 	}
 
 	if ((curr_posit = ms_content.find_first_not_of(' ', curr_posit)) == std::string::npos)
 	{
-		Logger::GetInstance().Log(ERROR, "Malformed message: no command part after prefix or leading spaces.");
+			Logger::GetInstance().Log(ERROR, "Malformed message: no command part after prefix or leading spaces.");
 
-		return (false);
+			return (false);
 	}
 
 	next_space		= ms_content.find	(' ',	curr_posit);

@@ -30,17 +30,17 @@ std::string Client::GetRealname					() const						{ return _realname; }
 std::string Client::GetHostname					() const						{ return _hostname; }
 std::string Client::GetPassword					() const						{ return _password; }
 
-const std::string&				Client::GetOutputBuffer		() const
+const std::string&				Client::GetOutputBuffer		()		const
 {
 	return (_ouput_buffer	);
 }
 
-const std::vector<Channel*>&	Client::GetJoinChannels		() const
+const std::vector<Channel*>&	Client::GetJoinChannels		()		const
 {
 	return (_join_channel	);
 }
 
-time_t							Client::GetConnectionTime	(void) const
+time_t							Client::GetConnectionTime	(void)	const
 {
 	return (_connection_time);
 }
@@ -129,7 +129,7 @@ void	Client::RmvChannel(Channel* channel)
 		{
 			_join_channel.erase(it);
 
-			Logger::GetInstance ().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
+			Logger::GetInstance().Log(INFO, "Client " + _nickname + " removed from joined channel list: " + channel->GetName());
 
 			return ;
 		}

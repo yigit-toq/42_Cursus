@@ -26,9 +26,6 @@ void	UserCommand::Execute(Client* sender, const Message& msg)
 
 	std::string username = msg.GetParameters()[0];
 
-	// Mod parametresi	  (msg.GetParameters()[1])
-	// Unu parametresi	  (msg.GetParameters()[2])
-
 	std::string realname = msg.GetParameters()[3];
 
 	if (username.empty() || realname.empty())
