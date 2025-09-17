@@ -1,6 +1,7 @@
 #ifndef SOCKET_HPP
 #define SOCKET_HPP
 
+#include <arpa/inet.h>
 #include <netinet/in.h>
 
 typedef struct sockaddr_in sockaddr_in;

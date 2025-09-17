@@ -171,15 +171,15 @@ void	Server::HandleNewConnection()
 		return ;
 	}
 
-	Client* new_user = new Client(client_fd);
+	Client*	new_user = new Client	(client_fd);
 
-	new_user->SetHostname("irc.example.com");
+	new_user -> SetHostname			(GetHostname(client_fd));
 
 	_clients[client_fd] = new_user;
 
-	_poll_handler.AddSocket		(client_fd, POLLIN | POLLOUT);
+	_poll_handler.AddSocket			(client_fd, POLLIN | POLLOUT);
 
-	Logger::GetInstance().Log	(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
+	Logger::GetInstance().Log		(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
 }
 
 void	Server::HandleClientMessage(int fd)
@@ -386,6 +386,22 @@ Client*	Server::FindUserByNick	(const std::string& nickname) const
 //------------------------------------------------------------
 
 //--------------------   Getter Methods   --------------------
+
+const std::string	Server::GetHostname		(int fd)
+{
+	struct sockaddr_in	addr;
+	socklen_t			addr_len = sizeof (addr);
+	
+	if (getpeername(fd, (struct sockaddr*)&addr, &addr_len) == 0)
+	{
+		char ip_str			[INET_ADDRSTRLEN];
+
+		inet_ntop			(AF_INET, &addr.sin_addr, ip_str, INET_ADDRSTRLEN);
+
+		return std::string	(ip_str);
+	}		
+	return "localhost";
+}
 
 const std::string&	Server::GetPassword		() const	{ return _password;		}
 
