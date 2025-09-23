@@ -80,12 +80,11 @@ int		Socket::Sender	(int fd, char *buffer, size_t length)
 	{
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
 		{
-			return (0);
+			return	 (-2);
 		}
+			Logger::GetInstance().Log(ERROR, "Failed to send data on socket FD " + ft_to_string(fd) + ": " + strerror(errno));
 
-		Logger::GetInstance().Log(ERROR, "Failed to send data on socket FD " + ft_to_string(fd) + ": " + strerror(errno));
-
-		return (-1);
+			return	 (-1);
 	}
 
 	return static_cast<int>(bytes_sent);
@@ -97,13 +96,29 @@ int		Socket::Accept	(void)
 
 	int	client_fd = accept(_sock, (struct sockaddr *)&_addr, &addrlen);
 
-	if (client_fd < 0)
+	if (client_fd <  0)
 	{
-		if (errno != EWOULDBLOCK && errno != EAGAIN)
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
 		{
-			throw std::runtime_error("Failed to accept connection");
+			return (-2);
 		}
-		return (-1);
+			Logger::GetInstance().Log(ERROR, std::string("accept() failed: ") + strerror(errno));
+
+			return (-1);
+	}
+
+	int flags  = fcntl(client_fd, F_GETFL, 0);
+
+	if (flags != -1)
+	{
+		if (fcntl(client_fd, F_SETFL, flags | O_NONBLOCK) == -1)
+		{
+			Logger::GetInstance().Log(WARNING, "Failed to set client socket non-b: FD " + ft_to_string(client_fd));
+		}
+	}
+	else
+	{
+			Logger::GetInstance().Log(WARNING, "Failed to get client socket flags: FD " + ft_to_string(client_fd));
 	}
 
 	return (client_fd);
@@ -115,13 +130,15 @@ int		Socket::Receive	(int fd, char *buffer, size_t length)
 
 	ssize_t	bytes_received = recv	(fd, buffer, length, 0);
 
-	if (bytes_received < 0)
+	if (bytes_received <  0)
 	{
-		if (errno != EWOULDBLOCK && errno != EAGAIN)
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
 		{
-			throw std::runtime_error("Failed to receive data");
+			return		(-2);
 		}
-		return (-1);
+			Logger::GetInstance().Log(ERROR, "Failed to receive data on FD " + ft_to_string(fd) + ": " + strerror(errno));
+
+			return		(-1);
 	}
 
 	return static_cast<int>(bytes_received);

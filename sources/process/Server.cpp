@@ -2,16 +2,16 @@
 
 Server:: Server(int port, std::string pass) : _srvr_socket(port), _password(pass)
 {
-	_srvr_socket .Create	();
-	_srvr_socket .Binder	();
-	_srvr_socket .Listen	();
+	_srvr_socket .Create	()	;
+	_srvr_socket .Binder	()	;
+	_srvr_socket .Listen	()	;
 
 	_poll_handler.AddSocket	(_srvr_socket.GetSock(), POLLIN);
 
-	SetupCommands			();
+	SetupCommands			()	;
 
-	_netwrk_name = "irc_network"	;
-	_server_name = "irc.example.com";
+	_server_name = "irc_42_tr"	;
+	_netwrk_name = "irc_network";
 
 	Logger::GetInstance().Log(INFO, "Server initialized on port " + ft_to_string(port) + " with password: " + pass);
 }
@@ -83,15 +83,17 @@ void	Server::HandleServerSocketEvent(const struct pollfd& server_fd)
 
 void	Server::HandleClientSocketEvent(const struct pollfd& client_fd)
 {
-	int		fd		= client_fd.fd;
+	int									fd =  client_fd.fd;
 
-	Client*	user	= _clients[fd];
+	std::map<int, Client*>::iterator	it = _clients.find(fd);
+
+	Client*  user = (it == _clients.end()) ? NULL : it->second;
 
 	if (!user)
 	{
-		Logger::GetInstance().Log(ERROR, "User not found for FD " + ft_to_string(fd));
+		Logger::GetInstance().Log	(ERROR, "User not found for FD " + ft_to_string(fd));
 
-		_poll_handler.RmvSocket	(fd);
+		_poll_handler.	RmvSocket	(fd);
 
 		return ;
 	}
@@ -131,29 +133,28 @@ void	Server::HandleClientWEvent(int fd, Client* user)
 
 		int bytes_sent = _srvr_socket.Sender(user->GetFD(), (char *)data_to_send.c_str(), data_to_send.length());
 
-		if (bytes_sent <= 0)
+		if (bytes_sent < 0)
 		{
-			if (bytes_sent == -1 && (errno == EAGAIN || errno == EWOULDBLOCK))
+			if (bytes_sent == -2)
 			{
-				Logger::GetInstance().Log(WARNING, "Send  buffer full for FD " + ft_to_string(user->GetFD()) + ", will try again next poll.");
+				break ;
 			}
-			else
-			{
-				Logger::GetInstance().Log(ERROR  , "Error sending data to FD " + ft_to_string(user->GetFD()) + ": " + strerror(errno));
 
-				ClientDisconnection(user->GetFD());
-			}
+			Logger::GetInstance().Log(ERROR, "Error sending data to FD " + ft_to_string(user->GetFD()) + ": " + strerror(errno));
+
+			ClientDisconnection(user->GetFD());
+
 			break ;
 		}
-	
-		user->PopOutputBuffer		(bytes_sent);
 
-		Logger::GetInstance().Log	(INFO, "Sent " + ft_to_string(bytes_sent) + " bytes to FD " + ft_to_string(user->GetFD()) + ". Remaining: " + ft_to_string(user->GetOutputBuffer().length()) + " bytes.");
+		user->    PopOutputBuffer	(bytes_sent);
+
+		Logger::GetInstance().Log	(INFO, "Send " + ft_to_string(bytes_sent)	 + " bytes to FD " + ft_to_string(user->GetFD()) + ". Remaining: " + ft_to_string(user->GetOutputBuffer().length()) + " bytes.");
 	}
 
 	if (!user->HasOuputData())
 	{
-		_poll_handler.SetEvents		(user->GetFD(), POLLIN);
+		_poll_handler.	SetEvents	(user->GetFD(), POLLIN);
 
 		Logger::GetInstance().Log	(INFO, "FD   " + ft_to_string(user->GetFD()) + " output buffer empty. POLLOUT removed.");
 	}
@@ -173,13 +174,13 @@ void	Server::HandleNewConnection()
 
 	Client*	new_user = new Client	(client_fd);
 
-	new_user -> SetHostname			(GetHostname(client_fd));
+	new_user->SetHostname			(GetHostname(client_fd));
 
 	_clients[client_fd] = new_user;
 
-	_poll_handler.AddSocket			(client_fd, POLLIN | POLLOUT);
+	_poll_handler.	AddSocket		(client_fd, POLLIN);
 
-	Logger::GetInstance().Log		(INFO, "New connection accepted: FD " + ft_to_string(client_fd));
+	Logger::GetInstance().Log		(INFO, "New connection accepted: FD " + ft_to_string(client_fd) + " (POLLIN only)");
 }
 
 void	Server::HandleClientMessage(int fd)
@@ -210,8 +211,6 @@ void	Server::HandleClientMessage(int fd)
 
 				if (msg.Parse(raw))
 				{
-					// msg.Print();
-
 					ProcessMessage(user, msg);
 				}
 				else
@@ -233,6 +232,10 @@ void	Server::HandleClientMessage(int fd)
 
 		ClientDisconnection(fd);
 	}
+	else if (bytes_read == -2)
+	{
+		return ;
+	}
 }
 
 void	Server::ClientDisconnection(int fd)
@@ -244,7 +247,12 @@ void	Server::ClientDisconnection(int fd)
 		return ;
 	}
 
-	Client* client_ptr = it->second;
+	Client*	client_ptr = it->second;
+
+	if (client_ptr)
+	{
+		_clients_by_nick.erase(client_ptr->GetNickname());
+	}
 
 	std::vector<Channel *> joined_channels = client_ptr->GetJoinChannels(); 
 
@@ -373,14 +381,14 @@ bool	Server::IsNicknameAval	(const std::string& nickname) const
 
 Client*	Server::FindUserByNick	(const std::string& nickname) const
 {
-	for (std::map<int, Client*>::const_iterator it = _clients.begin(); it != _clients.end(); ++it)
+	std::map<std::string, Client*>::const_iterator it = _clients_by_nick.find(nickname);
+
+	if (it != _clients_by_nick.end())
 	{
-		if (it->second->GetNickname() == nickname) 
-		{
-			return (it->second);
-		}
+		return (it->second);
 	}
-	return (NULL);
+
+		return (NULL);
 }
 
 //------------------------------------------------------------
