@@ -361,6 +361,8 @@ void	Channel::handle_O_Mode	(Client* sender, char sign, const std::string& param
 
 			_server.BroadcastChannelMessage(this, sender, "MODE " + _name + " -o " + target_user->GetNickname());
 		}
+		TransOprts	(sender);
+
 		return ;
 	}
 }
@@ -404,14 +406,14 @@ void	Channel::AddInvitedUser	(const std::string& nickname)
 	_invited_users.	push_back	(nickname);
 }
 
-void	Channel::RmvInvitedUser	(const std::string& nickname)
-{
-	_invited_users.	erase		(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
-}
-
 bool	Channel::GetInvitedUser	(const std::string& nickname)
 {
 	return		std::find		(_invited_users.begin(), _invited_users.end(), nickname) != _invited_users.end();
+}
+
+void	Channel::RmvInvitedUser	(const std::string& nickname)
+{
+	_invited_users.	erase		(std::remove(_invited_users.begin(), _invited_users.end(), nickname), _invited_users.end());
 }
 
 //------------------------------------------------------------

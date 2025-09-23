@@ -18,7 +18,7 @@ class Socket
 		 Socket			(int port);
 		~Socket			();
 
-		int		Accept	(void);
+		int		Accept	(sockaddr_in* peer_addr);
 
 		void	Listen	(int backlog = 5);
 		void	Create	(void);

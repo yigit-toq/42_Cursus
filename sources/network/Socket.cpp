@@ -19,18 +19,6 @@ Socket::~Socket()
 	}
 }
 
-void	Socket::Listen	(int backlog)
-{
-	if (listen(_sock, backlog) < 0)
-	{
-		close (_sock);
-
-		throw std::runtime_error("Failed to listen on socket");
-	}
-
-	Logger::GetInstance().Log	(INFO, "Socket is listening on port " + ft_to_string(_port));
-}
-
 void	Socket::Create	(void)
 {
 	_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -55,6 +43,18 @@ void	Socket::Create	(void)
 
 		throw std::runtime_error("Failed to set socket to non-blocking mode");
 	}
+}
+
+void	Socket::Listen	(int backlog)
+{
+	if (listen(_sock, backlog) < 0)
+	{
+		close (_sock);
+
+		throw std::runtime_error("Failed to listen on socket");
+	}
+
+	Logger::GetInstance().Log	(INFO, "Socket is listening on port " + ft_to_string(_port));
 }
 
 void	Socket::Binder	(void)
@@ -90,7 +90,7 @@ int		Socket::Sender	(int fd, char *buffer, size_t length)
 	return static_cast<int>(bytes_sent);
 }
 
-int		Socket::Accept	(void)
+int		Socket::Accept	(sockaddr_in* peer_addr)
 {
 	socklen_t	addrlen = sizeof  (_addr);
 
@@ -121,7 +121,12 @@ int		Socket::Accept	(void)
 			Logger::GetInstance().Log(WARNING, "Failed to get client socket flags: FD " + ft_to_string(client_fd));
 	}
 
-	return (client_fd);
+	if (peer_addr)
+	{
+		memcpy	(peer_addr, &_addr, sizeof(_addr));
+	}
+
+	return		(client_fd);
 }
 
 int		Socket::Receive	(int fd, char *buffer, size_t length)

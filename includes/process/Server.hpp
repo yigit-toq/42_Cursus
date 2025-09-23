@@ -72,8 +72,6 @@ class Server
 
 		void				Start						();
 
-		const std::string	GetHostname					(int fd);
-
 		const std::string&	GetPassword					() const;
 
 		const std::string&	GetServerName				() const;

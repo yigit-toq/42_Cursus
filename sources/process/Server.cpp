@@ -164,23 +164,29 @@ void	Server::HandleClientWEvent(int fd, Client* user)
 
 void	Server::HandleNewConnection()
 {
-	int client_fd = _srvr_socket.Accept();
+	sockaddr_in	peer_addr;
 
-	if (client_fd < 0)
+	int	fd = _srvr_socket.Accept(&peer_addr);
+
+	if (fd < 0)
 	{
 		Logger::GetInstance().Log(ERROR, "Failed to accept new connection: " + std::string(strerror(errno)));
 		return ;
 	}
 
-	Client*	new_user = new Client	(client_fd);
+	Client*	new_user = new Client	(fd);
 
-	new_user->SetHostname			(GetHostname(client_fd));
+	char*	ip_cstr  =  inet_ntoa	(peer_addr.sin_addr);
 
-	_clients[client_fd] = new_user;
+	std::string	ip	 = ip_cstr ? std::string(ip_cstr) : std::string("localhost");
 
-	_poll_handler.	AddSocket		(client_fd, POLLIN);
+	new_user	->SetHostname		(ip);
 
-	Logger::GetInstance().Log		(INFO, "New connection accepted: FD " + ft_to_string(client_fd) + " (POLLIN only)");
+	_clients[fd] = new_user;
+
+	_poll_handler.	AddSocket		(fd, POLLIN);
+
+	Logger::GetInstance().Log		(INFO, "New connection accepted: FD " + ft_to_string(fd) + " (POLLIN only)");
 }
 
 void	Server::HandleClientMessage(int fd)
@@ -394,22 +400,6 @@ Client*	Server::FindUserByNick	(const std::string& nickname) const
 //------------------------------------------------------------
 
 //--------------------   Getter Methods   --------------------
-
-const std::string	Server::GetHostname		(int fd)
-{
-	struct sockaddr_in	addr;
-	socklen_t			addr_len = sizeof (addr);
-	
-	if (getpeername(fd, (struct sockaddr*)&addr, &addr_len) == 0)
-	{
-		char ip_str			[INET_ADDRSTRLEN];
-
-		inet_ntop			(AF_INET, &addr.sin_addr, ip_str, INET_ADDRSTRLEN);
-
-		return std::string	(ip_str);
-	}		
-	return "localhost";
-}
 
 const std::string&	Server::GetPassword		() const	{ return _password;		}
 
