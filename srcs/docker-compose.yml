@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  mariadb:
+    build:
+      context: ./srcs/requirements/mariadb
+    container_name: mariadb
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+    secrets:
+      - mysql_password
+      - mysql_root_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - inception_net
+
+  wordpress:
+    build:
+      context: ./srcs/requirements/wordpress
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      - WORDPRESS_DB_HOST=mariadb:3306
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/mysql_password
+      - WORDPRESS_TABLE_PREFIX=${WP_TABLE_PREFIX}
+    secrets:
+      - mysql_password
+    volumes:
+      - wp_files:/var/www/html
+    networks:
+      - inception_net
+
+  nginx:
+    build:
+      context: ./srcs/requirements/nginx
+    container_name: nginx
+    restart: always
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wp_files:/var/www/html:ro
+      - ./srcs/requirements/nginx/ssl:/etc/ssl/inception:ro
+      - ./srcs/requirements/nginx/conf:/etc/nginx/conf.d:ro
+    networks:
+      - inception_net
+
+secrets:
+  mysql_password:
+    file: ./secrets/db_password.txt
+  mysql_root_password:
+    file: ./secrets/db_root_password.txt
+
+volumes:
+  db_data:
+    driver: local
+    name: ${LOGIN}_db_data
+    # For host path mapping to /home/<LOGIN>/data you may bind-mount in production:
+    # external: true
+  wp_files:
+    driver: local
+    name: ${LOGIN}_wp_files
+
+networks:
+  inception_net:
+    driver: bridge
