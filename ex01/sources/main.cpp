@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 22:06:06 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/02 15:31:04 by ytop             ###   ########.fr       */
+/*   Updated: 2025/10/03 14:45:42 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ int	main()
 
 		std::vector<int>	bigv;
 
-		std::srand(std::time(0));
-
 		for (int i = 0; i < 10000; ++i)
 		{
-			bigv.push_back(std::rand());
+			bigv.push_back(i);
 		}
 
 		span.addRange(bigv.begin(), bigv.end());

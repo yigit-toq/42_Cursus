@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:15:51 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/02 15:11:50 by ytop             ###   ########.fr       */
+/*   Updated: 2025/10/03 14:51:43 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,13 @@
 
 #include "MutantStack.hpp"
 
+//
+
 template<typename T, typename Container>
 MutantStack<T, Container>:: MutantStack							() {}
+
+template<typename T, typename Container>
+MutantStack<T, Container>::~MutantStack							() {}
 
 template<typename T, typename Container>
 MutantStack<T, Container>:: MutantStack							(const MutantStack& other) : std::stack<T, Container>(other) {}
@@ -29,8 +34,7 @@ MutantStack<T, Container>&  MutantStack<T, Container>::operator=(const MutantSta
 	return (*this);
 }
 
-template<typename T, typename Container>
-MutantStack<T, Container>::~MutantStack							() {}
+//
 
 template<typename T, typename Container>
 typename MutantStack<T, Container>::iterator MutantStack<T, Container>::begin		()

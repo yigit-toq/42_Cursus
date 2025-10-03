@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:07:24 by ytop              #+#    #+#             */
-/*   Updated: 2025/08/02 13:09:32 by ytop             ###   ########.fr       */
+/*   Updated: 2025/10/03 14:36:23 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 Span:: Span(unsigned int	N)		: _maxsize(N) {}
 
 Span:: Span(const Span&		other)	: _maxsize(other._maxsize), _numbers(other._numbers) {}
+
 
 Span  &Span::operator=(const Span &other)
 {
@@ -26,7 +27,6 @@ Span  &Span::operator=(const Span &other)
 
 	return (*this);
 }
-
 Span::~Span() {}
 
 void	Span::enoughElements() const
