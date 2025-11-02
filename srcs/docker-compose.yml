@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # -------------------
   # MariaDB
@@ -13,9 +11,11 @@ services:
       context		: ./requirements/mariadb
       dockerfile	: Dockerfile
 
-    networks		: inception-net
+    networks		:
+      - inception-net
 
-    volumes			: db_data:/var/lib/mysql
+    volumes			:
+      - db_data:/var/lib/mysql
 
     restart			: always
 
@@ -33,15 +33,18 @@ services:
       context		: ./requirements/wordpress
       dockerfile	: Dockerfile
 
-    networks		: inception-net
+    networks		:
+      - inception-net
 
-    volumes			: wp_files:/var/www/html
+    volumes			:
+      - wp_data:/var/www/html
 
     restart			: always
 
     env_file		: ./.env
 
-    depends_on		: mariadb # WordPress'ten önce veritabanı başlamalı
+    depends_on		:
+      - mariadb
 
   # -------------------
   # NGINX
@@ -55,17 +58,21 @@ services:
       context		: ./requirements/nginx
       dockerfile	: Dockerfile
 
-    networks		: inception-net
+    networks		:
+      - inception-net
 
-    volumes			: wp_files:/var/www/html
+    volumes			:
+      - wp_data:/var/www/html
 
     restart			: always
 
     env_file		: ./.env
 
-    depends_on		: wordpress # WordPress çalışmadan NGINX'in ona bağlanması anlamsız
+    depends_on		:
+      - wordpress
 
-    ports			: "443:443" # Sadece 443 portu dışarıya açık olmalı
+    ports			:
+      - "443:443" # Sadece 443 portu dışarıya açık olmalı
 
 # -------------------
 # NETWORK
@@ -86,10 +93,10 @@ volumes		:
       type	: 'none'
       device: '/home/ytop/data/db_data'
 
-  wp_files: # WP verileri
+  wp_data: # WP verileri
     driver		: local
 
     driver_opts	:
       o		: 'bind'
       type	: 'none'
-      device: '/home/ytop/data/wp_files'
+      device: '/home/ytop/data/wp_data'
