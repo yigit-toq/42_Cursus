@@ -1,22 +1,33 @@
-all: build up
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/11/02 10:36:40 by ytop              #+#    #+#              #
+#    Updated: 2025/11/02 10:38:23 by ytop             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+CMP_FILE = srcs/docker-compose.yml
+ENV_FILE = srcs/.env
+
+all		:	build up
 
 build	:
-			docker-compose -f srcs/docker-compose.yml build --no-cache
+			docker compose -f $(CMP_FILE) --env-file $(ENV_FILE) build --no-cache
 
 up		:
-			docker-compose -f srcs/docker-compose.yml up -d
+			docker compose -f $(CMP_FILE) --env-file $(ENV_FILE) up -d
 
 down	:
-			docker-compose -f srcs/docker-compose.yml down
+			docker compose -f $(CMP_FILE) --env-file $(ENV_FILE) down
 
 clean	:
-			docker-compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans
+			docker compose -f $(CMP_FILE) --env-file $(ENV_FILE) down -v
 
-certs	:
-			mkdir -p srcs/requirements/nginx/ssl
-			openssl req -x509 -nodes -days 365 -newkey rsa:2048	\
-				-keyout srcs/requirements/nginx/ssl/privkey.pem	\
-				-out srcs/requirements/nginx/ssl/fullchain.pem	\
-				-subj "/CN=$${DOMAIN_NAME}" || true
+fclean	:	clean
+			docker system prune -af
 
-.PHONY	: all build up down clean certs
+.PHONY	:	all build up down clean fclean
