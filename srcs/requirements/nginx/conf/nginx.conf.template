@@ -1,0 +1,65 @@
+# NGINX'in 'nobody' kullanıcısı altında çalışmasını sağlar
+user nobody;
+worker_processes auto;
+
+# Logların yolları
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+	worker_connections 1024;
+}
+
+http {
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+	access_log /var/log/nginx/access.log;
+	sendfile on;
+	keepalive_timeout 65;
+
+	# Projemizi yayınlayacak olan ana sunucu bloğu
+	server {
+		# Sadece 443 portunu (HTTPS) dinle 
+		listen 443 ssl;
+		listen [::]:443 ssl;
+
+		# Alan adımız (bu değişken setup.sh tarafından değiştirilecek)
+		server_name ${DOMAIN_NAME};
+
+		# SSL sertifikalarımızın yolları
+		ssl_certificate /etc/nginx/ssl/nginx.crt;
+		ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+		# Sadece zorunlu olan TLS v1.2 ve v1.3'ü kullan
+		ssl_protocols TLSv1.2 TLSv1.3;
+
+		# WordPress dosyalarının bulunduğu kök dizin
+		# Bu, docker-compose.yml'deki 'wp_files' volümümüzle eşleşir
+		root /var/www/html;
+
+		# Varsayılan olarak hangi dosyaları araması gerektiği
+		index index.php index.html;
+
+		# Gelen istekleri yöneten ana 'location' bloğu
+		location / {
+			# Dosyayı veya dizini bulmayı dene, bulamazsan index.php'ye gönder
+			try_files $uri $uri/ /index.php?$args;
+		}
+
+		# .php ile biten tüm istekleri
+		# WordPress konteynerimizdeki PHP-FPM'e yönlendir
+		location ~ \.php$ {
+			try_files $uri =404;
+			
+			# fastcgi_pass, isteği PHP-FPM'e iletir
+			# 'wordpress', docker-compose servis adımızdır
+			# '9000', PHP-FPM'in dinlediği porttur
+			fastcgi_pass wordpress:9000;
+			
+			# Gerekli NGINX ayarları
+			include fastcgi_params;
+			fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			fastcgi_param PATH_INFO $fastcgi_path_info;
+		}
+	}
+}

@@ -6,9 +6,9 @@ RUN		apk update && apk add --no-cache	\
 
 # MariaDB'nin diğer konteynerlerden gelen bağlantıları
 # kabul etmesi için konfigürasyon dosyamızı kopyala
-COPY	./conf/my.cnf /etc/my.cnf.d/my.cnf
+COPY	./conf/my.cnf /etc/my.cnf
 
-RUN		chmod 644 /etc/my.cnf.d/my.cnf
+RUN		chmod 644 /etc/my.cnf
 
 # Veritabanını ilk çalışmada kuracak olan
 # giriş betiğimizi (entrypoint script) kopyala
