@@ -13,14 +13,14 @@ if [ -d "$DATADIR/$MYSQL_DATABASE" ]; then
 else
 	echo "[i] Veritabanı bulunamadı. Kurulum başlıyor..."
 
-	# 1. MariaDB veri dizinini (data directory) başlat
+	# MariaDB veri dizinini (data directory) başlat
 	mariadb-install-db --user=mysql --datadir=$DATADIR
 
-	# 2. MariaDB sunucusunu geçici olarak arka planda başlat
+	# MariaDB sunucusunu geçici olarak arka planda başlat
 	mysqld --user=mysql --datadir=$DATADIR --skip-networking &
 	PID=$!
 
-	# 3. Sunucunun başlamasını bekle
+	# Sunucunun başlamasını bekle
 	until mariadb-admin ping > /dev/null 2>&1; do
 		echo -n "."
 		sleep 1
@@ -28,20 +28,14 @@ else
 	echo
 	echo "[i] Geçici MariaDB sunucusu başlatıldı."
 
-	# 4. .env dosyasından alınan değişkenlerle SQL komutlarını hazırla 
-	#    - Root şifresini ayarla
-	#    - Veritabanını oluştur
-	#    - Ana WordPress kullanıcısını oluştur 
-	#    - 'admin' içermeyen yönetici kullanıcıyı oluştur 
-	#    - Yetkileri ver ve güncelle
 	SQL_SCRIPT="
-    ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-    CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;
-    CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-    GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';
-    CREATE USER IF NOT EXISTS '$WP_ADMIN_USER'@'%' IDENTIFIED BY '$WP_ADMIN_PASSWORD';
-    GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$WP_ADMIN_USER'@'%';
-    FLUSH PRIVILEGES;
+	ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
+	CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\`;
+	CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+	GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';
+	CREATE USER IF NOT EXISTS '$WP_ADMIN_USER'@'%' IDENTIFIED BY '$WP_ADMIN_PASSWORD';
+	GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$WP_ADMIN_USER'@'%';
+	FLUSH PRIVILEGES;
     "
 
 	# 5. SQL komutlarını çalıştır
@@ -54,7 +48,6 @@ else
 	echo "[i] Kurulum tamamlandı. Geçici sunucu kapatıldı."
 fi
 
-# 7. MariaDB sunucusunu ön planda (PID 1 olarak) çalıştır
-# 'exec' komutu, bu betiğin yerini mysqld işlemiyle değiştirir.
+# MariaDB sunucusunu ön planda (PID 1 olarak) çalıştır.
 echo "[i] MariaDB sunucusu ön planda başlatılıyor..."
 exec mysqld --user=mysql --datadir=$DATADIR
