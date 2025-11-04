@@ -26,7 +26,7 @@
 
 # Libft - Your First Custom C Library
 
-![42 School Badge](https://img.shields.io/badge/42-School-000000?style=for-the-badge&logo=42&logoColor=white)
+![42 School Badge](https://img.shields.io/badge/42-School-000000?style=for-the-badge&logoColor=white)
 ![Language](https://img.shields.io/badge/Language-C-00599C?style=for-the-badge&logoColor=white)
 ![Grade](https://img.shields.io/badge/Grade-125%2F100-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
