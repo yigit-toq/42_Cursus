@@ -1,4 +1,4 @@
-FROM	alpine:3.18
+FROM	alpine:3.21
 
 # NGINX, OpenSSL (sertifika için) ve gettext (envsubst komutu için) kur
 RUN		apk update && apk add --no-cache	\
