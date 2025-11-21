@@ -1,10 +1,8 @@
 #!/bin/sh
 set -e
 
-# PHP-FPM'in çalışması için gereken dizin
 mkdir -p /run/php
 
-# WordPress dosyalarının bulunacağı yer (volume)
 WP_PATH="/var/www/html"
 
 if [ -f "$WP_PATH/wp-config.php" ]; then
