@@ -18,7 +18,6 @@ http
 	sendfile			on;
 	keepalive_timeout	65;
 
-	# Projemizi yayınlayacak olan ana sunucu bloğu
 	server
 	{
 		listen 443 ssl;
@@ -33,7 +32,6 @@ http
 
 		root /var/www/html;
 
-		# Varsayılan olarak hangi dosyaları araması gerektiği
 		index index.php index.html;
 
 		location /

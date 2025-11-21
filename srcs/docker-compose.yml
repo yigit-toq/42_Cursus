@@ -72,20 +72,20 @@ services:
       - wordpress
 
     ports			:
-      - "443:443" # Sadece 443 portu dışarıya açık olmalı
+      - "443:443"
 
 # -------------------
 # NETWORK
 # -------------------
 networks	:
-  inception-net		: # Konteynerler arası iletişim için özel ağ
+  inception-net		:
     name			: inception-net
 
 # -------------------
 # VOLUMES
 # -------------------
 volumes		:
-  db_data: # DB verileri
+  db_data: # DB data
     driver		: local
 
     driver_opts	:
@@ -93,7 +93,7 @@ volumes		:
       type	: 'none'
       device: '/home/ytop/data/db_data'
 
-  wp_data: # WP verileri
+  wp_data: # WP data
     driver		: local
 
     driver_opts	:

@@ -1,10 +1,8 @@
 #!/bin/sh
 set -e
 
-# SSL sertifikası için klasör oluştur
 mkdir -p /etc/nginx/ssl
 
-# SSL sertifikasının zaten var olup olmadığını kontrol et
 if [ ! -f /etc/nginx/ssl/nginx.crt ]; then
 	echo "[i] NGINX: Kendi imzaladığımız SSL sertifikası oluşturuluyor..."
 	
@@ -18,7 +16,6 @@ fi
 
 envsubst '${DOMAIN_NAME}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
-# NGINX sunucusunu ön planda çalıştır
-# 'daemon off;' NGINX'in arka plana geçmesini engeller
 echo "[i] NGINX başlatılıyor..."
+
 exec nginx -g 'daemon off;'
