@@ -19,6 +19,10 @@ services:
 
     restart			: always
 
+    secrets			:
+      - db_password
+      - db_root_password
+
     env_file		: ./.env
 
   # -----------------------
@@ -40,6 +44,10 @@ services:
       - wp_data:/var/www/html
 
     restart			: always
+
+    secrets			:
+      - db_password
+      - wp_admin_password
 
     env_file		: ./.env
 
@@ -85,18 +93,33 @@ networks	:
 # VOLUMES
 # -------------------
 volumes		:
-  db_data: # DB data
+  db_data:
     driver		: local
 
     driver_opts	:
       o		: 'bind'
       type	: 'none'
-      device: '/home/ytop/data/db_data'
+      device: '${USER_HOME}/data/db_data'
 
-  wp_data: # WP data
+  wp_data:
     driver		: local
 
     driver_opts	:
       o		: 'bind'
       type	: 'none'
-      device: '/home/ytop/data/wp_data'
+      device: '${USER_HOME}/data/wp_data'
+
+# -------------------
+# SECRETS
+# -------------------
+secrets		:
+  db_password		:
+    file: ../secrets/db_password.txt
+
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+
+  wp_admin_password	:
+    file: ../secrets/wp_admin_password.txt
+
+# -------------------
