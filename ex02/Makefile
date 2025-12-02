@@ -10,12 +10,12 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	
+NAME			=	PmergeMe
 
 SRCS_DIR		=	./sources/
 OBJS_DIR		=	./objects/
 
-SRCS 			=	
+SRCS 			=	$(SRCS_DIR)main.cpp $(SRCS_DIR)PmergeMe.cpp
 
 OBJS 			=	$(SRCS:.cpp=.o)
 

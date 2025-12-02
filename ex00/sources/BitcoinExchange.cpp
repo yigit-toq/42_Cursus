@@ -12,6 +12,8 @@
 
 #include "BitcoinExchange.hpp"
 
+// ========== Orthodox Canonical Form ==========
+
 BitcoinExchange:: BitcoinExchange() {}
 
 BitcoinExchange:: BitcoinExchange(const BitcoinExchange& other) { *this = other; }
@@ -27,6 +29,8 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 
 	return (*this);
 }
+
+// ========== Utility Functions ==========
 
 void	BitcoinExchange::trimString(std::string& str) const
 {
@@ -133,7 +137,7 @@ double	BitcoinExchange::findClosestRate(const std::string& date) const
 	return (it->second);
 }
 
-// ========== Ana Fonksiyonlar ==========
+// ========== Main Functions ==========
 
 void	BitcoinExchange::LoadDatabase(const std::string& filename)
 {

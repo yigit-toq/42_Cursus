@@ -12,6 +12,8 @@
 
 #include "RPN.hpp"
 
+// ========== Orthodox Canonical Form ==========
+
 RPN:: RPN() {}
 
 RPN:: RPN(const RPN& other) : _stack(other._stack) {}
@@ -27,12 +29,14 @@ RPN& RPN::operator=(const RPN& other)
 	return (*this);
 }
 
-bool	RPN::isOperator			(const std::string& token) const
+// ========== Utility Functions ==========
+
+bool	RPN::isOperator		(const std::string& token) const
 {
 	return (token == "+" || token == "-" || token == "*" || token == "/");
 }
 
-bool	RPN::isValidNumber		(const std::string& token) const
+bool	RPN::isValidNumber	(const std::string& token) const
 {
 	if (token.empty())
 		return (false);
@@ -75,6 +79,8 @@ int		RPN::performOperation	(int a, int b, char op) const
 				throw std::runtime_error("Error: invalid operator");
 	}
 }
+
+// ========== Main Functions ==========
 
 int		RPN::Calculate			(const std::string& expression)
 {
