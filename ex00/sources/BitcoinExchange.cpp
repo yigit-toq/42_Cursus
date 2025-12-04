@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:52:07 by ytop              #+#    #+#             */
-/*   Updated: 2025/12/01 23:52:07 by ytop             ###   ########.fr       */
+/*   Updated: 2025/12/04 15:41:21 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ bool	BitcoinExchange::parseDate(const std::string& date, int& year, int& month, 
 	return (true);
 }
 
-bool	BitcoinExchange::isValidDate(const std::string& date) const
+bool	BitcoinExchange::isValidDates(const std::string& date) const
 {
 	int	year, month, day;
 
@@ -116,7 +116,7 @@ bool	BitcoinExchange::isValidValue(double value) const
 	return (value >= 0 && value <= 1000);
 }
 
-double	BitcoinExchange::findClosestRate(const std::string& date) const
+double	BitcoinExchange::findRate(const std::string& date) const
 {
 	std::map<std::string, double>::const_iterator it = _database.find(date);
 
@@ -211,7 +211,7 @@ void	BitcoinExchange::ProcessInput(const std::string& filename)
 		trimString(datStr);
 		trimString(valStr);
 
-		if (!isValidDate(datStr))
+		if (!isValidDates(datStr))
 		{
 			std::cerr << "Error: bad input => " << datStr << std::endl;
 			continue ;
@@ -241,7 +241,7 @@ void	BitcoinExchange::ProcessInput(const std::string& filename)
 
 		try
 		{
-			double	rate	= findClosestRate(datStr);
+			double	rate	= findRate(datStr);
 			double	result	= value * rate;
 
 			std::cout << datStr << " => " << value << " = " << result << std::endl;
