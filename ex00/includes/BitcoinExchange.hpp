@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 23:52:04 by ytop              #+#    #+#             */
-/*   Updated: 2025/12/04 15:42:16 by ytop             ###   ########.fr       */
+/*   Updated: 2025/12/04 15:48:10 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <map>
-#include <string>
+
 #include <fstream>
-#include <sstream>
 #include <cstdlib>
+
 #include <iostream>
 
 class BitcoinExchange

@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 17:59:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/12/02 17:59:43 by ytop             ###   ########.fr       */
+/*   Updated: 2025/12/04 15:46:31 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 #define PMERGEME_HPP
 
 #include <deque>
-#include <string>
 #include <vector>
-#include <sstream>
-#include <cstdlib>
 #include <iostream>
 #include <algorithm>
-#include <exception>
+
 #include <sys/time.h>
 
 class PmergeMe
