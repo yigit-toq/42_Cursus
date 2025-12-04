@@ -25,8 +25,7 @@ class BitcoinExchange
 	private:
 		std::map<std::string, double>	_database;
 
-		bool	isValidDates	(const  std::string& date) const;
-		bool	isValidValue	(double value) const;
+		bool	isValidDate	(const  std::string& date) const;
 
 		bool	isLeapYear		(int year) const;
 

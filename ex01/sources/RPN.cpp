@@ -33,32 +33,12 @@ RPN& RPN::operator=(const RPN& other)
 
 bool	RPN::isOperator		(const std::string& token) const
 {
-	return (token == "+" || token == "-" || token == "*" || token == "/");
+	return token == "+" || token == "-" || token == "*" || token == "/";
 }
 
 bool	RPN::isValidNumber	(const std::string& token) const
 {
-	if (token.empty())
-		return (false);
-
-	size_t start = 0;
-
-	if (token[0] == '-' || token[0] == '+')
-		start = 1;
-
-	for (size_t i = start; i < token.length(); i++)
-	{
-		if (!isdigit(token[i]))
-			return  (false);
-	}
-
-	if (token.length() == 1 && isdigit(token[0]))
-		return (true);
-
-	if (token.length() == 2 && token[0] == '-' && isdigit(token[1]))
-		return (true);
-
-	return (false);
+	return token.size() == 1 && std::isdigit(token[0]);
 }
 
 int		RPN::performOperation	(int a, int b, char op) const

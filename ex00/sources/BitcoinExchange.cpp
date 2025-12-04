@@ -32,7 +32,7 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 
 // ========== Utility Functions ==========
 
-void	BitcoinExchange::trimString(std::string& str) const
+void	BitcoinExchange::trimString	(std::string& str) const
 {
 	size_t	start	= str.find_first_not_of(" \t\n\r");
 	size_t	end		= str.find_last_not_of (" \t\n\r");
@@ -46,12 +46,12 @@ void	BitcoinExchange::trimString(std::string& str) const
 	str = str.substr(start, end - start + 1);
 }
 
-bool	BitcoinExchange::isLeapYear(int year) const
+bool	BitcoinExchange::isLeapYear	(int year) const
 {
 	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-bool	BitcoinExchange::parseDate(const std::string& date, int& year, int& month, int& day) const
+bool	BitcoinExchange::parseDate	(const std::string& date, int& year, int& month, int& day) const
 {
 	if (date.length() != 10)
 	{
@@ -81,7 +81,7 @@ bool	BitcoinExchange::parseDate(const std::string& date, int& year, int& month, 
 	return (true);
 }
 
-bool	BitcoinExchange::isValidDates(const std::string& date) const
+bool	BitcoinExchange::isValidDate	(const std::string& date) const
 {
 	int	year, month, day;
 
@@ -111,12 +111,7 @@ bool	BitcoinExchange::isValidDates(const std::string& date) const
 	return (true);
 }
 
-bool	BitcoinExchange::isValidValue(double value) const
-{
-	return (value >= 0 && value <= 1000);
-}
-
-double	BitcoinExchange::findRate(const std::string& date) const
+double	BitcoinExchange::findRate		(const std::string& date) const
 {
 	std::map<std::string, double>::const_iterator it = _database.find(date);
 
@@ -211,7 +206,7 @@ void	BitcoinExchange::ProcessInput(const std::string& filename)
 		trimString(datStr);
 		trimString(valStr);
 
-		if (!isValidDates(datStr))
+		if (!isValidDate(datStr))
 		{
 			std::cerr << "Error: bad input => " << datStr << std::endl;
 			continue ;

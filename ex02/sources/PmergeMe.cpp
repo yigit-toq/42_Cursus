@@ -183,12 +183,118 @@ void	PmergeMe::Display() const
 
 void	PmergeMe::mergeInsertSortVec(std::vector<int>& arr)
 {
-	mergeInsertSort(arr);
+	size_t	n = arr.size();
+
+	if (n <= 1)
+		return ;
+
+	std::vector<std::pair<int, int> >	pairs;
+
+	for (size_t i = 0; i + 1 < n; i += 2)
+	{
+		int	a = arr[i];
+		int	b = arr[i + 1];
+		
+		if (a > b)
+			pairs.push_back(std::make_pair(a, b));
+		else
+			pairs.push_back(std::make_pair(b, a));
+	}
+
+	std::vector<int> main;
+	std::vector<int> pending;
+
+	for (size_t i = 0; i < pairs.size(); i++)
+	{
+		main	.push_back(pairs[i].first );
+		pending	.push_back(pairs[i].second);
+	}
+
+	mergeInsertSortVec(main);
+
+	if (!pending.empty())
+	{
+		std::vector<size_t>	insertOrder = generateJacobsthalSequence(pending.size());
+
+		for (size_t i = 0; i < insertOrder.size(); i++)
+		{
+			 size_t	idx = insertOrder[i];
+
+			if (idx < pending.size())
+			{
+				binaryInsert(main, main.begin(), main.end(), pending[idx]);
+			}
+		}
+	}
+
+	bool hasStraggler = (n % 2 == 1);
+
+	if  (hasStraggler)
+	{
+		int	straggler = arr[n - 1];
+
+		binaryInsert(main, main.begin(), main.end(), straggler);
+	}
+
+	arr = main;
 }
 
 void	PmergeMe::mergeInsertSortDeq(std::deque <int>& arr)
 {
-	mergeInsertSort(arr);
+	size_t	n = arr.size();
+
+	if (n <= 1)
+		return ;
+
+	std::vector<std::pair<int, int> >	pairs;
+
+	for (size_t i = 0; i + 1 < n; i += 2)
+	{
+		int	a = arr[i];
+		int	b = arr[i + 1];
+		
+		if (a > b)
+			pairs.push_back(std::make_pair(a, b));
+		else
+			pairs.push_back(std::make_pair(b, a));
+	}
+
+	std::deque<int> main;
+	std::deque<int> pending;
+
+	for (size_t i = 0; i < pairs.size(); i++)
+	{
+		main	.push_back(pairs[i].first );
+		pending	.push_back(pairs[i].second);
+	}
+
+	mergeInsertSortDeq(main);
+
+	if (!pending.empty())
+	{
+		std::vector<size_t>	insertOrder = generateJacobsthalSequence(pending.size());
+
+		for (size_t i = 0; i < insertOrder.size(); i++)
+		{
+			 size_t	idx = insertOrder[i];
+
+			if (idx < pending.size())
+			{
+				binaryInsert(main, main.begin(), main.end(), pending[idx]);
+			}
+		}
+	}
+
+	bool hasStraggler = (n % 2 == 1);
+
+	if  (hasStraggler)
+	{
+		int	straggler = arr[n - 1];
+
+		binaryInsert(main, main.begin(), main.end(), straggler);
+	}
+
+	arr = main;
 }
 
 // ========== Main Functions ==========
@@ -240,6 +346,8 @@ void	PmergeMe::Sort()
 	}
 
 	std::cout << std::endl;
+
+	std::cout << std::fixed << std::setprecision(5);
 
 	std::cout << "Time to process a range of " << _vec.size() 
 			<< " elements with std::vector : " << timeVec << " us" << std::endl;
