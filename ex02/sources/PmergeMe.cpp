@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 17:59:41 by ytop              #+#    #+#             */
-/*   Updated: 2025/12/02 17:59:41 by ytop             ###   ########.fr       */
+/*   Updated: 2025/12/05 14:41:45 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,17 +163,12 @@ void	PmergeMe::Display() const
 {
 	std::cout << "Before: ";
 
-	for (size_t i = 0; i < _vec.size() && i < 5; i++)
+	for (size_t i = 0; i < _vec.size(); i++)
 	{
 		std::cout << _vec[i];
 
-		if (i < _vec.size() - 1 && i < 4)
+		if (i < _vec.size() - 1)
 			std::cout << " ";
-	}
-
-	if (_vec.size() > 5)
-	{
-		std::cout << " [...]";
 	}
 
 	std::cout << std::endl;
@@ -330,24 +325,17 @@ void	PmergeMe::Sort()
 	}
 
 	std::cout << "After:  ";
-	for (size_t i = 0; i < vecCopy.size() && i < 5; i++)
+	for (size_t i = 0; i < vecCopy.size(); i++)
 	{
 		std::cout << vecCopy[i];
 
-		if (i < vecCopy.size() - 1 && i < 4)
+		if (i < vecCopy.size() - 1)
 		{
 			std::cout << " ";
 		}
 	}
 
-	if (vecCopy.size() > 5)
-	{
-		std::cout << " [...]";
-	}
-
 	std::cout << std::endl;
-
-	std::cout << std::fixed << std::setprecision(5);
 
 	std::cout << "Time to process a range of " << _vec.size() 
 			<< " elements with std::vector : " << timeVec << " us" << std::endl;

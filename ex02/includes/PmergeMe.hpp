@@ -6,7 +6,7 @@
 /*   By: ytop <ytop@student.42kocaeli.com.tr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 17:59:43 by ytop              #+#    #+#             */
-/*   Updated: 2025/12/04 15:46:31 by ytop             ###   ########.fr       */
+/*   Updated: 2025/12/05 14:36:52 by ytop             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <deque>
 #include <vector>
 
-#include <iomanip>
 #include <iostream>
 #include <algorithm>
 
