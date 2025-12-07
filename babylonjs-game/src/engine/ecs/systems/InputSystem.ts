@@ -32,7 +32,7 @@ export class InputSystem extends System
 					input.mapping.vertical.negative,
 					input.mapping.vertical.positive
 				);
-				velocity.linear.y = verticalAxis * 5; // 5 units/sec speed
+				velocity.linear.z = verticalAxis * 5;
 			}
 
 			if (input.mapping.horizontal)

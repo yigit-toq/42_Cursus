@@ -42,6 +42,8 @@ export class SceneManager
 		this.camera.attachControl(true);
 		this.camera.lowerRadiusLimit = 5;
 		this.camera.upperRadiusLimit = 20;
+
+		this.camera.inputs.attached.keyboard.detachControl();
 		
 		return this.camera;
 	}

@@ -27,6 +27,10 @@ export { SceneManager } from './engine/render/SceneManager';
 // Input System
 export { InputManager } from './engine/input/InputManager';
 
+// Physics
+export { AABB } from './engine/physics/Bounds';
+export { CollisionDetection } from './engine/physics/CollisionDetection';
+
 // ECS Core
 export { Entity } from './engine/ecs/core/Entity';
 export { System } from './engine/ecs/core/System';
@@ -38,12 +42,15 @@ export { TransformComponent } from './engine/ecs/components/TransformComponent';
 export { MeshComponent } from './engine/ecs/components/MeshComponent';
 export { VelocityComponent } from './engine/ecs/components/VelocityComponent';
 export { InputComponent } from './engine/ecs/components/InputComponent';
+export { CollisionComponent, CollisionLayer } from './engine/ecs/components/CollisionComponent';
 export type { InputMapping } from './engine/ecs/components/InputComponent';
 
 // ECS Systems
 export { MovementSystem } from './engine/ecs/systems/MovementSystem';
 export { RenderSystem } from './engine/ecs/systems/RenderSystem';
 export { InputSystem } from './engine/ecs/systems/InputSystem';
+export { CollisionSystem } from './engine/ecs/systems/CollisionSystem';
+export type { CollisionEvent } from './engine/ecs/systems/CollisionSystem';
 
 // Types
 export type { GameConfig } from './types/index';
