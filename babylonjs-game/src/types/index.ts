@@ -6,11 +6,9 @@
  */
 
 export interface GameConfig {
-  canvasId: string;
-  width?: number;
-  height?: number;
-  antialias?: boolean;
-  adaptToDeviceRatio?: boolean;
+ canvasId: string;
+ antialias?: boolean;
+ targetFPS?: number;
 }
 
 export interface Vec3 {

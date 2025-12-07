@@ -10,82 +10,105 @@
  * easily integrated into any frontend application.
  */
 
-import { Engine, Scene } from '@babylonjs/core';
 import type { GameConfig } from '../../types/index';
+import { GameLoop } from './GameLoop';
+import { Engine, Scene } from '@babylonjs/core';
 
-export class GameEngine {
-  private canvas: HTMLCanvasElement;
-  private engine: Engine;
-  private scene: Scene | null = null;
-  private isRunning: boolean = false;
+export class GameEngine
+{
+	private canvas: HTMLCanvasElement;
+	private engine: Engine;
+	private scene: Scene | null = null;
+	private gameLoop: GameLoop;
+	private updateCallbacks: Array<(deltaTime: number) => void> = [];
 
-  constructor(config: GameConfig) {
-    const canvas = document.getElementById(config.canvasId) as HTMLCanvasElement;
-    
-    if (!canvas) {
-      throw new Error(`Canvas element with id "${config.canvasId}" not found`);
-    }
+	constructor(config: GameConfig)
+	{
+		const canvas = document.getElementById(config.canvasId) as HTMLCanvasElement;
+		if (!canvas) {
+			throw new Error(`Canvas element with id ${config.canvasId} not found`);
+		}
 
-    this.canvas = canvas;
-    this.engine = new Engine(this.canvas, config.antialias ?? true, {
-      preserveDrawingBuffer: true,
-      stencil: true,
-      adaptToDeviceRatio: config.adaptToDeviceRatio ?? true,
-    });
+		this.canvas = canvas;
+		this.engine = new Engine(this.canvas, config.antialias, {
+			preserveDrawingBuffer: true,
+			stencil: true
+		});
 
-    this.setupResizeHandler();
-  }
+		const targetFPS = config.targetFPS || 60;
+		this.gameLoop = new GameLoop(targetFPS);
 
-  private setupResizeHandler(): void {
-    window.addEventListener('resize', () => {
-      this.engine.resize();
-    });
-  }
+		this.initializeEngine();
+	}
 
-  public getEngine(): Engine {
-    return this.engine;
-  }
+	private initializeEngine(): void
+	{
+		window.addEventListener('resize', () => {
+			this.engine.resize();
+		});
+	}
 
-  public getScene(): Scene | null {
-    return this.scene;
-  }
+	public getEngine(): Engine {
+		return this.engine;
+	}
 
-  public setScene(scene: Scene): void {
-    this.scene = scene;
-  }
+	public getCanvas(): HTMLCanvasElement {
+		return this.canvas;
+	}
 
-  public start(): void {
-    if (!this.scene) {
-      throw new Error('Scene must be set before starting the engine');
-    }
+	public setScene(scene: Scene): void {
+		this.scene = scene;
+	}
 
-    if (this.isRunning) {
-      console.warn('Engine is already running');
-      return;
-    }
+	public getScene(): Scene | null {
+		return this.scene;
+	}
 
-    this.isRunning = true;
-    this.engine.runRenderLoop(() => {
-      this.scene?.render();
-    });
-  }
+	public registerUpdateCallback(callback: (deltaTime: number) => void): void
+	{
+		this.updateCallbacks.push(callback);
+	}
 
-  public stop(): void {
-    this.isRunning = false;
-    this.engine.stopRenderLoop();
-  }
+	public unregisterUpdateCallback(callback: (deltaTime: number) => void): void
+	{
+		const index = this.updateCallbacks.indexOf(callback);
+		if (index > -1) {
+			this.updateCallbacks.splice(index, 1);
+		}
+	}
 
-  public dispose(): void {
-    this.stop();
-    this.scene?.dispose();
-    this.engine.dispose();
-  }
+	public start(): void
+	{
+		if (!this.scene) {
+			throw new Error('Scene not initialized. Call setScene() first.');
+		}
 
-  public getCanvas(): HTMLCanvasElement {
-    return this.canvas;
-  }
+		const update = (deltaTime: number): void => {
+			this.updateCallbacks.forEach(cb => cb(deltaTime));
+		};
 
-  public isEngineRunning(): boolean {
-    return this.isRunning;
-  }
+		const render = (): void => {
+			this.scene?.render();
+		};
+
+		this.gameLoop.start(update, render);
+	}
+
+	public stop(): void
+	{
+		this.gameLoop.stop();
+	}
+
+	public isRunning(): boolean
+	{
+		return this.gameLoop.isActive();
+	}
+
+	public dispose(): void
+	{
+		this.gameLoop.stop();
+		this.updateCallbacks = [];
+		this.scene?.dispose();
+		this.engine.dispose();
+	}
 }

@@ -19,9 +19,25 @@
 
 // Core Engine
 export { GameEngine } from './engine/core/GameEngine';
+export { GameLoop } from './engine/core/GameLoop';
 
-// Rendering
+// Render System
 export { SceneManager } from './engine/render/SceneManager';
 
+// ECS Core
+export { Entity } from './engine/ecs/core/Entity';
+export { System } from './engine/ecs/core/System';
+export { World } from './engine/ecs/core/World';
+export type { Component, ComponentConstructor } from './engine/ecs/core/Component';
+
+// ECS Components
+export { TransformComponent } from './engine/ecs/components/TransformComponent';
+export { MeshComponent } from './engine/ecs/components/MeshComponent';
+export { VelocityComponent } from './engine/ecs/components/VelocityComponent';
+
+// ECS Systems
+export { MovementSystem } from './engine/ecs/systems/MovementSystem';
+export { RenderSystem } from './engine/ecs/systems/RenderSystem';
+
 // Types
-export * from './types/index';
+export type { GameConfig } from './types/index';

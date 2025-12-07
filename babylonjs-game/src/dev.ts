@@ -1,54 +1,99 @@
-/**
- * Development entry point
- * 
- * This file is only used during development with Vite.
- * It demonstrates how to use the game engine.
- */
-
 import { GameEngine } from './engine/core/GameEngine';
 import { SceneManager } from './engine/render/SceneManager';
-import { MeshBuilder, Vector3, StandardMaterial, Color3 } from '@babylonjs/core';
+import { World } from './engine/ecs/core/World';
+import { TransformComponent } from './engine/ecs/components/TransformComponent';
+import { MeshComponent } from './engine/ecs/components/MeshComponent';
+import { VelocityComponent } from './engine/ecs/components/VelocityComponent';
+import { MovementSystem } from './engine/ecs/systems/MovementSystem';
+import { RenderSystem } from './engine/ecs/systems/RenderSystem';
+import { Color3, MeshBuilder, StandardMaterial, Vector3 } from '@babylonjs/core';
 
-// Initialize the engine
-const gameEngine = new GameEngine({
-  canvasId: 'gameCanvas',
-  antialias: true,
-  adaptToDeviceRatio: true,
+const engine = new GameEngine({
+	canvasId: 'gameCanvas',
+	antialias: true,
+	targetFPS: 60
 });
 
-// Create scene manager
-const sceneManager = new SceneManager(gameEngine);
+const sceneManager = new SceneManager(engine);
 
-// Setup camera and lighting
-sceneManager.setupDefaultCamera(new Vector3(0, 0, 0));
+sceneManager.setupDefaultCamera();
 sceneManager.setupDefaultLighting();
 
-// Get the scene
 const scene = sceneManager.getScene();
 
-// Add a test sphere
-const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 2 }, scene);
-sphere.position.y = 1;
+const world = new World();
 
-const sphereMaterial = new StandardMaterial('sphereMat', scene);
-sphereMaterial.diffuseColor = new Color3(0.4, 0.7, 1.0);
-sphere.material = sphereMaterial;
+world.addSystem(new MovementSystem());
+world.addSystem(new RenderSystem());
 
-// Add a ground
 const ground = MeshBuilder.CreateGround('ground', { width: 10, height: 10 }, scene);
 const groundMaterial = new StandardMaterial('groundMat', scene);
-groundMaterial.diffuseColor = new Color3(0.2, 0.2, 0.25);
+
+groundMaterial.diffuseColor = new Color3(0.5, 0.5, 0.5);
 ground.material = groundMaterial;
 
-// Set the scene and start the engine
-gameEngine.setScene(scene);
-gameEngine.start();
+const sphereMesh = MeshBuilder.CreateSphere('sphere1', { diameter: 1 }, scene);
+const sphereMaterial = new StandardMaterial('sphereMat', scene);
 
-console.log('✅ Game Engine initialized successfully!');
-console.log('📦 Engine:', gameEngine);
-console.log('🎬 Scene:', scene);
+sphereMaterial.diffuseColor = new Color3(0.2, 0.4, 1);
+sphereMesh.material = sphereMaterial;
 
-// Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-  gameEngine.dispose();
+const sphereEntity = world.createEntity('RotatingSphere');
+sphereEntity.addComponent(new TransformComponent(
+	new Vector3(-2, 1, 0)
+));
+
+sphereEntity.addComponent(new MeshComponent(sphereMesh));
+sphereEntity.addComponent(new VelocityComponent(
+	Vector3.Zero(),
+	new Vector3(0, Math.PI / 2, 0)
+));
+
+const boxMesh = MeshBuilder.CreateBox('box1', { size: 1 }, scene);
+const boxMaterial = new StandardMaterial('boxMat', scene);
+
+boxMaterial.diffuseColor = new Color3(1, 0.6, 0.2);
+boxMesh.material = boxMaterial;
+
+const boxEntity = world.createEntity('MovingBox');
+boxEntity.addComponent(new TransformComponent(
+	new Vector3(2, 1, 0)
+));
+
+boxEntity.addComponent(new MeshComponent(boxMesh));
+boxEntity.addComponent(new VelocityComponent(
+	new Vector3(0, 0.5, 0),
+	Vector3.Zero()
+));
+
+const cylinderMesh = MeshBuilder.CreateCylinder('cylinder1', { height: 1, diameter: 0.5 }, scene);
+const cylinderMaterial = new StandardMaterial('cylinderMat', scene);
+
+cylinderMaterial.diffuseColor = new Color3(0.2, 1, 0.4);
+cylinderMesh.material = cylinderMaterial;
+
+const cylinderEntity = world.createEntity('SpinningCylinder');
+cylinderEntity.addComponent(new TransformComponent(
+	new Vector3(0, 0.5, 2)
+));
+
+cylinderEntity.addComponent(new MeshComponent(cylinderMesh));
+cylinderEntity.addComponent(new VelocityComponent(
+	new Vector3(1, 0, 0),
+	new Vector3(0, 0, Math.PI)
+));
+
+engine.registerUpdateCallback((deltaTime: number) =>
+{
+	world.update(deltaTime);
 });
+
+engine.setScene(scene);
+engine.start();
+
+console.log('🎮 ECS System Test Started!');
+console.log(`📦 Entities: ${world.getEntityCount()}`);
+console.log(`⚙️  Systems: ${world.getSystemCount()}`);
+console.log('🔵 Sphere: Rotating on Y axis (Blue, left)');
+console.log('🟧 Box: Moving up (Orange, right)');
+console.log('🟢 Cylinder: Moving right + spinning (Green, center-front)');
