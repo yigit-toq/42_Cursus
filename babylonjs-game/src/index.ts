@@ -24,6 +24,9 @@ export { GameLoop } from './engine/core/GameLoop';
 // Render System
 export { SceneManager } from './engine/render/SceneManager';
 
+// Input System
+export { InputManager } from './engine/input/InputManager';
+
 // ECS Core
 export { Entity } from './engine/ecs/core/Entity';
 export { System } from './engine/ecs/core/System';
@@ -34,10 +37,13 @@ export type { Component, ComponentConstructor } from './engine/ecs/core/Componen
 export { TransformComponent } from './engine/ecs/components/TransformComponent';
 export { MeshComponent } from './engine/ecs/components/MeshComponent';
 export { VelocityComponent } from './engine/ecs/components/VelocityComponent';
+export { InputComponent } from './engine/ecs/components/InputComponent';
+export type { InputMapping } from './engine/ecs/components/InputComponent';
 
 // ECS Systems
 export { MovementSystem } from './engine/ecs/systems/MovementSystem';
 export { RenderSystem } from './engine/ecs/systems/RenderSystem';
+export { InputSystem } from './engine/ecs/systems/InputSystem';
 
 // Types
 export type { GameConfig } from './types/index';

@@ -13,6 +13,7 @@
 import type { GameConfig } from '../../types/index';
 import { GameLoop } from './GameLoop';
 import { Engine, Scene } from '@babylonjs/core';
+import { InputManager } from '../input/InputManager';
 
 export class GameEngine
 {
@@ -21,6 +22,7 @@ export class GameEngine
 	private scene: Scene | null = null;
 	private gameLoop: GameLoop;
 	private updateCallbacks: Array<(deltaTime: number) => void> = [];
+	private inputManager: InputManager;
 
 	constructor(config: GameConfig)
 	{
@@ -37,6 +39,9 @@ export class GameEngine
 
 		const targetFPS = config.targetFPS || 60;
 		this.gameLoop = new GameLoop(targetFPS);
+
+		this.inputManager = InputManager.getInstance();
+        this.inputManager.initialize(this.canvas);
 
 		this.initializeEngine();
 	}
@@ -85,6 +90,8 @@ export class GameEngine
 
 		const update = (deltaTime: number): void => {
 			this.updateCallbacks.forEach(cb => cb(deltaTime));
+
+			this.inputManager.update();
 		};
 
 		const render = (): void => {
