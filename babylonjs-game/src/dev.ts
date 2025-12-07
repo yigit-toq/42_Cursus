@@ -11,8 +11,12 @@ import { RenderSystem } from './engine/ecs/systems/RenderSystem';
 import { InputSystem } from './engine/ecs/systems/InputSystem';
 import { CollisionSystem, CollisionEvent } from './engine/ecs/systems/CollisionSystem';
 import { CollisionDetection } from './engine/physics/CollisionDetection';
+import { GameManager } from './engine/game/GameManager';
+import { GameStateManager } from './engine/game/GameStateManager';
+import { GameState } from './engine/game/GameState';
 import { Color3, MeshBuilder, StandardMaterial, Vector3 } from '@babylonjs/core';
 
+// Initialize engine
 const engine = new GameEngine({
 	canvasId: 'gameCanvas',
 	antialias: true,
@@ -26,8 +30,20 @@ sceneManager.setupDefaultLighting();
 
 const scene = sceneManager.getScene();
 
+// Initialize Game Managers
+const gameManager = GameManager.getInstance();
+const stateManager = GameStateManager.getInstance();
+
+	gameManager.initialize({
+	maxScore: 3,        // First to 3 wins
+	ballSpeed: 6,
+	paddleSpeed: 8
+});
+
+// Create ECS World
 const world = new World();
 
+// Add systems
 world.addSystem(new InputSystem());
 world.addSystem(new MovementSystem());
 world.addSystem(new CollisionSystem());
@@ -35,10 +51,13 @@ world.addSystem(new RenderSystem());
 
 const collisionSystem = world.getSystem('CollisionSystem') as CollisionSystem;
 
-const BALL_SPEED = 6;
+// Game constants
+const config = gameManager.getConfig();
+const BALL_SPEED = config.ballSpeed;
 const ARENA_WIDTH = 20;
 const ARENA_HEIGHT = 12;
 
+// Create ground
 const ground = MeshBuilder.CreateGround('ground', { 
 	width: ARENA_WIDTH, 
 	height: ARENA_HEIGHT 
@@ -48,6 +67,7 @@ const groundMaterial = new StandardMaterial('groundMat', scene);
 groundMaterial.diffuseColor = new Color3(0.1, 0.1, 0.15);
 ground.material = groundMaterial;
 
+// Top Wall
 const topWallMesh = MeshBuilder.CreateBox('topWall', {
 	width: ARENA_WIDTH,
 	height: 1,
@@ -67,11 +87,12 @@ topWallEntity.addComponent(new CollisionComponent(
 	new Vector3(ARENA_WIDTH, 1, 0.5),
 	CollisionLayer.Wall,
 	CollisionLayer.Ball,
-    false,
-    true 
+	false,
+	true
 ));
 topWallEntity.addComponent(new VelocityComponent());
 
+// Bottom Wall
 const bottomWallMesh = MeshBuilder.CreateBox('bottomWall', {
 	width: ARENA_WIDTH,
 	height: 1,
@@ -93,6 +114,7 @@ bottomWallEntity.addComponent(new CollisionComponent(
 ));
 bottomWallEntity.addComponent(new VelocityComponent());
 
+// Player 1 Paddle
 const paddle1Mesh = MeshBuilder.CreateBox('paddle1', {
 	width: 0.5,
 	height: 1,
@@ -124,6 +146,7 @@ paddle1Entity.addComponent(new CollisionComponent(
 	true
 ));
 
+// Player 2 Paddle
 const paddle2Mesh = MeshBuilder.CreateBox('paddle2', {
 	width: 0.5,
 	height: 1,
@@ -155,6 +178,7 @@ paddle2Entity.addComponent(new CollisionComponent(
 	true
 ));
 
+// Ball
 const ballMesh = MeshBuilder.CreateSphere('ball', { diameter: 0.8 }, scene);
 const ballMaterial = new StandardMaterial('ballMat', scene);
 ballMaterial.diffuseColor = new Color3(1, 1, 0.2);
@@ -179,7 +203,7 @@ collisionSystem.registerCollisionCallback(ballEntity.id, (event: CollisionEvent)
 {
 	const ball = event.entityA.id === ballEntity.id ? event.entityA : event.entityB;
 	const other = event.entityA.id === ballEntity.id ? event.entityB : event.entityA;
-	
+
 	const ballVelocity = ball.getComponent<VelocityComponent>('Velocity');
 
 	if (!ballVelocity) return ;
@@ -193,7 +217,75 @@ collisionSystem.registerCollisionCallback(ballEntity.id, (event: CollisionEvent)
 	console.log(`⚽ Ball hit ${other.name}!`);
 });
 
+function resetBall(): void
+{
+	const ballTransform = ballEntity.getComponent<TransformComponent>('Transform');
+	const ballVelocity = ballEntity.getComponent<VelocityComponent>('Velocity');
+
+	if (ballTransform && ballVelocity)
+	{
+		ballTransform.position.set(0, 0.5, 0);
+
+		ballVelocity.linear.set(
+			BALL_SPEED * (Math.random() > 0.5 ? 1 : -1),
+			0,
+			BALL_SPEED * (Math.random() - 0.5)
+		);
+	}
+}
+
+stateManager.onStateChange((event) => {
+	console.log(`📊 State: ${event.from} → ${event.to}`);
+});
+
+gameManager.onScoreChange((scores) => {
+	console.log(`📊 Score Update: ${scores.player1} - ${scores.player2}`);
+});
+
+gameManager.onGameOver((winner) => {
+	console.log(`🏆 GAME OVER! Winner: ${winner.toUpperCase()}`);
+	console.log('   Press SPACE to restart');
+});
+
+window.addEventListener('keydown', (event) =>
+{
+	if (event.code === 'Space')
+	{
+		if (stateManager.isState(GameState.Menu))
+		{
+			gameManager.startGame();
+			resetBall();
+		}
+		else if (stateManager.isState(GameState.GameOver))
+		{
+			gameManager.reset();
+			gameManager.startGame();
+			resetBall();
+		}
+		else if (stateManager.isState(GameState.Playing))
+		{
+			gameManager.pauseGame();
+		}
+		else if (stateManager.isState(GameState.Paused))
+		{
+			gameManager.resumeGame();
+		}
+	}
+
+	if (event.code === 'Escape')
+	{
+		if (stateManager.isState(GameState.Playing))
+		{
+			gameManager.pauseGame();
+		}
+	}
+});
+
+
 engine.registerUpdateCallback((deltaTime: number) => {
+
+if (gameManager.isGameActive())
+{
 	world.update(deltaTime);
 	
 	// Clamp paddle positions
@@ -203,49 +295,59 @@ engine.registerUpdateCallback((deltaTime: number) => {
 	const halfArena = ARENA_HEIGHT / 2;
 	const paddleHalfHeight = 1.5;
 	
-	if (paddle1Transform) {
-		if (paddle1Transform.position.z < -halfArena + paddleHalfHeight) {
+	if (paddle1Transform)
+	{
+		if (paddle1Transform.position.z < -halfArena + paddleHalfHeight)
+		{
 			paddle1Transform.position.z = -halfArena + paddleHalfHeight;
 		}
-		if (paddle1Transform.position.z > halfArena - paddleHalfHeight) {
+		if (paddle1Transform.position.z > halfArena - paddleHalfHeight)
+		{
 			paddle1Transform.position.z = halfArena - paddleHalfHeight;
 		}
 	}
 	
-	if (paddle2Transform) {
-		if (paddle2Transform.position.z < -halfArena + paddleHalfHeight) {
+	if (paddle2Transform)
+	{
+		if (paddle2Transform.position.z < -halfArena + paddleHalfHeight)
+		{
 			paddle2Transform.position.z = -halfArena + paddleHalfHeight;
 		}
-		if (paddle2Transform.position.z > halfArena - paddleHalfHeight) {
+		if (paddle2Transform.position.z > halfArena - paddleHalfHeight)
+		{
 			paddle2Transform.position.z = halfArena - paddleHalfHeight;
 		}
 	}
-	
-	// Reset ball if it goes out of bounds
+
 	const ballTransform = ballEntity.getComponent<TransformComponent>('Transform');
-	const ballVelocity = ballEntity.getComponent<VelocityComponent>('Velocity');
 	
-	if (ballTransform && ballVelocity) {
-		if (Math.abs(ballTransform.position.x) > ARENA_WIDTH / 2 + 2) {
-			console.log('🎯 GOAL! Resetting ball...');
-			ballTransform.position.set(0, 0.5, 0);
-			ballVelocity.linear.set(
-				BALL_SPEED * (Math.random() > 0.5 ? 1 : -1),
-				0,
-				BALL_SPEED * (Math.random() - 0.5)
-			);
+	if (ballTransform)
+	{
+		if (ballTransform.position.x < -ARENA_WIDTH / 2)
+		{
+			gameManager.addScore('player2');
+			resetBall();
+		}
+		else if (ballTransform.position.x > ARENA_WIDTH / 2)
+		{
+			gameManager.addScore('player1');
+			resetBall();
 		}
 	}
+}
 });
 
+// Start engine
 engine.setScene(scene);
 engine.start();
 
-console.log('🏓 Pong Physics Prototype!');
+console.log('🏓 Pong Game - State Management Test');
 console.log('');
-console.log('🎯 Controls:');
-console.log('  👤 Player 1 (Blue): W/S');
-console.log('  👤 Player 2 (Red): ↑/↓');
+console.log('🎮 Controls:');
+console.log('  SPACE   - Start/Pause/Resume/Restart');
+console.log('  ESC     - Pause');
+console.log('  W/S     - Player 1 (Blue)');
+console.log('  ↑/↓     - Player 2 (Red)');
 console.log('');
-console.log('⚽ Ball bounces off paddles and walls!');
-console.log('🎯 Goal detection active!');
+console.log('🎯 First to 3 points wins!');
+console.log('   Press SPACE to start...');

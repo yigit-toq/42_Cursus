@@ -31,6 +31,13 @@ export { InputManager } from './engine/input/InputManager';
 export { AABB } from './engine/physics/Bounds';
 export { CollisionDetection } from './engine/physics/CollisionDetection';
 
+// Game Management
+export { GameState } from './engine/game/GameState';
+export type { GameStateChangeEvent } from './engine/game/GameState';
+export { GameStateManager } from './engine/game/GameStateManager';
+export { GameManager } from './engine/game/GameManager';
+export type { PlayerScore, GameConfig as GameManagerConfig } from './engine/game/GameManager';
+
 // ECS Core
 export { Entity } from './engine/ecs/core/Entity';
 export { System } from './engine/ecs/core/System';
