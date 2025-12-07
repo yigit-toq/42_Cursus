@@ -15,6 +15,9 @@ import { GameManager } from './engine/game/GameManager';
 import { GameStateManager } from './engine/game/GameStateManager';
 import { GameState } from './engine/game/GameState';
 import { Color3, MeshBuilder, StandardMaterial, Vector3 } from '@babylonjs/core';
+import { UIManager } from './engine/ui/UIManager';
+import { HUDController } from './engine/ui/HUDController';
+import { MenuController } from './engine/ui/MenuController';
 
 // Initialize engine
 const engine = new GameEngine({
@@ -38,6 +41,21 @@ const stateManager = GameStateManager.getInstance();
 	maxScore: 3,        // First to 3 wins
 	ballSpeed: 6,
 	paddleSpeed: 8
+});
+
+// Initialize UI System
+const uiManager = UIManager.getInstance();
+uiManager.initialize(scene);
+
+const hudController = new HUDController();
+hudController.initialize();
+
+const menuController = new MenuController();
+menuController.initialize();
+
+menuController.createMainMenu(() => {
+	gameManager.startGame();
+	resetBall();
 });
 
 // Create ECS World
@@ -253,6 +271,7 @@ window.addEventListener('keydown', (event) =>
 	{
 		if (stateManager.isState(GameState.Menu))
 		{
+			menuController.hideMainMenu();
 			gameManager.startGame();
 			resetBall();
 		}
@@ -271,7 +290,7 @@ window.addEventListener('keydown', (event) =>
 			gameManager.resumeGame();
 		}
 	}
-
+	
 	if (event.code === 'Escape')
 	{
 		if (stateManager.isState(GameState.Playing))
@@ -282,66 +301,75 @@ window.addEventListener('keydown', (event) =>
 });
 
 
-engine.registerUpdateCallback((deltaTime: number) => {
-
-if (gameManager.isGameActive())
+engine.registerUpdateCallback((deltaTime: number) =>
 {
-	world.update(deltaTime);
-	
-	// Clamp paddle positions
-	const paddle1Transform = paddle1Entity.getComponent<TransformComponent>('Transform');
-	const paddle2Transform = paddle2Entity.getComponent<TransformComponent>('Transform');
-	
-	const halfArena = ARENA_HEIGHT / 2;
-	const paddleHalfHeight = 1.5;
-	
-	if (paddle1Transform)
+	if (gameManager.isGameActive())
 	{
-		if (paddle1Transform.position.z < -halfArena + paddleHalfHeight)
+		world.update(deltaTime);
+		
+		// Clamp paddle positions
+		const paddle1Transform = paddle1Entity.getComponent<TransformComponent>('Transform');
+		const paddle2Transform = paddle2Entity.getComponent<TransformComponent>('Transform');
+		
+		const halfArena = ARENA_HEIGHT / 2;
+		const paddleHalfHeight = 1.5;
+		
+		if (paddle1Transform)
 		{
-			paddle1Transform.position.z = -halfArena + paddleHalfHeight;
+			if (paddle1Transform.position.z < -halfArena + paddleHalfHeight)
+			{
+				paddle1Transform.position.z = -halfArena + paddleHalfHeight;
+			}
+			if (paddle1Transform.position.z > halfArena - paddleHalfHeight)
+			{
+				paddle1Transform.position.z = halfArena - paddleHalfHeight;
+			}
 		}
-		if (paddle1Transform.position.z > halfArena - paddleHalfHeight)
+		
+		if (paddle2Transform)
 		{
-			paddle1Transform.position.z = halfArena - paddleHalfHeight;
+			if (paddle2Transform.position.z < -halfArena + paddleHalfHeight)
+			{
+				paddle2Transform.position.z = -halfArena + paddleHalfHeight;
+			}
+			if (paddle2Transform.position.z > halfArena - paddleHalfHeight)
+			{
+				paddle2Transform.position.z = halfArena - paddleHalfHeight;
+			}
 		}
-	}
-	
-	if (paddle2Transform)
-	{
-		if (paddle2Transform.position.z < -halfArena + paddleHalfHeight)
-		{
-			paddle2Transform.position.z = -halfArena + paddleHalfHeight;
-		}
-		if (paddle2Transform.position.z > halfArena - paddleHalfHeight)
-		{
-			paddle2Transform.position.z = halfArena - paddleHalfHeight;
-		}
-	}
 
-	const ballTransform = ballEntity.getComponent<TransformComponent>('Transform');
-	
-	if (ballTransform)
-	{
-		if (ballTransform.position.x < -ARENA_WIDTH / 2)
+		const ballTransform = ballEntity.getComponent<TransformComponent>('Transform');
+		
+		if (ballTransform)
 		{
-			gameManager.addScore('player2');
-			resetBall();
-		}
-		else if (ballTransform.position.x > ARENA_WIDTH / 2)
-		{
-			gameManager.addScore('player1');
-			resetBall();
+			if (ballTransform.position.x < -ARENA_WIDTH / 2)
+			{
+				gameManager.addScore('player2');
+				resetBall();
+			}
+			else if (ballTransform.position.x > ARENA_WIDTH / 2)
+			{
+				gameManager.addScore('player1');
+				resetBall();
+			}
 		}
 	}
-}
+	else
+	{
+		const renderSystem = world.getSystem('RenderSystem') as RenderSystem;
+
+		if (renderSystem)
+		{
+			renderSystem.update(world.getEntities(), deltaTime);
+		}
+	}
 });
 
 // Start engine
 engine.setScene(scene);
 engine.start();
 
-console.log('🏓 Pong Game - State Management Test');
+console.log('🏓 Pong Game - Full UI System');
 console.log('');
 console.log('🎮 Controls:');
 console.log('  SPACE   - Start/Pause/Resume/Restart');
@@ -350,4 +378,5 @@ console.log('  W/S     - Player 1 (Blue)');
 console.log('  ↑/↓     - Player 2 (Red)');
 console.log('');
 console.log('🎯 First to 3 points wins!');
-console.log('   Press SPACE to start...');
+console.log('🎨 UI: Score display + Status messages')
+console.log('📋 Click START or press SPACE...');

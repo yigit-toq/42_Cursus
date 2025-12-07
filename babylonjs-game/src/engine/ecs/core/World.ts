@@ -7,35 +7,42 @@ export class World
 	private systems: System[] = [];
 	private entitiesToDestroy: Set<number> = new Set();
 
-	public createEntity(name?: string): Entity {
+	public createEntity(name?: string): Entity
+	{
 		const entity = new Entity(name);
 		this.entities.set(entity.id, entity);
+
 		return entity;
 	}
 
-	public getEntity(id: number): Entity | undefined {
+	public getEntity(id: number): Entity | undefined
+	{
 		return this.entities.get(id);
 	}
 
-	public getAllEntities(): Entity[] {
+	public getEntities(): Entity[]
+	{
 		return Array.from(this.entities.values());
 	}
 
 	public getEntitiesWithComponents(...componentTypes: string[]): Entity[]
 	{
-		return this.getAllEntities().filter(entity => 
+		return this.getEntities().filter(entity => 
 			entity.isActive() && entity.hasComponents(...componentTypes)
 		);
 	}
 
-	public destroyEntity(entityId: number): void {
+	public destroyEntity(entityId: number): void
+	{
 		this.entitiesToDestroy.add(entityId);
 	}
 
 	public addSystem(system: System): this
 	{
 		this.systems.push(system);
-		if (system.onInit) {
+
+		if (system.onInit)
+		{
 			system.onInit();
 		}
 		return this;
@@ -47,16 +54,20 @@ export class World
 		if (index !== -1)
 		{
 			const system = this.systems[index];
-			if (system.onDestroy) {
+
+			if (system.onDestroy)
+			{
 				system.onDestroy();
 			}
 			this.systems.splice(index, 1);
+
 			return true;
 		}
 		return false;
 	}
 
-	public getSystem(name: string): System | undefined {
+	public getSystem(name: string): System | undefined
+	{
 		return this.systems.find(s => s.name === name);
 	}
 
@@ -66,7 +77,7 @@ export class World
 		{
 			if (!system.isEnabled()) continue;
 
-			const matchingEntities = this.getAllEntities().filter(entity =>
+			const matchingEntities = this.getEntities().filter(entity =>
 				entity.isActive() && system.matchesEntity(entity)
 			);
 
@@ -81,7 +92,9 @@ export class World
 		for (const id of this.entitiesToDestroy)
 		{
 			const entity = this.entities.get(id);
-			if (entity) {
+
+			if (entity)
+			{
 				entity.destroy();
 				this.entities.delete(id);
 			}
@@ -93,7 +106,8 @@ export class World
 	{
 		for (const system of this.systems)
 		{
-			if (system.onDestroy) {
+			if (system.onDestroy)
+			{
 				system.onDestroy();
 			}
 		}
@@ -107,11 +121,13 @@ export class World
 		this.entitiesToDestroy.clear();
 	}
 
-	public getEntityCount(): number {
+	public getEntityCount(): number
+	{
 		return this.entities.size;
 	}
 
-	public getSystemCount(): number {
+	public getSystemCount(): number
+	{
 		return this.systems.length;
 	}
 }

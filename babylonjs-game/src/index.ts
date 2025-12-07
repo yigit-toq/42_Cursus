@@ -38,6 +38,11 @@ export { GameStateManager } from './engine/game/GameStateManager';
 export { GameManager } from './engine/game/GameManager';
 export type { PlayerScore, GameConfig as GameManagerConfig } from './engine/game/GameManager';
 
+// UI System
+export { UIManager } from './engine/ui/UIManager';
+export { HUDController } from './engine/ui/HUDController';
+export { MenuController } from './engine/ui/MenuController';
+
 // ECS Core
 export { Entity } from './engine/ecs/core/Entity';
 export { System } from './engine/ecs/core/System';
