@@ -1,0 +1,38 @@
+{
+  "name": "@ft-transcendence/game-engine",
+  "version": "0.1.0",
+  "description": "3D Pong Game Engine with Babylon.js for ft_transcendence",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "babylonjs",
+    "3d",
+    "pong",
+    "game-engine",
+    "ft_transcendence"
+  ],
+  "author": "yigit-toq",
+  "license": "MIT",
+  "dependencies": {
+    "@babylonjs/core": "^7.31.0",
+    "@babylonjs/havok": "^1.3.8",
+    "@babylonjs/loaders": "^7.31.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
