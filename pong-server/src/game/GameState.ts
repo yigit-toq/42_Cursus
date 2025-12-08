@@ -54,11 +54,11 @@ export class GameState
 
 	private updatePaddles(deltaTime: number, playerInput: { player1: number; player2: number }): void
 	{
-		this.updateSinglePaddle("paddle1", playerInput.player1, deltaTime);
-		this.updateSinglePaddle("paddle2", playerInput.player2, deltaTime);
+		this.updateSinglePaddle("paddle1Position", playerInput.player1, deltaTime);
+		this.updateSinglePaddle("paddle2Position", playerInput.player2, deltaTime);
 	}
 
-	private updateSinglePaddle(key: "paddle1" | "paddle2", input: number, deltaTime: number): void
+	private updateSinglePaddle(key: "paddle1Position" | "paddle2Position", input: number, deltaTime: number): void
 	{
 		this[key] += input * this.PADDLE_SPEED * deltaTime;
 
