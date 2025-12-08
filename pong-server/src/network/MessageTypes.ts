@@ -79,16 +79,16 @@ export interface GameStateMessage
 
 	ball:
 	{
-		position: { x: number; y: number; z: number; };
+		position: { x: number; y: number; z: number; }; //
 	};
 
 	paddle1:
 	{
-		position: { z: number; };
+		z: number; //
 	};
 	paddle2:
 	{
-		position: { z: number; };
+		z: number; //
 	};
 
 	score:
@@ -100,10 +100,11 @@ export interface GameStateMessage
 
 export interface GoalScoredMessage
 {
-	type: ServerMessageType.GOAL_SCORED;
-	scoringPlayer: 1 | 2;
+	type	: ServerMessageType.GOAL_SCORED;
 
-	score:
+	scorer	: 1 | 2;
+
+	score	:
 	{
 		player1: number;
 		player2: number;
