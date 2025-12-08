@@ -1,74 +1,81 @@
 export enum ClientMessageType
 {
-	CONNECT = 'CONNECT',
-	DISCONNECT = 'DISCONNECT',
-	FIND_MATCH = 'FIND_MATCH',
-	INPUT = 'INPUT',
-	PING = 'PING'
+	CONNECT			= 'CONNECT',
+	DISCONNECT		= 'DISCONNECT',
+	FIND_MATCH		= 'FIND_MATCH',
+	INPUT			= 'INPUT',
+	PING			= 'PING'
 }
 
 export enum ServerMessageType
 {
-	WELCOME = 'WELCOME',
-	GAME_STATE = 'GAME_STATE',
-	MATCH_FOUND = 'MATCH_FOUND',
-	GOAL_SCORED = 'GOAL_SCORED',
-	GAME_OVER = 'GAME_OVER',
-	PONG = 'PONG',
-	ERROR = 'ERROR',
-	OPPONENT_DISCONNECTED = 'OPPONENT_DISCONNECTED'
+	WELCOME			= 'WELCOME',
+	GAME_STATE		= 'GAME_STATE',
+	MATCH_FOUND		= 'MATCH_FOUND',
+	GOAL_SCORED		= 'GOAL_SCORED',
+	GAME_OVER		= 'GAME_OVER',
+	PONG			= 'PONG',
+	ERROR			= 'ERROR',
+	OPPONENT_DISCND	= 'OPPONENT_DISCND'
 }
 
 // Client Messages
 export interface ConnectMessage
 {
-	type: ClientMessageType.CONNECT;
-	playerName?: string;
+	type		: ClientMessageType.CONNECT;
+
+	playerName?	: string;
 }
 
 export interface FindMatchMessage
 {
-	type: ClientMessageType.FIND_MATCH;
+	type		: ClientMessageType.FIND_MATCH;
 }
 
 export interface InputMessage
 {
-	type: ClientMessageType.INPUT;
+	type		: ClientMessageType.INPUT;
 
 	input:
 	{
 		vertical: number;
 	}
 
-	timestamp: number;
+	timestamp	: number;
 }
 
 export interface PingMessage
 {
-	type: ClientMessageType.PING;
-	timestamp: number;
+	type		: ClientMessageType.PING;
+
+	timestamp	: number;
 }
 
 // Server Messages
 export interface WelcomeMessage
 {
-	type: ServerMessageType.WELCOME;
-	playerId: string;
-	serverTime: number;
+	type		: ServerMessageType.WELCOME;
+
+	playerId	: string;
+
+	serverTime	: number;
 }
 
 export interface MatchFoundMessage
 {
-	type: ServerMessageType.MATCH_FOUND;
-	roomId: string;
-	playerNumber: 1 | 2;
-	opponentName?: string;
+	type			: ServerMessageType.MATCH_FOUND;
+
+	roomId			: string;
+
+	playerNumber	: 1 | 2;
+	opponentName?	: string;
 }
 
 export interface GameStateMessage
 {
-	type: ServerMessageType.GAME_STATE;
-	timestamp: number;
+	type		: ServerMessageType.GAME_STATE;
+
+	timestamp	: number;
 
 	ball:
 	{
@@ -116,35 +123,37 @@ export interface GameOverMessage
 	};
 }
 
-export interface OpponentDisconnectedMessage
+export interface OpponentDiscndMsg
 {
-	type: ServerMessageType.OPPONENT_DISCONNECTED;
+	type		: ServerMessageType.OPPONENT_DISCND;
 }
 
 export interface PongMessage
 {
-	type: ServerMessageType.PONG;
-	timestamp: number;
+	type		: ServerMessageType.PONG;
+
+	timestamp	: number;
 }
 
 export interface ErrorMessage
 {
-	type: ServerMessageType.ERROR;
-	message: string;
+	type	: ServerMessageType.ERROR;
+
+	message	: string;
 }
 
-export type ClientMessage = 
+export type ClientMessage =
+	| FindMatchMessage  
 	| ConnectMessage 
-	| FindMatchMessage 
 	| InputMessage 
 	| PingMessage;
 
 export type ServerMessage = 
 	| WelcomeMessage 
 	| MatchFoundMessage 
+	| GoalScoredMessage 
+	| OpponentDiscndMsg 
 	| GameStateMessage 
-	| GoalScoredMessage
 	| GameOverMessage 
-	| OpponentDisconnectedMessage 
-	| PongMessage 
-	| ErrorMessage;
+	| ErrorMessage 
+	| PongMessage;
