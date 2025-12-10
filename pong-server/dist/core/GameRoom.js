@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameRoom = void 0;
-const GameState_1 = require("../game/GameState");
 const MessageTypes_1 = require("../network/MessageTypes");
+const GameState_1 = require("../game/GameState");
 class GameRoom {
     id;
     player1 = null;
     player2 = null;
     isActive = false;
-    gameState;
     tickRate = 60;
-    tickInterval = null;
+    tickCount = 0;
+    gameState;
     lastTickTime = Date.now();
+    tickInterval = null;
     constructor(id) {
         this.id = id;
         this.gameState = new GameState_1.GameState();
@@ -29,6 +30,7 @@ class GameRoom {
             player.roomID = this.id;
             player.playerN = 2;
             console.log(`🎮 Player ${player.name} joined room ${this.id} as Player 2`);
+            this.startGame();
             return true;
         }
         return false;
@@ -42,7 +44,6 @@ class GameRoom {
             console.log(`👋 Player 2 (${this.player2.name}) left room ${this.id}`);
             this.player2 = null;
         }
-        // Stop game if any player disconnects
         if (this.isActive) {
             this.stopGame();
             this.notifyOpponentDisconnected();
@@ -88,17 +89,23 @@ class GameRoom {
         if (!this.isActive || !this.player1 || !this.player2)
             return;
         const now = Date.now();
-        const deltaTime = (now - this.lastTickTime) / 1000; // Convert to seconds
+        const deltaTime = (now - this.lastTickTime) / 1000;
         this.lastTickTime = now;
+        if (this.tickCount < 10) // debug
+         {
+            console.log(`⏱️  Tick ${this.tickCount}: P1 input=${this.player1.input}, P2 input=${this.player2.input}`);
+            this.tickCount++;
+        }
         const player1Input = this.player1.input;
         const player2Input = this.player2.input;
         this.player1.paddlePos = this.gameState.paddle1Position;
         this.player2.paddlePos = this.gameState.paddle2Position;
-        const prevScore = { ...this.gameState.score };
+        const previousScore = { ...this.gameState.score };
         this.gameState.update(deltaTime, { player1: player1Input, player2: player2Input });
-        if (this.gameState.score.player1 !== prevScore.player1 ||
-            this.gameState.score.player2 !== prevScore.player2) {
-            this.handleGoal(prevScore);
+        // Check for goals
+        if (this.gameState.score.player1 !== previousScore.player1 ||
+            this.gameState.score.player2 !== previousScore.player2) {
+            this.handleGoal(previousScore);
         }
         if (this.gameState.isGameOver) {
             this.handleGameOver();

@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ft_transcendence - Game Engine</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      background: #0a0a0f;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-    
-    #gameCanvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      touch-action: none;
-    }
-    
-    #info {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      border-radius: 8px;
-      font-size: 14px;
-      z-index: 100;
-    }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ft_transcendence - Game Engine</title>
+	<style>
+		* {
+		margin		: 0;
+		padding		: 0;
+		box-sizing	: border-box;
+		}
+	
+		body
+		{
+			width		: 100%;
+			height		: 100vh;
+			overflow	: hidden;
+			background	: #0a0a0f;
+			font-family	: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		}
+		
+		#gameCanvas
+		{
+			width		: 100%;
+			height		: 100%;
+			display		: block;
+			touch-action: none ;
+		}
+		
+		#info
+		{
+			position		: absolute;
+			top				: 20px;
+			left			: 20px;
+			color			: #fff;
+			background		: rgba(0, 0, 0, 0.7);
+			padding			: 15px;
+			border-radius	: 10px;
+			font-size		: 10px;
+			z-index			: 100;
+		}
+	</style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  <div id="info">
-    <h2>🎮 Game Engine - Development Mode</h2>
-    <p>Press F12 to open DevTools</p>
-  </div>
-  <script type="module" src="/src/dev.ts"></script>
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="info">
+	<h2>🎮 Game Engine - Development Mode</h2>
+	<p>Press F12 to open DevTools</p>
+</div>
+
+<script type="module" src="/src/dev.ts"></script>
 </body>
 </html>

@@ -164,14 +164,16 @@ class PongServer
 		room.addPlayer(player1);
 		room.addPlayer(player2);
 
-		this.gameRooms.set(roomID, room);
+		this.gameRooms.set	(roomID, room);
 
-		console.log(`🎮 Match created: ${player1.name} vs ${player2.name} (Room: ${roomID})`);
+		console.log			(`🎮 Match created: ${player1.name} vs ${player2.name} (Room: ${roomID})`);
 	}
 
 	private handleInput(player: Player, vertical: number): void
 	{
-		player.updateInput(vertical);
+		console.log			(`🎮 Input received from ${player.name} (Player ${player.playerN}): ${vertical}`);
+
+		player.updateInput	(vertical);
 	}
 
 	private handleDisconnect(player: Player): void

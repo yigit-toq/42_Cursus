@@ -2,13 +2,13 @@ import type { WebSocket } from 'ws';
 export declare class Player {
     id: string;
     name: string;
+    input: number;
     socket: WebSocket;
     roomID: string | null;
     playerN: 1 | 2 | null;
     isReady: boolean;
     lastPing: number;
     paddlePos: number;
-    input: number;
     constructor(id: string, socket: WebSocket, name?: string);
     send(data: any): void;
     isConnected(): boolean;

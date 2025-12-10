@@ -13,20 +13,20 @@ export class AABB
 
 	public static fromCenterAndSize(center: Vector3, size: Vector3): AABB
 	{
-		const halfSize = size.scale(0.5);
+		const halfSize	= size.scale(0.5);
 
-		const min = center.subtract(halfSize);
-		const max = center.add(halfSize);
+		const max 		= center.add		(halfSize);
+		const min		= center.subtract	(halfSize);
 
 		return new AABB(min, max);
 	}
 
 	public updatePosition(center: Vector3, size: Vector3): void
 	{
-		const halfSize = size.scale(0.5);
+		const halfSize	= size.scale(0.5);
 
-		this.min = center.subtract(halfSize);
-		this.max = center.add(halfSize);
+		this.max		= center.add		(halfSize);
+		this.min		= center.subtract	(halfSize);
 	}
 
 	public intersects(other: AABB): boolean
@@ -38,16 +38,16 @@ export class AABB
 
 	public getCenter(): Vector3
 	{
-		return this.min.add(this.max).scale(0.5);
+		return this.min.add		(this.max).scale(0.5);
 	}
 
-	public getSize(): Vector3
+	public getSize	(): Vector3
 	{
 		return this.max.subtract(this.min);
 	}
 
-	public clone(): AABB
+	public clone	(): AABB
 	{
-		return new AABB(this.min, this.max);
+		return new AABB			(this.min, this.max);
 	}
 }

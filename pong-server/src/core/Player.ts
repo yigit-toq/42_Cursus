@@ -4,19 +4,25 @@ export class Player
 {
 	public id		: string;
 	public name		: string;
-	public socket	: WebSocket;
-	public roomID	: string | null = null;
-	public playerN	: 1 | 2  | null = null;
-	public isReady	: boolean	= false;
-	public lastPing	: number	= Date.now();
 
-	public paddlePos: number = 0;
-	public input	: number = 0;
+	public input	: number		= 0;	
+
+	public socket	: WebSocket;
+
+	public roomID	: string | null = null;
+
+	public playerN	: 1 | 2  | null = null;
+
+	public isReady	: boolean		= false;
+
+	public lastPing	: number		= Date.now();
+
+	public paddlePos: number		= 0;
 
 	constructor(id: string, socket: WebSocket, name?: string)
 	{
-		this.id		= id;
 		this.socket	= socket;
+		this.id		= id;
 
 		this.name = name || `Player_${id}`;
 	}

@@ -11,13 +11,13 @@ var ClientMessageType;
 })(ClientMessageType || (exports.ClientMessageType = ClientMessageType = {}));
 var ServerMessageType;
 (function (ServerMessageType) {
+    ServerMessageType["PONG"] = "PONG";
+    ServerMessageType["ERROR"] = "ERROR";
     ServerMessageType["WELCOME"] = "WELCOME";
+    ServerMessageType["GAME_OVER"] = "GAME_OVER";
     ServerMessageType["GAME_STATE"] = "GAME_STATE";
     ServerMessageType["MATCH_FOUND"] = "MATCH_FOUND";
     ServerMessageType["GOAL_SCORED"] = "GOAL_SCORED";
-    ServerMessageType["GAME_OVER"] = "GAME_OVER";
-    ServerMessageType["PONG"] = "PONG";
-    ServerMessageType["ERROR"] = "ERROR";
     ServerMessageType["OPPONENT_DISCND"] = "OPPONENT_DISCND";
 })(ServerMessageType || (exports.ServerMessageType = ServerMessageType = {}));
 //# sourceMappingURL=MessageTypes.js.map

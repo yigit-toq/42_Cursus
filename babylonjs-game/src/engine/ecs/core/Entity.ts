@@ -2,48 +2,51 @@ import type { Component } from './Component';
 
 export class Entity
 {
-	private static nextId = 0;
+	private  static	nextId		= 0;
 
-	public readonly id: number;
-	public name: string;
-	private components: Map<string, Component> = new Map();
-	private active: boolean = true;
+	public readonly	id			: number;
+	public			name		: string;
+
+	private			active		: boolean = true;
+
+	private			components	: Map<string, Component> = new Map();
 
 	constructor(name: string = 'Entity')
 	{
-		this.id = Entity.nextId++;
-		this.name = name;
+		this.id		= Entity.nextId++;
+		this.name	= name;
 	}
 
-	public addComponent<T extends Component>(component: T): this
+	public addComponent		<T extends Component>(component: T): this
 	{
 		this.components.set(component.type, component);
+
 		return this;
 	}
 
-	public getComponent<T extends Component>(type: string): T | undefined
+	public getComponent		<T extends Component>(type: string): T | undefined
 	{
 		return this.components.get(type) as T | undefined;
 	}
 
-	public hasComponent(type: string): boolean
+	public hasComponent		(type: string): boolean
 	{
 		return this.components.has(type);
 	}
 
-	public removeComponent(type: string): boolean
+	public removeComponent	(type: string): boolean
 	{
 		return this.components.delete(type);
 	}
 
-	public getAllComponents(): Component[]
+	public getAllComponents	(): Component[]
 	{
-		return Array.from(this.components.values());
+		return Array.from	(this.components.values());
 	}
 
-	public hasComponents(...types: string[]): boolean
+	public hasComponents	(...types: string[]): boolean
 	{
-		return types.every(type => this.hasComponent(type));
+		return types.every	(type => this.hasComponent(type));
 	}
 
 	public setActive(active: boolean): void
@@ -51,14 +54,15 @@ export class Entity
 		this.active = active;
 	}
 
-	public isActive(): boolean
+	public isActive	(): boolean
 	{
 		return this.active;
 	}
 
-	public destroy(): void
+	public destroy	(): void
 	{
 		this.active = false;
+
 		this.components.clear();
 	}
 }

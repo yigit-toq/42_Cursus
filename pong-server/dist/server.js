@@ -106,6 +106,7 @@ class PongServer {
         console.log(`🎮 Match created: ${player1.name} vs ${player2.name} (Room: ${roomID})`);
     }
     handleInput(player, vertical) {
+        console.log(`🎮 Input received from ${player.name} (Player ${player.playerN}): ${vertical}`);
         player.updateInput(vertical);
     }
     handleDisconnect(player) {

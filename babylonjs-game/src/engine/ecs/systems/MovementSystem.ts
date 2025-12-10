@@ -1,11 +1,14 @@
-import { System } from '../core/System';
-import type { Entity } from '../core/Entity';
 import { TransformComponent } from '../components/TransformComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 
+import		{ System } from '../core/System';
+
+import type { Entity } from '../core/Entity';
+
 export class MovementSystem extends System
 {
-	constructor() {
+	constructor()
+	{
 		super('MovementSystem', ['Transform', 'Velocity']);
 	}
 
@@ -13,15 +16,15 @@ export class MovementSystem extends System
 	{
 		for (const entity of entities)
 		{
-			const transform = entity.getComponent<TransformComponent>('Transform');
-			const velocity = entity.getComponent<VelocityComponent>('Velocity');
+			const velocity	= entity.getComponent<VelocityComponent>	('Velocity');
+			const transform	= entity.getComponent<TransformComponent>	('Transform');
 
-			if (!transform || !velocity) continue;
+			if (!transform || !velocity) continue ;
 
-			const linearDelta = velocity.linear.scale(deltaTime);
+			const linearDelta	= velocity.linear	.scale(deltaTime);
 			transform.position.addInPlace(linearDelta);
 
-			const angularDelta = velocity.angular.scale(deltaTime);
+			const angularDelta	= velocity.angular	.scale(deltaTime);
 			transform.rotation.addInPlace(angularDelta);
 		}
 	}

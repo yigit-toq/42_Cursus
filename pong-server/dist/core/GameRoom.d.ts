@@ -1,14 +1,15 @@
-import { Player } from './Player';
 import { GameState } from '../game/GameState';
+import { Player } from './Player';
 export declare class GameRoom {
     id: string;
     player1: Player | null;
     player2: Player | null;
     isActive: boolean;
-    gameState: GameState;
     tickRate: number;
-    private tickInterval;
+    private tickCount;
+    gameState: GameState;
     private lastTickTime;
+    private tickInterval;
     constructor(id: string);
     addPlayer(player: Player): boolean;
     removePlayer(playerId: string): void;

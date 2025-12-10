@@ -11,12 +11,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "scripts": {
-    "dev": "vite",
+    "scripts": {
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "dev": "vite",
+    "dev:mp": "vite --open /dev-multiplayer.html",
+    "preview": "vite preview"
   },
+
   "keywords": [
     "babylonjs",
     "3d",

@@ -2,24 +2,34 @@ import type { Component } from '../core/Component';
 
 export interface InputMapping
 {
-	vertical?: { negative: string; positive: string };
-	horizontal?: { negative: string; positive: string };
-	action1?: string;
-	action2?: string;
+	horizontal	?: { negative: string; positive: string };
+	vertical	?: { negative: string; positive: string };
+
+	action1		?: string;
+	action2		?: string;
 }
 
 export class InputComponent implements Component
 {
-	public readonly type = 'Input';
-	
-	public mapping: InputMapping;
-	public enabled: boolean = true;
+	private			axisValues	: Map<string, number> = new Map();
 
-	constructor(mapping: InputMapping) {
+	public readonly	type		: string = 'Input';
+
+	public			enabled		: boolean = true;
+	public			mapping		: InputMapping;
+
+	constructor(mapping: InputMapping)
+	{
 		this.mapping = mapping;
 	}
 
-	public setEnabled(enabled: boolean): void {
+	public getAxis		(axisName: string): number
+	{
+		return this.axisValues.get(axisName) || 0;
+	}
+
+	public setEnabled	(enabled: boolean): void
+	{
 		this.enabled = enabled;
 	}
 }

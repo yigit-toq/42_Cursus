@@ -4,16 +4,16 @@ exports.Player = void 0;
 class Player {
     id;
     name;
+    input = 0;
     socket;
     roomID = null;
     playerN = null;
     isReady = false;
     lastPing = Date.now();
     paddlePos = 0;
-    input = 0;
     constructor(id, socket, name) {
-        this.id = id;
         this.socket = socket;
+        this.id = id;
         this.name = name || `Player_${id}`;
     }
     send(data) {

@@ -1,47 +1,52 @@
 import type { Component } from '../core/Component';
-import { AABB } from '../../physics/Bounds';
-import { Vector3 } from '@babylonjs/core';
+
+import		{ Vector3 } from '@babylonjs/core';
+
+import		{ AABB } from '../../physics/Bounds';
 
 export enum CollisionLayer
 {
-	Default = 1 << 0,	// 1
-	Player = 1 << 1,	// 2
-	Ball = 1 << 2,		// 4
-	Wall = 1 << 3,		// 8
-	Trigger = 1 << 4	// 16 (for scoring zones)
+	Default	= 1 << 0,	// 1
+	Player	= 1 << 1,	// 2
+	Ball	= 1 << 2,	// 4
+	Wall	= 1 << 3,	// 8
+	Trigger	= 1 << 4	// 16 (for scoring zones)
 }
 
 export class CollisionComponent implements Component
 {
 	public readonly type = 'Collision';
-	
-	public bounds: AABB;
-	public layer: CollisionLayer;
-	public mask: number;
+
+	public mask		: number;
+	public layer	: CollisionLayer;
+
+	public bounds	: AABB;
+
+	public enabled	: boolean = true;
+
+	public isStatic	: boolean;
 	public isTrigger: boolean;
-	public isStatic: boolean;
-	public enabled: boolean = true;
 
 	constructor(
-		size: Vector3,
-		layer: CollisionLayer = CollisionLayer.Default,
-		mask: number = 0xFFFFFFFF,
-		isTrigger: boolean = false,
-		isStatic: boolean = false
+		size		: Vector3,
+		mask		: number			= 0xFFFFFFFF,
+		layer		: CollisionLayer	= CollisionLayer.Default,
+		isStatic	: boolean			= false,
+		isTrigger	: boolean			= false
 	) {
-		this.bounds = AABB.fromCenterAndSize(Vector3.Zero(), size);
-		this.layer = layer;
-		this.mask = mask;
-		this.isTrigger = isTrigger;
-		this.isStatic = isStatic;
+		this.bounds		= AABB.fromCenterAndSize(Vector3.Zero(), size);
+		this.mask		= mask;
+		this.layer		= layer;
+		this.isStatic	= isStatic;
+		this.isTrigger	= isTrigger;
 	}
 
-	public canCollideWith(layer: CollisionLayer): boolean
+	public canCollideWith	(layer: CollisionLayer): boolean
 	{
 		return (this.mask & layer) !== 0;
 	}
 
-	public updateBounds(position: Vector3, scale: Vector3): void
+	public updateBounds		(position: Vector3, scale: Vector3): void
 	{
 		const size = this.bounds.getSize();
 

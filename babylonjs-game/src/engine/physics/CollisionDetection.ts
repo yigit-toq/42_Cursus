@@ -1,4 +1,5 @@
 import { Vector3 } from '@babylonjs/core';
+
 import { AABB } from './Bounds';
 
 export class CollisionDetection
@@ -14,6 +15,7 @@ export class CollisionDetection
 		const centerB = b.getCenter();
 
 		const delta = centerB.subtract(centerA);
+
 		const aSize = a.getSize();
 		const bSize = b.getSize();
 		
@@ -47,7 +49,7 @@ export class CollisionDetection
 	public static reflect(velocity: Vector3, normal: Vector3): Vector3
 	{
 		// v' = v - 2(v·n)n
-		const dot = Vector3.Dot(velocity, normal);
+		const dot = Vector3.Dot	(velocity, normal);
 
 		return velocity.subtract(normal.scale(2 * dot));
 	}

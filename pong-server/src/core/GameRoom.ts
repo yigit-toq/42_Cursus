@@ -1,6 +1,8 @@
-import { Player } from './Player';
-import { GameState } from '../game/GameState';
 import { ServerMessageType, type GameStateMessage, type GoalScoredMessage, type GameOverMessage } from '../network/MessageTypes';
+
+import { GameState	} from '../game/GameState';
+import { Player		} from './Player';
+
 
 export class GameRoom
 {
@@ -11,12 +13,14 @@ export class GameRoom
 
 	public	isActive	: boolean = false;
 
-	public	gameState	: GameState;
-
 	public	tickRate	: number = 60;
 
-	private	tickInterval: NodeJS.Timeout | null = null;
+	private tickCount	: number = 0;
+
+	public	gameState	: GameState;
+
 	private	lastTickTime: number = Date.now();
+	private	tickInterval: NodeJS.Timeout | null = null;
 
 	constructor (id: string)
 	{
@@ -33,7 +37,7 @@ export class GameRoom
 			player.roomID	= this.id;
 			player.playerN	= 1;
 
-			console.log(`🎮 Player ${player.name} joined room ${this.id} as Player 1`);
+			console.log		(`🎮 Player ${player.name} joined room ${this.id} as Player 1`);
 			return true;
 		}
 		else if (!this.player2)
@@ -42,7 +46,10 @@ export class GameRoom
 			player.roomID	= this.id;
 			player.playerN	= 2;
 
-			console.log(`🎮 Player ${player.name} joined room ${this.id} as Player 2`);
+			console.log		(`🎮 Player ${player.name} joined room ${this.id} as Player 2`);
+
+			this.startGame	();
+
 			return true;
 		}
 
@@ -62,7 +69,6 @@ export class GameRoom
 			this.player2 = null;
 		}
 
-		// Stop game if any player disconnects
 		if (this.isActive)
 		{
 			this.stopGame();
@@ -97,14 +103,16 @@ export class GameRoom
 
 		this.lastTickTime	= Date.now();
 
-		this.player1.send({
+		this.player1.send
+		({
 			type		: ServerMessageType.MATCH_FOUND,
 			roomId		: this.id,
 			playerNumber: 1,
 			opponentName: this.player2.name
 		});
 
-		this.player2.send({
+		this.player2.send
+		({
 			type		: ServerMessageType.MATCH_FOUND,
 			roomId		: this.id,
 			playerNumber: 2,
@@ -118,7 +126,8 @@ export class GameRoom
 	{
 		const tickDuration = 1000 / this.tickRate; // ms per tick
 
-		this.tickInterval = setInterval(() => {
+		this.tickInterval = setInterval(() =>
+		{
 			this.tick();
 		}, tickDuration);
 
@@ -129,33 +138,40 @@ export class GameRoom
 	{
 		if (!this.isActive || !this.player1 || !this.player2) return ;
 
-		const now		= Date.now();
-		const deltaTime	= (now - this.lastTickTime) / 1000; // Convert to seconds
+		const now		=  Date.now();
+		const deltaTime	= (now - this.lastTickTime) / 1000;
 
 		this.lastTickTime = now;
 
-		const player1Input = this.player1.input;
-		const player2Input = this.player2.input;
+		if (this.tickCount < 10) // debug
+		{
+			console.log(`⏱️  Tick ${this.tickCount}: P1 input=${this.player1.input}, P2 input=${this.player2.input}`);
 
-		this.player1.paddlePos = this.gameState.paddle1Position;
-		this.player2.paddlePos = this.gameState.paddle2Position;
+			this.tickCount++;
+		}
 
-		const prevScore = { ...this.gameState.score };
+		const player1Input		= this.player1.input;
+		const player2Input		= this.player2.input;
+
+		this.player1.paddlePos	= this.gameState.paddle1Position;
+		this.player2.paddlePos	= this.gameState.paddle2Position;
+
+		const previousScore		= { ...this.gameState.score };
 
 		this.gameState.update(deltaTime, {player1: player1Input, player2: player2Input});
 
+		// Check for goals
 		if (
-			this.gameState.score.player1 !== prevScore.player1 ||
-			this.gameState.score.player2 !== prevScore.player2
+			this.gameState.score.player1 !== previousScore.player1 ||
+			this.gameState.score.player2 !== previousScore.player2
 		)
 		{
-			this.handleGoal(prevScore);
+			this.handleGoal(previousScore);
 		}
 
 		if (this.gameState.isGameOver)
 		{
 			this.handleGameOver();
-
 			return ;
 		}
 
@@ -259,7 +275,8 @@ export class GameRoom
 
 		if (remainingPlayer)
 		{
-			remainingPlayer.send({
+			remainingPlayer.send
+			({
 				type: ServerMessageType.OPPONENT_DISCND
 			});
 		}

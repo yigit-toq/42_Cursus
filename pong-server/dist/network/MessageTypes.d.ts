@@ -6,13 +6,13 @@ export declare enum ClientMessageType {
     PING = "PING"
 }
 export declare enum ServerMessageType {
+    PONG = "PONG",
+    ERROR = "ERROR",
     WELCOME = "WELCOME",
+    GAME_OVER = "GAME_OVER",
     GAME_STATE = "GAME_STATE",
     MATCH_FOUND = "MATCH_FOUND",
     GOAL_SCORED = "GOAL_SCORED",
-    GAME_OVER = "GAME_OVER",
-    PONG = "PONG",
-    ERROR = "ERROR",
     OPPONENT_DISCND = "OPPONENT_DISCND"
 }
 export interface ConnectMessage {
@@ -73,6 +73,9 @@ export interface GoalScoredMessage {
         player2: number;
     };
 }
+export interface OpponentDiscndMsg {
+    type: ServerMessageType.OPPONENT_DISCND;
+}
 export interface GameOverMessage {
     type: ServerMessageType.GAME_OVER;
     winner: 1 | 2;
@@ -81,17 +84,14 @@ export interface GameOverMessage {
         player2: number;
     };
 }
-export interface OpponentDiscndMsg {
-    type: ServerMessageType.OPPONENT_DISCND;
+export interface ErrorMessage {
+    type: ServerMessageType.ERROR;
+    message: string;
 }
 export interface PongMessage {
     type: ServerMessageType.PONG;
     timestamp: number;
 }
-export interface ErrorMessage {
-    type: ServerMessageType.ERROR;
-    message: string;
-}
 export type ClientMessage = FindMatchMessage | ConnectMessage | InputMessage | PingMessage;
-export type ServerMessage = WelcomeMessage | MatchFoundMessage | GoalScoredMessage | OpponentDiscndMsg | GameStateMessage | GameOverMessage | ErrorMessage | PongMessage;
+export type ServerMessage = MatchFoundMessage | GoalScoredMessage | OpponentDiscndMsg | GameStateMessage | GameOverMessage | WelcomeMessage | ErrorMessage | PongMessage;
 //# sourceMappingURL=MessageTypes.d.ts.map

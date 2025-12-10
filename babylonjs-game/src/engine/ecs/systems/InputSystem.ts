@@ -1,8 +1,11 @@
-import { System } from '../core/System';
-import type { Entity } from '../core/Entity';
-import { InputComponent } from '../components/InputComponent';
-import { VelocityComponent } from '../components/VelocityComponent';
+import { VelocityComponent	} from '../components/VelocityComponent';
+import { InputComponent		} from '../components/InputComponent';
+
 import { InputManager } from '../../input/InputManager';
+
+import		{ System } from '../core/System';
+
+import type { Entity } from '../core/Entity';
 
 export class InputSystem extends System
 {
@@ -11,6 +14,7 @@ export class InputSystem extends System
 	constructor()
 	{
 		super('InputSystem', ['Input']);
+
 		this.inputManager = InputManager.getInstance();
 	}
 
@@ -18,30 +22,32 @@ export class InputSystem extends System
 	{
 		for (const entity of entities)
 		{
-			const input = entity.getComponent<InputComponent>('Input');
+			const input		= entity.getComponent<InputComponent>	('Input');
 
-			if (!input || !input.enabled) continue;
+			if (!input || !input.enabled) continue ;
 
-			const velocity = entity.getComponent<VelocityComponent>('Velocity');
+			const velocity	= entity.getComponent<VelocityComponent>('Velocity');
 
 			if (!velocity) continue;
 
-			if (input.mapping.vertical)
+			if (input.mapping.vertical	)
 			{
-				const verticalAxis = this.inputManager.getAxis(
-					input.mapping.vertical.negative,
-					input.mapping.vertical.positive
+				const verticalAxis		= this.inputManager.getAxis(
+					input.mapping.vertical	.negative,
+					input.mapping.vertical	.positive
 				);
-				velocity.linear.z = verticalAxis * 5;
+
+				velocity.linear.z = verticalAxis	* 5;
 			}
 
 			if (input.mapping.horizontal)
 			{
-				const horizontalAxis = this.inputManager.getAxis(
+				const horizontalAxis	= this.inputManager.getAxis(
 					input.mapping.horizontal.negative,
 					input.mapping.horizontal.positive
 				);
-				velocity.linear.x = horizontalAxis * 5;
+
+				velocity.linear.x = horizontalAxis	* 5;
 			}
 		}
 	}

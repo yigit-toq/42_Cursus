@@ -4,69 +4,71 @@ export class GameStateManager
 {
 	private static instance: GameStateManager;
 	
-	private currentState: GameState = GameState.Menu;
-	private previousState: GameState | null = null;
-	private stateChangeCallbacks: Map<GameState, Array<(event: GameStateChangeEvent) => void>> = new Map();
-	private globalCallbacks: Array<(event: GameStateChangeEvent) => void> = [];
+	private currState			: GameState = GameState.Menu;
+	private prevState			: GameState | null = null;
 
-	private constructor()
-	{
-		// Private constructor for singleton
-	}
+	private globalCallbacks		: Array<(event: GameStateChangeEvent) => void> = [];
+
+	private stateChangeCallbacks: Map<GameState, Array<(event: GameStateChangeEvent) => void>> = new Map();
+
+	private constructor() {}
 
 	public static getInstance(): GameStateManager
 	{
 		if (!GameStateManager.instance)
 		{
-			GameStateManager.instance = new GameStateManager();
+			 GameStateManager.instance = new GameStateManager();
 		}
+
 		return GameStateManager.instance;
 	}
 
-	public getCurrentState(): GameState
+	public getCurrState(): GameState
 	{
-		return this.currentState;
+		return this.currState;
 	}
 
-	public getPreviousState(): GameState | null
+	public getPrevState(): GameState | null
 	{
-		return this.previousState;
+		return this.prevState;
 	}
 
 	public setState(newState: GameState): void
 	{
-		if (this.currentState === newState)
+		if (this.currState === newState)
 		{
 			console.warn(`Already in state: ${newState}`);
 			return ;
 		}
 
-		const event: GameStateChangeEvent = {
-			from: this.currentState,
-			to: newState,
-			timestamp: Date.now()
+		const event: GameStateChangeEvent =
+		{
+			from		: this.currState,
+			to			: newState,
+			timestamp	: Date.now()
 		};
 
 		console.log(`🎮 State Change: ${event.from} → ${event.to}`);
 
-		this.previousState = this.currentState;
-		this.currentState = newState;
+		this.prevState = this.currState;
+		this.currState = newState;
 
 		this.triggerCallbacks(newState, event);
 	}
 
 	public isState(state: GameState): boolean
 	{
-		return this.currentState === state;
+		return this.currState === state;
 	}
 
 	public onStateEnter(state: GameState, callback: (event: GameStateChangeEvent) => void): void
 	{
 		if (!this.stateChangeCallbacks.has(state))
 		{
-			this.stateChangeCallbacks.set(state, []);
+			 this.stateChangeCallbacks.set(state, []);
 		}
-		this.stateChangeCallbacks.get(state)!.push(callback);
+
+			 this.stateChangeCallbacks.get(state)!.push(callback);
 	}
 
 	public onStateChange(callback: (event: GameStateChangeEvent) => void): void
@@ -88,7 +90,7 @@ export class GameStateManager
 
 	public reset(): void
 	{
-		this.currentState = GameState.Menu;
-		this.previousState = null;
+		this.currState = GameState.Menu;
+		this.prevState = null;
 	}
 }

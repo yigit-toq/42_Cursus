@@ -1,7 +1,9 @@
-import { System } from '../core/System';
+import { TransformComponent	} from '../components/TransformComponent';
+import { MeshComponent		} from '../components/MeshComponent';
+
+import		{ System } from '../core/System';
+
 import type { Entity } from '../core/Entity';
-import { TransformComponent } from '../components/TransformComponent';
-import { MeshComponent } from '../components/MeshComponent';
 
 export class RenderSystem extends System
 {
@@ -14,8 +16,8 @@ export class RenderSystem extends System
 	{
 		for (const entity of entities)
 		{
-			const transform = entity.getComponent<TransformComponent>('Transform');
-			const mesh = entity.getComponent<MeshComponent>('Mesh');
+			const transform	= entity.getComponent<TransformComponent>	('Transform');
+			const mesh		= entity.getComponent<MeshComponent>		('Mesh');
 
 			if (!transform || !mesh) continue ;
 

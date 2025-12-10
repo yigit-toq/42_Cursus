@@ -1,12 +1,14 @@
 import type { Scene } from '@babylonjs/core';
+
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 
 export class UIManager
 {
-	private static instance: UIManager;
+	private static instance	: UIManager;
 
-	private advancedTexture: AdvancedDynamicTexture | null = null;
-	private uiElements: Map<string, Control> = new Map();
+	private advancedTexture	: AdvancedDynamicTexture | null = null;
+
+	private uiElements		: Map<string, Control> = new Map();
 
 	private constructor() {}
 
@@ -16,12 +18,14 @@ export class UIManager
 		{
 			UIManager.instance = new UIManager();
 		}
+
 		return UIManager.instance;
 	}
 
 	public initialize(scene: Scene): void
 	{
 		this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
+
 		console.log('🎨 UI System initialized');
 	}
 
@@ -31,12 +35,14 @@ export class UIManager
 		{
 			throw new Error('UI not initialized. Call initialize() first.');
 		}
+
 		return this.advancedTexture;
 	}
 
 	public addElement(name: string, element: Control): void
 	{
-		this.uiElements.set(name, element);
+		this.uiElements.set				(name, element);
+
 		this.advancedTexture?.addControl(element);
 	}
 
@@ -49,8 +55,10 @@ export class UIManager
 	{
 		const element = this.uiElements.get(name);
 
-		if (element) {
+		if (element)
+		{
 			this.advancedTexture?.removeControl(element);
+
 			this.uiElements.delete(name);
 		}
 	}
@@ -61,7 +69,7 @@ export class UIManager
 
 		if (element)
 		{
-			element.isVisible = true;
+			element.isVisible = true ;
 		}
 	}
 
@@ -78,12 +86,14 @@ export class UIManager
 	public clear(): void
 	{
 		this.advancedTexture?.dispose();
+
 		this.uiElements.clear();
 	}
 
 	public dispose(): void
 	{
 		this.clear();
+
 		this.advancedTexture = null;
 	}
 }

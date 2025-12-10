@@ -2,14 +2,16 @@ import type { Entity } from "./Entity";
 
 export abstract class System
 {
-	public readonly name: string;
-	protected requiredComponents: string[];
-	private enabled: boolean = true;
+	public readonly name				: string;
+
+	private			enabled				: boolean = true;
+
+	protected		requiredComponents	: string[];
 
 	constructor(name: string, requiredComponents: string[] = [])
 	{
-		this.name = name;
-		this.requiredComponents = requiredComponents;
+		this.name				= name;
+		this.requiredComponents	= requiredComponents;
 	}
 
 	public matchesEntity(entity: Entity): boolean
@@ -19,11 +21,11 @@ export abstract class System
 
 	public abstract update(entities: Entity[], deltaTime: number): void;
 
-	public onInit?(): void;
+	public onInit	?(): void;
 
 	public onDestroy?(): void;
 
-	public isEnabled(): boolean
+	public isEnabled (): boolean
 	{
 		return this.enabled;
 	}

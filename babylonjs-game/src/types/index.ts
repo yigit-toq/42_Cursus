@@ -1,32 +1,29 @@
-/**
- * Shared TypeScript types for the game engine
- * 
- * This file contains all shared type definitions, interfaces, and enums
- * used across the engine and game logic.
- */
-
-export interface GameConfig {
- canvasId: string;
- antialias?: boolean;
- targetFPS?: number;
+export interface GameConfig
+{
+	canvasId	: string;
+	antialias?	: boolean;
+	targetFPS?	: number ;
 }
 
-export interface Vec3 {
-  x: number;
-  y: number;
-  z: number;
+export interface Vec3
+{
+	x: number;
+	y: number;
+	z: number;
 }
 
-export interface Vec2 {
-  x: number;
-  y: number;
+export interface Vec2
+{
+	x: number;
+	y: number;
 }
 
-export enum GameState {
-  IDLE = 'idle',
-  PLAYING = 'playing',
-  PAUSED = 'paused',
-  GAME_OVER = 'game_over',
+export enum GameState
+{
+	IDLE		= 'idle',
+	PAUSED		= 'paused',
+	PLAYING		= 'playing',
+	GAME_OVER	= 'game_over',
 }
 
 export type UpdateFunction = (deltaTime: number) => void;

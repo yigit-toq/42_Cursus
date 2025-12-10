@@ -1,109 +1,86 @@
-/**
- * GameEngine.ts
- * 
- * Core game engine class that manages:
- * - Babylon.js engine lifecycle
- * - Scene management
- * - Game loop initialization
- * 
- * This class serves as the entry point for the game engine and can be
- * easily integrated into any frontend application.
- */
+import		{ InputManager	} from '../input/InputManager';
 
-import type { GameConfig } from '../../types/index';
-import { GameLoop } from './GameLoop';
-import { Engine, Scene } from '@babylonjs/core';
-import { InputManager } from '../input/InputManager';
+import type { GameConfig	} from '../../types/index';
+
+import		{ Engine, Scene } from '@babylonjs/core';
+
+import		{ GameLoop		} from './GameLoop';
 
 export class GameEngine
 {
-	private canvas: HTMLCanvasElement;
-	private engine: Engine;
-	private scene: Scene | null = null;
-	private gameLoop: GameLoop;
-	private updateCallbacks: Array<(deltaTime: number) => void> = [];
-	private inputManager: InputManager;
+	private scene			: Scene | null = null;
+
+	private canvas			: HTMLCanvasElement;
+	private engine			: Engine;
+
+	private gameLoop		: GameLoop;
+	private inputManager	: InputManager;
+
+	private updateCallbacks	: Array<(deltaTime: number) => void> = [];
 
 	constructor(config: GameConfig)
 	{
 		const canvas = document.getElementById(config.canvasId) as HTMLCanvasElement;
-		if (!canvas) {
+
+		if (!canvas)
 			throw new Error(`Canvas element with id ${config.canvasId} not found`);
-		}
 
 		this.canvas = canvas;
-		this.engine = new Engine(this.canvas, config.antialias, {
-			preserveDrawingBuffer: true,
-			stencil: true
+		this.engine = new Engine(this.canvas, config.antialias,
+		{
+			preserveDrawingBuffer	: true,
+			stencil					: true
 		});
 
-		const targetFPS = config.targetFPS || 60;
-		this.gameLoop = new GameLoop(targetFPS);
+		const targetFPS		= config.targetFPS || 60;
 
-		this.inputManager = InputManager.getInstance();
+		this.gameLoop		= new GameLoop(targetFPS);
+
+		this.inputManager	= InputManager.getInstance();
         this.inputManager.initialize(this.canvas);
 
-		this.initializeEngine();
+		this.initializeEngine	();
 	}
 
-	private initializeEngine(): void
+	private initializeEngine	(): void
 	{
-		window.addEventListener('resize', () => {
+		window.addEventListener('resize', () =>
+		{
 			this.engine.resize();
 		});
 	}
 
-	public getEngine(): Engine {
+	public getEngine(): Engine
+	{
 		return this.engine;
 	}
 
-	public getCanvas(): HTMLCanvasElement {
-		return this.canvas;
-	}
-
-	public setScene(scene: Scene): void {
-		this.scene = scene;
-	}
-
-	public getScene(): Scene | null {
+	public getScene	(): Scene | null
+	{
 		return this.scene;
 	}
 
-	public registerUpdateCallback(callback: (deltaTime: number) => void): void
+	public setScene	(scene: Scene): void
 	{
-		this.updateCallbacks.push(callback);
+		this.scene = scene;
 	}
 
-	public unregisterUpdateCallback(callback: (deltaTime: number) => void): void
+	public getCanvas(): HTMLCanvasElement
+	{
+		return this.canvas;
+	}
+
+	public registerUpdateCallback	(callback: (deltaTime: number) => void): void
+	{
+		this.updateCallbacks.push	(callback);
+	}
+
+	public unregisterUpdateCallback	(callback: (deltaTime: number) => void): void
 	{
 		const index = this.updateCallbacks.indexOf(callback);
-		if (index > -1) {
+
+		if (index > -1)
 			this.updateCallbacks.splice(index, 1);
-		}
-	}
-
-	public start(): void
-	{
-		if (!this.scene) {
-			throw new Error('Scene not initialized. Call setScene() first.');
-		}
-
-		const update = (deltaTime: number): void => {
-			this.updateCallbacks.forEach(cb => cb(deltaTime));
-
-			this.inputManager.update();
-		};
-
-		const render = (): void => {
-			this.scene?.render();
-		};
-
-		this.gameLoop.start(update, render);
-	}
-
-	public stop(): void
-	{
-		this.gameLoop.stop();
 	}
 
 	public isRunning(): boolean
@@ -111,11 +88,38 @@ export class GameEngine
 		return this.gameLoop.isActive();
 	}
 
+	public start(): void
+	{
+		if (!this.scene)
+			throw new Error('Scene not initialized. Call setScene() first.');
+
+		const update = (deltaTime: number): void =>
+		{
+			this.updateCallbacks.forEach(cb => cb(deltaTime));
+
+			this.inputManager	.update	();
+		};
+
+		const render = (): void =>
+		{
+			this.scene?.render();
+		};
+
+		this.gameLoop.start	(update, render);
+	}
+
+	public stop	(): void
+	{
+		this.gameLoop.stop	();
+	}
+
 	public dispose(): void
 	{
-		this.gameLoop.stop();
+		this.gameLoop.stop	();
+
 		this.updateCallbacks = [];
-		this.scene?.dispose();
-		this.engine.dispose();
+
+		this.scene?.dispose	();
+		this.engine.dispose	();
 	}
 }

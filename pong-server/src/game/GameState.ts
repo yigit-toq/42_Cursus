@@ -158,7 +158,7 @@ export class GameState
 		this.ballVelocity = this.getBallVelocity();
 	}
 
-	private getBallVelocity(): Vector3 // Topun hızı skor başına değişecek
+	private getBallVelocity(): Vector3
 	{
 		const maxAngle	= Math.PI / 6;
 		const angle		= (Math.random() * 2 - 1) * maxAngle;

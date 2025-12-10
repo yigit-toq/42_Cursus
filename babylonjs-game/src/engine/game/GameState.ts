@@ -1,14 +1,14 @@
 export enum GameState
 {
-	Menu = 'MENU',
-	Playing = 'PLAYING',
-	Paused = 'PAUSED',
-	GameOver = 'GAME_OVER'
+	Menu		= 'MENU',
+	Paused		= 'PAUSED',
+	Playing		= 'PLAYING',
+	GameOver	= 'GAME_OVER'
 }
 
 export interface GameStateChangeEvent
 {
-	from: GameState;
-	to: GameState;
-	timestamp: number;
+	from		: GameState;
+	to			: GameState;
+	timestamp	: number;
 }
